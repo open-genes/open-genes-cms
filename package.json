@@ -4,7 +4,9 @@
   "description": "Web app and database",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "node-sass --source-map true --output-style compressed --include-path styles styles/style.scss styles/style.css",
+    "sass-watch": "nodemon -e scss -x 'npm run node-sass'"
   },
   "repository": {
     "type": "git",
@@ -17,6 +19,8 @@
   },
   "homepage": "https://gitlab.com/open-genes/open-genes#readme",
   "devDependencies": {
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.3",
     "webpack": "^4.41.0"
   }
 }
