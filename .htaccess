@@ -14,6 +14,7 @@ ErrorDocument 403 /404
 
 Header Set Access-Control-Allow-Origin *
 
+php_flag opcache.enable off
 php_flag display_errors off
 
 # Restrict Catalog
@@ -21,8 +22,3 @@ php_flag display_errors off
 # ErrorDocument 403 /images/403.php
 # RewriteEngine on
 # RewriteRule ^403.php$ /index.php [R=301]
-
-# AuthType Basic
-# AuthName "Необходима авторизация"
-# AuthUserFile /var/www/u0610688/data/www/dev.adenine.ru/.htpasswd
-# Require valid-user
