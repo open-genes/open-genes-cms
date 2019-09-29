@@ -1,0 +1,26 @@
+// VARIABLES
+@import "sources/variables";
+
+// MIXINS
+@import "sources/mixins";
+
+// ---BASE LAYER
+@import "sources/reset";
+@import "sources/grid";
+@import "sources/animations";
+
+// UI ELEMENTS
+@import "sources/ui";
+
+// ---PROJECT LAYER
+@import "sources/general";
+@import "sources/pages";
+
+// GENES VIEW
+@import "sources/tables";
+
+// PAGES
+@import "sources/pages/gene-page";
+
+// ---COSMETIC LAYER
+@import "sources/helpers";

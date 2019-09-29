@@ -1,0 +1,28 @@
+Options -Indexes
+DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# RewriteBase /
+# RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
+# RewriteRule . %1/%2 [R=301,L]
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule !.*\.php$ %{REQUEST_FILENAME}.php [QSA,L]
+</IfModule>
+
+ErrorDocument 404 /404
+ErrorDocument 403 /404
+
+Header Set Access-Control-Allow-Origin *
+
+php_flag display_errors off
+
+# Restrict Catalog
+# Options -Indexes
+# ErrorDocument 403 /images/403.php
+# RewriteEngine on
+# RewriteRule ^403.php$ /index.php [R=301]
+
+# AuthType Basic
+# AuthName "Необходима авторизация"
+# AuthUserFile /var/www/u0610688/data/www/dev.adenine.ru/.htpasswd
+# Require valid-user

@@ -1,0 +1,324 @@
+<? include $_SERVER['DOCUMENT_ROOT'] . '/contollers/core.php'; ?>
+<? if (!isset($_GET['gene']) || empty($_GET['gene'])): ?>
+    <? echo '<meta http-equiv="refresh" content="0;URL=/redirect.php">' ?>
+    <? $genePage = array(); ?>
+<? else: ?>
+    <? foreach ($_SESSION['allGenesData'] as $gene): ?>
+        <? $genePageBaseID = intval($gene['ID']); ?>
+        <? $genePageRouteID = intval($_GET['gene']); ?>
+        <? if ($genePageBaseID == $genePageRouteID): ?>
+            <?
+            include $_SERVER['DOCUMENT_ROOT'] . '/view/chunks/head.inc.php';
+            html_headChunk($gene['symbol'] . ' ' . $gene['name']);
+            ?>
+
+            <body class="app-body app-body--gene">
+
+            <? include $_SERVER['DOCUMENT_ROOT'] . '/view/chunks/loader.inc.php'; ?>
+
+            <? include $_SERVER['DOCUMENT_ROOT'] . '/view/chunks/header.inc.php'; ?>
+
+            <div class="page gene-page">
+                <div class="page__inner">
+                    <section class="wrapper gene-page__header">
+                        <div class="container">
+                            <div class="col col-16 header__title">
+                                <div class="title__caption">
+                                    <div class="caption__inner">
+                                        <?= $gene['symbol'] ?>
+                                    </div>
+                                </div>
+                                <div class="title__vendors">
+                                    <a href="https://genomics.senescence.info/genes/entry.php?hgnc=<?= $gene['symbol'] ?>"
+                                       target="_blank"
+                                       title="Ген на GeneAge"
+                                       class="badge badge--geneage"
+                                    >GeneAge</a>
+
+                                    <a href="https://www.ncbi.nlm.nih.gov/gene/<?= $gene['entrezGene'] ?>"
+                                       target="_blank"
+                                       title="Ген на Entrez Gene"
+                                       class="badge badge--entrez"
+                                    >entrezGene</a>
+
+                                    <a href="https://www.uniprot.org/uniprot/<?= $gene['uniprot'] ?>"
+                                       target="_blank"
+                                       title="Ген на UniProt"
+                                       class="badge badge--uniprot"
+                                    >UniProt</a>
+                                </div>
+                            </div>
+                            <div class="col col-16 header__short-comment">
+                              <span class="str_source-GeneAge">
+                                <?= $gene['name'] ?>
+                              </span>
+                            </div>
+                            <div class="col col-16 header__functional-clusters">
+                                <?
+                                $geneFunctions = new Gene();
+                                $functionalClusters = $gene['functionalClusters'];
+                                $functionalClustersArray = $geneFunctions->comma_separated_to_array($functionalClusters);
+                                ?>
+                                <? if ($functionalClusters): ?>
+                                    <? foreach ($functionalClustersArray as $functionalCluster): ?>
+                                        <a href=""
+                                           class="tag"
+                                        ><?= $functionalCluster ?></a>
+                                    <? endforeach; ?>
+                                <? else: ?>
+                                    <span class="tag __skeletal"></span>
+                                    <span class="tag __skeletal"></span>
+                                    <span class="tag __skeletal"></span>
+                                    <span class="tag __skeletal"></span>
+                                <? endif; ?>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="wrapper gene-page__age">
+                        <div class="container">
+                            <div class="col col-16 page__title">
+                                <h1>Возраст</h1>
+                            </div>
+                        </div>
+                        <div class="container __flex age__types">
+                            <div class="col col-4 __preserve-width __flex-auto age__type">
+                                <div class="type__title">
+                                    Филогенетика
+                                </div>
+                                <div class="type__value">
+                                    <? if ($gene['agePhylo']): ?>
+                                        <?= $gene['agePhylo'] ?>
+                                    <? else: ?>
+                                        Неизвестно
+                                    <? endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="col col-4 __preserve-width __flex-auto age__type">
+                                <div class="type__title">
+                                    Возраст
+                                </div>
+                                <div class="type__value">
+                                    <? if ($gene['ageMya']): ?>
+                                        <?= $gene['ageMya'] ?>
+                                        <small>млн. лет</small>
+                                    <? else: ?>
+                                        Неизвестно
+                                    <? endif; ?>
+                                </div>
+                            </div>
+
+                            <a href="http://disgenet.org/browser/1/1/0/<?= $gene['entrezGene'] ?>/"
+                               target="_blank"
+                               title="Ген на UniProt" class="col col-3 __preserve-width __flex-auto age__type age__diseases">
+                                <div class="type__title">
+                                    Заболевания
+                                </div>
+                                <div class="type__value">
+                                    <span class="badge badge--disgenet">
+                                        <span class="fa fal fa-stream"></span> Страница гена на DisGenet
+                                    </span>
+                                </div>
+                            </a>
+
+                            <a href="https://thebiogrid.org/search.php?search=<?= $gene['symbol'] ?>&organism=9606/"
+                               target="_blank"
+                               title="Взаимодействия гена на BioGrid"
+                               class="col col-3 __preserve-width __flex-auto age__type age__interactions">
+                                <div class="type__title">
+                                    Взаимодействия
+                                </div>
+                                <div class="type__value">
+                                    <span class="badge badge--biogrid">
+                                        <span class="fa fal fa-search"></span> Поиск на BioGrid
+                                    </span>
+                                </div>
+                            </a>
+
+                            <? if ($gene['rating']): ?>
+                                <div class="col col-7 __preserve-width __flex-auto age__type age__rating">
+                                    <div class="type__title">
+                                        Критерий отбора
+                                        <small><sup>*</sup></small>
+                                    </div>
+                                    <div class="type__value">
+                                        <span
+                                            class="rating<? if ($gene['rating'] > 5): ?> rating--medium<? else: ?> rating--high<? endif; ?>">
+                                            <?= $gene['rating'] ?>
+                                        </span>
+                                    </div>
+                                    <div class="type__description">
+                                        <?
+                                        $ratingDetails = new Gene();
+                                        echo $ratingDetails->gene_rating_details($gene['rating']);
+                                        ?>
+                                    </div>
+                                </div>
+                            <? endif; ?>
+                        </div>
+                    </section>
+
+
+                    <div class="wrapper gene-page__articles">
+                        <div class="container">
+                            <div class="col col-16 page__title">
+                                <h1>Описание</h1>
+                            </div>
+
+                            <?
+                            $geneSynonyms = new Gene();
+                            $geneAliases = $gene['aliases'];
+                            $geneAliasesArray = $geneSynonyms->space_separated_to_array($geneAliases);
+
+                            if ($_SESSION['$current_locale'] == 'en') {
+                                $postfix = 'En';
+                            } else {
+                                $postfix = '';
+                            }
+                            ?>
+                            <? if ($geneAliases): ?>
+                                <div class="col col-16 articles__content">
+                                    <h3>Синонимы (HGNC)</h3>
+
+                                    <? foreach ($geneAliasesArray as $geneAlias): ?>
+                                        <a href=""
+                                           class="tag"
+                                        ><?= $geneAlias ?></a>
+                                    <? endforeach; ?>
+                                </div>
+                            <? endif; ?>
+
+                            <? if ($gene['commentEvolution'] || $gene['commentFunction'] || $gene['commentCause'] || $gene['commentAging'] || $gene['commentsReferenceLinks']): ?>
+                                <div class="col col-16 articles__content">
+                                    <h3>Оглавление</h3>
+
+                                    <ul class="list contents-list">
+                                        <? if ($gene['commentEvolution']): ?>
+                                            <li>
+                                                <a href="#evolution">
+                                                    Эволюция
+                                                </a>
+                                            </li>
+                                        <? endif; ?>
+                                        <? if ($gene['commentFunction']): ?>
+                                            <li>
+                                                <a href="#function">
+                                                    Функции
+                                                </a>
+                                            </li>
+                                        <? endif; ?>
+                                        <? if ($gene['commentCause']): ?>
+                                            <li>
+                                                <a href="#cause">
+                                                    Обоснование
+                                                </a>
+                                            </li>
+                                        <? endif; ?>
+                                        <? if ($gene['commentAging']): ?>
+                                            <li>
+                                                <a href="#aging">
+                                                    Старение
+                                                </a>
+                                            </li>
+                                        <? endif; ?>
+                                        <? if ($gene['commentsReferenceLinks']): ?>
+                                            <li>
+                                                <a href="#reference">
+                                                    Ссылки
+                                                </a>
+                                            </li>
+                                        <? endif; ?>
+                                    </ul>
+
+                                    <? if ($gene['commentEvolution']): ?>
+                                        <h3>Эволюция</h3>
+
+                                        <article id="evolution">
+                                            <?= $gene['commentEvolution'] ?>
+                                        </article>
+                                    <? endif; ?>
+
+                                    <? if ($gene['commentFunction']): ?>
+                                        <h3>Функция</h3>
+                                        <article id="function">
+                                            <?= $gene['commentFunction'] ?>
+                                        </article>
+                                    <? endif; ?>
+
+                                    <? if ($gene['commentCause']): ?>
+                                        <h3>Причина отбора</h3>
+                                        <article id="cause">
+                                            <ul class="list list--bulletted">
+                                                <?
+                                                $commentsCause = new Gene();
+                                                $commentsCauseItems = $gene['commentCause'];
+                                                $commentsCauseItemsArray = $commentsCause->comma_separated_to_array($commentsCauseItems);
+                                                ?>
+                                                <? if ($gene['commentsReferenceLinks']): ?>
+                                                    <? foreach ($commentsCauseItemsArray as $commentsCauseItem): ?>
+                                                        <li>
+                                                            <?= $commentsCauseItem ?>
+                                                        </li>
+                                                    <? endforeach; ?>
+                                                <? endif; ?>
+                                            </ul>
+                                        </article>
+                                    <? endif; ?>
+
+                                    <? if ($gene['commentAging']): ?>
+                                        <h3>Связь со старением/долголетием</h3>
+                                        <article id="aging">
+                                            <?= $gene['commentAging'] ?>
+                                        </article>
+                                    <? endif; ?>
+
+                                    <? if ($gene['commentsReferenceLinks']): ?>
+                                        <article data-article="reference" class="js_article-reference">
+                                            <ul class="list reference-list">
+                                                <?
+                                                $commentsReference = new Gene();
+                                                $commentsReferenceLinks = $gene['commentsReferenceLinks'];
+                                                $commentsReferenceLinksArray = $commentsReference->comma_separated_to_array($commentsReferenceLinks);
+                                                ?>
+                                                <? if ($gene['commentsReferenceLinks']): ?>
+                                                    <? foreach ($commentsReferenceLinksArray as $commentsRef): ?>
+                                                        <?
+                                                            $commentsRefLink = preg_replace_callback(
+                                                                '(\[[0-9\-]*\])(\s|)(\S*)',
+                                                                '($3)',
+                                                                $commentsRef
+                                                            );
+                                                        ?>
+                                                        <li>
+                                                            <a href="https://doi.org/<?= $commentsRefLink ?>"
+                                                               target="_blank"
+                                                               class="reference-link"><?= $commentsRef ?></a>
+                                                        </li>
+                                                    <? endforeach; ?>
+                                                <? endif; ?>
+                                            </ul>
+                                        </article>
+                                    <? endif; ?>
+                                </div>
+                            <? else: ?>
+                                <section class="col col-16 no-content">
+                                    <div class="no-content__icon no-content__icon-standard"></div>
+                                    <div class="no-content__title">
+                                        <div class="title__center">
+                                            Статья для этого гена пока не готова
+                                        </div>
+                                    </div>
+                                </section>
+                            <? endif; ?>
+                        </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+            <? include $_SERVER['DOCUMENT_ROOT'] . '/view/chunks/footer.inc.php'; ?>
+            </body>
+        <? endif ?>
+    <? endforeach; ?>
+<? endif; ?>
