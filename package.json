@@ -1,0 +1,22 @@
+{
+  "name": "open-genes",
+  "version": "1.0.0",
+  "description": "Web app and database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/open-genes/open-genes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/open-genes/open-genes/issues"
+  },
+  "homepage": "https://gitlab.com/open-genes/open-genes#readme",
+  "devDependencies": {
+    "webpack": "^4.41.0"
+  }
+}

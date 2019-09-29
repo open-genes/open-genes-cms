@@ -7,7 +7,8 @@ $isProduction = 1;
 // require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 
-// CONNECTION OPTIONS
+// INI SETTINGS
+ini_set('opcache','Off');
 
 // Error handling
 if ($isProduction == 1) {
@@ -18,6 +19,8 @@ if ($isProduction == 1) {
     ini_set('output_buffering', 0);
 }
 
+
+// CONNECTION OPTIONS
 
 // Check for existing session
 if(session_id() == '' || !isset($_SESSION)) {

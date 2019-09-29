@@ -97,7 +97,7 @@ html_headChunk('Aging Related Genes Base');
 
                         <div class="th th--wider th-age js_sort-by-age-btn">
                             <div class="th__title">
-                                <b><?= $translation->translate('age') ?></b> <?= $translation->translate('main_page_table_phylogeny') ?>
+                                <b><?= $translation->translate('phylogeny') ?></b>
                             </div>
                         </div>
 
@@ -123,7 +123,7 @@ html_headChunk('Aging Related Genes Base');
 
                         <div class="th th--wide">
                             <div class="th__title">
-                                <b><?= $translation->translate('main_page_table_diseases') ?></b>
+                                <b><?= $translation->translate('diseases') ?></b>
                             </div>
                         </div>
 
@@ -162,7 +162,7 @@ html_headChunk('Aging Related Genes Base');
 
                                         <a href="https://genomics.senescence.info/genes/entry.php?hgnc=<?= $gene['symbol'] ?>"
                                            target="_blank"
-                                           title="Ген на GeneAge"
+                                           title="<?= $translation->translate('link_geneage') ?>"
                                            class="tag tag--small"><?= $gene['ID']; ?></a>
                                     </div>
                                 </div>
@@ -202,6 +202,7 @@ html_headChunk('Aging Related Genes Base');
                                         <? foreach ($functionalClustersArray as $functionalCluster): ?>
                                             <?
                                             // SQL keys come already in Russian, giving them a key-like look:
+                                            // // TODO: Это временный костыль
                                             $functionalCluster = preg_replace('/\s+/', '_', $functionalCluster);
                                             $functionalCluster = preg_replace('/^_/', '', $functionalCluster);
                                             $functionalCluster = preg_replace('/[\/]/', '_', $functionalCluster);
@@ -216,7 +217,7 @@ html_headChunk('Aging Related Genes Base');
                                 <div class="td td--text-right td-external">
                                     <a href="http://disgenet.org/browser/1/1/0/<?= $gene['entrezGene'] ?>/"
                                        target="_blank"
-                                       title="<?= $translation->translate('main_page_table_link_uniprot') ?>"
+                                       title="<?= $translation->translate('link_disgenet') ?>"
                                        class="badge badge--disgenet"
                                     >
                                         DisGenet</a>
@@ -225,7 +226,7 @@ html_headChunk('Aging Related Genes Base');
                                 <div class="td td--text-right td-external">
                                     <a href="https://thebiogrid.org/search.php?search=<?= $gene['symbol'] ?>&organism=9606/"
                                        target="_blank"
-                                       title="<?= $translation->translate('main_page_table_link_biogrid') ?>"
+                                       title="<?= $translation->translate('link_biogrid') ?>"
                                        class="badge badge--biogrid"
                                     >
                                         BioGrid</a>
