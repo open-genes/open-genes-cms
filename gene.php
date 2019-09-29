@@ -316,11 +316,7 @@
                                                     <? foreach ($commentsReferenceLinksArray as $commentsRef): ?>
                                                         <?
                                                             // Formatting a link:
-                                                            $commentsRefLink = preg_replace_callback(
-                                                                '(/\[[0-9\-]*\])(\s|)(\S*)/',
-                                                                '',
-                                                                $commentsRef
-                                                            );
+                                                            $commentsRefLink = preg_replace('/\[[0-9\-]*\]\s*/', '', $commentsRef);
                                                         ?>
                                                         <li>
                                                             <a href="https://doi.org/<?= $commentsRefLink ?>"
