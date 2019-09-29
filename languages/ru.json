@@ -36,6 +36,7 @@
   "alert_error_invalid_username": "Неверное имя пользователя или пароль.",
   "alert_error_login_unsuccessful": "Ошибка входа. Попробуйте войти снова.",
   "error_page_404": "Такой страницы не существует или что-то пошло не так",
+  "error_page_soon": "Этот раздел скоро дополнится.",
   "ui_loader": "Загружаю данные...",
   "link_geneage": "Этот ген на GeneAge",
   "link_entrez": "Этот ген на Entrez Gene",

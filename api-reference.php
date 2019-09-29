@@ -32,7 +32,7 @@ html_headChunk('Aging Related Genes Base');
                 <div class="no-content__icon no-content__icon-standard"></div>
                 <div class="no-content__title">
                     <div class="title__center">
-                        Этот раздел скоро дополнится.
+                        <?= $translation->translate('error_page_soon') ?>
                     </div>
                 </div>
             </section>

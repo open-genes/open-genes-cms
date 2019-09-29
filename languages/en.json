@@ -36,6 +36,7 @@
   "alert_error_invalid_username": "Invalid username or password.",
   "alert_error_login_unsuccessful": "Unsuccessful login attempt. Please try again.",
   "error_page_404": "This page doesn't exist or something went wrong.",
+  "error_page_soon": "This section will be updated soon.",
   "ui_loader": "Loading data...",
   "link_geneage": "This gene on GeneAge",
   "link_entrez": "This gene on Entrez Gene",
