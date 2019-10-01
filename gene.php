@@ -183,7 +183,6 @@
                         </div>
                     </section>
 
-
                     <div class="wrapper gene-page__articles">
                         <div class="container">
                             <div class="col col-16 page__title">
@@ -213,7 +212,7 @@
                                 </div>
                             <? endif; ?>
 
-                            <? if ($gene[$commentEvolution] || $gene[$commentFunction] || $gene['commentCause'] || $gene[$commentAging] || $gene['commentsReferenceLinks'] || $gene[$expression]): ?>
+                            <? if ($gene[$commentEvolution] || $gene[$commentFunction] || $gene['commentCause'] || $gene[$commentAging] || $gene['commentsReferenceLinks']): ?>
                                 <div class="col col-16 articles__content">
                                     <h3><?= $translation->translate('gene_page_title_contents') ?></h3>
 
@@ -306,19 +305,8 @@
                                         </article>
                                     <? endif; ?>
 
-                                    <? if ($gene[$expression]): ?>
-                                        <h3><?= $translation->translate('gene_page_title_expression') ?></h3>
-                                        <article id="expression">
-                                            <?php
-                                            foreach($gene[$expression] as $name => $expressionValues) {
-                                                echo ucfirst($name) . ': ' . $expressionValues['exp_rpkm'] . ' ± ' . substr((string)$expressionValues['var'], 0, 5) . '<br/>';
-                                            }
-                                            ?>
-                                        </article>
-                                    <? endif; ?>
-
                                     <? if ($gene['commentsReferenceLinks']): ?>
-                                        <article data-article="reference" class="js_article-reference">
+                                        <article id="reference" class="js_article-reference">
                                             <ul class="list reference-list">
                                                 <?
                                                 $commentsReference = new Gene();
@@ -355,6 +343,38 @@
                         </div>
                         </section>
                     </div>
+
+                    <? if ($gene[$expression]): ?>
+                        <section class="wrapper gene-page__expression">
+                            <div class="container">
+                                <div class="col col-16 page__title">
+                                    <h1><?= $translation->translate('gene_page_title_expression') ?></h1>
+                                    <p>
+                                        <?= $translation->translate('gene_page_expression_hint') ?>
+                                    </p>
+                                </div>
+
+                                <div class="col col-16 expression__rows">
+                                    <?
+                                    foreach($gene[$expression] as $name => $expressionValues) {
+                                        echo
+                                            '<div class="expression__row">' .
+                                            '<div class="row__name">' . ucfirst($name) . '</div>' .
+
+                                            '<div class="row__value">' .
+                                            '<div class ="value__bar" ' . 'style="width: ' . $expressionValues['exp_rpkm'] * 2 . '%"></div>'.
+
+                                            '<div class ="value__rpkm">' .
+                                            $expressionValues['exp_rpkm'] . ' ± ' . substr((string)$expressionValues['var'], 0, 5) .
+                                            '</div>' .
+                                            '</div>' .
+                                            '</div>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </section>
+                    <? endif; ?>
                 </div>
             </div>
 
