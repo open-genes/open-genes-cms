@@ -23,6 +23,7 @@
   "gene_page_title_evolution": "Эволюция",
   "gene_page_title_function": "Функция",
   "gene_page_title_aging": "Доказательства ассоциации со старением/долголетием",
+  "gene_page_title_expression": "Экспрессия гена",
   "gene_page_error_no_article_yet": "Статья для этого гена пока не готова.",
   "about_page_title": "О базе Open Longevity Genes",
   "api-page_title": "Справка по API",
