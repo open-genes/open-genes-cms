@@ -23,6 +23,7 @@
   "gene_page_title_evolution": "Evolution",
   "gene_page_title_function": "Function",
   "gene_page_title_aging": "Evidence for association with aging/longevity",
+  "gene_page_title_expression": "Gene expression",
   "gene_page_error_no_article_yet": "An article for this gene is not ready yet.",
   "about_page_title": "About Open Longevity Genes",
   "api-page_title": "API reference",
