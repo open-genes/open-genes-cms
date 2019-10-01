@@ -27,8 +27,6 @@
             $commentEvolution = 'commentEvolution' . $postfix;
             $commentFunction = 'commentFunction' . $postfix;
             $commentAging = 'commentAging' . $postfix;
-            $expression = 'expression' . $postfix;
-            $gene[$expression] = isset($gene[$expression]) && !empty($gene[$expression]) ? json_decode($gene[$expression], true) : null;
             ?>
 
             <div class="page gene-page">
@@ -213,7 +211,7 @@
                                 </div>
                             <? endif; ?>
 
-                            <? if ($gene[$commentEvolution] || $gene[$commentFunction] || $gene['commentCause'] || $gene[$commentAging] || $gene['commentsReferenceLinks'] || $gene[$expression]): ?>
+                            <? if ($gene[$commentEvolution] || $gene[$commentFunction] || $gene['commentCause'] || $gene[$commentAging] || $gene['commentsReferenceLinks']): ?>
                                 <div class="col col-16 articles__content">
                                     <h3><?= $translation->translate('gene_page_title_contents') ?></h3>
 
@@ -303,17 +301,6 @@
                                         <h3><?= $translation->translate('gene_page_title_aging') ?></h3>
                                         <article id="aging">
                                             <?= $gene[$commentAging] ?>
-                                        </article>
-                                    <? endif; ?>
-
-                                    <? if ($gene[$expression]): ?>
-                                        <h3><?= $translation->translate('gene_page_title_expression') ?></h3>
-                                        <article id="expression">
-                                            <?php
-                                            foreach($gene[$expression] as $name => $expressionValues) {
-                                                echo ucfirst($name) . ': ' . $expressionValues['exp_rpkm'] . ' ± ' . substr((string)$expressionValues['var'], 0, 5) . '<br/>';
-                                            }
-                                            ?>
                                         </article>
                                     <? endif; ?>
 
