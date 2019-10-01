@@ -11,7 +11,7 @@
   "main_page_table_name": "HGNC, название",
   "phylogeny": "Происхождение",
   "main_page_table_functional_clusters": "Функциональные кластеры:",
-  "main_page_table_diseases": "Заболевания",
+  "diseases": "Заболевания",
   "main_page_table_interactions": "Взаимодействия",
   "gene_page_link_disgenet": "Страница гена на DisGenet",
   "gene_page_link_biogrid": "Поиск на BioGrid",
