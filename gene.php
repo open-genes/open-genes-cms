@@ -365,7 +365,7 @@
                                             '<div class ="value__bar" ' . 'style="width: ' . $expressionValues['exp_rpkm'] * 2 . '%"></div>'.
 
                                             '<div class ="value__rpkm">' .
-                                            $expressionValues['exp_rpkm'] . ' ± ' . substr((string)$expressionValues['var'], 0, 5) .
+                                            $expressionValues['exp_rpkm'] . ' RPKM' .
                                             '</div>' .
                                             '</div>' .
                                             '</div>';

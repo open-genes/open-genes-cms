@@ -123,6 +123,12 @@ html_headChunk('Aging Related Genes Base');
 
                         <div class="th th--wide">
                             <div class="th__title">
+                                <b><?= $translation->translate('main_page_table_gene_expression') ?></b>
+                            </div>
+                        </div>
+
+                        <div class="th th--wide">
+                            <div class="th__title">
                                 <b><?= $translation->translate('diseases') ?></b>
                             </div>
                         </div>
@@ -210,6 +216,22 @@ html_headChunk('Aging Related Genes Base');
                                             <a href=""
                                                class="tag"
                                             ><?= $translation->translate($functionalCluster) ?></a>
+                                        <? endforeach; ?>
+                                    <? endif; ?>
+                                </div>
+
+                                <div class="td td--text-left td-expression">
+                                    <? if ($gene['expressionChange']): ?>
+                                        <span class="td__label"><?= $translation->translate('main_page_table_expression') ?></span>
+                                        <?
+                                        $genesExpression = new Gene();
+                                        $expressionChanges = $gene['expressionChange'];
+                                        $expressionChangesArray = $genesExpression->comma_separated_to_array($expressionChanges);
+                                        ?>
+                                        <? foreach ($expressionChangesArray as $expression): ?>
+                                            <a href=""
+                                               class="tag"
+                                            ><?= $translation->translate($expression) ?></a>
                                         <? endforeach; ?>
                                     <? endif; ?>
                                 </div>
