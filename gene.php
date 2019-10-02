@@ -181,7 +181,6 @@
                         </div>
                     </section>
 
-
                     <div class="wrapper gene-page__articles">
                         <div class="container">
                             <div class="col col-16 page__title">
@@ -305,7 +304,7 @@
                                     <? endif; ?>
 
                                     <? if ($gene['commentsReferenceLinks']): ?>
-                                        <article data-article="reference" class="js_article-reference">
+                                        <article id="reference" class="js_article-reference">
                                             <ul class="list reference-list">
                                                 <?
                                                 $commentsReference = new Gene();
@@ -342,6 +341,38 @@
                         </div>
                         </section>
                     </div>
+
+                    <? if ($gene[$expression]): ?>
+                        <section class="wrapper gene-page__expression">
+                            <div class="container">
+                                <div class="col col-16 page__title">
+                                    <h1><?= $translation->translate('gene_page_title_expression') ?></h1>
+                                    <p>
+                                        <?= $translation->translate('gene_page_expression_hint') ?>
+                                    </p>
+                                </div>
+
+                                <div class="col col-16 expression__rows">
+                                    <?
+                                    foreach($gene[$expression] as $name => $expressionValues) {
+                                        echo
+                                            '<div class="expression__row">' .
+                                            '<div class="row__name">' . ucfirst($name) . '</div>' .
+
+                                            '<div class="row__value ' . ($expressionValues['exp_rpkm'] < 2 ? 'row__value--minimum' : '') . '">' .
+                                            '<div class ="value__bar" ' . 'style="width: ' . $expressionValues['exp_rpkm'] * 2 . '%"></div>'.
+
+                                            '<div class ="value__rpkm">' .
+                                            $expressionValues['exp_rpkm'] . ' RPKM' .
+                                            '</div>' .
+                                            '</div>' .
+                                            '</div>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </section>
+                    <? endif; ?>
                 </div>
             </div>
 

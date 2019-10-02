@@ -253,6 +253,15 @@ a.reference-link {
         font-size: 28px;
         color: $color-indent;
       }
+
+      p {
+        font-size: $font-size;
+        color: $color-gray;
+      }
+
+      .hint {
+        margin-top: 5px;
+      }
     }
 
     .page__subtitle {

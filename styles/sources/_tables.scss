@@ -333,6 +333,10 @@
           }
         }
 
+        &-expression {
+          display: none;
+        }
+
         &-external {
           &,
           .badge {
