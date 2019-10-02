@@ -361,7 +361,7 @@
                                             '<div class="expression__row">' .
                                             '<div class="row__name">' . ucfirst($name) . '</div>' .
 
-                                            '<div class="row__value">' .
+                                            '<div class="row__value ' . ($expressionValues['exp_rpkm'] < 2 ? 'row__value--minimum' : '') . '">' .
                                             '<div class ="value__bar" ' . 'style="width: ' . $expressionValues['exp_rpkm'] * 2 . '%"></div>'.
 
                                             '<div class ="value__rpkm">' .
