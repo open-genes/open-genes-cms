@@ -67,11 +67,11 @@ html_headChunk('Aging Related Genes Base');
                     <h3>Что уже есть</h3>
 
                     <p>
-                        В&nbsp;таблице на&nbsp;основной странице базы содержится краткая информация о&nbsp;генах. В&nbsp;колонке &laquo;Возраст гена&raquo; указано, у&nbsp;каких организмов в&nbsp;процессе эволюции появился гомолог человеческого гена и&nbsp;приблизительный возраст этого предкового организма. Эта информация получена из&nbsp;исследований молекулярной эволюции гена.
+                        В&nbsp;таблице на&nbsp;основной странице базы содержится краткая информация о&nbsp;генах. В&nbsp;колонке "Возраст гена" указано, у&nbsp;каких организмов в&nbsp;процессе эволюции появился гомолог человеческого гена и&nbsp;приблизительный возраст этого предкового организма. Эта информация получена из&nbsp;исследований молекулярной эволюции гена.
                     </p>
 
                     <p>
-                        В&nbsp;колонке &laquo;Функциональные кластеры&raquo; мы&nbsp;указываем в&nbsp;каких процессах участвует ген. Мы&nbsp;составили список функциональных кластеров и&nbsp;в&nbsp;соответствии с&nbsp;ним указываем как основные, так и&nbsp;дополнительные функции гена.
+                        В&nbsp;колонке "Функциональные кластеры" мы&nbsp;указываем в&nbsp;каких процессах участвует ген. Мы&nbsp;составили список функциональных кластеров и&nbsp;в&nbsp;соответствии с&nbsp;ним указываем как основные, так и&nbsp;дополнительные функции гена.
                     </p>
 
                     <h3>Функциональные кластеры:</h3>
@@ -95,11 +95,11 @@ html_headChunk('Aging Related Genes Base');
                         <li>Межклеточный матрикс;</li>
 
                         <p>
-                            В&nbsp;колонке &laquo;Обоснование&raquo; мы&nbsp;указываем, по&nbsp;каким именно критериям из&nbsp;приведенного выше списка ген отобран в&nbsp;базу.
+                            В&nbsp;колонке "Обоснование" мы&nbsp;указываем, по&nbsp;каким именно критериям из&nbsp;приведенного выше списка ген отобран в&nbsp;базу.
                         </p>
 
                         <p>
-                            В&nbsp;колонке &laquo;Заболевания&raquo; стоит ссылка на&nbsp;страницу гена в&nbsp;базе данных DisGenet, в&nbsp;которой указаны все заболевания, с&nbsp;которыми ассоциирован ген. В&nbsp;колонке &laquo;Взаимодействия&raquo; мы&nbsp;дали ссылку на&nbsp;страницу гена в&nbsp;базе данных BioGrid.
+                            В&nbsp;колонке "Заболевания" стоит ссылка на&nbsp;страницу гена в&nbsp;базе данных DisGenet, в&nbsp;которой указаны все заболевания, с&nbsp;которыми ассоциирован ген. В&nbsp;колонке "Взаимодействия" мы&nbsp;дали ссылку на&nbsp;страницу гена в&nbsp;базе данных BioGrid.
                             Что еще мы&nbsp;добавим
                         </p>
 
@@ -108,7 +108,7 @@ html_headChunk('Aging Related Genes Base');
                         </p>
 
                         <p>
-                            Визуализация критериев отбора гена в&nbsp;базу. Мы&nbsp;сейчас работаем над наглядностью нашей основной таблицы с&nbsp;генами. Мы&nbsp;планируем с&nbsp;помощью набора простых иконок показывать в&nbsp;колонке &laquo;Обоснование&raquo;, какие именно эксперименты и&nbsp;на&nbsp;каких организмах проводились с&nbsp;геном. Также мы&nbsp;выделим цветом гены, модификация которых позволила увеличить продолжительность жизни, потому что именно эти гены особенно интересны в&nbsp;качестве потенциальных мишеней для терапии старения. В&nbsp;отдельной колонке мы&nbsp;покажем с&nbsp;помощью стрелочек увеличивается или уменьшается с&nbsp;возрастом экспрессия гена.
+                            Визуализация критериев отбора гена в&nbsp;базу. Мы&nbsp;сейчас работаем над наглядностью нашей основной таблицы с&nbsp;генами. Мы&nbsp;планируем с&nbsp;помощью набора простых иконок показывать в&nbsp;колонке "Обоснование", какие именно эксперименты и&nbsp;на&nbsp;каких организмах проводились с&nbsp;геном. Также мы&nbsp;выделим цветом гены, модификация которых позволила увеличить продолжительность жизни, потому что именно эти гены особенно интересны в&nbsp;качестве потенциальных мишеней для терапии старения. В&nbsp;отдельной колонке мы&nbsp;покажем с&nbsp;помощью стрелочек увеличивается или уменьшается с&nbsp;возрастом экспрессия гена.
                         </p>
 
                         <p>
@@ -132,7 +132,7 @@ html_headChunk('Aging Related Genes Base');
                         </p>
 
                         <p>
-                            В&nbsp;разделе &laquo;Эволюция&raquo; мы&nbsp;указываем, к&nbsp;какому генному семейству относится ген, а&nbsp;также какие важные события происходили в&nbsp;его эволюции. В&nbsp;разделе &laquo;Функции&raquo; мы&nbsp;описываем подробнее, какие именно молекулярные функции в&nbsp;том или ином процессе, механизме или пути выполняет ген. Каждый функциональный кластер может включать несколько процессов, поэтому мы&nbsp;описываем функции подробнее, указывая в&nbsp;каких именно процессах и&nbsp;механизмах ген участвует.
+                            В&nbsp;разделе "Эволюция" мы&nbsp;указываем, к&nbsp;какому генному семейству относится ген, а&nbsp;также какие важные события происходили в&nbsp;его эволюции. В&nbsp;разделе "Функции" мы&nbsp;описываем подробнее, какие именно молекулярные функции в&nbsp;том или ином процессе, механизме или пути выполняет ген. Каждый функциональный кластер может включать несколько процессов, поэтому мы&nbsp;описываем функции подробнее, указывая в&nbsp;каких именно процессах и&nbsp;механизмах ген участвует.
                         </p>
 
                         <p>
@@ -191,11 +191,11 @@ html_headChunk('Aging Related Genes Base');
                     <h2>Content of the genes table</h2>
                     <h3>What is&nbsp;already there</h3>
                     <p>
-                        The table on&nbsp;the main page contains brief information about the genes. The &laquo;Gene age&raquo; column indicates in&nbsp;which organisms the homolog of&nbsp;the human gene appeared in&nbsp;the process of&nbsp;evolution and the approximate age of&nbsp;this ancestral organisms. The information is&nbsp;obtained in&nbsp;studies of&nbsp;the molecular evolution of&nbsp;the gene.
+                        The table on&nbsp;the main page contains brief information about the genes. The "Gene age" column indicates in&nbsp;which organisms the homolog of&nbsp;the human gene appeared in&nbsp;the process of&nbsp;evolution and the approximate age of&nbsp;this ancestral organisms. The information is&nbsp;obtained in&nbsp;studies of&nbsp;the molecular evolution of&nbsp;the gene.
                     </p>
 
                     <p>
-                        The &laquo;Functional Clusters&raquo; column indicates which processes the gene is&nbsp;involved&nbsp;in. We&nbsp;have compiled a&nbsp;list of&nbsp;functional clusters and, based on&nbsp;the list, indicate both the main and additional functions of&nbsp;the gene.
+                        The "Functional Clusters" column indicates which processes the gene is&nbsp;involved&nbsp;in. We&nbsp;have compiled a&nbsp;list of&nbsp;functional clusters and, based on&nbsp;the list, indicate both the main and additional functions of&nbsp;the gene.
                     </p>
 
 
@@ -221,11 +221,11 @@ html_headChunk('Aging Related Genes Base');
                     </ol>
 
                     <p>
-                        In&nbsp;the &laquo;Criteria&raquo; column we&nbsp;indicate based on&nbsp;what criteria from the above list the gene was included in&nbsp;the database.
+                        In&nbsp;the "Criteria" column we&nbsp;indicate based on&nbsp;what criteria from the above list the gene was included in&nbsp;the database.
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Diseases&raquo; column there is&nbsp;the link to&nbsp;the gene page on&nbsp;the DisGenet database, which lists all the diseases which the gene is&nbsp;associated with. In&nbsp;the &laquo;Interactions&raquo; column the link to&nbsp;the gene page in&nbsp;the BioGrid database is&nbsp;provided.
+                        In&nbsp;the "Diseases" column there is&nbsp;the link to&nbsp;the gene page on&nbsp;the DisGenet database, which lists all the diseases which the gene is&nbsp;associated with. In&nbsp;the "Interactions" column the link to&nbsp;the gene page in&nbsp;the BioGrid database is&nbsp;provided.
                     </p>
 
                     <h2>What we&nbsp;are going to&nbsp;add</h2>
@@ -235,7 +235,7 @@ html_headChunk('Aging Related Genes Base');
                     </p>
 
                     <p>
-                        Genes selection criteria visualization. We&nbsp;are currently working on&nbsp;making our main gene table more visual. We&nbsp;plan to&nbsp;show in&nbsp;the &laquo;Rationale&raquo; column which experiments with the gene have been conducted and in&nbsp;which organisms, using a&nbsp;set of&nbsp;simple icons. We&nbsp;will also highlight in&nbsp;color the genes which modification allowed to&nbsp;increase the lifespan because it&nbsp;is&nbsp;these genes that are especially interesting as&nbsp;potential targets for the treatment of&nbsp;aging. In&nbsp;a&nbsp;separate column, we&nbsp;intend to&nbsp;show if&nbsp;the expression of&nbsp;the gene increases or&nbsp;decreases with age, using arrows.
+                        Genes selection criteria visualization. We&nbsp;are currently working on&nbsp;making our main gene table more visual. We&nbsp;plan to&nbsp;show in&nbsp;the "Rationale" column which experiments with the gene have been conducted and in&nbsp;which organisms, using a&nbsp;set of&nbsp;simple icons. We&nbsp;will also highlight in&nbsp;color the genes which modification allowed to&nbsp;increase the lifespan because it&nbsp;is&nbsp;these genes that are especially interesting as&nbsp;potential targets for the treatment of&nbsp;aging. In&nbsp;a&nbsp;separate column, we&nbsp;intend to&nbsp;show if&nbsp;the expression of&nbsp;the gene increases or&nbsp;decreases with age, using arrows.
                     </p>
 
                     <p>
@@ -250,11 +250,11 @@ html_headChunk('Aging Related Genes Base');
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Evolution&raquo; section, we&nbsp;indicate which gene family the gene belongs&nbsp;to, as&nbsp;well as&nbsp;what important events have occurred during its evolution.
+                        In&nbsp;the "Evolution" section, we&nbsp;indicate which gene family the gene belongs&nbsp;to, as&nbsp;well as&nbsp;what important events have occurred during its evolution.
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Functions&raquo; section we&nbsp;describe in&nbsp;more detail what specific molecular functions the gene performs in&nbsp;a&nbsp;given process, mechanism, or&nbsp;pathway. Each functional cluster can include several processes, so&nbsp;we&nbsp;describe the functions in&nbsp;more detail, indicating which particular processes and mechanisms the gene is&nbsp;involved&nbsp;in.
+                        In&nbsp;the "Functions" section we&nbsp;describe in&nbsp;more detail what specific molecular functions the gene performs in&nbsp;a&nbsp;given process, mechanism, or&nbsp;pathway. Each functional cluster can include several processes, so&nbsp;we&nbsp;describe the functions in&nbsp;more detail, indicating which particular processes and mechanisms the gene is&nbsp;involved&nbsp;in.
                     </p>
 
                     <p>
