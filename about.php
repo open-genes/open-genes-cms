@@ -29,7 +29,7 @@ html_headChunk('Aging Related Genes Base');
                 <? if($_SESSION['$current_locale'] == 'ru'): ?>
                 <article>
                     <p class="hint">
-                        <b>Open Longevity Genes</b>&nbsp;&mdash; это база данных, в&nbsp;которой мы&nbsp;собираем все гены человека, ассоциированные со&nbsp;старением и&nbsp;продолжительностью жизни. В&nbsp;таблице на&nbsp;основной странице базы содержится краткая информация о&nbsp;генах. Кликнув на&nbsp;название гена в&nbsp;таблице, вы&nbsp;найдете подробную статью об&nbsp;этом гене со&nbsp;ссылками на&nbsp;литературу и&nbsp;быстрым доступом к&nbsp;другим базам данных.
+                        <b>Open Longevity Genes</b>&nbsp;&mdash; это база данных генов человека, ассоциированныx со&nbsp;старением и&nbsp;продолжительностью жизни. В&nbsp;таблице на&nbsp;основной странице базы содержится краткая информация о&nbsp;генах. Кликнув на&nbsp;название гена в&nbsp;таблице, вы&nbsp;найдете подробную статью об&nbsp;этом гене со&nbsp;ссылками на&nbsp;литературу и&nbsp;быстрым доступом к&nbsp;другим базам данных.
                     </p>
 
 
@@ -146,7 +146,7 @@ html_headChunk('Aging Related Genes Base');
 
                         <h3>Что еще мы&nbsp;добавим</h3>
 
-                        <p>Сейчас в&nbsp;статье гена содержатся результаты ручного поиска информации, а&nbsp;также ссылки на&nbsp;другие базы. Чтобы проще было работать с&nbsp;геном, мы&nbsp;выведем важную информацию о&nbsp;гене из&nbsp;других баз данных на&nbsp;страницу гена в&nbsp;нашей базе. Мы&nbsp;укажем локализацию гена на&nbsp;хромосоме, выведем отдельно&nbsp;GO terms по&nbsp;трем пунктам: процесс, в&nbsp;котором участвует ген, клеточный компартмент, в&nbsp;котором работает ген, и&nbsp;молекулярная функция. Мы&nbsp;также покажем, в&nbsp;каких тканях и&nbsp;в&nbsp;каком количестве ген экспрессируется. По&nbsp;ссылкам на&nbsp;публикации в&nbsp;конце описания гена можно будет сразу перейти на&nbsp;страницу статьи в&nbsp;PubMed.</p>
+                        <p>Сейчас в&nbsp;статье гена содержатся результаты ручного поиска информации, а&nbsp;также ссылки на&nbsp;другие базы. Чтобы проще было работать с&nbsp;геном, мы&nbsp;выведем важную информацию о&nbsp;гене из&nbsp;других баз данных на&nbsp;страницу гена в&nbsp;нашей базе. Мы&nbsp;укажем локализацию гена на&nbsp;хромосоме, выведем отдельно&nbsp;GO terms по&nbsp;трем пунктам: процесс, в&nbsp;котором участвует ген, клеточный компартмент, в&nbsp;котором работает ген, и&nbsp;молекулярная функция. Мы&nbsp;также покажем, в&nbsp;каких тканях и&nbsp;в&nbsp;каком количестве ген экспрессируется.</p>
 
                 </article>
                 <? else: ?>
@@ -225,7 +225,7 @@ html_headChunk('Aging Related Genes Base');
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Diseases&raquo; column there is&nbsp;the link to&nbsp;the gene page in&nbsp;the DisGenet database, which lists all the diseases which the gene is&nbsp;associated with. In&nbsp;the &laquo;Interactions&raquo; column the link to&nbsp;the gene page in&nbsp;the BioGrid database is&nbsp;provided.
+                        In&nbsp;the &laquo;Diseases&raquo; column there is&nbsp;the link to&nbsp;the gene page on&nbsp;the DisGenet database, which lists all the diseases which the gene is&nbsp;associated with. In&nbsp;the &laquo;Interactions&raquo; column the link to&nbsp;the gene page in&nbsp;the BioGrid database is&nbsp;provided.
                     </p>
 
                     <h2>What we&nbsp;are going to&nbsp;add</h2>
