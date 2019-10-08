@@ -20,4 +20,15 @@ class GeneRepository implements GeneRepositoryInterface
         }
         return $geneArray;
     }
+
+    public function getLatestGenes(int $count): array
+    {
+        $genesArray = (new GeneQuery(Gene::class))
+            ->select('*')
+            ->orderBy('functionalClusters desc') // todo
+            ->limit($count)
+            ->asArray()
+            ->all();
+        return $genesArray;
+    }
 }

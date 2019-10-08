@@ -25,6 +25,7 @@ services:
     # mount project's dir
     volumes:
       - ./app:/var/www
+    command: bash -c "composer install && php-fpm"
   mysql:
     image: mysql:5.7
     ports:

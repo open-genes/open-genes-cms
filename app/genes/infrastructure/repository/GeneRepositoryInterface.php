@@ -11,4 +11,6 @@ interface GeneRepositoryInterface
      * @throws NotFoundHttpException
      */
     public function getGene($geneId): array;
+
+    public function getLatestGenes(int $count): array;
 }

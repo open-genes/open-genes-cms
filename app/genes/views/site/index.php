@@ -1,7 +1,11 @@
 <?php
 /**
  * @var $genes array
+ * @var $latestGenesDtos array
  */
+
+use genes\widgets\LatestGenesWidget;
+
 ?>
 
 <div class="col col-16">
@@ -10,45 +14,7 @@
             <?= Yii::t('main', 'main_page_last_edited'); ?>
         </div>
         <div class="view-latest__content">
-<!--     todo latest genes widget       -->
-            <a href="gene/?gene=120" class="view-latest__card">
-                <div class="card__inner">
-                    <div class="card__title">
-                        EMD                                    </div>
-                    <div class="card__phylo">
-                        Opisthokonta                                        </div>
-                    <div class="card__mya">
-                        2000  m. years                                        </div>
-                </div>
-            </a>
-            <a href="gene/?gene=254" class="view-latest__card">
-                <div class="card__inner">
-                    <div class="card__title">
-                        ADCY5                                    </div>
-                    <div class="card__phylo">
-                        Eumetazoa                                        </div>
-                    <div class="card__mya">
-                        1000  m. years                                        </div>
-                </div>
-            </a>
-            <a href="gene/?gene=227" class="view-latest__card">
-                <div class="card__inner">
-                    <div class="card__title">
-                        DBN1                                    </div>
-                    <div class="card__phylo">
-                        Eukaryota                                        </div>
-                    <div class="card__mya">
-                        2000  m. years                                        </div>
-                </div>
-            </a>
-            <a href="gene/?gene=263" class="view-latest__card">
-                <div class="card__inner">
-                    <div class="card__title">
-                        AGTR1                                    </div>
-                    <div class="card__phylo">
-                        Chordata                                        </div>
-                </div>
-            </a>
+            <?= LatestGenesWidget::widget(['geneDtos' => $latestGenesDtos]) ?>
         </div>
     </section>
 </div>
@@ -147,7 +113,7 @@
                         </div>
                     </div>
 
-                    <div class="td td-age-phylo <?= $ifAgePhyloEmpty ?>">
+                    <div class="td td-age-phylo <?=  '' /* todo ? $ifAgePhyloEmpty */  ?>">
                         <span class="td__label"><?= Yii::t('main', 'age') ?>: </span>
                         <b><?= $gene['agePhylo'] ?></b>
                     </div>
