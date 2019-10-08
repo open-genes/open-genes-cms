@@ -38,6 +38,19 @@ class GeneInfoService implements GeneInfoServiceInterface
 
         return $geneDtos;
     }
+    /**
+     * @inheritDoc
+     */
+    public function getAllGenes(int $count = null): array
+    {
+        $latestGenesArray = $this->geneRepository->getAllGenes($count);
+        $geneDtos = [];
+        foreach ($latestGenesArray as $latestGene) {
+            $geneDtos[] = $this->mapDto($latestGene);
+        }
+
+        return $geneDtos;
+    }
 
     protected function mapDto(array $geneArray): GeneViewDto
     {

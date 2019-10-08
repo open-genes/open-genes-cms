@@ -17,4 +17,9 @@ interface GeneInfoServiceInterface
      * @return GeneViewDto[]
      */
     public function getLatestGenes(int $count): array;
+    /**
+     * @param int $count
+     * @return GeneViewDto[]
+     */
+    public function getAllGenes(int $count = null): array;
 }

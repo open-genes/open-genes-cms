@@ -127,20 +127,28 @@ $randomVersion = rand(10, 9999);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<?= Alert::widget() ?>
+<?= $content ?>
 
-
+<footer class="wrapper footer">
     <div class="container">
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <div class="per per-70">
+            <a href="/export"
+               class="link"
+               target="_blank"
+            ><?= Yii::t('main', 'footer_json_data') ?></a>
+            <a href="/export.json"
+               class="fa far fa-download"
+               target="_blank"
+            ></a>
+        </div>
+        <div class="per per-30 footer__language">
+            <button
+                    value="<?=  /* todo */$_SESSION['$alternative_locale'] ?>"
+                    class="language-switcher js_language-switcher">
+                <?= $_SESSION['$current_locale'] ?>
+            </button>
+        </div>
     </div>
 </footer>
 

@@ -31,4 +31,18 @@ class GeneRepository implements GeneRepositoryInterface
             ->all();
         return $genesArray;
     }
+
+    public function getAllGenes(int $count = null): array // todo чем запрос всех генов будет отличаться от виджета последних?
+    {
+        $genesArrayQuery = (new GeneQuery(Gene::class))
+            ->select('*')
+            ->orderBy('functionalClusters desc') // todo
+            ->limit($count)
+            ->asArray();
+         if($count) {
+             $genesArrayQuery->limit($count);
+         }
+        $genesArray = $genesArrayQuery->all();
+        return $genesArray;
+    }
 }

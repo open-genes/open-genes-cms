@@ -3,6 +3,7 @@ namespace genes\controllers;
 
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
+use genes\application\service\GeneInfoServiceInterface;
 use genes\models\Gene;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -75,9 +76,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // todo temp code for develop, don't ever use AR in controllers
-        $genes = Gene::find()->where(['is not', 'commentCause', null])->asArray()->all();
-        return $this->render('index', ['genes' => $genes]);
+        /** @var GeneInfoServiceInterface $geneInfoService */
+        $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
+        $latestGenesDtos = $geneInfoService->getLatestGenes(4);
+        $allGenesDtos = $geneInfoService->getAllGenes();
+        return $this->render('index', ['genes' => $allGenesDtos, 'latestGenesDtos' => $latestGenesDtos]);
     }
 
     /**

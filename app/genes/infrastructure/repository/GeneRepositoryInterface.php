@@ -13,4 +13,6 @@ interface GeneRepositoryInterface
     public function getGene($geneId): array;
 
     public function getLatestGenes(int $count): array;
+
+    public function getAllGenes(int $count = null): array;
 }
