@@ -91,12 +91,12 @@ $randomVersion = rand(10, 9999);
                     $menuLinks = array (
                         1  => array(
                             'URL' => 'about',
-                            'title' => 'header_menu_about'
+                            'title' => Yii::t('main', 'header_menu_about')
                         ),
 
                         2  => array(
                             'URL' => 'api-reference',
-                            'title' => 'header_menu_api'
+                            'title' => Yii::t('main', 'header_menu_api')
                         )
 
                     ) ?>
