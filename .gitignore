@@ -34,8 +34,9 @@ phpunit.phar
 # vagrant runtime
 /.vagrant
 
-logs
+logs/
 
 node_modules
-
+app/genes/runtime/
 app/.env
+
