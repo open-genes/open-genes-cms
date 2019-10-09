@@ -46,9 +46,9 @@ $randomVersion = rand(10, 9999);
     <? if (Yii::$app->user->isGuest): ?>
     <div class="header__signin">
         <button
-                value="EN"
+                value="<?= Yii::$app->language == 'en-US' ? 'RU' : 'EN'?>"
                 class="language-switcher js_language-switcher">
-            RU
+            <?= Yii::$app->language == 'en-US' ? 'EN' : 'RU'?>
         </button>
 
         <div class="signin__button js_signin-btn">
@@ -144,9 +144,9 @@ $randomVersion = rand(10, 9999);
         </div>
         <div class="per per-30 footer__language">
             <button
-                    value="<?=  /* todo */$_SESSION['$alternative_locale'] ?>"
+                    value="<?= Yii::$app->language == 'en-US' ? 'RU' : 'EN'?>"
                     class="language-switcher js_language-switcher">
-                <?= $_SESSION['$current_locale'] ?>
+                <?= Yii::$app->language == 'en-US' ? 'EN' : 'RU'?>
             </button>
         </div>
     </div>

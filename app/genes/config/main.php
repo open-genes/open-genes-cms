@@ -8,8 +8,7 @@ $config = [
     'id' => 'genes',
     'name' => 'Open Longevity Genes',
     'language' => 'ru-RU',
-//    'language' => 'en-US',
-    'sourceLanguage' => 'en-US',
+    'sourceLanguage' => 'en-GB', // todo костыль на то, что у нас переводы не в yii-формате ['english phrase' => 'русская фраза'], переделаем?
     'basePath' => dirname(__DIR__),
     'homeUrl' => '/',
     'controllerNamespace' => 'genes\controllers',
@@ -81,7 +80,22 @@ $config = [
     ],
     'defaultRoute' => 'site/index',
     'params' => $params,
-    'runtimePath' => __DIR__ . '/../runtime'
+    'runtimePath' => __DIR__ . '/../runtime',
+    'on beforeAction' => function ($event) { // todo привести язык на фронте к стандарту ln-LN
+        $language = $_GET['lang'] ?? $_COOKIE['lang'] ?? Yii::$app->language;
+        if($language == 'EN') {
+            $language = 'en-US';
+        }
+        if($language == 'RU') {
+            $language = 'ru-RU';
+        }
+        if(Yii::$app->language != $language) {
+            Yii::$app->language = $language;
+        }
+        if($_COOKIE['lang'] != $language) {
+            setcookie('lang', $language, $expire = 0, $path = "/");
+        }
+    },
 ];
 
 
