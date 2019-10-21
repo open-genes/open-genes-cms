@@ -1,9 +1,9 @@
 <?php
-namespace genes\infrastructure\repository;
+namespace genes\infrastructure\dataProvider;
 
 use yii\web\NotFoundHttpException;
 
-interface GeneRepositoryInterface
+interface GeneDataProviderInterface
 {
     /**
      * @param $geneId

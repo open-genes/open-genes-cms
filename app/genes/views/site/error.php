@@ -5,23 +5,22 @@
 /* @var $message string */
 /* @var $exception Exception */
 
-use yii\helpers\Html;
 
 $this->title = $name;
 ?>
-<div class="site-error">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+<div class="page page--dummy">
+    <div class="page__inner">
+        <section class="wrapper">
+            <div class="container __flex">
+                <section class="col col-16 no-content">
+                    <div class="no-content__icon no-content__icon-404"></div>
+                    <div class="no-content__title">
+                        <div class="title__center">
+                            <?= Yii::t('main', 'error_page_404') ?>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
     </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
 </div>

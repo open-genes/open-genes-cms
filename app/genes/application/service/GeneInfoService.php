@@ -2,14 +2,14 @@
 namespace genes\application\service;
 
 use genes\application\dto\GeneViewDto;
-use genes\infrastructure\repository\GeneRepositoryInterface;
+use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 
 class GeneInfoService implements GeneInfoServiceInterface
 {
-    /** @var GeneRepositoryInterface  */
+    /** @var GeneDataProviderInterface  */
     private $geneRepository;
     
-    public function __construct(GeneRepositoryInterface $geneRepository)
+    public function __construct(GeneDataProviderInterface $geneRepository)
     {
         $this->geneRepository = $geneRepository;
     }
@@ -17,23 +17,23 @@ class GeneInfoService implements GeneInfoServiceInterface
     /**
      * @inheritDoc
      */
-    public function getGeneViewInfo(int $geneId): GeneViewDto
+    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneViewDto
     {
         $geneArray = $this->geneRepository->getGene($geneId);
 
         // todo dto mapper
-        return $this->mapDto($geneArray);
+        return $this->mapViewDto($geneArray, $lang);
     }
 
     /**
      * @inheritDoc
      */
-    public function getLatestGenes(int $count): array
+    public function getLatestGenes(int $count, string $lang = 'en-US'): array
     {
         $latestGenesArray = $this->geneRepository->getLatestGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
-            $geneDtos[] = $this->mapDto($latestGene);
+            $geneDtos[] = $this->mapViewDto($latestGene, $lang);
         }
 
         return $geneDtos;
@@ -41,18 +41,18 @@ class GeneInfoService implements GeneInfoServiceInterface
     /**
      * @inheritDoc
      */
-    public function getAllGenes(int $count = null): array
+    public function getAllGenes(int $count = null, string $lang = 'en-US'): array
     {
         $latestGenesArray = $this->geneRepository->getAllGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
-            $geneDtos[] = $this->mapDto($latestGene);
+            $geneDtos[] = $this->mapViewDto($latestGene, $lang);
         }
 
         return $geneDtos;
     }
 
-    protected function mapDto(array $geneArray): GeneViewDto
+    protected function mapViewDto(array $geneArray, string $lang): GeneViewDto
     {
         $geneDto = new GeneViewDto();
 
@@ -69,7 +69,7 @@ class GeneInfoService implements GeneInfoServiceInterface
             $functionalCluster = preg_replace('/^_/', '', $functionalCluster);
             $functionalCluster = preg_replace('/[\/]/', '_', $functionalCluster);
         }
-        $geneExpression = \Yii::$app->language == 'en-US' ? $geneArray['expressionEN'] : $geneArray['expression'];
+        $geneExpression = $lang == 'en-US' ? $geneArray['expressionEN'] : $geneArray['expression'];
         $geneExpression = json_decode($geneExpression, true);
         $geneCommentsReferenceLinks = [];
         $geneCommentsReferenceLinksSource = explode(',', $geneArray['commentsReferenceLinks']);
@@ -86,9 +86,9 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
         $geneDto->commentCause =  $geneCommentCause;
-        $geneDto->commentEvolution = \Yii::$app->language == 'en-US' ? $geneArray['commentEvolutionEN'] : $geneArray['commentEvolution'];
-        $geneDto->commentFunction = \Yii::$app->language == 'en-US' ? $geneArray['commentFunctionEN'] : $geneArray['commentFunction'];
-        $geneDto->commentAging = \Yii::$app->language == 'en-US' ? $geneArray['commentAgingEN'] : $geneArray['commentAging'];
+        $geneDto->commentEvolution = $lang == 'en-US' ? $geneArray['commentEvolutionEN'] : $geneArray['commentEvolution'];
+        $geneDto->commentFunction = $lang == 'en-US' ? $geneArray['commentFunctionEN'] : $geneArray['commentFunction'];
+        $geneDto->commentAging = $lang == 'en-US' ? $geneArray['commentAgingEN'] : $geneArray['commentAging'];
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $geneFunctionalClusters;

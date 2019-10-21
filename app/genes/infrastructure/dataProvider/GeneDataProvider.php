@@ -1,11 +1,11 @@
 <?php
-namespace genes\infrastructure\repository;
+namespace genes\infrastructure\dataProvider;
 
 use genes\models\Gene;
 use genes\models\GeneQuery;
 use yii\web\NotFoundHttpException;
 
-class GeneRepository implements GeneRepositoryInterface
+class GeneDataProvider implements GeneDataProviderInterface
 {
     /** @inheritDoc */
     public function getGene($geneId): array

@@ -16,6 +16,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -78,9 +79,19 @@ class SiteController extends Controller
     {
         /** @var GeneInfoServiceInterface $geneInfoService */
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
-        $latestGenesDtos = $geneInfoService->getLatestGenes(4);
-        $allGenesDtos = $geneInfoService->getAllGenes();
+        $latestGenesDtos = $geneInfoService->getLatestGenes(4, Yii::$app->language);
+        $allGenesDtos = $geneInfoService->getAllGenes(null, Yii::$app->language);
         return $this->render('index', ['genes' => $allGenesDtos, 'latestGenesDtos' => $latestGenesDtos]);
+    }
+
+    public function actionError()
+    {
+        if (($exception = Yii::$app->getErrorHandler()->exception) === null) {
+            $exception = new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
+        }
+        Yii::$app->getResponse()->setStatusCodeByException($exception);
+
+        return $this->render('error');
     }
 
     /**
