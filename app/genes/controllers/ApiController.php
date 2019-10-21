@@ -4,7 +4,6 @@ namespace genes\controllers;
 use genes\application\service\GeneInfoServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
-use yii\base\Widget;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -13,14 +12,15 @@ use yii\web\Response;
  */
 class ApiController extends Controller
 {
-    public function init()
+    public function actionReference()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        parent::init();
+        return $this->render('reference');
     }
 
     public function actionIndex($lang = 'en-US')
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
         $language = (new LanguageMapHelper())->getMappedLanguage($lang);
         /** @var GeneInfoServiceInterface $geneInfoService */
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);

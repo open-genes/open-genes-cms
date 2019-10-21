@@ -95,7 +95,7 @@ $randomVersion = rand(10, 9999);
                         ),
 
                         2  => array(
-                            'URL' => 'api-reference',
+                            'URL' => 'api/reference',
                             'title' => Yii::t('main', 'header_menu_api')
                         )
 
@@ -133,11 +133,11 @@ $randomVersion = rand(10, 9999);
 <footer class="wrapper footer">
     <div class="container">
         <div class="per per-70">
-            <a href="/export"
+            <a href="/api/"
                class="link"
                target="_blank"
             ><?= Yii::t('main', 'footer_json_data') ?></a>
-            <a href="/export.json"
+            <a href="/api/"
                class="fa far fa-download"
                target="_blank"
             ></a>
