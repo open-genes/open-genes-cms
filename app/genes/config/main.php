@@ -83,16 +83,11 @@ $config = [
     'runtimePath' => __DIR__ . '/../runtime',
     'on beforeAction' => function ($event) { // todo привести язык на фронте к стандарту ln-LN
         $language = $_GET['lang'] ?? $_COOKIE['lang'] ?? Yii::$app->language;
-        if($language == 'EN') {
-            $language = 'en-US';
-        }
-        if($language == 'RU') {
-            $language = 'ru-RU';
-        }
+        $language = (new \genes\helpers\LanguageMapHelper())->getMappedLanguage($language);
         if(Yii::$app->language != $language) {
             Yii::$app->language = $language;
         }
-        if($_COOKIE['lang'] != $language) {
+        if(!isset($_COOKIE['lang']) || $_COOKIE['lang'] != $language) {
             setcookie('lang', $language, $expire = 0, $path = "/");
         }
     },

@@ -45,7 +45,7 @@ use genes\application\dto\GeneViewDto;
                 <div class="col col-16 header__functional-clusters">
                     <? if ($gene->functionalClusters): ?>
                         <? foreach ($gene->functionalClusters as $functionalCluster): ?>
-                            <a href="" class="tag"><?= Yii::t('main', $functionalCluster); ?></a>
+                            <a href="" class="tag"><?= $functionalCluster; ?></a>
                         <? endforeach; ?>
                     <? else: ?>
                         <span class="tag __skeletal"></span>
@@ -72,7 +72,7 @@ use genes\application\dto\GeneViewDto;
                         <? if ($gene->agePhylo): ?>
                             <?= $gene->agePhylo ?>
                         <? else: ?>
-                            <?= Yii::t('main', 'unknown') ?>
+                            <?= Yii::t('main', 'gene_page_origin_unknown') ?>
                         <? endif; ?>
                     </div>
                 </div>
@@ -217,7 +217,7 @@ use genes\application\dto\GeneViewDto;
                             <article id="cause">
                                 <ul class="list list--bulletted">
                                     <? foreach ($gene->commentCause as $commentsCauseItem): ?>
-                                        <li><?= Yii::t('main', $commentsCauseItem); ?></li>
+                                        <li><?= $commentsCauseItem; ?></li>
                                     <? endforeach; ?>
                                 </ul>
                             </article>
