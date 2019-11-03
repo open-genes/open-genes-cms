@@ -1,4 +1,4 @@
-FROM php:7.2-fpm as open_genes_php
+FROM php:7.2-fpm
 
 # every RUN creates a new layer, so join the commands if possible
 RUN apt-get update && apt-get install -y \
