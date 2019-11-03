@@ -14,8 +14,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prefixer": "postcss styles/style.css --use=autoprefixer --map=false --output=styles/style.css",
-    "sass": "node-sass --output-style compressed --include-path styles styles/style.scss styles/style.css && npm run prefixer",
+    "prefixer": "postcss  app/genes/assets/css/style.css --use=autoprefixer --map=false --output=app/genes/assets/css/style.css",
+    "sass": "node-sass --output-style compressed --include-path styles app/genes/assets/css/style.scss app/genes/assets/css/style.css && npm run prefixer",
     "sass-watch": "nodemon -e scss -x npm run sass"
   },
   "repository": {

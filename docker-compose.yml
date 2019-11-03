@@ -1,0 +1,36 @@
+# docker-compose version
+version: '2'
+# containers
+services:
+  nginx:
+    # the latest stable nginx image
+    image: nginx:latest
+    ports:
+      - "8080:80"
+      - "4443:443"
+    # mount directories from:to
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./app:/var/www
+      - ./../../logs:/var/log/nginx
+    # link nginx container to php container
+    links:
+      - php
+  php:
+    # path to our PHP image that will be built
+    build: ./docker/php
+    # link it to mysql
+    links:
+      - mysql
+    # mount project's dir
+    volumes:
+      - ./app:/var/www
+    command: bash -c "composer install && php-fpm"
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./../../mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
