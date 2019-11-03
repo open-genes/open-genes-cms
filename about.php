@@ -29,7 +29,7 @@ html_headChunk('Aging Related Genes Base');
                 <? if($_SESSION['$current_locale'] == 'ru'): ?>
                 <article>
                     <p class="hint">
-                        <b>Open Longevity Genes</b>&nbsp;&mdash; это база данных, в&nbsp;которой мы&nbsp;собираем все гены человека, ассоциированные со&nbsp;старением и&nbsp;продолжительностью жизни. В&nbsp;таблице на&nbsp;основной странице базы содержится краткая информация о&nbsp;генах. Кликнув на&nbsp;название гена в&nbsp;таблице, вы&nbsp;найдете подробную статью об&nbsp;этом гене со&nbsp;ссылками на&nbsp;литературу и&nbsp;быстрым доступом к&nbsp;другим базам данных.
+                        <b>Open Longevity Genes</b>&nbsp;&mdash; это база данных генов человека, ассоциированныx со&nbsp;старением и&nbsp;продолжительностью жизни. В&nbsp;таблице на&nbsp;основной странице базы содержится краткая информация о&nbsp;генах. Кликнув на&nbsp;название гена в&nbsp;таблице, вы&nbsp;найдете подробную статью об&nbsp;этом гене со&nbsp;ссылками на&nbsp;литературу и&nbsp;быстрым доступом к&nbsp;другим базам данных.
                     </p>
 
 
@@ -146,7 +146,7 @@ html_headChunk('Aging Related Genes Base');
 
                         <h3>Что еще мы&nbsp;добавим</h3>
 
-                        <p>Сейчас в&nbsp;статье гена содержатся результаты ручного поиска информации, а&nbsp;также ссылки на&nbsp;другие базы. Чтобы проще было работать с&nbsp;геном, мы&nbsp;выведем важную информацию о&nbsp;гене из&nbsp;других баз данных на&nbsp;страницу гена в&nbsp;нашей базе. Мы&nbsp;укажем локализацию гена на&nbsp;хромосоме, выведем отдельно&nbsp;GO terms по&nbsp;трем пунктам: процесс, в&nbsp;котором участвует ген, клеточный компартмент, в&nbsp;котором работает ген, и&nbsp;молекулярная функция. Мы&nbsp;также покажем, в&nbsp;каких тканях и&nbsp;в&nbsp;каком количестве ген экспрессируется. По&nbsp;ссылкам на&nbsp;публикации в&nbsp;конце описания гена можно будет сразу перейти на&nbsp;страницу статьи в&nbsp;PubMed.</p>
+                        <p>Сейчас в&nbsp;статье гена содержатся результаты ручного поиска информации, а&nbsp;также ссылки на&nbsp;другие базы. Чтобы проще было работать с&nbsp;геном, мы&nbsp;выведем важную информацию о&nbsp;гене из&nbsp;других баз данных на&nbsp;страницу гена в&nbsp;нашей базе. Мы&nbsp;укажем локализацию гена на&nbsp;хромосоме, выведем отдельно&nbsp;GO terms по&nbsp;трем пунктам: процесс, в&nbsp;котором участвует ген, клеточный компартмент, в&nbsp;котором работает ген, и&nbsp;молекулярная функция. Мы&nbsp;также покажем, в&nbsp;каких тканях и&nbsp;в&nbsp;каком количестве ген экспрессируется.</p>
 
                 </article>
                 <? else: ?>
@@ -191,11 +191,11 @@ html_headChunk('Aging Related Genes Base');
                     <h2>Content of the genes table</h2>
                     <h3>What is&nbsp;already there</h3>
                     <p>
-                        The table on&nbsp;the main page contains brief information about the genes. The &laquo;Gene age&raquo; column indicates in&nbsp;which organisms the homolog of&nbsp;the human gene appeared in&nbsp;the process of&nbsp;evolution and the approximate age of&nbsp;this ancestral organisms. The information is&nbsp;obtained in&nbsp;studies of&nbsp;the molecular evolution of&nbsp;the gene.
+                        The table on&nbsp;the main page contains brief information about the genes. The "Gene age" column indicates in&nbsp;which organisms the homolog of&nbsp;the human gene appeared in&nbsp;the process of&nbsp;evolution and the approximate age of&nbsp;this ancestral organisms. The information is&nbsp;obtained in&nbsp;studies of&nbsp;the molecular evolution of&nbsp;the gene.
                     </p>
 
                     <p>
-                        The &laquo;Functional Clusters&raquo; column indicates which processes the gene is&nbsp;involved&nbsp;in. We&nbsp;have compiled a&nbsp;list of&nbsp;functional clusters and, based on&nbsp;the list, indicate both the main and additional functions of&nbsp;the gene.
+                        The "Functional Clusters" column indicates which processes the gene is&nbsp;involved&nbsp;in. We&nbsp;have compiled a&nbsp;list of&nbsp;functional clusters and, based on&nbsp;the list, indicate both the main and additional functions of&nbsp;the gene.
                     </p>
 
 
@@ -221,11 +221,11 @@ html_headChunk('Aging Related Genes Base');
                     </ol>
 
                     <p>
-                        In&nbsp;the &laquo;Criteria&raquo; column we&nbsp;indicate based on&nbsp;what criteria from the above list the gene was included in&nbsp;the database.
+                        In&nbsp;the "Criteria" column we&nbsp;indicate based on&nbsp;what criteria from the above list the gene was included in&nbsp;the database.
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Diseases&raquo; column there is&nbsp;the link to&nbsp;the gene page in&nbsp;the DisGenet database, which lists all the diseases which the gene is&nbsp;associated with. In&nbsp;the &laquo;Interactions&raquo; column the link to&nbsp;the gene page in&nbsp;the BioGrid database is&nbsp;provided.
+                        In&nbsp;the "Diseases" column there is&nbsp;the link to&nbsp;the gene page on&nbsp;the DisGenet database, which lists all the diseases which the gene is&nbsp;associated with. In&nbsp;the "Interactions" column the link to&nbsp;the gene page in&nbsp;the BioGrid database is&nbsp;provided.
                     </p>
 
                     <h2>What we&nbsp;are going to&nbsp;add</h2>
@@ -235,7 +235,7 @@ html_headChunk('Aging Related Genes Base');
                     </p>
 
                     <p>
-                        Genes selection criteria visualization. We&nbsp;are currently working on&nbsp;making our main gene table more visual. We&nbsp;plan to&nbsp;show in&nbsp;the &laquo;Rationale&raquo; column which experiments with the gene have been conducted and in&nbsp;which organisms, using a&nbsp;set of&nbsp;simple icons. We&nbsp;will also highlight in&nbsp;color the genes which modification allowed to&nbsp;increase the lifespan because it&nbsp;is&nbsp;these genes that are especially interesting as&nbsp;potential targets for the treatment of&nbsp;aging. In&nbsp;a&nbsp;separate column, we&nbsp;intend to&nbsp;show if&nbsp;the expression of&nbsp;the gene increases or&nbsp;decreases with age, using arrows.
+                        Genes selection criteria visualization. We&nbsp;are currently working on&nbsp;making our main gene table more visual. We&nbsp;plan to&nbsp;show in&nbsp;the "Rationale" column which experiments with the gene have been conducted and in&nbsp;which organisms, using a&nbsp;set of&nbsp;simple icons. We&nbsp;will also highlight in&nbsp;color the genes which modification allowed to&nbsp;increase the lifespan because it&nbsp;is&nbsp;these genes that are especially interesting as&nbsp;potential targets for the treatment of&nbsp;aging. In&nbsp;a&nbsp;separate column, we&nbsp;intend to&nbsp;show if&nbsp;the expression of&nbsp;the gene increases or&nbsp;decreases with age, using arrows.
                     </p>
 
                     <p>
@@ -250,11 +250,11 @@ html_headChunk('Aging Related Genes Base');
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Evolution&raquo; section, we&nbsp;indicate which gene family the gene belongs&nbsp;to, as&nbsp;well as&nbsp;what important events have occurred during its evolution.
+                        In&nbsp;the "Evolution" section, we&nbsp;indicate which gene family the gene belongs&nbsp;to, as&nbsp;well as&nbsp;what important events have occurred during its evolution.
                     </p>
 
                     <p>
-                        In&nbsp;the &laquo;Functions&raquo; section we&nbsp;describe in&nbsp;more detail what specific molecular functions the gene performs in&nbsp;a&nbsp;given process, mechanism, or&nbsp;pathway. Each functional cluster can include several processes, so&nbsp;we&nbsp;describe the functions in&nbsp;more detail, indicating which particular processes and mechanisms the gene is&nbsp;involved&nbsp;in.
+                        In&nbsp;the "Functions" section we&nbsp;describe in&nbsp;more detail what specific molecular functions the gene performs in&nbsp;a&nbsp;given process, mechanism, or&nbsp;pathway. Each functional cluster can include several processes, so&nbsp;we&nbsp;describe the functions in&nbsp;more detail, indicating which particular processes and mechanisms the gene is&nbsp;involved&nbsp;in.
                     </p>
 
                     <p>
