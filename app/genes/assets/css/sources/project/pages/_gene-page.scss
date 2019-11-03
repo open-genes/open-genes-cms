@@ -262,7 +262,14 @@
           z-index: 1;
           font-size: $font-size-smaller;
           color: #fff;
-          text-shadow: 1px 1px 1px rgba($color-black, .75);
+          text-shadow: rgba($color-black, .25) 1px 0, rgba($color-black, .25) 1px 1px, rgba($color-black, .25) 0 1px, rgba($color-black, .25) -1px 1px, rgba($color-black, .25) -1px 0, rgba($color-black, .25) -1px -1px, rgba($color-black, .25) 0 -1px, rgba($color-black, .25) 1px -1px;
+        }
+
+        &--minimum {
+          .value__rpkm {
+            color: $color-indent;
+            text-shadow: none;
+          }
         }
       }
     }
