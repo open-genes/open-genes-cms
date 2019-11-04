@@ -82,6 +82,7 @@ class GeneInfoService implements GeneInfoServiceInterface
 
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->ageMya = (int)$geneArray['ageMya'];
+        $geneDto->agePhylo = $geneArray['agePhylo'];
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->name = $geneArray['name'];

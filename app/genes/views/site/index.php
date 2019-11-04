@@ -107,13 +107,12 @@ use genes\widgets\LatestGenesWidget;
                             >
                                 <div class="td td-name">
                                     <div class="td__title">
-                                        <a href="gene?gene=<?= $gene->id ?>"
+                                        <a href="gene?gene=<?= $gene->id; ?>"
                                            class="link">
                                             <b>
-                                                <?= $gene->symbol ?>
+                                                <?= $gene->symbol; ?>
                                             </b>
-                                            <?= $gene->name; ?>
-                                        </a>
+                                            <?= $gene->name; ?></a>
 
                                         <a href="https://genomics.senescence.info/genes/entry.php?hgnc=<?= $gene->symbol; ?>"
                                            target="_blank"

@@ -8,6 +8,8 @@ class GeneViewDto
     /** @var int */
     public $ageMya;
     /** @var string */
+    public $agePhylo;
+    /** @var string */
     public $symbol;
     /** @var array */
     public $aliases;

@@ -36,7 +36,9 @@ class GeneDataProvider implements GeneDataProviderInterface
     {
         $genesArrayQuery = (new GeneQuery(Gene::class))
             ->select('*')
-            ->orderBy('functionalClusters desc') // todo
+            ->andWhere('commentEvolution != ""')
+            ->andWhere('isHidden != 1')
+            ->orderBy('ageMya DESC')
             ->limit($count)
             ->asArray();
          if($count) {
