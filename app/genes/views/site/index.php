@@ -81,6 +81,13 @@ use genes\widgets\LatestGenesWidget;
 
                         <div class="th th--wide">
                             <div class="th__title">
+                                <b><?= Yii::t('main', 'main_page_table_gene_expression') ?></b>
+                            </div>
+                        </div>
+
+
+                        <div class="th th--wide">
+                            <div class="th__title">
                                 <b><?= Yii::t('main', 'diseases') ?></b>
                             </div>
                         </div>
@@ -135,6 +142,15 @@ use genes\widgets\LatestGenesWidget;
                                         <? foreach ($gene->functionalClusters as $functionalCluster): ?>
                                             <a href="" class="tag"><?= Yii::t('main', $functionalCluster) ?></a>
                                         <? endforeach; ?>
+                                    <? endif; ?>
+                                </div>
+
+                                <div class="td td--text-left td-expression">
+                                    <?php if ($gene->expressionChange): ?>
+                                        <span class="td__label"><?= Yii::t('main', 'main_page_table_expression') ?></span>
+                                            <a href=""
+                                               class="tag"
+                                            ><?= Yii::t('main', $gene->expressionChange) ?></a>
                                     <? endif; ?>
                                 </div>
 
