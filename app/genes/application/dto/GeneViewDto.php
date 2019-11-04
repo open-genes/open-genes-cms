@@ -33,6 +33,8 @@ class GeneViewDto
     public $functionalClusters;
     /** @var array [$geneName => $geneExpression[]] */
     public $expression;
+    /** @var string */
+    public $expressionChange;
 
 //    public $isHidden;
 //    public $references;

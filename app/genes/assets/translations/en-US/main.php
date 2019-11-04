@@ -30,6 +30,7 @@ return [
     'gene_page_expression_hint' => 'Provided by NCBI.',
     'gene_page_error_no_article_yet' => 'An article for this gene is not ready yet.',
     'gene_page_origin_unknown' => 'Unknown',
+    'gene_page_age_unknown' => 'Unknown',
     'about_page_title' => 'About Open Longevity Genes',
     'api-page_title' => 'API reference',
     'api-page_description' => 'Developers guide.',

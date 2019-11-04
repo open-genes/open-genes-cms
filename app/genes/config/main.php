@@ -27,11 +27,6 @@ $config = [
             'username' => getenv('DB_USER'),
             'password' => getenv('DB_PASS'),
         ],
-        'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-genes', 'httpOnly' => true],
-        ],
         'i18n' => [
             'translations' => [
                 'main' => [

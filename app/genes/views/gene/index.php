@@ -86,7 +86,7 @@ use genes\application\dto\GeneViewDto;
                             <?= $gene->ageMya ?>
                             <small><?= Yii::t('main', 'million_years') ?></small>
                         <? else: ?>
-                            <?= Yii::t('main', 'unknown') ?>
+                            <?= Yii::t('main', 'gene_page_age_unknown') ?>
                         <? endif; ?>
                     </div>
                 </div>

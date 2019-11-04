@@ -64,7 +64,7 @@ class GeneInfoService implements GeneInfoServiceInterface
             $commentsCauseItem = preg_replace('/[\/+]/', '_', $commentsCauseItem);
             $commentsCauseItem = \Yii::t('main', $commentsCauseItem); // todo временно. надо перенести переводы в бд, убрать отсюда вызов фреймворка
         }
-        $geneFunctionalClusters = explode(',', $geneArray['functionalClusters']);
+        $geneFunctionalClusters = $geneArray['functionalClusters'] ? explode(',', $geneArray['functionalClusters']) : [];
         foreach ($geneFunctionalClusters as &$functionalCluster) {
             $functionalCluster = preg_replace('/\s+/', '_', $functionalCluster);
             $functionalCluster = preg_replace('/^_/', '', $functionalCluster);
@@ -80,10 +80,10 @@ class GeneInfoService implements GeneInfoServiceInterface
             $geneCommentsReferenceLinks[$commentsRefLink] = $commentsRef;
         }
 
-        $geneDto->id = (int)$geneArray['ID'];
+        $geneDto->id = (int)$geneArray['id'];
         $geneDto->ageMya = (int)$geneArray['ageMya'];
         $geneDto->symbol = $geneArray['symbol'];
-        $geneDto->aliases = explode(',', $geneArray['aliases']);
+        $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->name = $geneArray['name'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
@@ -95,6 +95,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $geneFunctionalClusters;
         $geneDto->expression = $geneExpression;
+        $geneDto->expressionChange = $geneArray['expressionChange'];
 
         return $geneDto;
     }

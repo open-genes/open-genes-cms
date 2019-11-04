@@ -30,6 +30,7 @@ return [
     'gene_page_expression_hint' => 'Предоставлено NCBI.',
     'gene_page_error_no_article_yet' => 'Статья для этого гена пока не готова.',
     'gene_page_origin_unknown' => 'Неизвестно',
+    'gene_page_age_unknown' => 'Неизвестен',
     'about_page_title' => 'О базе Open Longevity Genes',
     'api-page_title' => 'Справка по API',
     'api-page_description' => 'Раздел для разработчиков.',
