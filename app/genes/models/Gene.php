@@ -6,7 +6,7 @@ use Yii;
 
 /**
  *
- * @property int $ID
+ * @property int $id
  * @property string $agePhylo
  * @property int $ageMya
  * @property string $symbol

@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $gene_id
  * @property int $sample_id
+ * @property int $expression_value
  *
  * @property Gene $gene
  * @property Sample $sample
