@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  *
@@ -118,4 +120,41 @@ class Gene extends \yii\db\ActiveRecord
     {
         return new GeneQuery(get_called_class());
     }
+
+    public function search($params = [])
+    {
+        $query = self::find();
+
+        if($params) {
+            $this->load($params);
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $this->addCondition($query, 'symbol', true);
+        $this->addCondition($query, 'aliases', true);
+        $this->addCondition($query, 'name', true);
+        $this->addCondition($query, 'ageMya');
+
+        return $dataProvider;
+    }
+
+    /**
+     * @param $query ActiveQuery
+     * @param $attribute
+     * @param bool $partialMatch
+     */
+    protected function addCondition(&$query, $attribute, $partialMatch = false)
+    {
+        $value = $this->$attribute;
+        if (trim($value) === '') {
+            return;
+        }
+        if ($partialMatch) {
+            $query->andWhere(['like', $attribute, $value]);
+        } else {
+            $query->andWhere([$attribute => $value]);
+        }
+    }
+
 }

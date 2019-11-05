@@ -20,10 +20,9 @@ class m191027_200855_user extends Migration
             'password_hash' => Schema::TYPE_STRING,
             'password_reset_token' => Schema::TYPE_STRING,
             'verification_token' => Schema::TYPE_STRING,
-            'role' => Schema::TYPE_STRING,
             'status' => Schema::TYPE_TINYINT,
-            'created_at' => Schema::TYPE_TINYINT,
-            'updated_at' => Schema::TYPE_TINYINT,
+            'created_at' => Schema::TYPE_INTEGER,
+            'updated_at' => Schema::TYPE_INTEGER,
             'auth_key' => Schema::TYPE_STRING,
         ]);
     }
