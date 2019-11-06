@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'expressionEN:ntext',
             //'expressionChange',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn', 'template' => '{update}'],
         ],
     ]); ?>
 
