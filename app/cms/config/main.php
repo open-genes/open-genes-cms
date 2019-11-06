@@ -50,6 +50,12 @@ $config = [
             'basePath' => __DIR__ . '/../runtime/assets',
             'baseUrl' => '/runtime/assets',
         ],
+        'user' => [
+            'identityClass' => 'common\models\User',
+            'enableAutoLogin' => true,
+            'loginUrl' => ['/cms/login'],
+            'identityCookie' => ['name' => '_identity-genes', 'httpOnly' => true],
+        ],
     ],
     'container' => [
         'definitions' => [
