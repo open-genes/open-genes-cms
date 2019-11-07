@@ -1,0 +1,30 @@
+stages:
+  - build
+  - staging
+  - deploy
+
+variables:
+  TEST_VAR: "test var"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - app/common/vendor/
+
+services:
+  - docker:dind
+
+build-backend:
+  tags:
+    - docker
+  image: docker:stable
+  stage: build
+  script:
+    - echo ${TEST_VAR}
+    - ls -la
+    - docker -v
+    - docker run --rm --volume $PWD/app:/app composer install
+    - ls -la app/common/vendor/
+  artifacts:
+    paths:
+      - app/common/vendor/
