@@ -25,12 +25,11 @@ build-backend:
   artifacts:
     paths:
       - app/common/vendor/
-  when: manual
 
 deploy-dev:
   stage: staging
-#  dependencies:
-#    - build-backend
+  dependencies:
+    - build-backend
   environment:
     name: develop
   image: instrumentisto/rsync-ssh
@@ -38,6 +37,4 @@ deploy-dev:
     - mkdir ~/.ssh
     - echo ${DROPLET_KEY} | base64 -d > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ls -la ~/.ssh/
-    - cat ~/.ssh/id_rsa
-    - rsync -zvh -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/composer.json ${DROPLET_USER}@${DROPLET_IP}:/home/${DROPLET_USER}/${PROJECT_DEV_NAME}/some_test_folder/
+    - rsync -zvh -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/common/vendor/ ${DROPLET_USER}@${DROPLET_IP}:/var/www/${PROJECT_DEV_NAME}/some_test_folder/
