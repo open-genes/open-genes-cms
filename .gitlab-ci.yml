@@ -4,10 +4,11 @@ stages:
   - deploy
 
 variables:
-  TEST_VAR: "test var"
+  PROJECT_DEV_NAME: open-genes-dev
+  PROJECT_NAME: open-genes
 
 cache:
-  key: ${CI_COMMIT_REF_SLUG}
+  key: ${CI_COMMIT_REF_SLUG}-${CI_JOB_NAME}
   paths:
     - app/common/vendor/
 
@@ -20,11 +21,23 @@ build-backend:
   image: docker:stable
   stage: build
   script:
-    - echo ${TEST_VAR}
-    - ls -la
-    - docker -v
     - docker run --rm --volume $PWD/app:/app composer install
-    - ls -la app/common/vendor/
   artifacts:
     paths:
       - app/common/vendor/
+  when: manual
+
+deploy-dev:
+  stage: staging
+#  dependencies:
+#    - build-backend
+  environment:
+    name: develop
+  image: instrumentisto/rsync-ssh
+  script:
+    - mkdir ~/.ssh
+    - echo ${DROPLET_KEY} | base64 -d > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ls -la ~/.ssh/
+    - cat ~/.ssh/id_rsa
+    - rsync -zvh -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/composer.json ${DROPLET_USER}@${DROPLET_IP}:/home/${DROPLET_USER}/${PROJECT_DEV_NAME}/some_test_folder/
