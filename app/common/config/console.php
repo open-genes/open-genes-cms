@@ -27,6 +27,18 @@ $config = [
             // uncomment if you want to cache RBAC items hierarchy
             // 'cache' => 'cache',
         ],
+        'i18n' => [
+            'translations' => [
+                'main' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => __DIR__ . '/../../genes/assets/translations',
+//                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'main' => 'main.php',
+                    ],
+                ],
+            ],
+        ],
     ],
     'container' => [
         'definitions' => [

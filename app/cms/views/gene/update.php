@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Gene */
+/* @var $allFunctionalClusters [] */
 
 $this->title = 'Update Gene: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'allFunctionalClusters' => $allFunctionalClusters,
     ]) ?>
 
 </div>

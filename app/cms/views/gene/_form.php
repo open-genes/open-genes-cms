@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Gene */
+/* @var $allFunctionalClusters [] */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -69,7 +70,14 @@ use yii\widgets\ActiveForm;
 
             <?= $form->field($model, 'aliases')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'functionalClusters')->textInput(['maxlength' => true]) ?>
+          <a class="rel-link" href="/functional-cluster" target="_blank">Manage Functional Clusters</a> <!-- todo  -->
+            <?= $form->field($model, 'functionalClustersIdsArray')->widget(\kartik\select2\Select2::class, [
+                'data' => $allFunctionalClusters,
+                'options' => ['multiple' => true],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
 
             <div class="form-split">
                 <div class="form-half">
@@ -129,5 +137,10 @@ use yii\widgets\ActiveForm;
         content: "";
         display: table;
         clear: both;
+    }
+    .rel-link {
+        position: absolute;
+        margin-top: -15px;
+        font-size: smaller;
     }
 </style>

@@ -6,7 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "sample".
+ * This is the model class for table "functional_cluster".
  *
  * @property int $id
  * @property string $name_en
@@ -14,16 +14,23 @@ use yii\behaviors\TimestampBehavior;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property GeneExpressionInSample[] $geneExpressionInSamples
+ * @property GeneToFunctionalCluster[] $geneToFunctionalClusters
  */
-class Sample extends \yii\db\ActiveRecord
+class FunctionalCluster extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'sample';
+        return 'functional_cluster';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**
@@ -34,13 +41,6 @@ class Sample extends \yii\db\ActiveRecord
         return [
             [['created_at', 'updated_at'], 'integer'],
             [['name_en', 'name_ru'], 'string', 'max' => 255],
-        ];
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
         ];
     }
 
@@ -61,17 +61,28 @@ class Sample extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGeneExpressionInSamples()
+    public function getGeneToFunctionalClusters()
     {
-        return $this->hasMany(GeneExpressionInSample::class, ['sample_id' => 'id']);
+        return $this->hasMany(GeneToFunctionalCluster::className(), ['functional_cluster_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return SampleQuery the active query used by this AR class.
+     * @return FunctionalClusterQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new SampleQuery(get_called_class());
+        return new FunctionalClusterQuery(get_called_class());
+    }
+
+    public static function findAllAsArray()
+    {
+        $result = [];
+        $functionalClusters = self::find()->all();
+        foreach ($functionalClusters as $functionalCluster) {
+            $result[$functionalCluster->id] = $functionalCluster->name_ru;
+        }
+
+        return $result;
     }
 }

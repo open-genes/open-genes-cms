@@ -1,14 +1,13 @@
 <?php
 
-
 namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[GeneExpressionInSample]].
+ * This is the ActiveQuery class for [[GeneToFunctionalCluster]].
  *
- * @see GeneExpressionInSample
+ * @see GeneToFunctionalCluster
  */
-class GeneExpressionInSampleQuery extends \yii\db\ActiveQuery
+class GeneToFunctionalClusterQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -17,7 +16,7 @@ class GeneExpressionInSampleQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return GeneExpressionInSample[]|array
+     * @return GeneToFunctionalCluster[]|array
      */
     public function all($db = null)
     {
@@ -26,7 +25,7 @@ class GeneExpressionInSampleQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return GeneExpressionInSample|array|null
+     * @return GeneToFunctionalCluster|array|null
      */
     public function one($db = null)
     {

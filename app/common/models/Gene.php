@@ -3,12 +3,14 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
+use yii\db\Query;
 
 /**
  *
- * @property int $ID
+ * @property int $id
  * @property string $agePhylo
  * @property int $ageMya
  * @property string $symbol
@@ -42,15 +44,26 @@ use yii\db\ActiveQuery;
  * @property string $expression
  * @property string $expressionEN
  * @property string $expressionChange
+ *
+ * @property int[] $functionalClustersIdsArray
+ * @property array $functionalClustersArray
  */
 class Gene extends \yii\db\ActiveRecord
 {
+    protected $functionalClustersIdsArray;
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'gene';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
     }
 
     /**
@@ -67,6 +80,8 @@ class Gene extends \yii\db\ActiveRecord
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['userEdited'], 'string', 'max' => 50],
+            [['created_at', 'updated_at'], 'integer'],
+            [['functionalClustersIdsArray'], 'safe'],
         ];
     }
 
@@ -104,6 +119,7 @@ class Gene extends \yii\db\ActiveRecord
             'commentsReferenceLinks' => 'Comments Reference Links',
             'rating' => 'Rating',
             'functionalClusters' => 'Functional Clusters',
+            'functionalClustersIdsArray' => 'Functional Clusters',
             'dateAdded' => 'Date Added',
             'userEdited' => 'User Edited',
             'isHidden' => 'Is Hidden',
@@ -155,6 +171,57 @@ class Gene extends \yii\db\ActiveRecord
         } else {
             $query->andWhere([$attribute => $value]);
         }
+    }
+
+    public function getFunctionalClustersArray()
+    {
+        $result = [];
+        $array = FunctionalCluster::find()
+            ->select('functional_cluster.id, functional_cluster.name_ru')
+            ->join('INNER JOIN', 'gene_to_functional_cluster', 'gene_to_functional_cluster.functional_cluster_id = functional_cluster.id')
+            ->where(['gene_to_functional_cluster.gene_id' => $this->id])
+            ->asArray()
+            ->all();
+        foreach ($array as $item) {
+            $result[$item['id']] = $item['name_ru'];
+        }
+        return $result;
+    }
+
+    public function getFunctionalClustersIdsArray()
+    {
+        return FunctionalCluster::find()
+            ->select('functional_cluster.id')
+            ->join('INNER JOIN', 'gene_to_functional_cluster', 'gene_to_functional_cluster.functional_cluster_id = functional_cluster.id')
+            ->where(['gene_to_functional_cluster.gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
+    public function setFunctionalClustersIdsArray(array $ids)
+    {
+        $this->functionalClustersIdsArray = $ids;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
+        if($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
+            $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
+            $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
+//            var_dump($currentFunctionalClustersIds, $this->functionalClustersIdsArray, $functionalClustersIdsToAdd, $functionalClustersIdsToDelete); die;
+            foreach($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
+                $geneToFunctionalCluster = new GeneToFunctionalCluster();
+                $geneToFunctionalCluster->gene_id = $this->id;
+                $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
+                $geneToFunctionalCluster->save();
+            }
+            GeneToFunctionalCluster::deleteAll(
+                ['and', ['gene_id' => $this->id],
+                ['in', 'functional_cluster_id', $functionalClustersIdsToDelete]]
+            );
+        }
+        parent::afterSave($insert, $changedAttributes);
     }
 
 }
