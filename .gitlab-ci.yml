@@ -35,9 +35,6 @@ deploy-dev:
   extends: .deploy
   environment:
     name: develop
-  script:
-    - rsync -zvhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ ${DROPLET_USER}@${DROPLET_IP}:${PROJECT_DIR}/app/
-    - ssh ${DROPLET_USER}@${DROPLET_IP} 'php ${PROJECT_DIR}/app/common/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@common/migrations'
   variables:
     PROJECT_DIR: /var/www/${PROJECT_DEV_NAME}
     PROJECT_DOTENV: ${DROPLET_DEV_DOTENV}
@@ -46,20 +43,15 @@ deploy-stage:
   extends: .deploy
   environment:
     name: stage
-  script:
-    - rsync -zvhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ ${DROPLET_USER}@${DROPLET_IP}:${PROJECT_DIR}/app/
-    - ssh ${DROPLET_USER}@${DROPLET_IP} 'php ${PROJECT_DIR}/app/common/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@common/migrations'
   variables:
     PROJECT_DIR: /var/www/${PROJECT_STAGE_NAME}
     PROJECT_DOTENV: ${DROPLET_STAGE_DOTENV}
 
 deploy-prod:
   extends: .deploy
+  stage: staging
   environment:
     name: production
-  script:
-    - rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ ${DROPLET_USER}@${DROPLET_IP}:${PROJECT_DIR}/app/
-    - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DROPLET_USER}@${DROPLET_IP} 'php ${PROJECT_DIR}/app/common/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@common/migrations'
   variables:
     PROJECT_DIR: /var/www/${PROJECT_NAME}
     PROJECT_DOTENV: ${DROPLET_PROD_DOTENV}
@@ -71,6 +63,9 @@ deploy-prod:
   dependencies:
     - build
   image: instrumentisto/rsync-ssh
+  script:
+    - rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ ${DROPLET_USER}@${DROPLET_IP}:${PROJECT_DIR}/app/
+    - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DROPLET_USER}@${DROPLET_IP} "php ${PROJECT_DIR}/app/common/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@common/migrations"
   before_script:
     - mkdir ~/.ssh
     - echo ${PROJECT_DOTENV} | base64 -d > app/.env
