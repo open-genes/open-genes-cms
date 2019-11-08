@@ -1,7 +1,7 @@
 stages:
   - build
   - staging
-  - deploy
+  - release
 
 variables:
   PROJECT_DEV_NAME: open-genes-dev
@@ -49,7 +49,7 @@ deploy-stage:
 
 deploy-prod:
   extends: .deploy
-  stage: staging
+  stage: release
   environment:
     name: production
   variables:
