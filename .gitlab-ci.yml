@@ -76,7 +76,7 @@ deploy-prod:
     - echo ${PROJECT_DOTENV} | base64 -d > app/.env
     - echo ${DROPLET_KEY} | base64 -d > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - mkdir app/cms/runtime/assets
-    - mkdir app/genes/runtime/assets
+    - mkdir -p app/cms/runtime/assets || true
+    - mkdir -p app/genes/runtime/assets || true
   cache: {}
   when: manual
