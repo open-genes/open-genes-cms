@@ -5,24 +5,25 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "sample".
+ * This is the model class for table "age".
  *
  * @property int $id
- * @property string $name_en
- * @property string $name_ru
+ * @property string $name_phylo
+ * @property string $name_mya
+ * @property int $order
  * @property int $created_at
  * @property int $updated_at
  *
- * @property GeneExpressionInSample[] $geneExpressionInSamples
+ * @property Gene[] $genes
  */
-class Sample extends \yii\db\ActiveRecord
+class Age extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'sample';
+        return 'age';
     }
 
     /**
@@ -31,8 +32,8 @@ class Sample extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'integer'],
-            [['name_en', 'name_ru'], 'string', 'max' => 255],
+            [['order', 'created_at', 'updated_at'], 'integer'],
+            [['name_phylo', 'name_mya'], 'string', 'max' => 255],
         ];
     }
 
@@ -43,8 +44,9 @@ class Sample extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name_en' => 'Name En',
-            'name_ru' => 'Name Ru',
+            'name_phylo' => 'Name Phylo',
+            'name_mya' => 'Name Mya',
+            'order' => 'Order',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
@@ -53,17 +55,17 @@ class Sample extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGeneExpressionInSamples()
+    public function getGenes()
     {
-        return $this->hasMany(GeneExpressionInSample::className(), ['sample_id' => 'id']);
+        return $this->hasMany(Gene::className(), ['age_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return SampleQuery the active query used by this AR class.
+     * @return AgeQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new SampleQuery(get_called_class());
+        return new AgeQuery(get_called_class());
     }
 }

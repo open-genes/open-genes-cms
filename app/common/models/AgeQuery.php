@@ -3,11 +3,11 @@
 namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[GeneExpressionInSample]].
+ * This is the ActiveQuery class for [[Age]].
  *
- * @see GeneExpressionInSample
+ * @see Age
  */
-class GeneExpressionInSampleQuery extends \yii\db\ActiveQuery
+class AgeQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class GeneExpressionInSampleQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return GeneExpressionInSample[]|array
+     * @return Age[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class GeneExpressionInSampleQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return GeneExpressionInSample|array|null
+     * @return Age|array|null
      */
     public function one($db = null)
     {

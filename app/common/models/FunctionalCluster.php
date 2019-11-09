@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "functional_cluster".
@@ -24,13 +23,6 @@ class FunctionalCluster extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'functional_cluster';
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
     }
 
     /**
@@ -73,16 +65,5 @@ class FunctionalCluster extends \yii\db\ActiveRecord
     public static function find()
     {
         return new FunctionalClusterQuery(get_called_class());
-    }
-
-    public static function findAllAsArray()
-    {
-        $result = [];
-        $functionalClusters = self::find()->all();
-        foreach ($functionalClusters as $functionalCluster) {
-            $result[$functionalCluster->id] = $functionalCluster->name_ru;
-        }
-
-        return $result;
     }
 }

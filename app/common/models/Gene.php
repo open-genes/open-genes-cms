@@ -3,12 +3,9 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\data\ActiveDataProvider;
-use yii\db\ActiveQuery;
-use yii\db\Query;
 
 /**
+ * This is the model class for table "gene".
  *
  * @property int $id
  * @property string $agePhylo
@@ -44,13 +41,15 @@ use yii\db\Query;
  * @property string $expression
  * @property string $expressionEN
  * @property string $expressionChange
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $age_id
  *
- * @property int[] $functionalClustersIdsArray
- * @property array $functionalClustersArray
+ * @property Age $age
+ * @property GeneExpressionInSample[] $geneExpressionInSamples
  */
 class Gene extends \yii\db\ActiveRecord
 {
-    protected $functionalClustersIdsArray;
     /**
      * {@inheritdoc}
      */
@@ -59,20 +58,13 @@ class Gene extends \yii\db\ActiveRecord
         return 'gene';
     }
 
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden'], 'integer'],
+            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
             [['dateAdded'], 'required'],
             [['expression', 'expressionEN'], 'string'],
             [['agePhylo', 'symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
@@ -80,8 +72,8 @@ class Gene extends \yii\db\ActiveRecord
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['userEdited'], 'string', 'max' => 50],
-            [['created_at', 'updated_at'], 'integer'],
-            [['functionalClustersIdsArray'], 'safe'],
+            [['expressionChange'], 'string', 'max' => 64],
+            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Age::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }
 
@@ -91,7 +83,7 @@ class Gene extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'id',
+            'id' => 'ID',
             'agePhylo' => 'Age Phylo',
             'ageMya' => 'Age Mya',
             'symbol' => 'Symbol',
@@ -119,13 +111,32 @@ class Gene extends \yii\db\ActiveRecord
             'commentsReferenceLinks' => 'Comments Reference Links',
             'rating' => 'Rating',
             'functionalClusters' => 'Functional Clusters',
-            'functionalClustersIdsArray' => 'Functional Clusters',
             'dateAdded' => 'Date Added',
             'userEdited' => 'User Edited',
             'isHidden' => 'Is Hidden',
             'expression' => 'Expression',
             'expressionEN' => 'Expression En',
+            'expressionChange' => 'Expression Change',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'age_id' => 'Age ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAge()
+    {
+        return $this->hasOne(Age::className(), ['id' => 'age_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneExpressionInSamples()
+    {
+        return $this->hasMany(GeneExpressionInSample::className(), ['gene_id' => 'id']);
     }
 
     /**
@@ -136,92 +147,4 @@ class Gene extends \yii\db\ActiveRecord
     {
         return new GeneQuery(get_called_class());
     }
-
-    public function search($params = [])
-    {
-        $query = self::find();
-
-        if($params) {
-            $this->load($params);
-        }
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-        $this->addCondition($query, 'symbol', true);
-        $this->addCondition($query, 'aliases', true);
-        $this->addCondition($query, 'name', true);
-        $this->addCondition($query, 'ageMya');
-
-        return $dataProvider;
-    }
-
-    /**
-     * @param $query ActiveQuery
-     * @param $attribute
-     * @param bool $partialMatch
-     */
-    protected function addCondition(&$query, $attribute, $partialMatch = false)
-    {
-        $value = $this->$attribute;
-        if (trim($value) === '') {
-            return;
-        }
-        if ($partialMatch) {
-            $query->andWhere(['like', $attribute, $value]);
-        } else {
-            $query->andWhere([$attribute => $value]);
-        }
-    }
-
-    public function getFunctionalClustersArray()
-    {
-        $result = [];
-        $array = FunctionalCluster::find()
-            ->select('functional_cluster.id, functional_cluster.name_ru')
-            ->join('INNER JOIN', 'gene_to_functional_cluster', 'gene_to_functional_cluster.functional_cluster_id = functional_cluster.id')
-            ->where(['gene_to_functional_cluster.gene_id' => $this->id])
-            ->asArray()
-            ->all();
-        foreach ($array as $item) {
-            $result[$item['id']] = $item['name_ru'];
-        }
-        return $result;
-    }
-
-    public function getFunctionalClustersIdsArray()
-    {
-        return FunctionalCluster::find()
-            ->select('functional_cluster.id')
-            ->join('INNER JOIN', 'gene_to_functional_cluster', 'gene_to_functional_cluster.functional_cluster_id = functional_cluster.id')
-            ->where(['gene_to_functional_cluster.gene_id' => $this->id])
-            ->asArray()
-            ->column();
-    }
-
-    public function setFunctionalClustersIdsArray(array $ids)
-    {
-        $this->functionalClustersIdsArray = $ids;
-    }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
-        if($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
-            $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
-            $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
-//            var_dump($currentFunctionalClustersIds, $this->functionalClustersIdsArray, $functionalClustersIdsToAdd, $functionalClustersIdsToDelete); die;
-            foreach($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
-                $geneToFunctionalCluster = new GeneToFunctionalCluster();
-                $geneToFunctionalCluster->gene_id = $this->id;
-                $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
-                $geneToFunctionalCluster->save();
-            }
-            GeneToFunctionalCluster::deleteAll(
-                ['and', ['gene_id' => $this->id],
-                ['in', 'functional_cluster_id', $functionalClustersIdsToDelete]]
-            );
-        }
-        parent::afterSave($insert, $changedAttributes);
-    }
-
 }

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Gene */
+/* @var $model cms\models\Gene */
 
 $this->title = 'Create Gene';
 $this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];

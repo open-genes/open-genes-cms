@@ -3,7 +3,7 @@
 namespace cms\controllers;
 
 use Yii;
-use common\models\FunctionalCluster;
+use cms\models\FunctionalCluster;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;

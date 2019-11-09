@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Gene */
+/* @var $model cms\models\Gene */
 /* @var $allFunctionalClusters [] */
 
 $this->title = 'Update Gene: ' . $model->name;

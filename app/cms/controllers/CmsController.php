@@ -1,19 +1,11 @@
 <?php
 namespace cms\controllers;
 
-use common\models\Gene;
-use common\models\GeneQuery;
 use common\models\LoginForm;
-use genes\application\service\GeneInfoServiceInterface;
-use genes\helpers\LanguageMapHelper;
 use Yii;
-use yii\data\ActiveDataProvider;
-use yii\db\Query;
-use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\Response;
 
 /**
  * Site controller

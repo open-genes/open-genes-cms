@@ -2,9 +2,9 @@
 
 namespace cms\controllers;
 
-use common\models\FunctionalCluster;
+use cms\models\Gene;
+use cms\models\FunctionalCluster;
 use Yii;
-use common\models\Gene;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
