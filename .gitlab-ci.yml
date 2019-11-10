@@ -57,6 +57,7 @@ deploy-prod:
     PROJECT_DOTENV: ${DROPLET_PROD_DOTENV}
   only:
     - master
+    - develop # todo temporary while open-genes.com is not a real production
 
 .deploy:
   stage: staging
