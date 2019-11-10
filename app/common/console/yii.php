@@ -11,17 +11,16 @@
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 require __DIR__ . '/../../common/vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::create(__DIR__ . '../../..');
+$dotenv = Dotenv\Dotenv::create(__DIR__ . '/../../');
 $dotenv->load();
 
-$vendorPath = null;
-foreach ($composerAutoload as $autoload) {
-    if (file_exists($autoload)) {
-        require $autoload;
-        $vendorPath = dirname($autoload);
-        break;
-    }
-}
+//foreach ($composerAutoload as $autoload) {
+//    if (file_exists($autoload)) {
+//        require $autoload;
+//        $vendorPath = dirname($autoload);
+//        break;
+//    }
+//}
 
 require __DIR__ . '/../../common/vendor/yiisoft/yii2/Yii.php';
 
@@ -29,8 +28,5 @@ require __DIR__ . '/../config/bootstrap.php';
 $config = require __DIR__ . '/../config/console.php';
 
 $application = new yii\console\Application($config);
-if ($vendorPath !== null) {
-    $application->setVendorPath($vendorPath);
-}
 $exitCode = $application->run();
 exit($exitCode);

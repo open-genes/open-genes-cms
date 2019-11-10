@@ -1,6 +1,5 @@
 <?php
 
-
 namespace common\models;
 
 /**

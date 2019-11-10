@@ -5,8 +5,9 @@ namespace common\models;
 use Yii;
 
 /**
+ * This is the model class for table "gene".
  *
- * @property int $ID
+ * @property int $id
  * @property string $agePhylo
  * @property int $ageMya
  * @property string $symbol
@@ -40,6 +41,12 @@ use Yii;
  * @property string $expression
  * @property string $expressionEN
  * @property string $expressionChange
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $age_id
+ *
+ * @property Age $age
+ * @property GeneExpressionInSample[] $geneExpressionInSamples
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -57,7 +64,7 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden'], 'integer'],
+            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
             [['dateAdded'], 'required'],
             [['expression', 'expressionEN'], 'string'],
             [['agePhylo', 'symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
@@ -65,6 +72,8 @@ class Gene extends \yii\db\ActiveRecord
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['userEdited'], 'string', 'max' => 50],
+            [['expressionChange'], 'string', 'max' => 64],
+            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Age::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }
 
@@ -74,7 +83,7 @@ class Gene extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'id',
+            'id' => 'ID',
             'agePhylo' => 'Age Phylo',
             'ageMya' => 'Age Mya',
             'symbol' => 'Symbol',
@@ -107,7 +116,27 @@ class Gene extends \yii\db\ActiveRecord
             'isHidden' => 'Is Hidden',
             'expression' => 'Expression',
             'expressionEN' => 'Expression En',
+            'expressionChange' => 'Expression Change',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'age_id' => 'Age ID',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAge()
+    {
+        return $this->hasOne(Age::className(), ['id' => 'age_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneExpressionInSamples()
+    {
+        return $this->hasMany(GeneExpressionInSample::className(), ['gene_id' => 'id']);
     }
 
     /**

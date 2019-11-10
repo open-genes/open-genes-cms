@@ -13,3 +13,5 @@ To watch cahnges:
 ```$xslt
 $ npm run sass-watch
 ```
+---
+Information for backend developers is available on /CONTRIBUTING.md

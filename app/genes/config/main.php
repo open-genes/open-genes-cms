@@ -20,13 +20,6 @@ $config = [
             'csrfParam' => '_csrf-genes',
             'cookieValidationKey' => '123',
         ],
-        'db' => [
-            'charset' => 'utf8',
-            'class' => yii\db\Connection::class,
-            'dsn' => getenv('DB_DSN'),
-            'username' => getenv('DB_USER'),
-            'password' => getenv('DB_PASS'),
-        ],
         'i18n' => [
             'translations' => [
                 'main' => [
@@ -58,13 +51,6 @@ $config = [
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
-        ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                'about' => 'site/about'
-            ],
         ],
     ],
     'container' => [

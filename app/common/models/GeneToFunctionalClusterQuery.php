@@ -1,13 +1,13 @@
 <?php
 
-namespace genes\models;
+namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[Gene]].
+ * This is the ActiveQuery class for [[GeneToFunctionalCluster]].
  *
- * @see Gene
+ * @see GeneToFunctionalCluster
  */
-class GeneQuery extends \yii\db\ActiveQuery
+class GeneToFunctionalClusterQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class GeneQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Gene[]|array
+     * @return GeneToFunctionalCluster[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class GeneQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Gene|array|null
+     * @return GeneToFunctionalCluster|array|null
      */
     public function one($db = null)
     {

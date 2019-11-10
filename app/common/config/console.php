@@ -10,7 +10,7 @@ $config = [
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-GB', // todo костыль на то, что у нас переводы не в yii-формате ['english phrase' => 'русская фраза'], переделаем?
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'genes\console\controllers',
+    'controllerNamespace' => 'common\console\controllers',
     'vendorPath' => '@common/vendor',
     'bootstrap' => ['log'],
     'modules' => [],
@@ -21,6 +21,23 @@ $config = [
             'dsn' => getenv('DB_DSN'),
             'username' => getenv('DB_USER'),
             'password' => getenv('DB_PASS'),
+        ],
+        'authManager' => [
+            'class' => yii\rbac\DbManager::class,
+            // uncomment if you want to cache RBAC items hierarchy
+            // 'cache' => 'cache',
+        ],
+        'i18n' => [
+            'translations' => [
+                'main' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => __DIR__ . '/../../genes/assets/translations',
+                    'sourceLanguage' => 'en-GB',
+                    'fileMap' => [
+                        'main' => 'main.php',
+                    ],
+                ],
+            ],
         ],
     ],
     'container' => [

@@ -3,7 +3,6 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "sample".
@@ -37,13 +36,6 @@ class Sample extends \yii\db\ActiveRecord
         ];
     }
 
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -63,7 +55,7 @@ class Sample extends \yii\db\ActiveRecord
      */
     public function getGeneExpressionInSamples()
     {
-        return $this->hasMany(GeneExpressionInSample::class, ['sample_id' => 'id']);
+        return $this->hasMany(GeneExpressionInSample::className(), ['sample_id' => 'id']);
     }
 
     /**
