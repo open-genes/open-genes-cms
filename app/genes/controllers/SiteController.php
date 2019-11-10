@@ -4,7 +4,6 @@ namespace genes\controllers;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use genes\application\service\GeneInfoServiceInterface;
-use genes\models\Gene;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;

@@ -5,10 +5,11 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model cms\models\Gene */
 /* @var $allFunctionalClusters [] */
+/* @var $allAges [] */
 
-$this->title = 'Update Gene: ' . $model->name;
+$this->title = 'Редактировать ген ' . $model->symbol;
 $this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->symbol, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="gene-update">
@@ -18,6 +19,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'model' => $model,
         'allFunctionalClusters' => $allFunctionalClusters,
+        'allAges' => $allAges,
     ]) ?>
 
 </div>

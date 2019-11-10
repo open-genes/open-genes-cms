@@ -42,7 +42,7 @@ use common\widgets\Alert;
         $menuItems[] = '<li>'
             . Html::beginForm(['/cms/logout'], 'post')
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                'Выйти (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()

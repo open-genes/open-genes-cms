@@ -12,7 +12,7 @@ class UserController extends Controller
     }
 
     /**
-     * Create new user with privileges. Usage: `user/create-user name password email@email.com admin`
+     * Create new user with privileges. Usage: `user/create name password email@email.com admin`
      *
      * @param string $name
      * @param string $password
@@ -20,7 +20,7 @@ class UserController extends Controller
      * @param string $role
      * @throws \Exception
      */
-    public function actionCreateUser($name = 'username', $password = 'password', $email = 'example@genes.com', $role = 'admin')
+    public function actionCreate($name = 'username', $password = 'password', $email = 'example@genes.com', $role = 'editor')
     {
         $user = new User();
         $user->username = $name;
@@ -31,8 +31,33 @@ class UserController extends Controller
         $user->save();
 
         $auth = \Yii::$app->authManager;
-        $authorRole = $auth->getRole($role);
-        $auth->assign($authorRole, $user->getId());
+        $authRole = $auth->getRole($role);
+        $auth->assign($authRole, $user->getId());
+    }
+
+    /**
+     * Assign role to user. Usage: `user/assign name role [revokeOtherRoles=false]`
+     * @param string $name
+     * @param string $role
+     * @param bool $revokeOther
+     * @throws \Exception
+     */
+    public function actionAssign($name = 'username', $role = 'editor', $revokeOther = false)
+    {
+        $user = User::find()->where(['username' => $name])->one();
+        if($user) {
+            $auth = \Yii::$app->authManager;
+            $newRole = $auth->getRole($role);
+            if($revokeOther) {
+                $oldRoles = $auth->getRolesByUser($user->getId());
+                foreach ($oldRoles as $oldRole) {
+                    $auth->revoke($oldRole, $user->getId());
+                }
+            }
+            $auth->assign($newRole, $user->getId());
+        } else {
+            echo "couldn't find user $name";
+        }
     }
 
 

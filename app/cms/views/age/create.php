@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Gene */
+/* @var $model cms\models\Age */
 
-$this->title = 'Create Gene';
-$this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];
+$this->title = 'Create Age';
+$this->params['breadcrumbs'][] = ['label' => 'Ages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="gene-create">
+<div class="age-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\FunctionalCluster */
+/* @var $model cms\models\Age */
 
-$this->title = 'Update Functional Cluster: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Functional Clusters', 'url' => ['index']];
+$this->title = 'Update Age: ' . $model->name_phylo;
+$this->params['breadcrumbs'][] = ['label' => 'Ages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="functional-cluster-update">
+<div class="age-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -1,13 +1,14 @@
 <?php
 
+use cms\models\Gene;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel \genes\models\Gene */
+/* @var $searchModel Gene */
 
-$this->title = 'Genes';
+$this->title = 'Гены';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="gene-index">
@@ -15,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Gene', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить ген', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -26,10 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             'id',
             'symbol',
-            'aliases',
             'name',
-            'agePhylo',
-            'ageMya',
+            [
+                'attribute' => 'age',
+                'label' => 'Возраст',
+                'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
+                    return $model->age ? "{$model->age->name_phylo} ({$model->age->name_mya})" : '-';
+                },
+            ],
+            'aliases',
             //'entrezGene',
             //'uniprot',
             //'why',

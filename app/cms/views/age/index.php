@@ -6,15 +6,15 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Functional Clusters';
+$this->title = 'Ages';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="functional-cluster-index">
+<div class="age-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Functional Cluster', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Age', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -22,8 +22,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             'id',
-            'name_en',
-            'name_ru',
+            'name_phylo',
+            'name_mya',
+            'order',
+
             ['class' => 'yii\grid\ActionColumn', 'template' => '{update}'],
         ],
     ]); ?>

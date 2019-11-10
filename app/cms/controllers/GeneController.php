@@ -2,6 +2,7 @@
 
 namespace cms\controllers;
 
+use cms\models\Age;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
 use Yii;
@@ -91,9 +92,11 @@ class GeneController extends Controller
         }
 
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
+        $allAges = Age::findAllAsArray();
         return $this->render('update', [
             'model' => $model,
             'allFunctionalClusters' => $allFunctionalClusters,
+            'allAges' => $allAges,
         ]);
     }
 
