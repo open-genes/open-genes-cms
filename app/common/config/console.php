@@ -32,7 +32,7 @@ $config = [
                 'main' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => __DIR__ . '/../../genes/assets/translations',
-//                    'sourceLanguage' => 'en-US',
+                    'sourceLanguage' => 'en-GB',
                     'fileMap' => [
                         'main' => 'main.php',
                     ],

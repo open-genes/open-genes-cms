@@ -35,9 +35,9 @@ class FunctionalCluster extends \common\models\FunctionalCluster
     public static function findAllAsArray()
     {
         $result = [];
-        $functionalClusters = self::find()->all();
-        foreach ($functionalClusters as $functionalCluster) {
-            $result[$functionalCluster->id] = $functionalCluster->name_ru;
+        $commentCauses = self::find()->all();
+        foreach ($commentCauses as $commentCause) {
+            $result[$commentCause->id] = $commentCause->name_ru;
         }
 
         return $result;

@@ -11,11 +11,13 @@ use yii\helpers\ArrayHelper;
 
 /**
  * @property int[] $functionalClustersIdsArray
+ * @property int[] $commentCauseIdsArray
  * @property array $functionalClustersArray
  */
 class Gene extends \common\models\Gene
 {
     protected $functionalClustersIdsArray;
+    protected $commentCauseIdsArray;
 
     public function behaviors()
     {
@@ -31,7 +33,7 @@ class Gene extends \common\models\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray'], 'safe'],
+            [['functionalClustersIdsArray', 'commentCauseIdsArray'], 'safe'],
         ]);
     }
 
@@ -68,6 +70,7 @@ class Gene extends \common\models\Gene
             'commentsReferenceLinks' => 'Ссылки на источники',
             'functionalClusters' => 'Функциональные кластеры',
             'functionalClustersIdsArray' => 'Функциональные кластеры',
+            'commentCauseIdsArray' => 'Причины отбора',
             'dateAdded' => 'Date Added',
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
@@ -121,28 +124,69 @@ class Gene extends \common\models\Gene
             ->column();
     }
 
+    public function getCommentCauseIdsArray()
+    {
+        return CommentCause::find()
+            ->select('comment_cause.id')
+            ->join('INNER JOIN', 'gene_to_comment_cause', 'gene_to_comment_cause.comment_cause_id = comment_cause.id')
+            ->where(['gene_to_comment_cause.gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
     public function setFunctionalClustersIdsArray(array $ids)
     {
         $this->functionalClustersIdsArray = $ids;
     }
 
+    public function setCommentCauseIdsArray(array $ids)
+    {
+        $this->commentCauseIdsArray = $ids;
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
+        // todo move to relational active records
         $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
         if($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
-            $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
-            $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
-            foreach($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
-                $geneToFunctionalCluster = new GeneToFunctionalCluster();
-                $geneToFunctionalCluster->gene_id = $this->id;
-                $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
-                $geneToFunctionalCluster->save();
+            if($this->functionalClustersIdsArray) {
+                $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
+                $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
+                foreach($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
+                    $geneToFunctionalCluster = new GeneToFunctionalCluster();
+                    $geneToFunctionalCluster->gene_id = $this->id;
+                    $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
+                    $geneToFunctionalCluster->save();
+                }
+            } else {
+                $functionalClustersIdsToDelete = $currentFunctionalClustersIds;
             }
             GeneToFunctionalCluster::deleteAll(
                 ['and', ['gene_id' => $this->id],
                 ['in', 'functional_cluster_id', $functionalClustersIdsToDelete]]
             );
         }
+
+        $currentCommentCauseIds = $this->getCommentCauseIdsArray();
+        if($currentCommentCauseIds !== $this->commentCauseIdsArray) {
+            if($this->commentCauseIdsArray) {
+                $commentCausesIdsToDelete = array_diff($currentCommentCauseIds, $this->commentCauseIdsArray);
+                $commentCausesIdsToAdd = array_diff($this->commentCauseIdsArray, $currentCommentCauseIds);
+                foreach($commentCausesIdsToAdd as $commentCauseIdToAdd) {
+                    $geneToCommentCause = new GeneToCommentCause();
+                    $geneToCommentCause->gene_id = $this->id;
+                    $geneToCommentCause->comment_cause_id = $commentCauseIdToAdd;
+                    $geneToCommentCause->save();
+                }
+            } else {
+                $commentCausesIdsToDelete = $currentCommentCauseIds;
+            }
+            GeneToCommentCause::deleteAll(
+                ['and', ['gene_id' => $this->id],
+                    ['in', 'comment_cause_id', $commentCausesIdsToDelete]]
+            );
+        }
+
         parent::afterSave($insert, $changedAttributes);
     }
 

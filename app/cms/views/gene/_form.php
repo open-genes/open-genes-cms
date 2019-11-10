@@ -6,6 +6,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model cms\models\Gene */
 /* @var $allFunctionalClusters [] */
+/* @var $allCommentCauses [] */
 /* @var $allAges[] */
 /* @var $form yii\widgets\ActiveForm */
 ?>
@@ -43,8 +44,13 @@ use yii\widgets\ActiveForm;
             ]); ?>
         </div>
     </div>
-
-    <?= $form->field($model, 'commentCause')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'commentCauseIdsArray')->widget(\kartik\select2\Select2::class, [
+        'data' => $allCommentCauses,
+        'options' => ['multiple' => true],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
     <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
     <?= $form->field($model, 'commentAgingEN')->textarea(['rows' => 4]) ?>
     <?= $form->field($model, 'commentEvolution')->textarea(['rows' => 4]) ?>

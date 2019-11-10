@@ -1,10 +1,12 @@
 <?php
 namespace common\console\controllers;
 
+use cms\models\CommentCause;
 use common\models\Age;
 use common\models\FunctionalCluster;
 use common\models\Gene;
 use common\models\GeneExpressionInSample;
+use common\models\GeneToCommentCause;
 use common\models\GeneToFunctionalCluster;
 use common\models\Sample;
 use common\models\User;
@@ -119,6 +121,43 @@ class MigrateDataController extends Controller
                 echo $arAge->name_phylo . PHP_EOL;
             } else {
                 echo 'no age info' . PHP_EOL;
+            }
+        }
+    }
+
+    public function actionMigrateCommentCause()
+    {
+        $arGenes = Gene::find()->all();
+        foreach($arGenes as $arGene) {
+            echo $arGene->symbol . ': ';
+            $commentCausesRu = explode(',', $arGene->commentCause);
+            if($commentCausesRu) {
+                foreach ($commentCausesRu as $commentCauseRu) {
+                    $commentCauseRu = trim($commentCauseRu);
+                    $arCommentCause = CommentCause::find()
+                        ->where(['name_ru' => $commentCauseRu])
+                        ->one();
+                    if(!$arCommentCause) {
+                        $arCommentCause = new CommentCause();
+                        $arCommentCause->name_ru = $commentCauseRu;
+                        $nameForTranslate =  str_replace([' ', '/'], '_', mb_strtolower($commentCauseRu));
+                        $arCommentCause->name_en = \Yii::t('main',$nameForTranslate, [], 'en-US');
+                        $arCommentCause->save();
+                        $arCommentCause->refresh();
+                    }
+                    $arGeneToCommentCause = GeneToCommentCause::find()
+                        ->andWhere(['gene_id' => $arGene->id])
+                        ->andWhere(['comment_cause_id' => $arCommentCause->id])
+                        ->one();
+                    if(!$arGeneToCommentCause) {
+                        $arGeneToCommentCause = new GeneToCommentCause();
+                        $arGeneToCommentCause->gene_id = $arGene->id;
+                        $arGeneToCommentCause->comment_cause_id = $arCommentCause->id;
+                    }
+                    $arGeneToCommentCause->save();
+                    echo $arCommentCause->name_ru . ' ';
+                }
+                echo PHP_EOL;
             }
         }
     }

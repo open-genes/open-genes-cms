@@ -2,11 +2,8 @@
 
 namespace cms\controllers;
 
-use cms\models\Age;
-use cms\models\CommentCause;
-use cms\models\Gene;
-use cms\models\FunctionalCluster;
 use Yii;
+use cms\models\CommentCause;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -14,9 +11,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GeneController implements the CRUD actions for Gene model.
+ * CommentCauseController implements the CRUD actions for CommentCause model.
  */
-class GeneController extends Controller
+class CommentCauseController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -45,28 +42,29 @@ class GeneController extends Controller
     }
 
     /**
-     * Lists all Gene models.
+     * Lists all CommentCause models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $arGene = new Gene(Yii::$app->request->get('Gene'));
-        $dataProvider = $arGene->search();
+        $dataProvider = new ActiveDataProvider([
+            'query' => CommentCause::find(),
+        ]);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel' => new Gene(Yii::$app->request->get('Gene')),
         ]);
     }
 
+
     /**
-     * Creates a new Gene model.
+     * Creates a new CommentCause model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Gene();
+        $model = new CommentCause();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
@@ -78,7 +76,7 @@ class GeneController extends Controller
     }
 
     /**
-     * Updates an existing Gene model.
+     * Updates an existing CommentCause model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -88,23 +86,17 @@ class GeneController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-           $model->save();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
-        $allFunctionalClusters = FunctionalCluster::findAllAsArray();
-        $allCommentCauses = CommentCause::findAllAsArray();
-        $allAges = Age::findAllAsArray();
         return $this->render('update', [
             'model' => $model,
-            'allFunctionalClusters' => $allFunctionalClusters,
-            'allCommentCauses' => $allCommentCauses,
-            'allAges' => $allAges,
         ]);
     }
 
     /**
-     * Deletes an existing Gene model.
+     * Deletes an existing CommentCause model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -118,15 +110,15 @@ class GeneController extends Controller
     }
 
     /**
-     * Finds the Gene model based on its primary key value.
+     * Finds the CommentCause model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Gene the loaded model
+     * @return CommentCause the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Gene::findOne($id)) !== null) {
+        if (($model = CommentCause::findOne($id)) !== null) {
             return $model;
         }
 

@@ -5,6 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model cms\models\Gene */
 /* @var $allFunctionalClusters [] */
+/* @var $allCommentCauses [] */
 /* @var $allAges [] */
 
 $this->title = 'Редактировать ген ' . $model->symbol;
@@ -19,6 +20,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'model' => $model,
         'allFunctionalClusters' => $allFunctionalClusters,
+        'allCommentCauses' => $allCommentCauses,
         'allAges' => $allAges,
     ]) ?>
 
