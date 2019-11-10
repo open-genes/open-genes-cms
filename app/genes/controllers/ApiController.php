@@ -4,6 +4,7 @@ namespace genes\controllers;
 use genes\application\service\GeneInfoServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
+use yii\filters\Cors;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -12,6 +13,20 @@ use yii\web\Response;
  */
 class ApiController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'corsFilter' => [
+                'class' => Cors::class,
+                'cors' => [
+                    'Origin' => ['*'],
+                    'Access-Control-Request-Method' => ['GET', 'POST', 'OPTIONS'],
+                ],
+
+            ],
+        ];
+    }
+
     public function actionReference()
     {
         return $this->render('reference');
