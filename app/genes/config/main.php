@@ -52,6 +52,14 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                'about' => 'site/about',
+                'api/gene/<id:\d+>' => 'api/gene'
+            ],
+        ],
     ],
     'container' => [
         'definitions' => [

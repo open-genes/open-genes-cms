@@ -43,4 +43,15 @@ class ApiController extends Controller
         return $geneDtos;
     }
 
+    public function actionGene($id, $lang = 'en-US')
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $language = (new LanguageMapHelper())->getMappedLanguage($lang);
+        /** @var GeneInfoServiceInterface $geneInfoService */
+        $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
+        $geneDto = $geneInfoService->getGeneViewInfo($id, $language);
+        return $geneDto;
+    }
+
 }

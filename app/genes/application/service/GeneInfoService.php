@@ -62,14 +62,14 @@ class GeneInfoService implements GeneInfoServiceInterface
             $commentsCauseItem = preg_replace('/\s+/', '_', $commentsCauseItem);
             $commentsCauseItem = preg_replace('/^_/', '', $commentsCauseItem);
             $commentsCauseItem = preg_replace('/[\/+]/', '_', $commentsCauseItem);
-            $commentsCauseItem = \Yii::t('main', $commentsCauseItem); // todo временно. надо перенести переводы в бд, убрать отсюда вызов фреймворка
+            $commentsCauseItem = \Yii::t('main', $commentsCauseItem, [], $lang); // todo временно. надо перенести переводы в бд, убрать отсюда вызов фреймворка
         }
         $geneFunctionalClusters = $geneArray['functionalClusters'] ? explode(',', $geneArray['functionalClusters']) : [];
         foreach ($geneFunctionalClusters as &$functionalCluster) {
             $functionalCluster = preg_replace('/\s+/', '_', $functionalCluster);
             $functionalCluster = preg_replace('/^_/', '', $functionalCluster);
             $functionalCluster = preg_replace('/[\/]/', '_', $functionalCluster);
-            $functionalCluster = \Yii::t('main', $functionalCluster);
+            $functionalCluster = \Yii::t('main', $functionalCluster, [], $lang);
         }
         $geneExpression = $lang == 'en-US' ? $geneArray['expressionEN'] : $geneArray['expression'];
         $geneExpression = json_decode($geneExpression, true);
