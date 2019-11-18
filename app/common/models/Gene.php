@@ -44,9 +44,13 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $age_id
+ * @property string $product_ru
+ * @property string $product_en
  *
  * @property Age $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
+ * @property GeneToCommentCause[] $geneToCommentCauses
+ * @property GeneToFunction[] $geneToFunctions
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -73,6 +77,7 @@ class Gene extends \yii\db\ActiveRecord
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['userEdited'], 'string', 'max' => 50],
             [['expressionChange'], 'string', 'max' => 64],
+            [['product_ru', 'product_en'], 'string', 'max' => 255],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Age::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }
@@ -120,6 +125,8 @@ class Gene extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'age_id' => 'Age ID',
+            'product_ru' => 'Product Ru',
+            'product_en' => 'Product En',
         ];
     }
 
@@ -137,6 +144,22 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneExpressionInSamples()
     {
         return $this->hasMany(GeneExpressionInSample::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToCommentCauses()
+    {
+        return $this->hasMany(GeneToCommentCause::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToFunctions()
+    {
+        return $this->hasMany(GeneToFunction::className(), ['gene_id' => 'id']);
     }
 
     /**
