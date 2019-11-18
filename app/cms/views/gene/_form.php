@@ -1,5 +1,8 @@
 <?php
 
+use cms\models\GeneFunction;
+use cms\models\GeneToFunctionRelationType;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -95,8 +98,62 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'orthologs')->textInput(['maxlength' => true]) ?>
     </div>
     <?php endif; ?>
+        <div class="form-half">
+            <?= $form->field($model, 'product_ru')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="form-half">
+            <?= $form->field($model, 'product_en')->textInput(['maxlength' => true]) ?>
+        </div>
+
+    <br>
+    <div class="form-split">
+        <h4>Функции гена:</h4>
+    </div>
+    <div class="form-half-without-margin">
+        <div class="form-half">
+            <label>Связь</label>
+        </div>
+        <div class="form-half">
+            <label>Функция</label>
+        </div>
+    </div>
+    <div class="form-half-without-margin">
+        <div class="form-half">
+            <label>Ссылка</label>
+        </div>
+        <div class="form-half">
+            <label>Примечание</label>
+        </div>
+    </div>
+    <?php foreach ($model->geneToFunctions as $geneToFunction): ?>
+        <div class="form-half-without-margin">
+            <div class="form-half">
+                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']gene_to_function_relation_type_id')->widget(\kartik\select2\Select2::class, [
+                    'data' => GeneToFunctionRelationType::getAllNamesAsArray(),
+                    'options' => ['multiple' => false],
+                    'pluginOptions' => ['allowClear' => true],
+                ])->label(false); ?>
+            </div>
+            <div class="form-half">
+                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']function_id')->widget(\kartik\select2\Select2::class, [
+                    'data' => GeneFunction::getAllNamesAsArray(),
+                    'options' => ['multiple' => false],
+                    'pluginOptions' => ['allowClear' => true],
+                ])->label(false); ?>
+            </div>
+        </div>
+        <div class="form-half-without-margin">
+            <div class="form-half">
+                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']reference')->textInput(['maxlength' => true])->label(false) ?>
+            </div>
+            <div class="form-half">
+                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']comment')->textInput(['maxlength' => true])->label(false) ?>
+            </div>
+        </div>
+    <?php endforeach; ?>
+
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -105,9 +162,13 @@ use yii\widgets\ActiveForm;
 <!-- todo create styles for cms -->
 <style>
     .form-half {
-        width: 45%;
+        width: 47%;
         float: left;
-        margin-right: 5%;
+        margin-right: 3%;
+    }
+    .form-half-without-margin {
+        width: 50%;
+        float: left;
     }
     .form-split:after {
         content: "";

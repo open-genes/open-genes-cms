@@ -75,6 +75,8 @@ class Gene extends \common\models\Gene
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
             'expressionChange' => 'Изменение экспр. с возрастом',
+            'product_ru' => 'Продукт',
+            'product_en' => 'Продукт EN',
         ];
     }
 
@@ -188,6 +190,14 @@ class Gene extends \common\models\Gene
         }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToFunctions()
+    {
+        return $this->hasMany(GeneToFunction::class, ['gene_id' => 'id']);
     }
 
 }
