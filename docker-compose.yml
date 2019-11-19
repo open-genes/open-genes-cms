@@ -32,5 +32,6 @@ services:
       - "3307:3306"
     volumes:
       - ./../../mysql:/var/lib/mysql
+      - ./docker/mysql/charset.cnf:/etc/mysql/conf.d/charset.cnf
     environment:
       MYSQL_ROOT_PASSWORD: secret
