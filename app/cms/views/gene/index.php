@@ -16,7 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
+        <?php if(Yii::$app->user->can('admin')): ?>
         <?= Html::a('Добавить ген', ['create'], ['class' => 'btn btn-success']) ?>
+        <?endif; ?>
     </p>
 
 

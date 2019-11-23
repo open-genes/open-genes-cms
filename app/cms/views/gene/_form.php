@@ -122,4 +122,7 @@ use yii\widgets\ActiveForm;
     textarea {
         white-space: pre-wrap;
     }
+    .select2-selection__rendered {
+        cursor: text;
+    }
 </style>
