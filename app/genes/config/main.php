@@ -64,7 +64,8 @@ $config = [
     'container' => [
         'definitions' => [
             \genes\application\service\GeneInfoServiceInterface::class => \genes\application\service\GeneInfoService::class,
-            \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneDataProvider::class
+            \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneDataProvider::class,
+            \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class
         ]
     ],
     'defaultRoute' => 'site/index',
