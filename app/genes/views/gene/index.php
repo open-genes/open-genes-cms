@@ -271,16 +271,16 @@ use genes\application\dto\GeneViewDto;
 
                     <div class="col col-16 expression__rows">
                         <?
-                        foreach ($gene->expression as $name => $expressionValues) {
+                        foreach ($gene->expression as $expression) {
                             echo
                                 '<div class="expression__row">' .
-                                '<div class="row__name">' . ucfirst($name) . '</div>' .
+                                '<div class="row__name">' . ucfirst($expression['name']) . '</div>' .
 
-                                '<div class="row__value ' . ($expressionValues['exp_rpkm'] < 2 ? 'row__value--minimum' : '') . '">' .
-                                '<div class ="value__bar" ' . 'style="width: ' . $expressionValues['exp_rpkm'] * 2 . '%"></div>' .
+                                '<div class="row__value ' . ($expression['exp_rpkm'] < 2 ? 'row__value--minimum' : '') . '">' .
+                                '<div class ="value__bar" ' . 'style="width: ' . $expression['exp_rpkm'] * 2 . '%"></div>' .
 
                                 '<div class ="value__rpkm">' .
-                                $expressionValues['exp_rpkm'] . ' RPKM' .
+                                $expression['exp_rpkm'] . ' RPKM' .
                                 '</div>' .
                                 '</div>' .
                                 '</div>';

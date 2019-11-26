@@ -3,15 +3,21 @@ namespace genes\application\service;
 
 use genes\application\dto\GeneViewDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
+use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
 
 class GeneInfoService implements GeneInfoServiceInterface
 {
     /** @var GeneDataProviderInterface  */
     private $geneRepository;
-    
-    public function __construct(GeneDataProviderInterface $geneRepository)
+    /** @var GeneExpressionDataProviderInterface */
+    private $geneExpressionDataProvider;
+
+    public function __construct(
+        GeneDataProviderInterface $geneRepository,
+        GeneExpressionDataProviderInterface $geneExpressionDataProvider)
     {
         $this->geneRepository = $geneRepository;
+        $this->geneExpressionDataProvider = $geneExpressionDataProvider;
     }
 
     /**
@@ -22,7 +28,9 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneArray = $this->geneRepository->getGene($geneId);
 
         // todo dto mapper
-        return $this->mapViewDto($geneArray, $lang);
+        $geneDto = $this->mapViewDto($geneArray, $lang);
+        $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneId, $lang);
+        return $geneDto;
     }
 
     /**
@@ -71,8 +79,6 @@ class GeneInfoService implements GeneInfoServiceInterface
             $functionalCluster = preg_replace('/[\/]/', '_', $functionalCluster);
             $functionalCluster = \Yii::t('main', $functionalCluster, [], $lang);
         }
-        $geneExpression = $lang == 'en-US' ? $geneArray['expressionEN'] : $geneArray['expression'];
-        $geneExpression = json_decode($geneExpression, true);
         $geneCommentsReferenceLinks = [];
         $geneCommentsReferenceLinksSource = explode(',', $geneArray['commentsReferenceLinks']);
         foreach ($geneCommentsReferenceLinksSource as $commentsRef) {
@@ -95,7 +101,6 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $geneFunctionalClusters;
-        $geneDto->expression = $geneExpression;
         $geneDto->expressionChange = $geneArray['expressionChange'];
 
         return $geneDto;
