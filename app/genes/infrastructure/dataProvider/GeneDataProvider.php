@@ -10,7 +10,7 @@ class GeneDataProvider implements GeneDataProviderInterface
     /** @inheritDoc */
     public function getGene($geneId): array
     {
-        $geneArray = (new GeneQuery(Gene::class))
+        $geneArray = Gene::find()
             ->select('*')
             ->where(['ID' => $geneId])
             ->asArray()
@@ -23,9 +23,10 @@ class GeneDataProvider implements GeneDataProviderInterface
 
     public function getLatestGenes(int $count): array
     {
-        $genesArray = (new GeneQuery(Gene::class))
+        $genesArray = Gene::find()
             ->select('*')
-            ->orderBy('functionalClusters desc') // todo
+            ->where(['in', 'symbol', ['CISD2', 'EMD', 'ADCY5', 'AGTR1']]) // todo хардкод, пока нет реальных изменяемых данных
+            ->orderBy('updated_at desc') // todo
             ->limit($count)
             ->asArray()
             ->all();
@@ -34,7 +35,7 @@ class GeneDataProvider implements GeneDataProviderInterface
 
     public function getAllGenes(int $count = null): array // todo чем запрос всех генов будет отличаться от виджета последних?
     {
-        $genesArrayQuery = (new GeneQuery(Gene::class))
+        $genesArrayQuery = Gene::find()
             ->select('*')
             ->andWhere('commentEvolution != ""')
             ->andWhere('isHidden != 1')

@@ -5,7 +5,7 @@ class GeneViewDto
 {
     /** @var int */
     public $id;
-    /** @var int */
+    /** @var string */
     public $ageMya;
     /** @var string */
     public $agePhylo;

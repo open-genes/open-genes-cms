@@ -2,6 +2,7 @@
 namespace genes\application\service;
 
 use genes\application\dto\GeneViewDto;
+use genes\application\dto\LatestGeneViewDto;
 
 interface GeneInfoServiceInterface
 {
@@ -15,7 +16,7 @@ interface GeneInfoServiceInterface
     /**
      * @param int $count
      * @param string $lang
-     * @return GeneViewDto[]
+     * @return LatestGeneViewDto[]
      */
     public function getLatestGenes(int $count, string $lang = 'en-US'): array;
     /**

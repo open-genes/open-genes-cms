@@ -13,6 +13,9 @@ use yii\web\Response;
  */
 class ApiController extends Controller
 {
+    /** @var string */
+    private $language;
+
     public function behaviors()
     {
         return [
@@ -27,31 +30,52 @@ class ApiController extends Controller
         ];
     }
 
+    /**
+     * @param $action
+     * @return bool
+     * @throws \yii\web\BadRequestHttpException
+     */
+    public function beforeAction($action)
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $language = Yii::$app->request->getQueryParam('lang', 'en-US');
+        $this->language = (new LanguageMapHelper())->getMappedLanguage($language);
+        return parent::beforeAction($action);
+    }
+
     public function actionReference()
     {
+        Yii::$app->response->format = Response::FORMAT_HTML;
         return $this->render('reference');
     }
 
-    public function actionIndex($lang = 'en-US')
+    public function actionIndex()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $language = (new LanguageMapHelper())->getMappedLanguage($lang);
         /** @var GeneInfoServiceInterface $geneInfoService */
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
-        $geneDtos = $geneInfoService->getAllGenes(null, $language);
+        $geneDtos = $geneInfoService->getAllGenes(null, $this->language);
         return $geneDtos;
     }
 
-    public function actionGene($id, $lang = 'en-US')
+    /**
+     * @param $id
+     * @return \genes\application\dto\GeneViewDto
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionGene($id)
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-
-        $language = (new LanguageMapHelper())->getMappedLanguage($lang);
         /** @var GeneInfoServiceInterface $geneInfoService */
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
-        $geneDto = $geneInfoService->getGeneViewInfo($id, $language);
+        $geneDto = $geneInfoService->getGeneViewInfo($id, $this->language);
         return $geneDto;
+    }
+
+    public function actionLatest()
+    {
+        /** @var GeneInfoServiceInterface $geneInfoService */
+        $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
+        return $geneInfoService->getLatestGenes(4, $this->language);
     }
 
 }

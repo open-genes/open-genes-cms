@@ -2,6 +2,7 @@
 namespace genes\application\service;
 
 use genes\application\dto\GeneViewDto;
+use genes\application\dto\LatestGeneViewDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
 
@@ -41,7 +42,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $latestGenesArray = $this->geneRepository->getLatestGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
-            $geneDtos[] = $this->mapViewDto($latestGene, $lang);
+            $geneDtos[] = $this->mapLatestViewDto($latestGene, $lang);
         }
 
         return $geneDtos;
@@ -87,7 +88,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         }
 
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = (int)$geneArray['ageMya'];
+        $geneDto->ageMya = $geneArray['ageMya'];
         $geneDto->agePhylo = $geneArray['agePhylo'];
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
@@ -103,6 +104,16 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->functionalClusters = $geneFunctionalClusters;
         $geneDto->expressionChange = $geneArray['expressionChange'];
 
+        return $geneDto;
+    }
+
+    protected function mapLatestViewDto(array $geneArray, string $lang): LatestGeneViewDto
+    {
+        $geneDto = new LatestGeneViewDto();
+        $geneDto->id = (int)$geneArray['id'];
+        $geneDto->ageMya = $geneArray['ageMya'];
+        $geneDto->agePhylo = $geneArray['agePhylo'];
+        $geneDto->symbol = $geneArray['symbol'];
         return $geneDto;
     }
 }
