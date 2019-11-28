@@ -135,17 +135,20 @@ class GeneInfoService implements GeneInfoServiceInterface
      * @param string $geneFunctionalClustersString
      * @return FunctionalClusterDto[]
      */
-    private function mapFunctionalClusterDtos(string $geneFunctionalClustersString): array
+    private function mapFunctionalClusterDtos($geneFunctionalClustersString): array
     {
         $functionalClusterDtos = [];
-        $functionalClustersArray = explode(',', $geneFunctionalClustersString);
-        foreach ($functionalClustersArray as $functionalCluster) {
-            list($id, $name) = explode('|', $functionalCluster);
-            $functionalClusterDto = new FunctionalClusterDto();
-            $functionalClusterDto->id = $id;
-            $functionalClusterDto->name = $name;
-            $functionalClusterDtos[] = $functionalClusterDto;
+        if ($geneFunctionalClustersString) {
+            $functionalClustersArray = explode(',', $geneFunctionalClustersString);
+            foreach ($functionalClustersArray as $functionalCluster) {
+                list($id, $name) = explode('|', $functionalCluster);
+                $functionalClusterDto = new FunctionalClusterDto();
+                $functionalClusterDto->id = $id;
+                $functionalClusterDto->name = $name;
+                $functionalClusterDtos[] = $functionalClusterDto;
+            }
         }
+
         return $functionalClusterDtos;
     }
 }
