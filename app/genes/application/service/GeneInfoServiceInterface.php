@@ -26,4 +26,11 @@ interface GeneInfoServiceInterface
      * @return GeneListViewDto[]
      */
     public function getAllGenes(int $count = null, string $lang = 'en-US'): array;
+
+    /**
+     * @param array $functionalClustersIds
+     * @param string $lang
+     * @return GeneListViewDto[]
+     */
+    public function getByFunctionalClustersIds(array $functionalClustersIds, string $lang = 'en-US'): array;
 }

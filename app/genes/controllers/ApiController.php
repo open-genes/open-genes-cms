@@ -78,4 +78,12 @@ class ApiController extends Controller
         return $geneInfoService->getLatestGenes(4, $this->language);
     }
 
+    public function actionByFunctionalCluster($ids)
+    {
+        $functionalClusterIds = explode(',', $ids);
+        /** @var GeneInfoServiceInterface $geneInfoService */
+        $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
+        return $geneInfoService->getByFunctionalClustersIds($functionalClusterIds, $this->language);
+    }
+
 }

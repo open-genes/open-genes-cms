@@ -11,7 +11,7 @@ use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
 class GeneInfoService implements GeneInfoServiceInterface
 {
     /** @var GeneDataProviderInterface  */
-    private $geneRepository;
+    private $geneDataProvider;
     /** @var GeneExpressionDataProviderInterface */
     private $geneExpressionDataProvider;
 
@@ -19,7 +19,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         GeneDataProviderInterface $geneRepository,
         GeneExpressionDataProviderInterface $geneExpressionDataProvider)
     {
-        $this->geneRepository = $geneRepository;
+        $this->geneDataProvider = $geneRepository;
         $this->geneExpressionDataProvider = $geneExpressionDataProvider;
     }
 
@@ -29,7 +29,7 @@ class GeneInfoService implements GeneInfoServiceInterface
      */
     public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneFullViewDto
     {
-        $geneArray = $this->geneRepository->getGene($geneId);
+        $geneArray = $this->geneDataProvider->getGene($geneId);
 
         // todo dto mapper
         $geneDto = $this->mapViewDto($geneArray, $lang);
@@ -42,7 +42,7 @@ class GeneInfoService implements GeneInfoServiceInterface
      */
     public function getLatestGenes(int $count, string $lang = 'en-US'): array
     {
-        $latestGenesArray = $this->geneRepository->getLatestGenes($count);
+        $latestGenesArray = $this->geneDataProvider->getLatestGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
             $geneDtos[] = $this->mapLatestViewDto($latestGene, $lang);
@@ -55,10 +55,21 @@ class GeneInfoService implements GeneInfoServiceInterface
      */
     public function getAllGenes(int $count = null, string $lang = 'en-US'): array
     {
-        $latestGenesArray = $this->geneRepository->getAllGenes($count);
+        $latestGenesArray = $this->geneDataProvider->getAllGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
             $geneDtos[] = $this->mapListViewDto($latestGene, $lang);
+        }
+
+        return $geneDtos;
+    }
+
+    public function getByFunctionalClustersIds(array $functionalClustersIds, string $lang = 'en-US'): array
+    {
+        $genesArray = $this->geneDataProvider->getByFunctionalClustersIds($functionalClustersIds);
+        $geneDtos = [];
+        foreach ($genesArray as $gene) {
+            $geneDtos[] = $this->mapListViewDto($gene, $lang);
         }
 
         return $geneDtos;
@@ -143,7 +154,7 @@ class GeneInfoService implements GeneInfoServiceInterface
             foreach ($functionalClustersArray as $functionalCluster) {
                 list($id, $name) = explode('|', $functionalCluster);
                 $functionalClusterDto = new FunctionalClusterDto();
-                $functionalClusterDto->id = $id;
+                $functionalClusterDto->id = (int)$id;
                 $functionalClusterDto->name = $name;
                 $functionalClusterDtos[] = $functionalClusterDto;
             }

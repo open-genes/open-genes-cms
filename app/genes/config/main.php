@@ -57,7 +57,8 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'about' => 'site/about',
-                'api/gene/<id:\d+>' => 'api/gene'
+                'api/gene/<id:\d+>' => 'api/gene',
+                'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster'
             ],
         ],
     ],

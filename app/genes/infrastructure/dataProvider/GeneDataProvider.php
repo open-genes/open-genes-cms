@@ -24,6 +24,7 @@ class GeneDataProvider implements GeneDataProviderInterface
         return $geneArray;
     }
 
+    /** @inheritDoc */
     public function getLatestGenes(int $count): array
     {
         $genesArray = Gene::find()
@@ -37,6 +38,7 @@ class GeneDataProvider implements GeneDataProviderInterface
         return $genesArray;
     }
 
+    /** @inheritDoc */
     public function getAllGenes(int $count = null): array
     {
         $genesArrayQuery = Gene::find()
@@ -52,6 +54,30 @@ class GeneDataProvider implements GeneDataProviderInterface
          if($count) {
              $genesArrayQuery->limit($count);
          }
+        $genesArray = $genesArrayQuery->all();
+        return $genesArray;
+    }
+
+    /** @inheritDoc */
+    public function getByFunctionalClustersIds(array $functionalClustersIds): array
+    {
+        $genesArrayQuery = Gene::find()
+            ->select('gene.*')
+            ->withAge()
+            ->withFunctionalClustersConcat()
+
+            ->andWhere('commentEvolution != ""')
+            ->andWhere('isHidden != 1')
+            ->orderBy('ageMya DESC')
+            ->groupBy('gene.id')
+            ->asArray();
+        $joinCounter = 0;
+        foreach($functionalClustersIds as $functionalClustersId) {
+            $genesArrayQuery->innerJoin(
+                "gene_to_functional_cluster filter_cluster_{$joinCounter}",
+                ['and', "filter_cluster_{$joinCounter}.gene_id = gene.id", ["filter_cluster_{$joinCounter}.functional_cluster_id" => $functionalClustersId]]);
+            $joinCounter++;
+        }
         $genesArray = $genesArrayQuery->all();
         return $genesArray;
     }
