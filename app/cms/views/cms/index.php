@@ -1,6 +1,6 @@
 <?php
 
-use genes\application\dto\GeneViewDto;
+use genes\application\dto\GeneFullViewDto;
 /**
  * @var $dataProvider \yii\data\ActiveDataProvider
  */

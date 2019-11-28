@@ -1,7 +1,9 @@
 <?php
 namespace genes\application\service;
 
-use genes\application\dto\GeneViewDto;
+use genes\application\dto\FunctionalClusterDto;
+use genes\application\dto\GeneFullViewDto;
+use genes\application\dto\GeneListViewDto;
 use genes\application\dto\LatestGeneViewDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
@@ -23,8 +25,9 @@ class GeneInfoService implements GeneInfoServiceInterface
 
     /**
      * @inheritDoc
+     * @throws \yii\web\NotFoundHttpException
      */
-    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneViewDto
+    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneFullViewDto
     {
         $geneArray = $this->geneRepository->getGene($geneId);
 
@@ -55,15 +58,15 @@ class GeneInfoService implements GeneInfoServiceInterface
         $latestGenesArray = $this->geneRepository->getAllGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
-            $geneDtos[] = $this->mapViewDto($latestGene, $lang);
+            $geneDtos[] = $this->mapListViewDto($latestGene, $lang);
         }
 
         return $geneDtos;
     }
 
-    protected function mapViewDto(array $geneArray, string $lang): GeneViewDto
+    protected function mapViewDto(array $geneArray, string $lang): GeneFullViewDto
     {
-        $geneDto = new GeneViewDto();
+        $geneDto = new GeneFullViewDto();
 
         $geneCommentCause =  explode(',', $geneArray['commentCause']);
         foreach ($geneCommentCause as &$commentsCauseItem) {
@@ -73,13 +76,7 @@ class GeneInfoService implements GeneInfoServiceInterface
             $commentsCauseItem = preg_replace('/[\/+]/', '_', $commentsCauseItem);
             $commentsCauseItem = \Yii::t('main', $commentsCauseItem, [], $lang); // todo временно. надо перенести переводы в бд, убрать отсюда вызов фреймворка
         }
-        $geneFunctionalClusters = $geneArray['functionalClusters'] ? explode(',', $geneArray['functionalClusters']) : [];
-        foreach ($geneFunctionalClusters as &$functionalCluster) {
-            $functionalCluster = preg_replace('/\s+/', '_', $functionalCluster);
-            $functionalCluster = preg_replace('/^_/', '', $functionalCluster);
-            $functionalCluster = preg_replace('/[\/]/', '_', $functionalCluster);
-            $functionalCluster = \Yii::t('main', $functionalCluster, [], $lang);
-        }
+        $geneFunctionalClustersString = $lang == 'en-US' ? $geneArray['functional_clusters_en'] : $geneArray['functional_clusters_ru'];
         $geneCommentsReferenceLinks = [];
         $geneCommentsReferenceLinksSource = explode(',', $geneArray['commentsReferenceLinks']);
         foreach ($geneCommentsReferenceLinksSource as $commentsRef) {
@@ -88,8 +85,8 @@ class GeneInfoService implements GeneInfoServiceInterface
         }
 
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = $geneArray['ageMya'];
-        $geneDto->agePhylo = $geneArray['agePhylo'];
+        $geneDto->ageMya = $geneArray['age_mya'];
+        $geneDto->agePhylo = $geneArray['age_phylo'];
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->name = $geneArray['name'];
@@ -101,7 +98,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->commentAging = $lang == 'en-US' ? $geneArray['commentAgingEN'] : $geneArray['commentAging'];
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
-        $geneDto->functionalClusters = $geneFunctionalClusters;
+        $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneFunctionalClustersString);
         $geneDto->expressionChange = $geneArray['expressionChange'];
 
         return $geneDto;
@@ -111,9 +108,44 @@ class GeneInfoService implements GeneInfoServiceInterface
     {
         $geneDto = new LatestGeneViewDto();
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = $geneArray['ageMya'];
-        $geneDto->agePhylo = $geneArray['agePhylo'];
+        $geneDto->ageMya = $geneArray['age_mya'];
+        $geneDto->agePhylo = $geneArray['age_phylo'];
         $geneDto->symbol = $geneArray['symbol'];
         return $geneDto;
+    }
+
+    protected function mapListViewDto(array $geneArray, string $lang): GeneListViewDto
+    {
+        $geneFunctionalClustersString = $lang == 'en-US' ? $geneArray['functional_clusters_en'] : $geneArray['functional_clusters_ru'];
+        $geneDto = new GeneListViewDto();
+        $geneDto->id = (int)$geneArray['id'];
+        $geneDto->name = $geneArray['name'];
+        $geneDto->ageMya = $geneArray['age_mya'];
+        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->symbol = $geneArray['symbol'];
+        $geneDto->entrezGene = $geneArray['entrezGene'];
+        $geneDto->uniprot = $geneArray['uniprot'];
+        $geneDto->expressionChange = \Yii::t('main', $geneArray['expressionChange'], [], $lang); // todo
+        $geneDto->aliases = explode(' ', $geneArray['aliases']);
+        $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneFunctionalClustersString);
+        return $geneDto;
+    }
+
+    /**
+     * @param string $geneFunctionalClustersString
+     * @return FunctionalClusterDto[]
+     */
+    private function mapFunctionalClusterDtos(string $geneFunctionalClustersString): array
+    {
+        $functionalClusterDtos = [];
+        $functionalClustersArray = explode(',', $geneFunctionalClustersString);
+        foreach ($functionalClustersArray as $functionalCluster) {
+            list($id, $name) = explode('|', $functionalCluster);
+            $functionalClusterDto = new FunctionalClusterDto();
+            $functionalClusterDto->id = $id;
+            $functionalClusterDto->name = $name;
+            $functionalClusterDtos[] = $functionalClusterDto;
+        }
+        return $functionalClusterDtos;
     }
 }

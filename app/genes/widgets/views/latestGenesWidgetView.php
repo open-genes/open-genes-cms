@@ -1,5 +1,5 @@
 <?php
-/** @var $geneDtos \genes\application\dto\GeneViewDto[] */
+/** @var $geneDtos \genes\application\dto\GeneFullViewDto[] */
 ?>
 <div class="col col-16">
     <section class="view-latest">

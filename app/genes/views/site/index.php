@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $genes \genes\application\dto\GeneViewDto[]
+ * @var $genes \genes\application\dto\GeneListViewDto[]
  * @var $latestGenesDtos array
  */
 
@@ -139,7 +139,7 @@ use genes\widgets\LatestGenesWidget;
                                     <? if ($gene->functionalClusters): ?>
                                         <span class="td__label"><?= Yii::t('main', 'main_page_table_functional_clusters') ?></span>
                                         <? foreach ($gene->functionalClusters as $functionalCluster): ?>
-                                            <a href="" class="tag"><?= Yii::t('main', $functionalCluster) ?></a>
+                                            <a href="" class="tag"><?= $functionalCluster->name ?></a>
                                         <? endforeach; ?>
                                     <? endif; ?>
                                 </div>

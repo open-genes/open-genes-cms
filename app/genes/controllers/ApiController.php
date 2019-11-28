@@ -59,7 +59,7 @@ class ApiController extends Controller
 
     /**
      * @param $id
-     * @return \genes\application\dto\GeneViewDto
+     * @return \genes\application\dto\GeneFullViewDto
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */

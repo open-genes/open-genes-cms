@@ -1,7 +1,7 @@
 <?php
 namespace genes\application\dto;
 
-class GeneViewDto
+class GeneFullViewDto
 {
     /** @var int */
     public $id;
@@ -31,7 +31,7 @@ class GeneViewDto
     public $commentsReferenceLinks;
     /** @var string */
     public $rating;
-    /** @var array */
+    /** @var FunctionalClusterDto[] */
     public $functionalClusters;
     /** @var array [$geneName => $geneExpression[]] */
     public $expression;

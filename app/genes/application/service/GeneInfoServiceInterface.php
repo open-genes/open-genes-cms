@@ -1,7 +1,8 @@
 <?php
 namespace genes\application\service;
 
-use genes\application\dto\GeneViewDto;
+use genes\application\dto\GeneFullViewDto;
+use genes\application\dto\GeneListViewDto;
 use genes\application\dto\LatestGeneViewDto;
 
 interface GeneInfoServiceInterface
@@ -9,9 +10,9 @@ interface GeneInfoServiceInterface
     /**
      * @param int $geneId
      * @param string $lang
-     * @return GeneViewDto
+     * @return GeneFullViewDto
      */
-    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneViewDto;
+    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneFullViewDto;
 
     /**
      * @param int $count
@@ -22,7 +23,7 @@ interface GeneInfoServiceInterface
     /**
      * @param int $count
      * @param string $lang
-     * @return GeneViewDto[]
+     * @return GeneListViewDto[]
      */
     public function getAllGenes(int $count = null, string $lang = 'en-US'): array;
 }

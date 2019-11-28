@@ -1,8 +1,8 @@
 <?php
 
-use genes\application\dto\GeneViewDto;
+use genes\application\dto\GeneFullViewDto;
 /**
- * @var $gene GeneViewDto
+ * @var $gene GeneFullViewDto
  */
 ?>
 <!--<meta http-equiv="refresh" content="0;URL=/redirect.php">-->
@@ -45,7 +45,7 @@ use genes\application\dto\GeneViewDto;
                 <div class="col col-16 header__functional-clusters">
                     <? if ($gene->functionalClusters): ?>
                         <? foreach ($gene->functionalClusters as $functionalCluster): ?>
-                            <a href="" class="tag"><?= $functionalCluster; ?></a>
+                            <a href="" class="tag"><?= $functionalCluster->name ?></a>
                         <? endforeach; ?>
                     <? else: ?>
                         <span class="tag __skeletal"></span>
