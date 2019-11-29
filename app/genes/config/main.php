@@ -65,7 +65,9 @@ $config = [
     'container' => [
         'definitions' => [
             \genes\application\service\GeneInfoServiceInterface::class => \genes\application\service\GeneInfoService::class,
-            \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneDataProvider::class,
+            \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => function(\yii\di\Container $container){
+                return new \genes\infrastructure\dataProvider\GeneDataProvider(Yii::$app->language);
+            },
             \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class
         ]
     ],

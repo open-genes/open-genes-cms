@@ -33,19 +33,13 @@ class GeneQuery extends \yii\db\ActiveQuery
     }
 
 
-    public function withFunctionalClustersConcat()
+    public function withFunctionalClusters($lang)
     {
+        $nameField = $lang == 'en-US' ? 'name_en' : 'name_ru';
         return $this
             ->addSelect([
-                'group_concat(concat(functional_cluster.id,\'|\',functional_cluster.name_en)) as functional_clusters_en',
-                'group_concat(concat(functional_cluster.id,\'|\',functional_cluster.name_ru)) as functional_clusters_ru'
+                'group_concat(distinct concat(functional_cluster.id,\'|\',functional_cluster.'. $nameField . ')) as functional_clusters'
             ])
-            ->withFunctionalClusters();
-    }
-
-    public function withFunctionalClusters()
-    {
-        return $this
             ->join(
                 'LEFT JOIN',
                 'gene_to_functional_cluster',
@@ -73,9 +67,13 @@ class GeneQuery extends \yii\db\ActiveQuery
             );
     }
 
-    public function withCommentCause()
+    public function withCommentCause($lang)
     {
+        $nameField = $lang == 'en-US' ? 'name_en' : 'name_ru';
         return $this
+            ->addSelect([
+                'group_concat(distinct comment_cause.'. $nameField . ') as comment_cause'
+            ])
             ->join(
                 'LEFT JOIN',
                 'gene_to_comment_cause',

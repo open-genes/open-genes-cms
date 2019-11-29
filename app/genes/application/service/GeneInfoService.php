@@ -25,13 +25,11 @@ class GeneInfoService implements GeneInfoServiceInterface
 
     /**
      * @inheritDoc
-     * @throws \yii\web\NotFoundHttpException
      */
     public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneFullViewDto
     {
         $geneArray = $this->geneDataProvider->getGene($geneId);
 
-        // todo dto mapper
         $geneDto = $this->mapViewDto($geneArray, $lang);
         $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneId, $lang);
         return $geneDto;
@@ -45,7 +43,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $latestGenesArray = $this->geneDataProvider->getLatestGenes($count);
         $geneDtos = [];
         foreach ($latestGenesArray as $latestGene) {
-            $geneDtos[] = $this->mapLatestViewDto($latestGene, $lang);
+            $geneDtos[] = $this->mapLatestViewDto($latestGene);
         }
 
         return $geneDtos;
@@ -78,23 +76,12 @@ class GeneInfoService implements GeneInfoServiceInterface
     protected function mapViewDto(array $geneArray, string $lang): GeneFullViewDto
     {
         $geneDto = new GeneFullViewDto();
-
-        $geneCommentCause =  explode(',', $geneArray['commentCause']);
-        foreach ($geneCommentCause as &$commentsCauseItem) {
-            $commentsCauseItem = (string) mb_strtolower($commentsCauseItem);
-            $commentsCauseItem = preg_replace('/\s+/', '_', $commentsCauseItem);
-            $commentsCauseItem = preg_replace('/^_/', '', $commentsCauseItem);
-            $commentsCauseItem = preg_replace('/[\/+]/', '_', $commentsCauseItem);
-            $commentsCauseItem = \Yii::t('main', $commentsCauseItem, [], $lang); // todo временно. надо перенести переводы в бд, убрать отсюда вызов фреймворка
-        }
-        $geneFunctionalClustersString = $lang == 'en-US' ? $geneArray['functional_clusters_en'] : $geneArray['functional_clusters_ru'];
         $geneCommentsReferenceLinks = [];
         $geneCommentsReferenceLinksSource = explode(',', $geneArray['commentsReferenceLinks']);
         foreach ($geneCommentsReferenceLinksSource as $commentsRef) {
             $commentsRefLink = preg_replace('/^(\s?<br>)?\s*\[[0-9\-]*\s*[[0-9\-]*]\s*/', '', $commentsRef);
             $geneCommentsReferenceLinks[$commentsRefLink] = $commentsRef;
         }
-
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->ageMya = $geneArray['age_mya'];
         $geneDto->agePhylo = $geneArray['age_phylo'];
@@ -103,19 +90,19 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->name = $geneArray['name'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
-        $geneDto->commentCause =  $geneCommentCause;
-        $geneDto->commentEvolution = $lang == 'en-US' ? $geneArray['commentEvolutionEN'] : $geneArray['commentEvolution'];
-        $geneDto->commentFunction = $lang == 'en-US' ? $geneArray['commentFunctionEN'] : $geneArray['commentFunction'];
-        $geneDto->commentAging = $lang == 'en-US' ? $geneArray['commentAgingEN'] : $geneArray['commentAging'];
+        $geneDto->commentCause =  explode(',', $geneArray['comment_cause']);
+        $geneDto->commentEvolution = $geneArray['comment_evolution'];
+        $geneDto->commentFunction = $geneArray['comment_function'];
+        $geneDto->commentAging = $geneArray['comment_aging'];
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
-        $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneFunctionalClustersString);
-        $geneDto->expressionChange = $geneArray['expressionChange'];
+        $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
+        $geneDto->expressionChange = $this->prepareExpressionChange($geneArray['expressionChange'], $lang);
 
         return $geneDto;
     }
 
-    protected function mapLatestViewDto(array $geneArray, string $lang): LatestGeneViewDto
+    private function mapLatestViewDto(array $geneArray): LatestGeneViewDto
     {
         $geneDto = new LatestGeneViewDto();
         $geneDto->id = (int)$geneArray['id'];
@@ -125,9 +112,8 @@ class GeneInfoService implements GeneInfoServiceInterface
         return $geneDto;
     }
 
-    protected function mapListViewDto(array $geneArray, string $lang): GeneListViewDto
+    private function mapListViewDto(array $geneArray, string $lang): GeneListViewDto
     {
-        $geneFunctionalClustersString = $lang == 'en-US' ? $geneArray['functional_clusters_en'] : $geneArray['functional_clusters_ru'];
         $geneDto = new GeneListViewDto();
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->name = $geneArray['name'];
@@ -136,9 +122,9 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
-        $geneDto->expressionChange = \Yii::t('main', $geneArray['expressionChange'], [], $lang); // todo
+        $geneDto->expressionChange = $this->prepareExpressionChange($geneArray['expressionChange'], $lang);
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
-        $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneFunctionalClustersString);
+        $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         return $geneDto;
     }
 
@@ -161,5 +147,19 @@ class GeneInfoService implements GeneInfoServiceInterface
         }
 
         return $functionalClusterDtos;
+    }
+
+    private static $expressionChangeEn = [
+        'уменьшается' => 'decrease',
+        'увеличивается' => 'increase',
+        'неоднозначно' => 'mixed',
+    ];
+
+    private function prepareExpressionChange($expressionChange, string $lang): ?string // todo изменить в бд хранение изменения экспрессии
+    {
+        if(!$expressionChange || !isset(self::$expressionChangeEn[$expressionChange])) {
+            return null;
+        }
+        return $lang == 'en-US' ? self::$expressionChangeEn[$expressionChange] : $expressionChange;
     }
 }
