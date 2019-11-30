@@ -30,6 +30,9 @@ $randomVersion = rand(10, 9999);
   <meta property='og:image' content='/images/social-cover.png'>
 </head>
 
+<body <?=(isset($this->params['bodyClass'])) ? 'class="' . $this->params['bodyClass'] . '"' : ''?>>
+<?php $this->beginBody() ?>
+
 <div class="loader" id="js_loader">
     <div class="loader__inner">
         <span class="spinner"></span>
@@ -41,7 +44,6 @@ $randomVersion = rand(10, 9999);
        href="/"
        title="<?= Yii::t('main', 'main_page_link'); ?>">
     </a>
-
 
     <? if (Yii::$app->user->isGuest): ?>
     <div class="header__signin">
@@ -124,8 +126,6 @@ $randomVersion = rand(10, 9999);
             </form>
         <? endif; ?>
 </header>
-<body>
-<?php $this->beginBody() ?>
 
 <?= Alert::widget() ?>
 <?= $content ?>

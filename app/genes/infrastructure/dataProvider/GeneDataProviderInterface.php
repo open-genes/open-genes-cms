@@ -15,4 +15,16 @@ interface GeneDataProviderInterface
     public function getLatestGenes(int $count): array;
 
     public function getAllGenes(int $count = null): array;
+
+    /**
+     * @param int[] $functionalClustersIds
+     * @return array
+     */
+    public function getByFunctionalClustersIds(array $functionalClustersIds): array;
+
+    /**
+     * @param string $expressionChange
+     * @return array
+     */
+    public function getByExpressionChange(string $expressionChange): array;
 }

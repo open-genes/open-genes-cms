@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $genes \genes\application\dto\GeneViewDto[]
+ * @var $genes \genes\application\dto\GeneListViewDto[]
  * @var $latestGenesDtos array
  */
 
@@ -81,6 +81,13 @@ use genes\widgets\LatestGenesWidget;
 
                         <div class="th th--wide">
                             <div class="th__title">
+                                <b><?= Yii::t('main', 'main_page_table_gene_expression') ?></b>
+                            </div>
+                        </div>
+
+
+                        <div class="th th--wide">
+                            <div class="th__title">
                                 <b><?= Yii::t('main', 'diseases') ?></b>
                             </div>
                         </div>
@@ -100,13 +107,12 @@ use genes\widgets\LatestGenesWidget;
                             >
                                 <div class="td td-name">
                                     <div class="td__title">
-                                        <a href="gene?gene=<?= $gene->id ?>"
+                                        <a href="gene?gene=<?= $gene->id; ?>"
                                            class="link">
                                             <b>
-                                                <?= $gene->symbol ?>
+                                                <?= $gene->symbol; ?>
                                             </b>
-                                            <?= $gene->name; ?>
-                                        </a>
+                                            <?= $gene->name; ?></a>
 
                                         <a href="https://genomics.senescence.info/genes/entry.php?hgnc=<?= $gene->symbol; ?>"
                                            target="_blank"
@@ -133,8 +139,17 @@ use genes\widgets\LatestGenesWidget;
                                     <? if ($gene->functionalClusters): ?>
                                         <span class="td__label"><?= Yii::t('main', 'main_page_table_functional_clusters') ?></span>
                                         <? foreach ($gene->functionalClusters as $functionalCluster): ?>
-                                            <a href="" class="tag"><?= Yii::t('main', $functionalCluster) ?></a>
+                                            <a href="" class="tag"><?= $functionalCluster->name ?></a>
                                         <? endforeach; ?>
+                                    <? endif; ?>
+                                </div>
+
+                                <div class="td td--text-left td-expression">
+                                    <?php if ($gene->expressionChange): ?>
+                                        <span class="td__label"><?= Yii::t('main', 'main_page_table_expression') ?></span>
+                                            <a href=""
+                                               class="tag"
+                                            ><?= Yii::t('main', $gene->expressionChange) ?></a>
                                     <? endif; ?>
                                 </div>
 

@@ -20,18 +20,6 @@ $config = [
             'csrfParam' => '_csrf-genes',
             'cookieValidationKey' => '123',
         ],
-        'db' => [
-            'charset' => 'utf8',
-            'class' => yii\db\Connection::class,
-            'dsn' => getenv('DB_DSN'),
-            'username' => getenv('DB_USER'),
-            'password' => getenv('DB_PASS'),
-        ],
-        'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-genes', 'httpOnly' => true],
-        ],
         'i18n' => [
             'translations' => [
                 'main' => [
@@ -68,14 +56,20 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'about' => 'site/about'
+                'about' => 'site/about',
+                'api/gene/<id:\d+>' => 'api/gene',
+                'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster',
+                'api/by-expression-change/<expressionChange>' => 'api/by-expression-change'
             ],
         ],
     ],
     'container' => [
         'definitions' => [
             \genes\application\service\GeneInfoServiceInterface::class => \genes\application\service\GeneInfoService::class,
-            \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneDataProvider::class
+            \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => function(\yii\di\Container $container){
+                return new \genes\infrastructure\dataProvider\GeneDataProvider(Yii::$app->language);
+            },
+            \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class
         ]
     ],
     'defaultRoute' => 'site/index',

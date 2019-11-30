@@ -13,6 +13,7 @@ return [
     'main_page_table_name' => 'HGNC, name',
     'phylogeny' => 'Origin',
     'main_page_table_functional_clusters' => 'Functional clusters',
+    'main_page_table_gene_expression' => 'Age-related changes in expression:',
     'diseases' => 'Diseases',
     'main_page_table_interactions' => 'Interactions',
     'gene_page_link_disgenet' => 'Gene page on DisGenet',
@@ -30,6 +31,7 @@ return [
     'gene_page_expression_hint' => 'Provided by NCBI.',
     'gene_page_error_no_article_yet' => 'An article for this gene is not ready yet.',
     'gene_page_origin_unknown' => 'Unknown',
+    'gene_page_age_unknown' => 'Unknown',
     'about_page_title' => 'About Open Longevity Genes',
     'api-page_title' => 'API reference',
     'api-page_description' => 'Developers guide.',
@@ -76,6 +78,10 @@ return [
     'ассоциации_гена_с_долголетием_фенотипом_старения' => 'Associations of the gene with longevity/phenotype of aging',
     'участие_гена_в_связанных_со_старением_процессах_механизмах' => 'Gene involvement in aging-related processes or mechanisms',
     'ген_регулирует_связанные_со_старением_гены' => 'Gene regulates aging-related genes',
-    'использование_продукта_гена_в_часах_старения' => 'Gene product involvement in Aging Clock'
+    'использование_продукта_гена_в_часах_старения' => 'Gene product involvement in Aging Clock',
+    'увеличивается' => 'increased',
+    'уменьшается' => 'decreased',
+    'неоднозначно' => 'mixed',
+
 
 ];

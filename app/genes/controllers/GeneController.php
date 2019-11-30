@@ -20,6 +20,7 @@ class GeneController extends Controller
      */
     public function actionIndex($gene)
     {
+        $this->view->params['bodyClass'] = 'app-body app-body--gene';
         /** @var GeneInfoServiceInterface $geneInfoService */
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
         $geneDto = $geneInfoService->getGeneViewInfo((int)$gene, Yii::$app->language);
