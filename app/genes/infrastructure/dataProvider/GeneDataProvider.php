@@ -122,4 +122,20 @@ class GeneDataProvider implements GeneDataProviderInterface
         }
         return $genesArrayQuery->all();
     }
+
+    /** @inheritDoc */
+    public function getByExpressionChange(string $expressionChange): array
+    {
+        $genesArrayQuery = Gene::find()
+            ->select($this->fields)
+            ->withAge()
+            ->withFunctionalClusters($this->lang)
+            ->andWhere('commentEvolution != ""')
+            ->andWhere('isHidden != 1')
+            ->andWhere(['gene.expressionChange' => $expressionChange])
+            ->orderBy('age.order DESC')
+            ->groupBy('gene.id')
+            ->asArray();
+        return $genesArrayQuery->all();
+    }
 }

@@ -5,6 +5,7 @@ use genes\application\service\GeneInfoServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
 use yii\filters\Cors;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\Response;
 
@@ -84,6 +85,16 @@ class ApiController extends Controller
         /** @var GeneInfoServiceInterface $geneInfoService */
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
         return $geneInfoService->getByFunctionalClustersIds($functionalClusterIds, $this->language);
+    }
+
+    public function actionByExpressionChange($expressionChange)
+    {
+        /** @var GeneInfoServiceInterface $geneInfoService */
+        if(!in_array($expressionChange, ['increased', 'decreased', 'mixed'])) { // todo сделать форму с валидацией
+            throw new BadRequestHttpException('expressionChange must be one of \'increased\', \'decreased\', \'mixed\'');
+        }
+        $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
+        return $geneInfoService->getByExpressionChange($expressionChange, $this->language);
     }
 
 }

@@ -21,4 +21,10 @@ interface GeneDataProviderInterface
      * @return array
      */
     public function getByFunctionalClustersIds(array $functionalClustersIds): array;
+
+    /**
+     * @param string $expressionChange
+     * @return array
+     */
+    public function getByExpressionChange(string $expressionChange): array;
 }

@@ -7,6 +7,7 @@ use genes\application\dto\GeneListViewDto;
 use genes\application\dto\LatestGeneViewDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
+use yii\base\Exception;
 
 class GeneInfoService implements GeneInfoServiceInterface
 {
@@ -73,6 +74,17 @@ class GeneInfoService implements GeneInfoServiceInterface
         return $geneDtos;
     }
 
+    public function getByExpressionChange(string $expressionChange, string $lang = 'en-US'): array
+    {
+        $genesArray = $this->geneDataProvider->getByExpressionChange($this->prepareExpressionChangeForQuery($expressionChange));
+        $geneDtos = [];
+        foreach ($genesArray as $gene) {
+            $geneDtos[] = $this->mapListViewDto($gene, $lang);
+        }
+
+        return $geneDtos;
+    }
+
     protected function mapViewDto(array $geneArray, string $lang): GeneFullViewDto
     {
         $geneDto = new GeneFullViewDto();
@@ -97,7 +109,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
-        $geneDto->expressionChange = $this->prepareExpressionChange($geneArray['expressionChange'], $lang);
+        $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
 
         return $geneDto;
     }
@@ -122,7 +134,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
-        $geneDto->expressionChange = $this->prepareExpressionChange($geneArray['expressionChange'], $lang);
+        $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         return $geneDto;
@@ -150,16 +162,24 @@ class GeneInfoService implements GeneInfoServiceInterface
     }
 
     private static $expressionChangeEn = [
-        'уменьшается' => 'decrease',
-        'увеличивается' => 'increase',
+        'уменьшается' => 'decreased',
+        'увеличивается' => 'increased',
         'неоднозначно' => 'mixed',
     ];
 
-    private function prepareExpressionChange($expressionChange, string $lang): ?string // todo изменить в бд хранение изменения экспрессии
+    private function prepareExpressionChangeForView($expressionChange, string $lang): ?string // todo изменить в бд хранение изменения экспрессии
     {
         if(!$expressionChange || !isset(self::$expressionChangeEn[$expressionChange])) {
             return null;
         }
         return $lang == 'en-US' ? self::$expressionChangeEn[$expressionChange] : $expressionChange;
+    }
+
+    private function prepareExpressionChangeForQuery($expressionChange): ?string // todo изменить в бд хранение изменения экспрессии
+    {
+        if(!$expressionChange || !in_array($expressionChange, self::$expressionChangeEn)) {
+            throw new Exception('invalid $expressionChange value');
+        }
+        return array_search($expressionChange, self::$expressionChangeEn);
     }
 }

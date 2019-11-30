@@ -58,7 +58,8 @@ $config = [
             'rules' => [
                 'about' => 'site/about',
                 'api/gene/<id:\d+>' => 'api/gene',
-                'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster'
+                'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster',
+                'api/by-expression-change/<expressionChange>' => 'api/by-expression-change'
             ],
         ],
     ],
