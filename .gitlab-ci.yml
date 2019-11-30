@@ -38,6 +38,9 @@ deploy-dev:
   variables:
     PROJECT_DIR: /var/www/${PROJECT_DEV_NAME}
     PROJECT_DOTENV: ${DROPLET_DEV_DOTENV}
+  only:
+    - develop
+    - master
 
 deploy-stage:
   extends: .deploy
@@ -57,7 +60,6 @@ deploy-prod:
     PROJECT_DOTENV: ${DROPLET_PROD_DOTENV}
   only:
     - master
-    - develop # todo temporary while open-genes.com is not a real production
 
 .deploy:
   stage: staging
