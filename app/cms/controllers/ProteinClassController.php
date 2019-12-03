@@ -3,16 +3,16 @@
 namespace cms\controllers;
 
 use Yii;
-use cms\models\GeneToFunctionRelationType;
+use cms\models\ProteinClass;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GeneToFunctionRelationTypeController implements the CRUD actions for GeneToFunctionRelationType model.
+ * ProteinClassController implements the CRUD actions for ProteinClass model.
  */
-class GeneToFunctionRelationTypeController extends Controller
+class ProteinClassController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class GeneToFunctionRelationTypeController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
@@ -30,13 +30,13 @@ class GeneToFunctionRelationTypeController extends Controller
     }
 
     /**
-     * Lists all GeneToFunctionRelationType models.
+     * Lists all ProteinClass models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => GeneToFunctionRelationType::find(),
+            'query' => ProteinClass::find(),
         ]);
 
         return $this->render('index', [
@@ -45,16 +45,16 @@ class GeneToFunctionRelationTypeController extends Controller
     }
 
     /**
-     * Creates a new GeneToFunctionRelationType model.
+     * Creates a new ProteinClass model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new GeneToFunctionRelationType();
+        $model = new ProteinClass();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -63,7 +63,7 @@ class GeneToFunctionRelationTypeController extends Controller
     }
 
     /**
-     * Updates an existing GeneToFunctionRelationType model.
+     * Updates an existing ProteinClass model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -74,7 +74,7 @@ class GeneToFunctionRelationTypeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -83,7 +83,7 @@ class GeneToFunctionRelationTypeController extends Controller
     }
 
     /**
-     * Deletes an existing GeneToFunctionRelationType model.
+     * Deletes an existing ProteinClass model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -97,15 +97,15 @@ class GeneToFunctionRelationTypeController extends Controller
     }
 
     /**
-     * Finds the GeneToFunctionRelationType model based on its primary key value.
+     * Finds the ProteinClass model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return GeneToFunctionRelationType the loaded model
+     * @return ProteinClass the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = GeneToFunctionRelationType::findOne($id)) !== null) {
+        if (($model = ProteinClass::findOne($id)) !== null) {
             return $model;
         }
 

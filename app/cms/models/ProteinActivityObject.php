@@ -2,12 +2,15 @@
 
 namespace cms\models;
 
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
+ * This is the model class for table "age".
+ *
  */
-class GeneFunction extends \common\models\GeneFunction
+class ProteinActivityObject extends \common\models\ProteinActivityObject
 {
     public $name;
 
@@ -25,6 +28,4 @@ class GeneFunction extends \common\models\GeneFunction
             ->all();
         return ArrayHelper::map($result, 'id', 'name');
     }
-
-
 }

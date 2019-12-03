@@ -6,24 +6,29 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Gene To Function Relation Types';
+$this->title = 'Protein Activities';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="gene-to-function-relation-type-index">
+<div class="protein-activity-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Gene To Function Relation Type', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Protein Activity', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
             'id',
             'name_en',
             'name_ru',
+            'created_at',
+            'updated_at',
+
             ['class' => 'yii\grid\ActionColumn', 'template' => '{update}'],
         ],
     ]); ?>

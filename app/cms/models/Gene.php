@@ -192,12 +192,4 @@ class Gene extends \common\models\Gene
         parent::afterSave($insert, $changedAttributes);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToFunctions()
-    {
-        return $this->hasMany(GeneToFunction::class, ['gene_id' => 'id']);
-    }
-
 }

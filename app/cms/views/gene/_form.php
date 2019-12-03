@@ -1,8 +1,5 @@
 <?php
 
-use cms\models\GeneFunction;
-use cms\models\GeneToFunctionRelationType;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,6 +9,10 @@ use yii\widgets\ActiveForm;
 /* @var $allCommentCauses [] */
 /* @var $allAges[] */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerJsFile('/assets/js/gene.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+$this->registerCssFile('/assets/css/gene.css');
+
 ?>
 
 <div class="gene-form">
@@ -109,48 +110,26 @@ use yii\widgets\ActiveForm;
     <div class="form-split">
         <h4>Функции гена:</h4>
     </div>
-    <div class="form-half-without-margin">
-        <div class="form-half">
-            <label>Связь</label>
+    <div class="form-two-thirds">
+        <div class="form-third">
+            <label>Активность</label>
         </div>
-        <div class="form-half">
-            <label>Функция</label>
+        <div class="form-third">
+            <label>Объект</label>
         </div>
-    </div>
-    <div class="form-half-without-margin">
-        <div class="form-half">
-            <label>Ссылка</label>
-        </div>
-        <div class="form-half">
-            <label>Примечание</label>
+        <div class="form-third">
+            <label>Локализация</label>
         </div>
     </div>
-    <?php foreach ($model->geneToFunctions as $geneToFunction): ?>
-        <div class="form-half-without-margin">
-            <div class="form-half">
-                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']gene_to_function_relation_type_id')->widget(\kartik\select2\Select2::class, [
-                    'data' => GeneToFunctionRelationType::getAllNamesAsArray(),
-                    'options' => ['multiple' => false],
-                    'pluginOptions' => ['allowClear' => true],
-                ])->label(false); ?>
-            </div>
-            <div class="form-half">
-                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']function_id')->widget(\kartik\select2\Select2::class, [
-                    'data' => GeneFunction::getAllNamesAsArray(),
-                    'options' => ['multiple' => false],
-                    'pluginOptions' => ['allowClear' => true],
-                ])->label(false); ?>
-            </div>
-        </div>
-        <div class="form-half-without-margin">
-            <div class="form-half">
-                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']reference')->textInput(['maxlength' => true])->label(false) ?>
-            </div>
-            <div class="form-half">
-                <?= $form->field($geneToFunction, '[' . $geneToFunction->id . ']comment')->textInput(['maxlength' => true])->label(false) ?>
-            </div>
-        </div>
-    <?php endforeach; ?>
+    <div class="form-third">
+        <label>Комментарий</label>
+    </div>
+    <div class="js-protein-activities">
+        <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
+            <?= \cms\widgets\GeneProteinActivity::widget(['geneToProteinActivity' => $geneToProteinActivity]) ?>
+        <?php endforeach; ?>
+    </div>
+    <?= Html::button('Добавить', ['class' => 'btn js-add-protein-activity']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
@@ -158,32 +137,3 @@ use yii\widgets\ActiveForm;
 
     <?php ActiveForm::end(); ?>
 </div>
-
-<!-- todo create styles for cms -->
-<style>
-    .form-half {
-        width: 47%;
-        float: left;
-        margin-right: 3%;
-    }
-    .form-half-without-margin {
-        width: 50%;
-        float: left;
-    }
-    .form-split:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-    .rel-link {
-        position: absolute;
-        margin-top: -13px;
-        font-size: smaller;
-    }
-    textarea {
-        white-space: pre-wrap;
-    }
-    .select2-selection__rendered {
-        cursor: text;
-    }
-</style>

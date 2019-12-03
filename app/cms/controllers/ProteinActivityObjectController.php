@@ -3,16 +3,16 @@
 namespace cms\controllers;
 
 use Yii;
-use cms\models\GeneFunction;
+use cms\models\ProteinActivityObject;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * GeneFunctionController implements the CRUD actions for GeneFunction model.
+ * ProteinActivityObjectController implements the CRUD actions for ProteinActivityObject model.
  */
-class GeneFunctionController extends Controller
+class ProteinActivityObjectController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,13 +30,13 @@ class GeneFunctionController extends Controller
     }
 
     /**
-     * Lists all GeneFunction models.
+     * Lists all ProteinActivityObject models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => GeneFunction::find(),
+            'query' => ProteinActivityObject::find(),
         ]);
 
         return $this->render('index', [
@@ -45,13 +45,13 @@ class GeneFunctionController extends Controller
     }
 
     /**
-     * Creates a new GeneFunction model.
+     * Creates a new ProteinActivityObject model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new GeneFunction();
+        $model = new ProteinActivityObject();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
@@ -63,7 +63,7 @@ class GeneFunctionController extends Controller
     }
 
     /**
-     * Updates an existing GeneFunction model.
+     * Updates an existing ProteinActivityObject model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -83,7 +83,7 @@ class GeneFunctionController extends Controller
     }
 
     /**
-     * Deletes an existing GeneFunction model.
+     * Deletes an existing ProteinActivityObject model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -97,15 +97,15 @@ class GeneFunctionController extends Controller
     }
 
     /**
-     * Finds the GeneFunction model based on its primary key value.
+     * Finds the ProteinActivityObject model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return GeneFunction the loaded model
+     * @return ProteinActivityObject the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = GeneFunction::findOne($id)) !== null) {
+        if (($model = ProteinActivityObject::findOne($id)) !== null) {
             return $model;
         }
 

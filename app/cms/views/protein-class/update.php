@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\GeneToFunctionRelationType */
+/* @var $model cms\models\ProteinClass */
 
-$this->title = 'Update Gene To Function Relation Type: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Gene To Function Relation Types', 'url' => ['index']];
+$this->title = 'Update Protein Class: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Protein Classes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="gene-to-function-relation-type-update">
+<div class="protein-class-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

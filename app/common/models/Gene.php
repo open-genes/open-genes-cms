@@ -46,11 +46,13 @@ use Yii;
  * @property int $age_id
  * @property string $product_ru
  * @property string $product_en
+ * @property int $protein_class_id
  *
  * @property Age $age
+ * @property ProteinClass $proteinClass
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneToCommentCause[] $geneToCommentCauses
- * @property GeneToFunction[] $geneToFunctions
+ * @property GeneToProteinActivity[] $geneToProteinActivities
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -68,7 +70,7 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
+            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id', 'protein_class_id'], 'integer'],
             [['dateAdded'], 'required'],
             [['expression', 'expressionEN'], 'string'],
             [['agePhylo', 'symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
@@ -79,6 +81,7 @@ class Gene extends \yii\db\ActiveRecord
             [['expressionChange'], 'string', 'max' => 64],
             [['product_ru', 'product_en'], 'string', 'max' => 255],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Age::className(), 'targetAttribute' => ['age_id' => 'id']],
+            [['protein_class_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProteinClass::className(), 'targetAttribute' => ['protein_class_id' => 'id']],
         ];
     }
 
@@ -127,6 +130,7 @@ class Gene extends \yii\db\ActiveRecord
             'age_id' => 'Age ID',
             'product_ru' => 'Product Ru',
             'product_en' => 'Product En',
+            'protein_class_id' => 'Protein Class ID',
         ];
     }
 
@@ -136,6 +140,14 @@ class Gene extends \yii\db\ActiveRecord
     public function getAge()
     {
         return $this->hasOne(Age::className(), ['id' => 'age_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProteinClass()
+    {
+        return $this->hasOne(ProteinClass::className(), ['id' => 'protein_class_id']);
     }
 
     /**
@@ -157,9 +169,9 @@ class Gene extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGeneToFunctions()
+    public function getGeneToProteinActivities()
     {
-        return $this->hasMany(GeneToFunction::className(), ['gene_id' => 'id']);
+        return $this->hasMany(GeneToProteinActivity::className(), ['gene_id' => 'id']);
     }
 
     /**
