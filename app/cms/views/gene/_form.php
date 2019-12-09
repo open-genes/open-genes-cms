@@ -105,31 +105,17 @@ $this->registerCssFile('/assets/css/gene.css');
         <div class="form-half">
             <?= $form->field($model, 'product_en')->textInput(['maxlength' => true]) ?>
         </div>
-
+    <br>
     <br>
     <div class="form-split">
-        <h4>Функции гена:</h4>
-    </div>
-    <div class="form-two-thirds">
-        <div class="form-third">
-            <label>Активность</label>
-        </div>
-        <div class="form-third">
-            <label>Объект</label>
-        </div>
-        <div class="form-third">
-            <label>Локализация</label>
-        </div>
-    </div>
-    <div class="form-third">
-        <label>Комментарий</label>
+        <h4>Функции гена <?= $model->symbol ?>:</h4> <?= Html::button('Добавить', ['class' => 'btn js-add-protein-activity']) ?>
     </div>
     <div class="js-protein-activities">
         <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
             <?= \cms\widgets\GeneProteinActivity::widget(['geneToProteinActivity' => $geneToProteinActivity]) ?>
         <?php endforeach; ?>
     </div>
-    <?= Html::button('Добавить', ['class' => 'btn js-add-protein-activity']) ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

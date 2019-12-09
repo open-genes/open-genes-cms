@@ -6,3 +6,11 @@ $('.js-add-protein-activity').click(function () {
         $('.js-protein-activities').append(data);
     });
 });
+
+$('.js-delete').click(function () {
+    if ($(this).is(':checked')) {
+        $(this).closest('.js-protein-activity').find('.js-protein-activity-block').css('opacity', '0.5').css('pointer-events', 'none');
+    } else {
+        $(this).closest('.js-protein-activity').find('.js-protein-activity-block').removeAttr('style');
+    }
+});
