@@ -39,7 +39,7 @@ class GeneToProteinActivity extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'protein_activity_id', 'protein_activity_object_id', 'process_localization_id', 'created_at', 'updated_at'], 'integer'],
-            [['reference', 'comment'], 'string', 'max' => 255],
+            [['reference', 'comment_en', 'comment_ru'], 'string'],
             [['protein_activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProteinActivity::className(), 'targetAttribute' => ['protein_activity_id' => 'id']],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['process_localization_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProcessLocalization::className(), 'targetAttribute' => ['process_localization_id' => 'id']],
