@@ -54,7 +54,7 @@ class ProteinActivityObjectController extends Controller
         $model = new ProteinActivityObject();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -74,7 +74,7 @@ class ProteinActivityObjectController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

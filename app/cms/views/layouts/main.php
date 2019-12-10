@@ -54,9 +54,11 @@ use common\widgets\Alert;
         'items' => [
             ['label' => 'Гены', 'url' => ['/gene']],
             ['label' => 'Филумы', 'url' => ['/age']],
+            ['label' => 'Причины отбора', 'url' => ['/comment-cause']],
             ['label' => 'Функ. кластеры', 'url' => ['/functional-cluster']],
             ['label' => 'Активности белка', 'url' => ['/protein-activity']],
-            ['label' => 'Объекты ативности белка', 'url' => ['/protein-activity-object']],
+            ['label' => 'Объекты акт. белка', 'url' => ['/protein-activity-object']],
+            ['label' => 'Локализация', 'url' => ['/process-localization']],
             ],
     ]);
     echo Nav::widget([

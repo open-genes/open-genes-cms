@@ -46,3 +46,9 @@ textarea {
     font-weight: normal;
     color: #464646;
 }
+.protein-activity {
+    margin: 10px 5px;
+    padding: 5px;
+    background: #efefef;
+    border-radius: 5px;
+}

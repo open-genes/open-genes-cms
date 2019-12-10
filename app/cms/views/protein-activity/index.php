@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Protein Activities';
+$this->title = 'Активность протеина';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="protein-activity-index">
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Protein Activity', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить активность протеина', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 

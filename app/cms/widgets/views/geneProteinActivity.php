@@ -63,5 +63,4 @@
         </div>
     </div>
     <div class="delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($geneToProteinActivity, '[' . $geneToProteinActivity->id . ']delete', ['class' => 'js-delete']) ?></div>
-    <br>
 </div>
