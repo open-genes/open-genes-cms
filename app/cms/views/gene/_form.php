@@ -24,7 +24,6 @@ $this->registerCssFile('/assets/css/gene.css');
         <div class="form-half">
             <div class="form-split">
                 <div class="form-half">
-                    <a class="rel-link" href="/age" target="_blank">Управление происхождением</a> <!-- todo  -->
                     <?= $form->field($model, 'age_id')->dropDownList($allAges) ?>
                 </div>
                 <div class="form-half">
@@ -38,7 +37,6 @@ $this->registerCssFile('/assets/css/gene.css');
             </div>
         </div>
         <div class="form-half">
-          <a class="rel-link" href="/functional-cluster" target="_blank">Управление функциональными кластерами</a> <!-- todo  -->
             <?= $form->field($model, 'functionalClustersIdsArray')->widget(\kartik\select2\Select2::class, [
                 'data' => $allFunctionalClusters,
                 'options' => ['multiple' => true],
