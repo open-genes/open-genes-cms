@@ -49,10 +49,10 @@ class ProteinActivityObject extends \common\models\ProteinActivityObject
         $arProteinActivityObject = $proteinActivityObjectQuery->one();
         if(!$arProteinActivityObject) {
             $arProteinActivityObject = new self();
+            $arProteinActivityObject->name_ru = $nameRu;
+            $arProteinActivityObject->name_en = $nameEn;
+            $arProteinActivityObject->save();
         }
-        $arProteinActivityObject->name_ru = $nameRu;
-        $arProteinActivityObject->name_en = $nameEn;
-        $arProteinActivityObject->save();
         return $arProteinActivityObject;
     }
 }
