@@ -28,10 +28,12 @@
                     'data' => \cms\models\ProteinActivityObject::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Объект',
-                        'multiple' => false
+                        'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
                     ],
                 ]);
                 ?>

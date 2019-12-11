@@ -69,6 +69,10 @@ class GeneToProteinActivity extends \common\models\GeneToProteinActivity
                     continue;
                 }
                 $arGeneToProteinActivity->setAttributes($geneToProteinActivity);
+                if(!is_numeric($geneToProteinActivity['protein_activity_object_id'])) {
+                    $arProteinActivityObject = ProteinActivityObject::createFromNameString($geneToProteinActivity['protein_activity_object_id']);
+                    $arGeneToProteinActivity->protein_activity_object_id = $arProteinActivityObject->id;
+                }
                 $arGeneToProteinActivity->gene_id = $geneId;
                 if($arGeneToProteinActivity->process_localization_id === '') {
                     $arGeneToProteinActivity->process_localization_id = null;

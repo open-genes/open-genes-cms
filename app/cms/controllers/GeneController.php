@@ -89,15 +89,13 @@ class GeneController extends Controller
     {
         $model = $this->findModel($id);
 
-        $errorModels = [];
         if(!empty(Yii::$app->request->post())) {
             if ($model->load(Yii::$app->request->post())) {
-                if(!$model->save()) {
-
+                if($model->save()) {
+                    GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
+                    return $this->redirect(['update', 'id' => $model->id]);
                 }
             }
-            GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
-            return $this->redirect(['update', 'id' => $model->id]);
         }
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
         $allCommentCauses = CommentCause::findAllAsArray();
