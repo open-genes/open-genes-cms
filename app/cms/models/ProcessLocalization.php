@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
@@ -12,6 +13,8 @@ use yii\helpers\ArrayHelper;
  */
 class ProcessLocalization extends \common\models\ProcessLocalization
 {
+    use RuEnActiveRecordTrait;
+
     public $name;
 
     public function behaviors()
@@ -22,11 +25,4 @@ class ProcessLocalization extends \common\models\ProcessLocalization
     }
 
 
-    public static function getAllNamesAsArray()
-    {
-        $result = self::find()
-            ->select(['id', 'concat(name_ru, \' \', \'(\', name_en, \')\') as name'])
-            ->all();
-        return ArrayHelper::map($result, 'id', 'name');
-    }
 }

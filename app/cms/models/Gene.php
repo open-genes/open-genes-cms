@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use common\models\GeneToProteinClass;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
@@ -12,12 +13,14 @@ use yii\helpers\ArrayHelper;
 /**
  * @property int[] $functionalClustersIdsArray
  * @property int[] $commentCauseIdsArray
+ * @property int[] $proteinClassesIdsArray
  * @property array $functionalClustersArray
  */
 class Gene extends \common\models\Gene
 {
     protected $functionalClustersIdsArray;
     protected $commentCauseIdsArray;
+    protected $proteinClassesIdsArray;
 
     public function behaviors()
     {
@@ -33,7 +36,7 @@ class Gene extends \common\models\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray', 'commentCauseIdsArray'], 'safe'],
+            [['functionalClustersIdsArray', 'commentCauseIdsArray', 'proteinClassesIdsArray'], 'safe'],
         ]);
     }
 
@@ -74,9 +77,10 @@ class Gene extends \common\models\Gene
             'dateAdded' => 'Date Added',
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
+            'proteinClassesIdsArray' => 'Классы белков',
             'expressionChange' => 'Изменение экспр. с возрастом',
-            'product_ru' => 'Продукт',
-            'product_en' => 'Продукт EN',
+            'protein_complex_ru' => 'Белковый комплекс Ru',
+            'protein_complex_en' => 'Белковый комплекс En',
         ];
     }
 
@@ -136,6 +140,16 @@ class Gene extends \common\models\Gene
             ->column();
     }
 
+    public function getProteinClassesIdsArray()
+    {
+        return ProteinClass::find()
+            ->select('protein_class.id')
+            ->join('INNER JOIN', 'gene_to_protein_class', 'gene_to_protein_class.protein_class_id = protein_class.id')
+            ->where(['gene_to_protein_class.gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
     public function setFunctionalClustersIdsArray(array $ids)
     {
         $this->functionalClustersIdsArray = $ids;
@@ -144,6 +158,11 @@ class Gene extends \common\models\Gene
     public function setCommentCauseIdsArray(array $ids)
     {
         $this->commentCauseIdsArray = $ids;
+    }
+
+    public function setProteinClassesIdsArray(array $ids)
+    {
+        $this->proteinClassesIdsArray = $ids;
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -186,6 +205,26 @@ class Gene extends \common\models\Gene
             GeneToCommentCause::deleteAll(
                 ['and', ['gene_id' => $this->id],
                     ['in', 'comment_cause_id', $commentCausesIdsToDelete]]
+            );
+        }
+
+        $currentProteinClassesIdsArray = $this->getProteinClassesIdsArray();
+        if($currentProteinClassesIdsArray !== $this->proteinClassesIdsArray) {
+            if($this->proteinClassesIdsArray) {
+                $proteinClassesIdsToDelete = array_diff($currentProteinClassesIdsArray, $this->proteinClassesIdsArray);
+                $proteinClassesIdsToAdd = array_diff($this->proteinClassesIdsArray, $currentProteinClassesIdsArray);
+                foreach($proteinClassesIdsToAdd as $proteinClassesIdToAdd) {
+                    $geneToProteinClass = new GeneToProteinClass();
+                    $geneToProteinClass->gene_id = $this->id;
+                    $geneToProteinClass->protein_class_id = $proteinClassesIdToAdd;
+                    $geneToProteinClass->save();
+                }
+            } else {
+                $proteinClassesIdsToDelete = $currentProteinClassesIdsArray;
+            }
+            GeneToProteinClass::deleteAll(
+                ['and', ['gene_id' => $this->id],
+                    ['in', 'protein_class_id', $proteinClassesIdsToDelete]]
             );
         }
 

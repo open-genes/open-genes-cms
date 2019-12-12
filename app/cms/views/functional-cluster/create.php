@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model cms\models\FunctionalCluster */
 
-$this->title = 'Create Functional Cluster';
+$this->title = 'Добавить функциональный кластер';
 $this->params['breadcrumbs'][] = ['label' => 'Functional Clusters', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

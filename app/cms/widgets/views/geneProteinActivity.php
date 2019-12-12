@@ -5,7 +5,6 @@
     <div class="js-protein-activity-block">
         <div class="form-split">
             <div class="form-third">
-                <!--            <label>Активность</label>-->
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']protein_activity_id',
@@ -16,12 +15,13 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
                     ],
                 ]);
                 ?>
             </div>
             <div class="form-third">
-                <!--            <label>Объект</label>-->
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']protein_activity_object_id',
@@ -39,7 +39,6 @@
                 ?>
             </div>
             <div class="form-third">
-                <!--            <label>Локализация</label>-->
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']process_localization_id',
@@ -49,7 +48,9 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => true
+                        'allowClear' => true,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
                     ],
                 ]);
                 ?>

@@ -7,6 +7,7 @@ use cms\models\CommentCause;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
 use cms\models\GeneToProteinActivity;
+use cms\models\ProteinClass;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -100,10 +101,12 @@ class GeneController extends Controller
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
         $allCommentCauses = CommentCause::findAllAsArray();
         $allAges = Age::findAllAsArray();
+        $allProteinClasses = ProteinClass::findAllAsArray();
         return $this->render('update', [
             'model' => $model,
             'allFunctionalClusters' => $allFunctionalClusters,
             'allCommentCauses' => $allCommentCauses,
+            'allProteinClasses' => $allProteinClasses,
             'allAges' => $allAges,
         ]);
     }

@@ -73,6 +73,14 @@ class GeneToProteinActivity extends \common\models\GeneToProteinActivity
                     $arProteinActivityObject = ProteinActivityObject::createFromNameString($geneToProteinActivity['protein_activity_object_id']);
                     $arGeneToProteinActivity->protein_activity_object_id = $arProteinActivityObject->id;
                 }
+                if(!is_numeric($geneToProteinActivity['process_localization_id'])) {
+                    $arProcessLocalization = ProcessLocalization::createFromNameString($geneToProteinActivity['process_localization_id']);
+                    $arGeneToProteinActivity->process_localization_id = $arProcessLocalization->id;
+                }
+                if(!is_numeric($geneToProteinActivity['protein_activity_id'])) {
+                    $arProteinActivity = ProteinActivity::createFromNameString($geneToProteinActivity['protein_activity_id']);
+                    $arGeneToProteinActivity->protein_activity_id = $arProteinActivity->id;
+                }
                 $arGeneToProteinActivity->gene_id = $geneId;
                 if($arGeneToProteinActivity->process_localization_id === '') {
                     $arGeneToProteinActivity->process_localization_id = null;

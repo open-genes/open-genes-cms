@@ -44,8 +44,8 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $age_id
- * @property string $product_ru
- * @property string $product_en
+ * @property string $protein_complex_ru
+ * @property string $protein_complex_en
  *
  * @property Age $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
@@ -71,14 +71,13 @@ class Gene extends \yii\db\ActiveRecord
         return [
             [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
             [['dateAdded'], 'required'],
-            [['expression', 'expressionEN'], 'string'],
+            [['expression', 'expressionEN', 'protein_complex_ru', 'protein_complex_en'], 'string'],
             [['agePhylo', 'symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs', 'functionalClusters'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['userEdited'], 'string', 'max' => 50],
             [['expressionChange'], 'string', 'max' => 64],
-            [['product_ru', 'product_en'], 'string', 'max' => 255],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Age::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }
@@ -126,8 +125,8 @@ class Gene extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'age_id' => 'Age ID',
-            'product_ru' => 'Product Ru',
-            'product_en' => 'Product En',
+            'protein_complex_ru' => 'Protein Complex Ru',
+            'protein_complex_en' => 'Protein Complex En',
         ];
     }
 

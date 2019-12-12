@@ -21,9 +21,9 @@ class ProteinClass extends \common\models\ProteinClass
     public static function findAllAsArray()
     {
         $result = [];
-        $ages = self::find()->all();
-        foreach ($ages as $age) {
-            $result[$age->id] = $age->name_phylo;
+        $models = self::find()->all();
+        foreach ($models as $model) {
+            $result[$model->id] = $model->name_en;
         }
 
         return $result;
