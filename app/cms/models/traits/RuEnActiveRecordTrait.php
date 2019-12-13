@@ -19,7 +19,7 @@ trait RuEnActiveRecordTrait
 
     public static function createFromNameString(string $name)
     {
-        if(strpos($name, '(')) {
+        if(strpos($name, '(') !== false) {
             list($nameRu, $nameEn) = explode('(', trim($name));
             $nameEn = trim($nameEn, '()');
         } else {
