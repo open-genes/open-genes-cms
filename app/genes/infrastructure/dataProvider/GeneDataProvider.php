@@ -76,6 +76,7 @@ class GeneDataProvider implements GeneDataProviderInterface
             ->select($this->fields)
             ->where(['in', 'symbol', ['CISD2', 'EMD', 'ADCY5', 'AGTR1']]) // todo хардкод, пока нет реальных изменяемых данных
             ->withAge()
+            ->andWhere('isHidden != 1')
             ->orderBy('gene.updated_at desc')
             ->limit($count)
             ->asArray()

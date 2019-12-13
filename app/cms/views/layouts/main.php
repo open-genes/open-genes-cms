@@ -35,6 +35,7 @@ use common\widgets\Alert;
         ],
     ]);
     $menuItems = [
+
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Login', 'url' => ['/cms/login']];
@@ -48,6 +49,18 @@ use common\widgets\Alert;
             . Html::endForm()
             . '</li>';
     }
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-left'],
+        'items' => [
+            ['label' => 'Гены', 'url' => ['/gene']],
+            ['label' => 'Филумы', 'url' => ['/age']],
+            ['label' => 'Причины отбора', 'url' => ['/comment-cause']],
+            ['label' => 'Функ. кластеры', 'url' => ['/functional-cluster']],
+            ['label' => 'Активности белка', 'url' => ['/protein-activity']],
+            ['label' => 'Объекты акт. белка', 'url' => ['/protein-activity-object']],
+            ['label' => 'Локализация', 'url' => ['/process-localization']],
+            ],
+    ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $menuItems,

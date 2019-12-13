@@ -1,0 +1,54 @@
+.form-half {
+    width: 47%;
+    float: left;
+    margin-right: 3%;
+}
+.form-half-without-margin {
+    width: 50%;
+    float: left;
+}
+.form-half-small-margin {
+    width: 49%;
+    margin-right: 1%;
+    float: left;
+}
+.form-third {
+    width: 33.333%;
+    float: left;
+}
+.form-two-thirds {
+    width: 67%;
+    float: left;
+}
+.form-split {
+    margin-bottom: 10px;
+}
+.form-split:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.rel-link {
+    position: absolute;
+    margin-top: -13px;
+    font-size: smaller;
+}
+.protein-activity {
+    margin-bottom: 3px;
+}
+textarea {
+    white-space: pre-wrap;
+}
+.select2-selection__rendered {
+    cursor: text;
+}
+.delete-protein label {
+    font-weight: normal;
+    color: #464646;
+}
+.protein-activity {
+    margin: 10px 5px;
+    padding: 5px;
+    background: #efefef;
+    border-radius: 5px;
+}

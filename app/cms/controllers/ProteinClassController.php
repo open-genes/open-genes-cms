@@ -3,17 +3,16 @@
 namespace cms\controllers;
 
 use Yii;
-use cms\models\CommentCause;
+use cms\models\ProteinClass;
 use yii\data\ActiveDataProvider;
-use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CommentCauseController implements the CRUD actions for CommentCause model.
+ * ProteinClassController implements the CRUD actions for ProteinClass model.
  */
-class CommentCauseController extends Controller
+class ProteinClassController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -22,33 +21,22 @@ class CommentCauseController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
-                ],
-            ],
-            'access' => [
-                'class' => AccessControl::class,
-                'only' => ['create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
-                        'roles' => ['admin', 'editor'],
-                    ],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all CommentCause models.
+     * Lists all ProteinClass models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => CommentCause::find(),
+            'query' => ProteinClass::find(),
         ]);
 
         return $this->render('index', [
@@ -56,18 +44,17 @@ class CommentCauseController extends Controller
         ]);
     }
 
-
     /**
-     * Creates a new CommentCause model.
+     * Creates a new ProteinClass model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new CommentCause();
+        $model = new ProteinClass();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -76,7 +63,7 @@ class CommentCauseController extends Controller
     }
 
     /**
-     * Updates an existing CommentCause model.
+     * Updates an existing ProteinClass model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -87,7 +74,7 @@ class CommentCauseController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+            return $this->redirect(['update', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -96,7 +83,7 @@ class CommentCauseController extends Controller
     }
 
     /**
-     * Deletes an existing CommentCause model.
+     * Deletes an existing ProteinClass model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -110,15 +97,15 @@ class CommentCauseController extends Controller
     }
 
     /**
-     * Finds the CommentCause model based on its primary key value.
+     * Finds the ProteinClass model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return CommentCause the loaded model
+     * @return ProteinClass the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = CommentCause::findOne($id)) !== null) {
+        if (($model = ProteinClass::findOne($id)) !== null) {
             return $model;
         }
 

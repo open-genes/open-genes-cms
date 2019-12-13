@@ -6,6 +6,7 @@ use yii\helpers\Html;
 /* @var $model cms\models\Gene */
 /* @var $allFunctionalClusters [] */
 /* @var $allCommentCauses [] */
+/* @var $allProteinClasses [] */
 /* @var $allAges [] */
 
 $this->title = 'Редактировать ген ' . $model->symbol;
@@ -21,6 +22,7 @@ $this->params['breadcrumbs'][] = 'Update';
         'model' => $model,
         'allFunctionalClusters' => $allFunctionalClusters,
         'allCommentCauses' => $allCommentCauses,
+        'allProteinClasses' => $allProteinClasses,
         'allAges' => $allAges,
     ]) ?>
 

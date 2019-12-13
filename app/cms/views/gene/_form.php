@@ -1,5 +1,6 @@
 <?php
 
+use cms\widgets\GeneProteinActivity;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -7,8 +8,13 @@ use yii\widgets\ActiveForm;
 /* @var $model cms\models\Gene */
 /* @var $allFunctionalClusters [] */
 /* @var $allCommentCauses [] */
+/* @var $allProteinClasses [] */
 /* @var $allAges[] */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerJsFile('/assets/js/gene.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+$this->registerCssFile('/assets/css/gene.css');
+
 ?>
 
 <div class="gene-form">
@@ -20,7 +26,6 @@ use yii\widgets\ActiveForm;
         <div class="form-half">
             <div class="form-split">
                 <div class="form-half">
-                    <a class="rel-link" href="/age" target="_blank">Управление происхождением</a> <!-- todo  -->
                     <?= $form->field($model, 'age_id')->dropDownList($allAges) ?>
                 </div>
                 <div class="form-half">
@@ -34,7 +39,6 @@ use yii\widgets\ActiveForm;
             </div>
         </div>
         <div class="form-half">
-          <a class="rel-link" href="/functional-cluster" target="_blank">Управление функциональными кластерами</a> <!-- todo  -->
             <?= $form->field($model, 'functionalClustersIdsArray')->widget(\kartik\select2\Select2::class, [
                 'data' => $allFunctionalClusters,
                 'options' => ['multiple' => true],
@@ -95,34 +99,28 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'orthologs')->textInput(['maxlength' => true]) ?>
     </div>
     <?php endif; ?>
+    <?= $form->field($model, 'protein_complex_ru')->textarea(['rows' => 4]) ?>
+    <?= $form->field($model, 'protein_complex_en')->textarea(['rows' => 4]) ?>
+    <?= $form->field($model, 'proteinClassesIdsArray')->widget(\kartik\select2\Select2::class, [
+        'data' => $allProteinClasses,
+        'options' => ['multiple' => true],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
+    <br>
+    <div class="form-split">
+        <h4>Функции гена <?= $model->symbol ?>:</h4> <?= Html::button('Добавить', ['class' => 'btn js-add-protein-activity']) ?>
+    </div>
+    <div class="js-protein-activities">
+        <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
+            <?= GeneProteinActivity::widget(['geneToProteinActivity' => $geneToProteinActivity]) ?>
+        <?php endforeach; ?>
+    </div>
+
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 </div>
-
-<!-- todo create styles for cms -->
-<style>
-    .form-half {
-        width: 45%;
-        float: left;
-        margin-right: 5%;
-    }
-    .form-split:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-    .rel-link {
-        position: absolute;
-        margin-top: -13px;
-        font-size: smaller;
-    }
-    textarea {
-        white-space: pre-wrap;
-    }
-    .select2-selection__rendered {
-        cursor: text;
-    }
-</style>

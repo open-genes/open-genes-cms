@@ -44,9 +44,14 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  * @property int $age_id
+ * @property string $protein_complex_ru
+ * @property string $protein_complex_en
  *
  * @property Age $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
+ * @property GeneToCommentCause[] $geneToCommentCauses
+ * @property GeneToProteinActivity[] $geneToProteinActivities
+ * @property GeneToProteinClass[] $geneToProteinClasses
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -66,7 +71,7 @@ class Gene extends \yii\db\ActiveRecord
         return [
             [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
             [['dateAdded'], 'required'],
-            [['expression', 'expressionEN'], 'string'],
+            [['expression', 'expressionEN', 'protein_complex_ru', 'protein_complex_en'], 'string'],
             [['agePhylo', 'symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs', 'functionalClusters'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
@@ -120,6 +125,8 @@ class Gene extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'age_id' => 'Age ID',
+            'protein_complex_ru' => 'Protein Complex Ru',
+            'protein_complex_en' => 'Protein Complex En',
         ];
     }
 
@@ -137,6 +144,30 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneExpressionInSamples()
     {
         return $this->hasMany(GeneExpressionInSample::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToCommentCauses()
+    {
+        return $this->hasMany(GeneToCommentCause::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToProteinActivities()
+    {
+        return $this->hasMany(GeneToProteinActivity::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToProteinClasses()
+    {
+        return $this->hasMany(GeneToProteinClass::className(), ['gene_id' => 'id']);
     }
 
     /**

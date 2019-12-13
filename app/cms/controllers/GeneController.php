@@ -6,6 +6,8 @@ use cms\models\Age;
 use cms\models\CommentCause;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
+use cms\models\GeneToProteinActivity;
+use cms\models\ProteinClass;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -88,17 +90,23 @@ class GeneController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post())) {
-           $model->save();
+        if(!empty(Yii::$app->request->post())) {
+            if ($model->load(Yii::$app->request->post())) {
+                if($model->save()) {
+                    GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
+                    return $this->redirect(['update', 'id' => $model->id]);
+                }
+            }
         }
-
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
         $allCommentCauses = CommentCause::findAllAsArray();
         $allAges = Age::findAllAsArray();
+        $allProteinClasses = ProteinClass::findAllAsArray();
         return $this->render('update', [
             'model' => $model,
             'allFunctionalClusters' => $allFunctionalClusters,
             'allCommentCauses' => $allCommentCauses,
+            'allProteinClasses' => $allProteinClasses,
             'allAges' => $allAges,
         ]);
     }
@@ -115,6 +123,18 @@ class GeneController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionLoadGeneProteinActivityForm($id)
+    {
+        if ($id) {
+            $geneToProteinActivity = GeneToProteinActivity::findOne($id);
+        }
+        if (!isset($geneToProteinActivity)) {
+            $geneToProteinActivity = new GeneToProteinActivity();
+            $geneToProteinActivity->id = $id;
+        }
+        return $this->renderAjax('_geneProteinForm', ['geneToProteinActivity' => $geneToProteinActivity]);
     }
 
     /**

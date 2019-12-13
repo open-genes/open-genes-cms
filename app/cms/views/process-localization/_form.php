@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\FunctionalCluster */
+/* @var $model cms\models\ProcessLocalization */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="functional-cluster-form">
+<div class="process-localization-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
