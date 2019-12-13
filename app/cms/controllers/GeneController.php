@@ -34,11 +34,10 @@ class GeneController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
+                        'actions' => ['index', 'create', 'update', 'delete', 'load-gene-protein-activity-form'],
                         'roles' => ['admin', 'editor'],
                     ],
                 ],

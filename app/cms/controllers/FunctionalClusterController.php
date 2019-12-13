@@ -29,11 +29,10 @@ class FunctionalClusterController extends Controller
             ],
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['create', 'update', 'delete'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'delete'],
+                        'actions' => ['index', 'create', 'update', 'delete'],
                         'roles' => ['admin', 'editor'],
                     ],
                 ],
