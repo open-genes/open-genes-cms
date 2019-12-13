@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model cms\models\Age */
 
-$this->title = 'Create Age';
+$this->title = 'Добавить филум';
 $this->params['breadcrumbs'][] = ['label' => 'Ages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
