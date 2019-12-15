@@ -92,7 +92,9 @@ class GeneController extends Controller
         if(!empty(Yii::$app->request->post())) {
             if ($model->load(Yii::$app->request->post())) {
                 if($model->save()) {
-                    GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
+                    if(is_array(Yii::$app->request->post('GeneToProteinActivity'))) {
+                        GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
+                    }
                     return $this->redirect(['update', 'id' => $model->id]);
                 }
             }

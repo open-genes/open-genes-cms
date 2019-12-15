@@ -8,9 +8,12 @@ use common\models\Gene;
 use common\models\GeneExpressionInSample;
 use common\models\GeneToCommentCause;
 use common\models\GeneToFunctionalCluster;
+use common\models\GeneToProteinClass;
+use common\models\ProteinClass;
 use common\models\Sample;
 use common\models\User;
 use yii\console\Controller;
+use yii\httpclient\Client;
 
 class MigrateDataController extends Controller
 {
@@ -23,20 +26,20 @@ class MigrateDataController extends Controller
     {
         $samplesNames = [];
         $arGenes = Gene::find()->all();
-        foreach($arGenes as $arGene) {
+        foreach ($arGenes as $arGene) {
             echo $arGene->symbol . ': ';
             $expression = json_decode($arGene->expressionEN, true);
             $expressionRu = json_decode($arGene->expression, true);
-            if($expression) {
+            if ($expression) {
                 $geneSamplesNamesEn = array_keys($expression);
                 $geneSamplesNamesRu = array_keys($expressionRu);
                 $samplesNames = array_merge($samplesNames, array_combine($geneSamplesNamesEn, $geneSamplesNamesRu));
-                foreach($expression as $sample => $expressionValues) {
+                foreach ($expression as $sample => $expressionValues) {
                     echo $sample . ' ';
                     $arSample = Sample::find()
                         ->andWhere(['name_en' => $sample])
                         ->one();
-                    if(!$arSample) {
+                    if (!$arSample) {
                         $arSample = new Sample();
                         $arSample->name_en = $sample;
                         $arSample->name_ru = $samplesNames[$sample];
@@ -47,7 +50,7 @@ class MigrateDataController extends Controller
                         ->andWhere(['gene_id' => $arGene->id])
                         ->andWhere(['sample_id' => $arSample->id])
                         ->one();
-                    if(!$arGeneExpressionSample) {
+                    if (!$arGeneExpressionSample) {
                         $arGeneExpressionSample = new GeneExpressionInSample();
                         $arGeneExpressionSample->gene_id = $arGene->id;
                         $arGeneExpressionSample->sample_id = $arSample->id;
@@ -65,16 +68,16 @@ class MigrateDataController extends Controller
     public function actionMigrateFunctionalClusters()
     {
         $arGenes = Gene::find()->all();
-        foreach($arGenes as $arGene) {
+        foreach ($arGenes as $arGene) {
             echo $arGene->symbol . ': ';
             $functionalClustersRu = explode(',', $arGene->functionalClusters);
-            if($functionalClustersRu) {
+            if ($functionalClustersRu) {
                 foreach ($functionalClustersRu as $functionalClusterRu) {
                     $functionalClusterRu = trim($functionalClusterRu);
                     $arFunctionalCluster = FunctionalCluster::find()
                         ->where(['name_ru' => $functionalClusterRu])
                         ->one();
-                    if(!$arFunctionalCluster) {
+                    if (!$arFunctionalCluster) {
                         $arFunctionalCluster = new FunctionalCluster();
                         $arFunctionalCluster->name_ru = $functionalClusterRu;
                         $arFunctionalCluster->name_en = \Yii::t('main', str_replace([' ', '/'], '_', $functionalClusterRu), [], 'en-US');
@@ -85,7 +88,7 @@ class MigrateDataController extends Controller
                         ->andWhere(['gene_id' => $arGene->id])
                         ->andWhere(['functional_cluster_id' => $arFunctionalCluster->id])
                         ->one();
-                    if(!$arGeneToFunctionalCluster) {
+                    if (!$arGeneToFunctionalCluster) {
                         $arGeneToFunctionalCluster = new GeneToFunctionalCluster();
                         $arGeneToFunctionalCluster->gene_id = $arGene->id;
                         $arGeneToFunctionalCluster->functional_cluster_id = $arFunctionalCluster->id;
@@ -101,9 +104,9 @@ class MigrateDataController extends Controller
     public function actionMigrateAge()
     {
         $arGenes = Gene::find()->all();
-        foreach($arGenes as $arGene) {
+        foreach ($arGenes as $arGene) {
             echo $arGene->symbol . ': ';
-            if($arGene->agePhylo) {
+            if ($arGene->agePhylo) {
                 if ($arGene->agePhylo == 'Procaryota') {
                     $arGene->agePhylo = 'Prokaryota';
                 }
@@ -115,7 +118,7 @@ class MigrateDataController extends Controller
                     ['name_mya' => $arGene->ageMya]
                 );
             }
-            if(isset($arAge) && $arAge instanceof Age) {
+            if (isset($arAge) && $arAge instanceof Age) {
                 $arGene->age_id = $arAge->id;
                 $arGene->save();
                 echo $arAge->name_phylo . PHP_EOL;
@@ -128,20 +131,20 @@ class MigrateDataController extends Controller
     public function actionMigrateCommentCause()
     {
         $arGenes = Gene::find()->all();
-        foreach($arGenes as $arGene) {
+        foreach ($arGenes as $arGene) {
             echo $arGene->symbol . ': ';
             $commentCausesRu = explode(',', $arGene->commentCause);
-            if($commentCausesRu) {
+            if ($commentCausesRu) {
                 foreach ($commentCausesRu as $commentCauseRu) {
                     $commentCauseRu = trim($commentCauseRu);
                     $arCommentCause = CommentCause::find()
                         ->where(['name_ru' => $commentCauseRu])
                         ->one();
-                    if(!$arCommentCause) {
+                    if (!$arCommentCause) {
                         $arCommentCause = new CommentCause();
                         $arCommentCause->name_ru = $commentCauseRu;
-                        $nameForTranslate =  str_replace([' ', '/'], '_', mb_strtolower($commentCauseRu));
-                        $arCommentCause->name_en = \Yii::t('main',$nameForTranslate, [], 'en-US');
+                        $nameForTranslate = str_replace([' ', '/'], '_', mb_strtolower($commentCauseRu));
+                        $arCommentCause->name_en = \Yii::t('main', $nameForTranslate, [], 'en-US');
                         $arCommentCause->save();
                         $arCommentCause->refresh();
                     }
@@ -149,7 +152,7 @@ class MigrateDataController extends Controller
                         ->andWhere(['gene_id' => $arGene->id])
                         ->andWhere(['comment_cause_id' => $arCommentCause->id])
                         ->one();
-                    if(!$arGeneToCommentCause) {
+                    if (!$arGeneToCommentCause) {
                         $arGeneToCommentCause = new GeneToCommentCause();
                         $arGeneToCommentCause->gene_id = $arGene->id;
                         $arGeneToCommentCause->comment_cause_id = $arCommentCause->id;
@@ -162,4 +165,61 @@ class MigrateDataController extends Controller
         }
     }
 
+    /**
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\httpclient\Exception
+     */
+    public function actionGetProteinClasses()
+    {
+        $apiUrl = 'https://www.proteinatlas.org/search/';
+        $arGenes = Gene::find()
+            ->where(['isHidden' => 0])
+            ->andWhere('commentEvolution != ""')
+        ->all();
+        $client = new Client();
+        foreach ($arGenes as $arGene) {
+            $response = $client->createRequest()
+                ->setUrl($apiUrl . $arGene->symbol . '?format=json&columns=g,pc')
+                ->setFormat(Client::FORMAT_JSON)
+                ->send();
+            if (!$response->isOk) {
+                echo $response->getStatusCode();
+            }
+            $parsedResponse = json_decode($response->content, true);
+
+            foreach($parsedResponse as $geneInfo) {
+                if ($geneInfo['Gene'] === $arGene->symbol) {
+                    echo $arGene->symbol . ': ';
+                    foreach ($geneInfo['Protein class'] as $proteinClass) {
+                        $nameSearch = [
+                            trim($proteinClass),
+                            trim(str_replace('proteins', '', $proteinClass)),
+                            trim(str_replace('genes', '', $proteinClass))
+                        ];
+                        $arProteinClass = ProteinClass::find()
+                            ->where(['in', 'name_en', $nameSearch])
+                            ->one();
+                        if(!$arProteinClass) {
+                            echo 'NOT FOUND ' . $proteinClass . ' ';
+                            continue;
+                        }
+                        $arGeneToProteinClass = GeneToProteinClass::find()
+                            ->where([
+                                'protein_class_id' => $arProteinClass->id,
+                                'gene_id' => $arGene->id,
+                            ])
+                        ->one();
+                        if(!$arGeneToProteinClass) {
+                            $arGeneToProteinClass = new GeneToProteinClass();
+                            $arGeneToProteinClass->gene_id = $arGene->id;
+                            $arGeneToProteinClass->protein_class_id = $arProteinClass->id;
+                            $arGeneToProteinClass->save();
+                        }
+                        echo '"' . $arProteinClass->name_en . '" ';
+                    }
+                }
+            }
+            echo PHP_EOL;
+        }
+    }
 }
