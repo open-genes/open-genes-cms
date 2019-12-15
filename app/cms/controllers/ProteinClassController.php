@@ -46,12 +46,12 @@ class ProteinClassController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => ProteinClass::find(),
-        ]);
+        $arProteinClass = new ProteinClass(Yii::$app->request->get('ProteinClass'));
+        $dataProvider = $arProteinClass->search();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel' => new ProteinClass(Yii::$app->request->get('ProteinClass')),
         ]);
     }
 
@@ -65,7 +65,7 @@ class ProteinClassController extends Controller
         $model = new ProteinClass();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -85,7 +85,7 @@ class ProteinClassController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

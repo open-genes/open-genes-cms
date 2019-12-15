@@ -1,0 +1,128 @@
+.container.content {
+    margin-top: 15px;
+}
+.container.content a {
+    color: #6663bb;
+    text-decoration: none;
+}
+.container.content .btn-success {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+.container.content .btn-success:hover {
+    color: #fff;
+}
+
+.container.content a:hover, a:focus, .container.content a.asc, .container.content a.desc {
+    color: #3e3a84;
+}
+
+.container.content .pagination > .active > a, .container.content .pagination > .active > span, .container.content .pagination > .active > a:hover, .container.content .pagination > .active > span:hover, .container.content .pagination > .active > a:focus, .container.content .pagination > .active > span:focus {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #6663bb;
+    border-color: #6663bb;
+}
+
+.open-genes-navbar.navbar-inverse .navbar-nav > li > a {
+    font-size: 13px;
+}
+.open-genes-navbar.navbar-inverse .btn-link {
+    font-size: 13px;
+}
+.open-genes-navbar.navbar-inverse .navbar-brand img {
+    height: 30px;
+    display: inline-block;
+}
+
+.open-genes-navbar.navbar-inverse {
+    background-color: #6663bb;
+    border-color: #6663bb;
+}
+.open-genes-navbar.navbar-inverse .navbar-nav > li > a {
+    color: #e8e8f7;
+}
+.open-genes-navbar.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+.open-genes-navbar.navbar-inverse .dropdown-menu > li > a {
+    font-size: 13px;
+}
+.open-genes-navbar.navbar-inverse .navbar-nav > .open > a, .open-genes-navbar.navbar-inverse .navbar-nav > .open > a:hover, .open-genes-navbar.navbar-inverse .navbar-nav > .open > a:focus {
+    color: #e8e8f7;
+    background-color: #3e3a84;
+}
+.open-genes-navbar.navbar-inverse .btn-link {
+    color: #e8e8f7;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+.open-genes-navbar .navbar-brand {
+    padding: 10px 15px;
+}
+.open-genes-navbar.navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: #3e3a84;
+}
+.open-genes-navbar.navbar-inverse .navbar-toggle {
+    border-color: #3e3a84;
+}
+
+@media (max-width: 1200px) {
+    .open-genes-navbar .navbar-header {
+        float: none;
+    }
+    .open-genes-navbar .navbar-left,.navbar-right {
+        float: none !important;
+    }
+    .open-genes-navbar .navbar-toggle {
+        display: block;
+    }
+    .open-genes-navbar .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .open-genes-navbar .navbar-fixed-top {
+        top: 0;
+        border-width: 0 0 1px;
+    }
+    .open-genes-navbar .navbar-collapse.collapse {
+        display: none!important;
+    }
+
+    .open-genes-navbar .navbar-nav {
+        float: none!important;
+        margin-top: 7.5px;
+    }
+    .open-genes-navbar .navbar-nav>li {
+        float: none;
+    }
+    .open-genes-navbar .navbar-nav>li>a {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    .open-genes-navbar .collapse.in{
+        display:block !important;
+    }
+
+    .open-genes-navbar .navbar-brand {
+        display: inline-block;
+        float: none;
+    }
+
+    .open-genes-navbar .navbar-form.form-inline {
+        display: inline-block;
+        border-color: transparent;
+        margin: 4px;
+        padding: 5px;
+    }
+
+    .open-genes-navbar .navbar-form .form-control {
+        display: inline-block;
+        width: auto;
+        vertical-align: middle;
+    }
+
+}

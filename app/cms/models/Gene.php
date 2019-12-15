@@ -2,6 +2,8 @@
 
 namespace cms\models;
 
+use cms\models\traits\ConditionActiveRecordTrait;
+use cms\models\traits\RuEnActiveRecordTrait;
 use common\models\GeneToProteinClass;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -18,6 +20,8 @@ use yii\helpers\ArrayHelper;
  */
 class Gene extends \common\models\Gene
 {
+    use ConditionActiveRecordTrait;
+
     protected $functionalClustersIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
@@ -78,7 +82,7 @@ class Gene extends \common\models\Gene
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
             'proteinClassesIdsArray' => 'Классы белков',
-            'expressionChange' => 'Изменение экспр. с возрастом',
+            'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
         ];
@@ -100,24 +104,6 @@ class Gene extends \common\models\Gene
         $this->addCondition($query, 'ageMya');
 
         return $dataProvider;
-    }
-
-    /**
-     * @param $query ActiveQuery
-     * @param $attribute
-     * @param bool $partialMatch
-     */
-    protected function addCondition(&$query, $attribute, $partialMatch = false)
-    {
-        $value = $this->$attribute;
-        if (trim($value) === '') {
-            return;
-        }
-        if ($partialMatch) {
-            $query->andWhere(['like', $attribute, $value]);
-        } else {
-            $query->andWhere([$attribute => $value]);
-        }
     }
 
     public function getFunctionalClustersIdsArray()

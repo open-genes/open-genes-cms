@@ -2,8 +2,10 @@
 
 namespace cms\models;
 
+use cms\models\traits\ConditionActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "age".
@@ -11,6 +13,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class ProteinClass extends \common\models\ProteinClass
 {
+    use ConditionActiveRecordTrait;
+
     public function behaviors()
     {
         return [
@@ -27,5 +31,21 @@ class ProteinClass extends \common\models\ProteinClass
         }
 
         return $result;
+    }
+
+    public function search($params = [])
+    {
+        $query = self::find();
+
+        if($params) {
+            $this->load($params);
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $this->addCondition($query, 'name_en', true);
+        $this->addCondition($query, 'name_ru', true);
+
+        return $dataProvider;
     }
 }

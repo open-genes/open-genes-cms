@@ -52,3 +52,10 @@ textarea {
     background: #efefef;
     border-radius: 5px;
 }
+@media (max-width: 992px) {
+    .form-half {
+        width: inherit;
+        float: none;
+        margin-right: inherit;
+    }
+}

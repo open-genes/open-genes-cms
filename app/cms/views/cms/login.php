@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 <div class="page gene-page">
     <div class="page__inner">
         <section>
-            <h1><?= Html::encode($this->title) ?></h1>
+            <h2><?= Html::encode($this->title) ?></h2>
 
             <p>Please fill out the following fields to login:</p>
 

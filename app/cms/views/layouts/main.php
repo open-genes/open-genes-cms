@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
 \cms\assets\CmsAsset::register($this);
+$this->registerCssFile('/assets/css/main.css');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -28,10 +29,10 @@ use common\widgets\Alert;
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Open Genes CMS',
+        'brandLabel' => '<img src="/assets/images/logo.png"> CMS',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse navbar-fixed-top open-genes-navbar',
         ],
     ]);
     $menuItems = [
@@ -53,12 +54,20 @@ use common\widgets\Alert;
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => [
             ['label' => 'Гены', 'url' => ['/gene']],
-            ['label' => 'Филумы', 'url' => ['/age']],
             ['label' => 'Причины отбора', 'url' => ['/comment-cause']],
-            ['label' => 'Функ. кластеры', 'url' => ['/functional-cluster']],
-            ['label' => 'Активности белка', 'url' => ['/protein-activity']],
-            ['label' => 'Объекты акт. белка', 'url' => ['/protein-activity-object']],
-            ['label' => 'Локализация', 'url' => ['/process-localization']],
+            ['label' => 'Функциональные кластеры', 'url' => ['/functional-cluster']],
+            ['label' => 'Филумы', 'url' => ['/age']],
+            [
+                'label' => 'Функции гена',
+                'items' => [
+                    ['label' => 'Виды активности белка', 'url' => '/protein-activity'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Объекты активности белка', 'url' => '/protein-activity-object'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Локализация процесса', 'url' => '/process-localization'],
+                ],
+            ],
+            ['label' => 'Классы белков', 'url' => ['/protein-class']],
             ],
     ]);
     echo Nav::widget([
@@ -68,7 +77,7 @@ use common\widgets\Alert;
     NavBar::end();
     ?>
 
-    <div class="container">
+    <div class="container content">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
