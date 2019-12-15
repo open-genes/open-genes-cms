@@ -26,14 +26,14 @@ class ProteinClassController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'allow' => true,
-                            'actions' => ['index', 'create', 'update', 'delete'],
-                            'roles' => ['admin', 'editor'],
-                        ],
+            ],
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'update', 'delete'],
+                        'roles' => ['admin', 'editor'],
                     ],
                 ],
             ],
