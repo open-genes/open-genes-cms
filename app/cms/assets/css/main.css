@@ -1,25 +1,25 @@
-.container.content {
+.open-genes-cms {
     margin-top: 15px;
 }
-.container.content a {
+.open-genes-cms a {
     color: #6663bb;
     text-decoration: none;
 }
-.container.content .btn-success {
+.open-genes-cms .btn-success {
     color: #fff;
     background-color: #5cb85c;
     border-color: #4cae4c;
 }
 
-.container.content .btn-success:hover {
+.open-genes-cms .btn-success:hover {
     color: #fff;
 }
 
-.container.content a:hover, a:focus, .container.content a.asc, .container.content a.desc {
+.open-genes-cms a:hover, a:focus, .open-genes-cms a.asc, .open-genes-cms a.desc {
     color: #3e3a84;
 }
 
-.container.content .pagination > .active > a, .container.content .pagination > .active > span, .container.content .pagination > .active > a:hover, .container.content .pagination > .active > span:hover, .container.content .pagination > .active > a:focus, .container.content .pagination > .active > span:focus {
+.open-genes-cms .pagination > .active > a, .open-genes-cms .pagination > .active > span, .open-genes-cms .pagination > .active > a:hover, .open-genes-cms .pagination > .active > span:hover, .open-genes-cms .pagination > .active > a:focus, .open-genes-cms .pagination > .active > span:focus {
     z-index: 3;
     color: #fff;
     cursor: default;
@@ -125,4 +125,59 @@
         vertical-align: middle;
     }
 
+}
+
+.open-genes-cms .btn.add-protein-activity {
+    background: #cbcbef;
+}
+
+.open-genes-cms .open-genes-navbar.navbar-inverse .btn.btn-link {
+    color: #e8e8f7;
+    background: #6563bb;
+}
+
+.open-genes-cms .select2-container--krajee .select2-selection--multiple .select2-selection__choice {
+    color: #565656;
+    background: #ffffff;
+    border: 1px solid #c8c6ef;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin: 5px 0 0 6px;
+    padding: 0 6px;
+}
+
+.open-genes-cms .s2-togall-button {
+    display: inline-block;
+    font-weight: 400;
+    color: #6563bb;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.open-genes-cms .select2-container--krajee.select2-container--open .select2-selection, .open-genes-cms .select2-container--krajee .select2-selection:focus {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgb(209, 208, 255);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    border-color: #cac9f1;
+}
+
+.open-genes-cms .select2-container--krajee .select2-results__option--highlighted[aria-selected] {
+    background-color: #6563bb;
+    color: #fff;
+}
+
+.open-genes-cms .select2-container--krajee .select2-results__option[aria-selected=true] {
+    color: #3e3c92;
+    background-color: #e4e3f9;
+}
+
+.open-genes-cms .select2-container--krajee .select2-dropdown {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgb(186, 185, 210);
+    border-color: #cac9f1;
+    overflow-x: hidden;
+    margin-top: -1px;
 }

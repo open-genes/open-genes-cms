@@ -20,8 +20,9 @@ $this->registerCssFile('/assets/css/gene.css');
 <div class="gene-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
+    <?php if(Yii::$app->user->can('admin')): ?>
     <?= $form->field($model, 'isHidden')->checkbox() ?>
+    <?php endif; ?>
     <div class="form-split">
         <div class="form-half">
             <div class="form-split">
@@ -110,7 +111,7 @@ $this->registerCssFile('/assets/css/gene.css');
     ]); ?>
     <br>
     <div class="form-split">
-        <h4>Функции гена <?= $model->symbol ?>:</h4> <?= Html::button('Добавить', ['class' => 'btn js-add-protein-activity']) ?>
+        <h4>Функции гена <?= $model->symbol ?>:</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-protein-activity']) ?>
     </div>
     <div class="js-protein-activities">
         <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>

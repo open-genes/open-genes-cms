@@ -38,9 +38,6 @@ deploy-dev:
   variables:
     PROJECT_DIR: /var/www/${PROJECT_DEV_NAME}
     PROJECT_DOTENV: ${DROPLET_DEV_DOTENV}
-  only:
-    - develop
-    - master
 
 deploy-stage:
   extends: .deploy
@@ -49,6 +46,9 @@ deploy-stage:
   variables:
     PROJECT_DIR: /var/www/${PROJECT_STAGE_NAME}
     PROJECT_DOTENV: ${DROPLET_STAGE_DOTENV}
+  only:
+    - develop
+    - master
 
 deploy-prod:
   extends: .deploy
