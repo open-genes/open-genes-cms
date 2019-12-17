@@ -35,6 +35,10 @@ class GeneFullViewDto
     public $functionalClusters;
     /** @var array [$geneName => $geneExpression[]] */
     public $expression;
+    /** @var array */
+    public $functions;
+    /** @var array */
+    public $proteinClasses;
     /** @var string */
     public $expressionChange;
 

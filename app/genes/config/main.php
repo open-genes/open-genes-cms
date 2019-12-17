@@ -1,4 +1,7 @@
 <?php
+
+use genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/params.php'
@@ -69,7 +72,8 @@ $config = [
             \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => function(\yii\di\Container $container){
                 return new \genes\infrastructure\dataProvider\GeneDataProvider(Yii::$app->language);
             },
-            \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class
+            \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class,
+            \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class
         ]
     ],
     'defaultRoute' => 'site/index',
