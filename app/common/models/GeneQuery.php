@@ -91,7 +91,7 @@ class GeneQuery extends \yii\db\ActiveQuery
         $nameField = $lang == 'en-US' ? 'name_en' : 'name_ru';
         return $this
             ->addSelect([
-                'group_concat(distinct protein_class.'. $nameField . ') as protein_class'
+                'group_concat(distinct protein_class.'. $nameField . ' separator \'||\') as protein_class'
             ])
             ->join(
                 'LEFT JOIN',

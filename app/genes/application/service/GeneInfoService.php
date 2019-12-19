@@ -110,7 +110,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
         $geneDto->commentCause =  explode(',', $geneArray['comment_cause']);
-        $geneDto->proteinClasses =  explode(',', $geneArray['protein_class']);
+        $geneDto->proteinClasses =  explode('||', $geneArray['protein_class']); // todo одинаковый сепаратор для всех group_concat
         $geneDto->commentEvolution = $geneArray['comment_evolution'];
         $geneDto->commentFunction = $geneArray['comment_function'];
         $geneDto->commentAging = $geneArray['comment_aging'];
