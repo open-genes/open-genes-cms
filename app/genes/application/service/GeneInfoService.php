@@ -7,6 +7,7 @@ use genes\application\dto\GeneListViewDto;
 use genes\application\dto\LatestGeneViewDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
+use genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface;
 use yii\base\Exception;
 
 class GeneInfoService implements GeneInfoServiceInterface
@@ -15,13 +16,18 @@ class GeneInfoService implements GeneInfoServiceInterface
     private $geneDataProvider;
     /** @var GeneExpressionDataProviderInterface */
     private $geneExpressionDataProvider;
+    /** @var GeneFunctionsDataProviderInterface  */
+    private $geneFunctionsDataProvider;
 
     public function __construct(
         GeneDataProviderInterface $geneRepository,
-        GeneExpressionDataProviderInterface $geneExpressionDataProvider)
+        GeneExpressionDataProviderInterface $geneExpressionDataProvider,
+        GeneFunctionsDataProviderInterface $geneFunctionsDataProvider
+    )
     {
         $this->geneDataProvider = $geneRepository;
         $this->geneExpressionDataProvider = $geneExpressionDataProvider;
+        $this->geneFunctionsDataProvider = $geneFunctionsDataProvider;
     }
 
     /**
@@ -33,6 +39,7 @@ class GeneInfoService implements GeneInfoServiceInterface
 
         $geneDto = $this->mapViewDto($geneArray, $lang);
         $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneId, $lang);
+        $geneDto->functions = $this->geneFunctionsDataProvider->getByGeneId($geneId, $lang);
         return $geneDto;
     }
 
@@ -103,6 +110,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
         $geneDto->commentCause =  explode(',', $geneArray['comment_cause']);
+        $geneDto->proteinClasses =  explode('||', $geneArray['protein_class']); // todo одинаковый сепаратор для всех group_concat
         $geneDto->commentEvolution = $geneArray['comment_evolution'];
         $geneDto->commentFunction = $geneArray['comment_function'];
         $geneDto->commentAging = $geneArray['comment_aging'];

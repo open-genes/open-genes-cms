@@ -58,6 +58,7 @@ class GeneDataProvider implements GeneDataProviderInterface
             ->select($this->fields)
             ->withFunctionalClusters($this->lang)
             ->withCommentCause($this->lang)
+            ->withProteinClasses($this->lang)
             ->where(['gene.id' => $geneId])
             ->withAge()
             ->asArray()

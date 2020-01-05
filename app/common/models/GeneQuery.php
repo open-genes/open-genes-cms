@@ -86,6 +86,25 @@ class GeneQuery extends \yii\db\ActiveQuery
             );
     }
 
+    public function withProteinClasses($lang)
+    {
+        $nameField = $lang == 'en-US' ? 'name_en' : 'name_ru';
+        return $this
+            ->addSelect([
+                'group_concat(distinct protein_class.'. $nameField . ' separator \'||\') as protein_class'
+            ])
+            ->join(
+                'LEFT JOIN',
+                'gene_to_protein_class',
+                'gene_to_protein_class.gene_id = gene.id'
+            )
+            ->join(
+                'LEFT JOIN',
+                'protein_class',
+                'gene_to_protein_class.protein_class_id = protein_class.id'
+            );
+    }
+
     public function withAge()
     {
         return $this
