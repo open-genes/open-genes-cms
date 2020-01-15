@@ -52,6 +52,7 @@ use Yii;
  * @property GeneToCommentCause[] $geneToCommentCauses
  * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
+ * @property LifespanExperiment[] $lifespanExperiments
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -168,6 +169,14 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneToProteinClasses()
     {
         return $this->hasMany(GeneToProteinClass::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLifespanExperiments()
+    {
+        return $this->hasMany(LifespanExperiment::className(), ['gene_id' => 'id']);
     }
 
     /**

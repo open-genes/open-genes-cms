@@ -57,6 +57,9 @@
             </div>
         </div>
         <div class="form-split">
+            <?= \yii\bootstrap\Html::activeInput('text', $geneToProteinActivity, '[' . $geneToProteinActivity->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+        </div>
+        <div class="form-split">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($geneToProteinActivity, '[' . $geneToProteinActivity->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Комментарий']) ?>
             </div>
