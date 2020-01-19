@@ -70,7 +70,7 @@ $this->registerCssFile('/assets/css/main.css');
                 ],
             ],
             [
-                'label' => 'Эксперименты',
+                'label' => 'Исследования',
                 'items' => [
                     ['label' => 'Методы вмешательства', 'url' => '/gene-intervention'],
                     '<li class="divider"></li>',
@@ -79,6 +79,10 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Модельные организмы', 'url' => '/model-organism'],
                     '<li class="divider"></li>',
                     ['label' => 'Линии организмов', 'url' => '/organism-line'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Образцы тканей', 'url' => '/sample'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Виды возрастных изменений гена/белка', 'url' => '/age-related-change-type'],
                 ],
             ],
             ],

@@ -2,14 +2,13 @@
 
 namespace cms\models;
 
-use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "age".
  *
  */
-class LifespanExperiment extends \common\models\LifespanExperiment
+class AgeRelatedChange extends \common\models\AgeRelatedChange
 {
     public $delete = false;
 
@@ -63,17 +62,17 @@ class LifespanExperiment extends \common\models\LifespanExperiment
                     continue;
                 }
                 $modelAR->setAttributes($modelArray);
-                if(!is_numeric($modelArray['gene_intervention_id'])) {
-                    $arProteinActivityObject = GeneIntervention::createFromNameString($modelArray['gene_intervention_id']);
-                    $modelAR->gene_intervention_id = $arProteinActivityObject->id;
+                if(!is_numeric($modelArray['age_related_change_type_id'])) {
+                    $arProteinActivityObject = GeneIntervention::createFromNameString($modelArray['age_related_change_type_id']);
+                    $modelAR->age_related_change_type_id = $arProteinActivityObject->id;
+                }
+                if(!is_numeric($modelArray['sample_id'])) {
+                    $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['sample_id']);
+                    $modelAR->sample_id = $arProcessLocalization->id;
                 }
                 if(!is_numeric($modelArray['model_organism_id'])) {
                     $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
                     $modelAR->model_organism_id = $arProcessLocalization->id;
-                }
-                if(!is_numeric($modelArray['intervention_result_id'])) {
-                    $arProteinActivity = InterventionResult::createFromNameString($modelArray['intervention_result_id']);
-                    $modelAR->intervention_result_id = $arProteinActivity->id;
                 }
                 if(!is_numeric($modelArray['organism_line_id'])) {
                     $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
