@@ -19,7 +19,7 @@ class AgeRelatedChange extends \common\models\AgeRelatedChange
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id'], 'required'],
+            [['gene_id', 'age_related_change_type_id', 'model_organism_id'], 'required'],
         ]);
     }
 
@@ -51,7 +51,7 @@ class AgeRelatedChange extends \common\models\AgeRelatedChange
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_id']) {
+            if($modelArray['age_related_change_type_id'] && $modelArray['model_organism_id']) {
                 if(is_numeric($id)) {
                     $modelAR = self::findOne($id);
                 } else {
@@ -63,11 +63,11 @@ class AgeRelatedChange extends \common\models\AgeRelatedChange
                 }
                 $modelAR->setAttributes($modelArray);
                 if(!is_numeric($modelArray['age_related_change_type_id'])) {
-                    $arProteinActivityObject = GeneIntervention::createFromNameString($modelArray['age_related_change_type_id']);
+                    $arProteinActivityObject = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
                     $modelAR->age_related_change_type_id = $arProteinActivityObject->id;
                 }
                 if(!is_numeric($modelArray['sample_id'])) {
-                    $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['sample_id']);
+                    $arProcessLocalization = Sample::createFromNameString($modelArray['sample_id']);
                     $modelAR->sample_id = $arProcessLocalization->id;
                 }
                 if(!is_numeric($modelArray['model_organism_id'])) {
