@@ -48,7 +48,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => true,
+                        'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
                     ],
@@ -57,15 +57,51 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            <div class="form-half-without-margin">
+                <div class="form-half-without-margin">
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст (дней)']) ?>
+                </div>
+                <div class="form-half-without-margin">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $lifespanExperiment,
+                        'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
+                        'data' => \cms\models\OrganismLine::getAllNamesAsArray(),
+                        'options' => [
+                            'placeholder' => 'Линия организма',
+                            'multiple' => false,
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => false,
+                            'tags' => true,
+                            'tokenSeparators' => [','],
+                        ],
+                    ]);
+                    ?>
+                </div>
+            </div>
+            <div class="form-half-without-margin">
+                <div class="form-half-without-margin">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $lifespanExperiment,
+                        'attribute' => '[' . $lifespanExperiment->id . ']sex',
+                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
+                        'options' => [
+                            'placeholder' => 'Пол',
+                            'multiple' => false
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                    ]);
+                    ?>
+                </div>
+                <div class="form-half-without-margin">
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']lifespan_change_percent', ['class' => 'form-control', 'placeholder' => 'Изменение прод. жизни (%)']) ?>
+                </div>
+            </div>
         </div>
         <div class="form-split">
-            <div class="form-half-small-margin">
-                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст (дней)']) ?>
-            </div>
-            <div class="form-half-small-margin">
-                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']lifespan_change_percent', ['class' => 'form-control', 'placeholder' => 'Изменение прод. жизни (%)']) ?>
-            </div>
+            <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
         <div class="form-split">
             <div class="form-half-small-margin">

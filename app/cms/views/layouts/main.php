@@ -77,6 +77,8 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Результаты вмешательства', 'url' => '/intervention-result'],
                     '<li class="divider"></li>',
                     ['label' => 'Модельные организмы', 'url' => '/model-organism'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Линии организмов', 'url' => '/organism-line'],
                 ],
             ],
             ],
