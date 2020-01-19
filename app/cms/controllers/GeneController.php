@@ -3,6 +3,7 @@
 namespace cms\controllers;
 
 use cms\models\Age;
+use cms\models\AgeRelatedChange;
 use cms\models\CommentCause;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
@@ -38,7 +39,7 @@ class GeneController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'update', 'update-experiments', 'update-functions', 'delete', 'load-widget-form'],
+                        'actions' => ['index', 'create', 'update', 'update-experiments', 'update-functions', 'update-age-related-changes', 'delete', 'load-widget-form'],
                         'roles' => ['admin', 'editor'],
                     ],
                 ],

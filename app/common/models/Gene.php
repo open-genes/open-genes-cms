@@ -47,6 +47,7 @@ use Yii;
  * @property string $protein_complex_ru
  * @property string $protein_complex_en
  *
+ * @property AgeRelatedChange[] $ageRelatedChanges
  * @property Age $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneToCommentCause[] $geneToCommentCauses
@@ -129,6 +130,14 @@ class Gene extends \yii\db\ActiveRecord
             'protein_complex_ru' => 'Protein Complex Ru',
             'protein_complex_en' => 'Protein Complex En',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAgeRelatedChanges()
+    {
+        return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
     }
 
     /**

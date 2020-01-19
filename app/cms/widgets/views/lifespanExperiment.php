@@ -71,7 +71,7 @@
                             'multiple' => false,
                         ],
                         'pluginOptions' => [
-                            'allowClear' => false,
+                            'allowClear' => true,
                             'tags' => true,
                             'tokenSeparators' => [','],
                         ],

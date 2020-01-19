@@ -1,5 +1,6 @@
 <?php
 
+use cms\widgets\AgeRelatedChangeWidget;
 use cms\widgets\LifespanExperimentWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -14,7 +15,7 @@ use yii\widgets\ActiveForm;
 $this->registerJsFile('/assets/js/gene.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerCssFile('/assets/css/gene.css');
 
-$this->title = 'Эксперименты над геном ' . $model->symbol;
+$this->title = 'Исследования гена ' . $model->symbol;
 $this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->symbol, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
@@ -27,6 +28,12 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="js-lifespan-experiments">
         <?php foreach ($model->lifespanExperiments as $lifespanExperiment): ?>
             <?= LifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
+        <?php endforeach; ?>
+    </div>
+    <h5>Возрастные изменения экспрессии гена/активности белка</h5> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-age-related-change']) ?>
+    <div class="js-age-related-changes">
+        <?php foreach ($model->ageRelatedChanges as $ageRelatedChange): ?>
+            <?= AgeRelatedChangeWidget::widget(['model' => $ageRelatedChange]) ?>
         <?php endforeach; ?>
     </div>
     <div class="form-group">

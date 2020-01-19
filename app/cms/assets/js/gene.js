@@ -14,6 +14,13 @@ $('.js-add-lifespan-experiment').click(function () {
     });
 });
 
+$('.js-add-age-related-change').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=AgeRelatedChange&widgetName=AgeRelatedChangeWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+        $('.js-age-related-changes').append(data);
+    });
+});
+
 $('.js-delete').click(function () {
     if ($(this).is(':checked')) {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');

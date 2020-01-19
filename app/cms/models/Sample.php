@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -11,6 +12,9 @@ use yii\behaviors\TimestampBehavior;
  */
 class Sample extends \common\models\Sample
 {
+    use RuEnActiveRecordTrait;
+
+    public $name;
 
     public function behaviors()
     {
