@@ -122,8 +122,13 @@ class GeneController extends Controller
     {
         $model = $this->findModel($id);
 
-        if(is_array(Yii::$app->request->post('LifespanExperiment'))) {
-            LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+        if(Yii::$app->request->isPost) {
+            if(is_array(Yii::$app->request->post('LifespanExperiment'))) {
+                LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+            }
+            if(is_array(Yii::$app->request->post('AgeRelatedChange'))) {
+                AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
+            }
             return $this->redirect(['update-experiments', 'id' => $model->id]);
         }
 

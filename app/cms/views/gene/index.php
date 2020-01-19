@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '',
                 'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
                     $url = \yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id]);
-                    return "<a href='{$url}' target='_blank'>Эксперименты</a>";
+                    return "<a href='{$url}' target='_blank'>Исследования</a>";
                 },
                 'format' => 'raw'
             ],
