@@ -1,8 +1,8 @@
 <?php
 /** @var $geneToProteinActivity \cms\models\GeneToProteinActivity */
 ?>
-<div class="form-split protein-activity js-protein-activity">
-    <div class="js-protein-activity-block">
+<div class="form-split protein-activity js-protein-activity js-gene-link-section">
+    <div class="js-protein-activity-block js-gene-link-block">
         <div class="form-split">
             <div class="form-third">
                 <?= \kartik\select2\Select2::widget([

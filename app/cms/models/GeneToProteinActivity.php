@@ -52,41 +52,43 @@ class GeneToProteinActivity extends \common\models\GeneToProteinActivity
     }
 
     /**
-     * @param GeneToProteinActivity[] $geneToProteinActivities
+     * @param array $modelArrays
      * @param int $geneId
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public static function saveMultipleForGene(array $geneToProteinActivities, int $geneId)
+    public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
-        foreach ($geneToProteinActivities as $id => $geneToProteinActivity) {
-            if($geneToProteinActivity['protein_activity_id'] && $geneToProteinActivity['protein_activity_object_id']) {
+        foreach ($modelArrays as $id => $modelArray) {
+            if($modelArray['protein_activity_id'] && $modelArray['protein_activity_object_id']) {
                 if(is_numeric($id)) {
-                    $arGeneToProteinActivity = self::findOne($id);
+                    $modelAR = self::findOne($id);
                 } else {
-                    $arGeneToProteinActivity = new self();
+                    $modelAR = new self();
                 }
-                if ($geneToProteinActivity['delete'] === '1') {
-                    $arGeneToProteinActivity->delete();
+                if ($modelArray['delete'] === '1') {
+                    $modelAR->delete();
                     continue;
                 }
-                $arGeneToProteinActivity->setAttributes($geneToProteinActivity);
-                if(!is_numeric($geneToProteinActivity['protein_activity_object_id'])) {
-                    $arProteinActivityObject = ProteinActivityObject::createFromNameString($geneToProteinActivity['protein_activity_object_id']);
-                    $arGeneToProteinActivity->protein_activity_object_id = $arProteinActivityObject->id;
+                $modelAR->setAttributes($modelArray);
+                if(!is_numeric($modelArray['protein_activity_object_id'])) {
+                    $arProteinActivityObject = ProteinActivityObject::createFromNameString($modelArray['protein_activity_object_id']);
+                    $modelAR->protein_activity_object_id = $arProteinActivityObject->id;
                 }
-                if(!is_numeric($geneToProteinActivity['process_localization_id'])) {
-                    $arProcessLocalization = ProcessLocalization::createFromNameString($geneToProteinActivity['process_localization_id']);
-                    $arGeneToProteinActivity->process_localization_id = $arProcessLocalization->id;
+                if(!is_numeric($modelArray['process_localization_id'])) {
+                    $arProcessLocalization = ProcessLocalization::createFromNameString($modelArray['process_localization_id']);
+                    $modelAR->process_localization_id = $arProcessLocalization->id;
                 }
-                if(!is_numeric($geneToProteinActivity['protein_activity_id'])) {
-                    $arProteinActivity = ProteinActivity::createFromNameString($geneToProteinActivity['protein_activity_id']);
-                    $arGeneToProteinActivity->protein_activity_id = $arProteinActivity->id;
+                if(!is_numeric($modelArray['protein_activity_id'])) {
+                    $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
+                    $modelAR->protein_activity_id = $arProteinActivity->id;
                 }
-                $arGeneToProteinActivity->gene_id = $geneId;
-                if($arGeneToProteinActivity->process_localization_id === '') {
-                    $arGeneToProteinActivity->process_localization_id = null;
+                $modelAR->gene_id = $geneId;
+                if($modelAR->process_localization_id === '') {
+                    $modelAR->process_localization_id = null;
                 }
-                if(!$arGeneToProteinActivity->save()) {
-                    var_dump($arGeneToProteinActivity->errors); die;
+                if(!$modelAR->save()) {
+                    var_dump($modelAR->errors); die;
                 }
             }
         }

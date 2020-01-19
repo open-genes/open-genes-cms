@@ -16,7 +16,8 @@ use Yii;
  * @property int $lifespan_change_percent
  * @property int $sex_of_organism
  * @property string $reference
- * @property string $comment
+ * @property string $comment_en
+ * @property string $comment_ru
  *
  * @property Gene $gene
  * @property GeneIntervention $geneIntervention
@@ -40,7 +41,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'age', 'lifespan_change_percent', 'sex_of_organism'], 'integer'],
-            [['comment'], 'string'],
+            [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['gene_intervention_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneIntervention::className(), 'targetAttribute' => ['gene_intervention_id' => 'id']],
@@ -64,7 +65,8 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'lifespan_change_percent' => 'Lifespan Change Percent',
             'sex_of_organism' => 'Sex Of Organism',
             'reference' => 'Reference',
-            'comment' => 'Comment',
+            'comment_en' => 'Comment En',
+            'comment_ru' => 'Comment Ru',
         ];
     }
 

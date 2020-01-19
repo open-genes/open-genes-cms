@@ -8,7 +8,7 @@ use yii\base\Widget;
 class LifespanExperimentWidget extends Widget
 {
     /** @var LifespanExperiment */
-    public $lifespanExperiment;
+    public $model;
 
     public function init()
     {
@@ -17,6 +17,6 @@ class LifespanExperimentWidget extends Widget
 
     public function run()
     {
-        return $this->render('lifespanExperiment', ['lifespanExperiment' => $this->lifespanExperiment]);
+        return $this->render('lifespanExperiment', ['lifespanExperiment' => $this->model]);
     }
 }
