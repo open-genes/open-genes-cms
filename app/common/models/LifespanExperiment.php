@@ -18,11 +18,14 @@ use Yii;
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
+ * @property int $sex
+ * @property int $organism_line_id
  *
  * @property Gene $gene
  * @property GeneIntervention $geneIntervention
  * @property InterventionResult $interventionResult
  * @property ModelOrganism $modelOrganism
+ * @property OrganismLine $organismLine
  */
 class LifespanExperiment extends \yii\db\ActiveRecord
 {
@@ -40,13 +43,14 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'age', 'lifespan_change_percent', 'sex_of_organism'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'age', 'lifespan_change_percent', 'sex_of_organism', 'sex', 'organism_line_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['gene_intervention_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneIntervention::className(), 'targetAttribute' => ['gene_intervention_id' => 'id']],
             [['intervention_result_id'], 'exist', 'skipOnError' => true, 'targetClass' => InterventionResult::className(), 'targetAttribute' => ['intervention_result_id' => 'id']],
             [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::className(), 'targetAttribute' => ['model_organism_id' => 'id']],
+            [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::className(), 'targetAttribute' => ['organism_line_id' => 'id']],
         ];
     }
 
@@ -67,6 +71,8 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
+            'sex' => 'Sex',
+            'organism_line_id' => 'Organism Line ID',
         ];
     }
 
@@ -100,6 +106,14 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function getModelOrganism()
     {
         return $this->hasOne(ModelOrganism::className(), ['id' => 'model_organism_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrganismLine()
+    {
+        return $this->hasOne(OrganismLine::className(), ['id' => 'organism_line_id']);
     }
 
     /**

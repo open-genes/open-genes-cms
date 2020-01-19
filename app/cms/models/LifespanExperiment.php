@@ -76,6 +76,10 @@ class LifespanExperiment extends \common\models\LifespanExperiment
                     $arProteinActivity = InterventionResult::createFromNameString($modelArray['intervention_result_id']);
                     $modelAR->intervention_result_id = $arProteinActivity->id;
                 }
+                if(!is_numeric($modelArray['organism_line_id'])) {
+                    $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+                    $modelAR->organism_line_id = $arProteinActivity->id;
+                }
                 $modelAR->gene_id = $geneId;
                 if(!$modelAR->save()) {
                     var_dump($modelAR->errors); die;
