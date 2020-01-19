@@ -1,16 +1,23 @@
-let newProteinActivityFormsCount = 0;
+let newGeneLinkBlocksCount = 0;
 
 $('.js-add-protein-activity').click(function () {
-    newProteinActivityFormsCount++;
-    $.get('/gene/load-gene-protein-activity-form?id=new'+newProteinActivityFormsCount, function (data) {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=GeneToProteinActivity&widgetName=GeneProteinActivity&id=new'+newGeneLinkBlocksCount, function (data) {
         $('.js-protein-activities').append(data);
+    });
+});
+
+$('.js-add-lifespan-experiment').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+        $('.js-lifespan-experiments').append(data);
     });
 });
 
 $('.js-delete').click(function () {
     if ($(this).is(':checked')) {
-        $(this).closest('.js-protein-activity').find('.js-protein-activity-block').css('opacity', '0.5').css('pointer-events', 'none');
+        $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');
     } else {
-        $(this).closest('.js-protein-activity').find('.js-protein-activity-block').removeAttr('style');
+        $(this).closest('.js-gene-link-section').find('.js-gene-link-block').removeAttr('style');
     }
 });

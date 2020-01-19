@@ -16,8 +16,9 @@ $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="gene-update">
 
+    <a href="<?=\yii\helpers\Url::toRoute(['update-functions', 'id' => $model->id])?>" target="_blank" class="gene-link">Функции гена <span class="glyphicon glyphicon-pencil"></span></a>
+    <a href="<?=\yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id])?>" target="_blank" class="gene-link">Эксперименты над геном <span class="glyphicon glyphicon-pencil"></span></a>
     <h2><?= Html::encode($this->title) ?></h2>
-
     <?= $this->render('_form', [
         'model' => $model,
         'allFunctionalClusters' => $allFunctionalClusters,

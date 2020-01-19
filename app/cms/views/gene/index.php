@@ -38,6 +38,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             'aliases',
+            [
+                'label' => '',
+                'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
+                    $url = \yii\helpers\Url::toRoute(['update-functions', 'id' => $model->id]);
+                    return "<a href='{$url}' target='_blank'>Функции</a>";
+                },
+                'format' => 'raw'
+            ],
+            [
+                'label' => '',
+                'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
+                    $url = \yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id]);
+                    return "<a href='{$url}' target='_blank'>Эксперименты</a>";
+                },
+                'format' => 'raw'
+            ],
             //'entrezGene',
             //'uniprot',
             //'why',

@@ -24,13 +24,6 @@ class LifespanExperiment extends \common\models\LifespanExperiment
         ]);
     }
 
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
-    }
-
     public function attributeLabels()
     {
         return ArrayHelper::merge(
@@ -51,12 +44,44 @@ class LifespanExperiment extends \common\models\LifespanExperiment
     }
 
     /**
-     * @param LifespanExperiment[] $lifespanExperiments
+     * @param array $modelArrays
      * @param int $geneId
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public static function saveMultipleForGene(array $lifespanExperiments, int $geneId)
+    public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
 
+        foreach ($modelArrays as $id => $modelArray) {
+            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_id']) {
+                if(is_numeric($id)) {
+                    $modelAR = self::findOne($id);
+                } else {
+                    $modelAR = new self();
+                }
+                if ($modelArray['delete'] === '1') {
+                    $modelAR->delete();
+                    continue;
+                }
+                $modelAR->setAttributes($modelArray);
+                if(!is_numeric($modelArray['gene_intervention_id'])) {
+                    $arProteinActivityObject = GeneIntervention::createFromNameString($modelArray['gene_intervention_id']);
+                    $modelAR->gene_intervention_id = $arProteinActivityObject->id;
+                }
+                if(!is_numeric($modelArray['model_organism_id'])) {
+                    $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
+                    $modelAR->model_organism_id = $arProcessLocalization->id;
+                }
+                if(!is_numeric($modelArray['intervention_result_id'])) {
+                    $arProteinActivity = InterventionResult::createFromNameString($modelArray['intervention_result_id']);
+                    $modelAR->intervention_result_id = $arProteinActivity->id;
+                }
+                $modelAR->gene_id = $geneId;
+                if(!$modelAR->save()) {
+                    var_dump($modelAR->errors); die;
+                }
+            }
+        }
     }
 
 }

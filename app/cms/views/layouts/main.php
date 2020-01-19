@@ -65,9 +65,20 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Объекты активности белка', 'url' => '/protein-activity-object'],
                     '<li class="divider"></li>',
                     ['label' => 'Локализация процесса', 'url' => '/process-localization'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Классы белков', 'url' => '/protein-class'],
                 ],
             ],
-            ['label' => 'Классы белков', 'url' => ['/protein-class']],
+            [
+                'label' => 'Эксперименты',
+                'items' => [
+                    ['label' => 'Методы вмешательства', 'url' => '/gene-intervention'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Результаты вмешательства', 'url' => '/intervention-result'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Модельные организмы', 'url' => '/model-organism'],
+                ],
+            ],
             ],
     ]);
     echo Nav::widget([

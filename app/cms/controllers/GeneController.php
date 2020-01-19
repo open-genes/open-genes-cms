@@ -7,6 +7,7 @@ use cms\models\CommentCause;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
 use cms\models\GeneToProteinActivity;
+use cms\models\LifespanExperiment;
 use cms\models\ProteinClass;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -37,7 +38,7 @@ class GeneController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'update', 'delete', 'load-gene-protein-activity-form'],
+                        'actions' => ['index', 'create', 'update', 'update-experiments', 'update-functions', 'delete', 'load-widget-form'],
                         'roles' => ['admin', 'editor'],
                     ],
                 ],
@@ -92,9 +93,6 @@ class GeneController extends Controller
         if(!empty(Yii::$app->request->post())) {
             if ($model->load(Yii::$app->request->post())) {
                 if($model->save()) {
-                    if(is_array(Yii::$app->request->post('GeneToProteinActivity'))) {
-                        GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
-                    }
                     return $this->redirect(['update', 'id' => $model->id]);
                 }
             }
@@ -113,6 +111,48 @@ class GeneController extends Controller
     }
 
     /**
+     * @param $id
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionUpdateExperiments($id)
+    {
+        $model = $this->findModel($id);
+
+        if(is_array(Yii::$app->request->post('LifespanExperiment'))) {
+            LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+            return $this->redirect(['update-experiments', 'id' => $model->id]);
+        }
+
+        return $this->render('updateExperiments', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionUpdateFunctions($id)
+    {
+        $model = $this->findModel($id);
+
+        if(is_array(Yii::$app->request->post('GeneToProteinActivity'))) {
+            GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
+            return $this->redirect(['update-functions', 'id' => $model->id]);
+        }
+
+        return $this->render('updateFunctions', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
      * Deletes an existing Gene model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -126,16 +166,18 @@ class GeneController extends Controller
         return $this->redirect(['index']);
     }
 
-    public function actionLoadGeneProteinActivityForm($id)
+    public function actionLoadWidgetForm($id, string $modelName, string $widgetName)
     {
+        $modelName = "cms\models\\$modelName";
+        $widgetName = "cms\widgets\\$widgetName";
         if ($id) {
-            $geneToProteinActivity = GeneToProteinActivity::findOne($id);
+            $model = $modelName::findOne($id);
         }
-        if (!isset($geneToProteinActivity)) {
-            $geneToProteinActivity = new GeneToProteinActivity();
-            $geneToProteinActivity->id = $id;
+        if (!isset($model)) {
+            $model = new $modelName();
+            $model->id = $id;
         }
-        return $this->renderAjax('_geneProteinForm', ['geneToProteinActivity' => $geneToProteinActivity]);
+        return $this->renderAjax('_geneLinkWidgetForm', ['model' => $model, 'widgetName' => $widgetName]);
     }
 
     /**
