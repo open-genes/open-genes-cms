@@ -2,6 +2,7 @@
 namespace genes\controllers;
 
 use genes\application\service\GeneInfoServiceInterface;
+use genes\application\service\PhylumInfoServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
 use yii\filters\Cors;
@@ -95,6 +96,13 @@ class ApiController extends Controller
         }
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
         return $geneInfoService->getByExpressionChange($expressionChange, $this->language);
+    }
+
+    public function actionPhyla()
+    {
+        /** @var PhylumInfoServiceInterface $phylumInfoService */
+        $phylumInfoService = Yii::$container->get(PhylumInfoServiceInterface::class);
+        return $phylumInfoService->getAllPhyla();
     }
 
 }

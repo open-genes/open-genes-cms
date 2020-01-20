@@ -2,7 +2,7 @@
 
 namespace cms\controllers;
 
-use cms\models\Age;
+use cms\models\Phylum;
 use cms\models\CommentCause;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
@@ -101,7 +101,7 @@ class GeneController extends Controller
         }
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
         $allCommentCauses = CommentCause::findAllAsArray();
-        $allAges = Age::findAllAsArray();
+        $allAges = Phylum::findAllAsArray();
         $allProteinClasses = ProteinClass::findAllAsArray();
         return $this->render('update', [
             'model' => $model,

@@ -2,7 +2,7 @@
 namespace common\console\controllers;
 
 use cms\models\CommentCause;
-use common\models\Age;
+use common\models\Phylum;
 use common\models\FunctionalCluster;
 use common\models\Gene;
 use common\models\GeneExpressionInSample;
@@ -110,15 +110,15 @@ class MigrateDataController extends Controller
                 if ($arGene->agePhylo == 'Procaryota') {
                     $arGene->agePhylo = 'Prokaryota';
                 }
-                $arAge = Age::find()->where(
+                $arAge = Phylum::find()->where(
                     ['name_phylo' => $arGene->agePhylo]
                 )->one();
             } elseif ($arGene->ageMya) {
-                $arAge = $arAge = Age::find()->where(
+                $arAge = $arAge = Phylum::find()->where(
                     ['name_mya' => $arGene->ageMya]
                 );
             }
-            if (isset($arAge) && $arAge instanceof Age) {
+            if (isset($arAge) && $arAge instanceof Phylum) {
                 $arGene->age_id = $arAge->id;
                 $arGene->save();
                 echo $arAge->name_phylo . PHP_EOL;
