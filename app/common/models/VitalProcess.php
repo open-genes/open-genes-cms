@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "intervention_result".
+ * This is the model class for table "vital_process".
  *
  * @property int $id
  * @property string $name_ru
@@ -13,16 +13,16 @@ use Yii;
  * @property int $created_at
  * @property int $updated_at
  *
- * @property LifespanExperiment[] $lifespanExperiments
+ * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  */
-class InterventionResult extends \yii\db\ActiveRecord
+class VitalProcess extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'intervention_result';
+        return 'vital_process';
     }
 
     /**
@@ -53,17 +53,17 @@ class InterventionResult extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLifespanExperiments()
+    public function getGeneInterventionToVitalProcesses()
     {
-        return $this->hasMany(LifespanExperiment::className(), ['intervention_result_id' => 'id']);
+        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['vital_process_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return InterventionResultQuery the active query used by this AR class.
+     * @return VitalProcessQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new InterventionResultQuery(get_called_class());
+        return new VitalProcessQuery(get_called_class());
     }
 }

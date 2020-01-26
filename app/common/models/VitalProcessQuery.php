@@ -3,11 +3,11 @@
 namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[InterventionResult]].
+ * This is the ActiveQuery class for [[VitalProcess]].
  *
- * @see InterventionResult
+ * @see VitalProcess
  */
-class InterventionResultQuery extends \yii\db\ActiveQuery
+class VitalProcessQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class InterventionResultQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return InterventionResult[]|array
+     * @return VitalProcess[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class InterventionResultQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return InterventionResult|array|null
+     * @return VitalProcess|array|null
      */
     public function one($db = null)
     {

@@ -50,6 +50,7 @@ use Yii;
  * @property AgeRelatedChange[] $ageRelatedChanges
  * @property Age $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
+ * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToCommentCause[] $geneToCommentCauses
  * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
@@ -154,6 +155,14 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneExpressionInSamples()
     {
         return $this->hasMany(GeneExpressionInSample::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneInterventionToVitalProcesses()
+    {
+        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);
     }
 
     /**

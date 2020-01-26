@@ -7,6 +7,7 @@ use cms\models\AgeRelatedChange;
 use cms\models\CommentCause;
 use cms\models\Gene;
 use cms\models\FunctionalCluster;
+use cms\models\GeneInterventionToVitalProcess;
 use cms\models\GeneToProteinActivity;
 use cms\models\LifespanExperiment;
 use cms\models\ProteinClass;
@@ -128,6 +129,9 @@ class GeneController extends Controller
             }
             if(is_array(Yii::$app->request->post('AgeRelatedChange'))) {
                 AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
+            }
+            if(is_array(Yii::$app->request->post('GeneInterventionToVitalProcess'))) {
+                GeneInterventionToVitalProcess::saveMultipleForGene(Yii::$app->request->post('GeneInterventionToVitalProcess'), $id);
             }
             return $this->redirect(['update-experiments', 'id' => $model->id]);
         }

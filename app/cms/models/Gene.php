@@ -240,4 +240,12 @@ class Gene extends \common\models\Gene
         return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneInterventionToVitalProcesses()
+    {
+        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);
+    }
+
 }

@@ -3,7 +3,7 @@
 namespace cms\controllers;
 
 use Yii;
-use cms\models\InterventionResult;
+use cms\models\InterventionResultForLongevity;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -47,7 +47,7 @@ class InterventionResultController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => InterventionResult::find(),
+            'query' => InterventionResultForLongevity::find(),
         ]);
 
         return $this->render('index', [
@@ -62,7 +62,7 @@ class InterventionResultController extends Controller
      */
     public function actionCreate()
     {
-        $model = new InterventionResult();
+        $model = new InterventionResultForLongevity();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -111,12 +111,12 @@ class InterventionResultController extends Controller
      * Finds the InterventionResult model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return InterventionResult the loaded model
+     * @return InterventionResultForLongevity the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = InterventionResult::findOne($id)) !== null) {
+        if (($model = InterventionResultForLongevity::findOne($id)) !== null) {
             return $model;
         }
 

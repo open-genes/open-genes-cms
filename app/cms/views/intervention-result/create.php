@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\InterventionResult */
+/* @var $model cms\models\InterventionResultForLongevity */
 
 $this->title = 'Добавить результат вмешательства';
 $this->params['breadcrumbs'][] = ['label' => 'Intervention Results', 'url' => ['index']];
