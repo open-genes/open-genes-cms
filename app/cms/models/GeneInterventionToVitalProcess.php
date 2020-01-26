@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "age".
  *
  */
-class LifespanExperiment extends \common\models\LifespanExperiment
+class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVitalProcess
 {
     public $delete = false;
 
@@ -20,7 +20,7 @@ class LifespanExperiment extends \common\models\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id'], 'required'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id'], 'required'],
         ]);
     }
 
@@ -52,7 +52,7 @@ class LifespanExperiment extends \common\models\LifespanExperiment
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_id']) {
+            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_for_vital_process_id']) {
                 if(is_numeric($id)) {
                     $modelAR = self::findOne($id);
                 } else {
@@ -71,13 +71,17 @@ class LifespanExperiment extends \common\models\LifespanExperiment
                     $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
                     $modelAR->model_organism_id = $arProcessLocalization->id;
                 }
-                if(!is_numeric($modelArray['intervention_result_id'])) {
-                    $arProteinActivity = InterventionResultForLongevity::createFromNameString($modelArray['intervention_result_id']);
-                    $modelAR->intervention_result_id = $arProteinActivity->id;
+                if(!is_numeric($modelArray['intervention_result_for_vital_process_id'])) {
+                    $arResultForVitalProcess = InterventionResultForVitalProcess::createFromNameString($modelArray['intervention_result_for_vital_process_id']);
+                    $modelAR->intervention_result_for_vital_process_id = $arResultForVitalProcess->id;
+                }
+                if(!is_numeric($modelArray['vital_process_id'])) {
+                    $arVitalProcess = VitalProcess::createFromNameString($modelArray['vital_process_id']);
+                    $modelAR->vital_process_id = $arVitalProcess->id;
                 }
                 if(!is_numeric($modelArray['organism_line_id'])) {
-                    $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
-                    $modelAR->organism_line_id = $arProteinActivity->id;
+                    $arOrganismLine = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+                    $modelAR->organism_line_id = $arOrganismLine->id;
                 }
                 $modelAR->gene_id = $geneId;
                 if(!$modelAR->save()) {

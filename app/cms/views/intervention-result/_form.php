@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\InterventionResult */
+/* @var $model cms\models\InterventionResultForLongevity */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

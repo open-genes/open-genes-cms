@@ -25,7 +25,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']intervention_result_id',
-                    'data' => \cms\models\InterventionResult::getAllNamesAsArray(),
+                    'data' => \cms\models\InterventionResultForLongevity::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Результат вмешательства',
                         'multiple' => false,

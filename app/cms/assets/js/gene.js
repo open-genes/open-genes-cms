@@ -21,6 +21,13 @@ $('.js-add-age-related-change').click(function () {
     });
 });
 
+$('.js-add-intervention-to-vital-process').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=GeneInterventionToVitalProcess&widgetName=GeneInterventionToVitalProcessWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+        $('.js-intervention-to-vital-process').append(data);
+    });
+});
+
 $('.js-delete').click(function () {
     if ($(this).is(':checked')) {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');
