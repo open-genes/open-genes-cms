@@ -108,7 +108,7 @@ class GeneQuery extends \yii\db\ActiveQuery
     public function withAge()
     {
         return $this
-            ->addSelect('age.name_mya as age_mya, age.name_phylo as age_phylo, age.order as age_order')
+            ->addSelect('age.name_mya as phylum_age, age.name_phylo as phylum_name, age.order as phylum_order, age.id as phylum_id')
             ->join(
                 'LEFT JOIN',
                 'age',

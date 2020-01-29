@@ -16,7 +16,7 @@ use Yii;
  *
  * @property Gene[] $genes
  */
-class Age extends \yii\db\ActiveRecord
+class Phylum extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -62,10 +62,10 @@ class Age extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return AgeQuery the active query used by this AR class.
+     * @return PhylumQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new AgeQuery(get_called_class());
+        return new PhylumQuery(get_called_class());
     }
 }

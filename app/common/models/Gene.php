@@ -47,8 +47,8 @@ use Yii;
  * @property string $protein_complex_ru
  * @property string $protein_complex_en
  *
+ * @property Phylum $age
  * @property AgeRelatedChange[] $ageRelatedChanges
- * @property Age $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToCommentCause[] $geneToCommentCauses
@@ -83,7 +83,7 @@ class Gene extends \yii\db\ActiveRecord
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['userEdited'], 'string', 'max' => 50],
             [['expressionChange'], 'string', 'max' => 64],
-            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Age::className(), 'targetAttribute' => ['age_id' => 'id']],
+            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }
 
@@ -148,7 +148,7 @@ class Gene extends \yii\db\ActiveRecord
      */
     public function getAge()
     {
-        return $this->hasOne(Age::className(), ['id' => 'age_id']);
+        return $this->hasOne(Phylum::className(), ['id' => 'age_id']);
     }
 
     /**

@@ -5,6 +5,7 @@ use genes\application\dto\FunctionalClusterDto;
 use genes\application\dto\GeneFullViewDto;
 use genes\application\dto\GeneListViewDto;
 use genes\application\dto\LatestGeneViewDto;
+use genes\application\dto\PhylumDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface;
@@ -102,8 +103,7 @@ class GeneInfoService implements GeneInfoServiceInterface
             $geneCommentsReferenceLinks[$commentsRefLink] = $commentsRef;
         }
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = $geneArray['age_mya'];
-        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->name = $geneArray['name'];
@@ -126,8 +126,7 @@ class GeneInfoService implements GeneInfoServiceInterface
     {
         $geneDto = new LatestGeneViewDto();
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = $geneArray['age_mya'];
-        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->symbol = $geneArray['symbol'];
         return $geneDto;
     }
@@ -137,8 +136,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto = new GeneListViewDto();
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->name = $geneArray['name'];
-        $geneDto->ageMya = $geneArray['age_mya'];
-        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
@@ -167,6 +165,16 @@ class GeneInfoService implements GeneInfoServiceInterface
         }
 
         return $functionalClusterDtos;
+    }
+
+    private function prepareOrigin($geneArray)
+    {
+        $phylum = new PhylumDto();
+        $phylum->id = (int)$geneArray['phylum_id'];
+        $phylum->age = $geneArray['phylum_age'];
+        $phylum->phylum = $geneArray['phylum_name'];
+        $phylum->order = (int)$geneArray['phylum_order'];
+        return $phylum;
     }
 
     private static $expressionChangeEn = [

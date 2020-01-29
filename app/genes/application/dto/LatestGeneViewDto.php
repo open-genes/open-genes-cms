@@ -5,10 +5,8 @@ class LatestGeneViewDto
 {
     /** @var int */
     public $id;
-    /** @var string */
-    public $ageMya;
-    /** @var string */
-    public $agePhylo;
+    /** @var PhylumDto */
+    public $origin;
     /** @var string */
     public $symbol;
 }
