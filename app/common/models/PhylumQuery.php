@@ -5,9 +5,9 @@ namespace common\models;
 /**
  * This is the ActiveQuery class for [[Age]].
  *
- * @see Age
+ * @see Phylum
  */
-class AgeQuery extends \yii\db\ActiveQuery
+class PhylumQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class AgeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Age[]|array
+     * @return Phylum[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class AgeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Age|array|null
+     * @return Phylum|array|null
      */
     public function one($db = null)
     {
