@@ -39,9 +39,16 @@ $this->params['breadcrumbs'][] = 'Update';
     </div>
     <br>
     <h4>Вмешательство в работу гена/продукта улучшает связанный со старением процесс</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-intervention-to-vital-process']) ?>
-    <div class="js-intervention-to-vital-process">
+    <div class="js-intervention-to-vital-processes">
         <?php foreach ($model->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess): ?>
             <?= \cms\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]) ?>
+        <?php endforeach; ?>
+    </div>
+    <br>
+    <h4>Участие продукта гена в регуляции генов, связанных со старением</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-protein-to-gene']) ?>
+    <div class="js-protein-to-genes">
+        <?php foreach ($model->proteinToGenes as $proteinToGene): ?>
+            <?= \cms\widgets\ProteinToGeneWidget::widget(['model' => $proteinToGene]) ?>
         <?php endforeach; ?>
     </div>
     <div class="form-group">

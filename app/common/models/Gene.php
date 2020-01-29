@@ -55,6 +55,8 @@ use Yii;
  * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
  * @property LifespanExperiment[] $lifespanExperiments
+ * @property ProteinToGene[] $proteinToGenes
+ * @property ProteinToGene[] $proteinToGenes0
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -195,6 +197,14 @@ class Gene extends \yii\db\ActiveRecord
     public function getLifespanExperiments()
     {
         return $this->hasMany(LifespanExperiment::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProteinToGenes()
+    {
+        return $this->hasMany(ProteinToGene::className(), ['gene_id' => 'id']);
     }
 
     /**

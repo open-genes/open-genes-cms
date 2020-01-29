@@ -11,6 +11,7 @@ use cms\models\GeneInterventionToVitalProcess;
 use cms\models\GeneToProteinActivity;
 use cms\models\LifespanExperiment;
 use cms\models\ProteinClass;
+use cms\models\ProteinToGene;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -132,6 +133,9 @@ class GeneController extends Controller
             }
             if(is_array(Yii::$app->request->post('GeneInterventionToVitalProcess'))) {
                 GeneInterventionToVitalProcess::saveMultipleForGene(Yii::$app->request->post('GeneInterventionToVitalProcess'), $id);
+            }
+            if(is_array(Yii::$app->request->post('ProteinToGene'))) {
+                ProteinToGene::saveMultipleForGene(Yii::$app->request->post('ProteinToGene'), $id);
             }
             return $this->redirect(['update-experiments', 'id' => $model->id]);
         }
