@@ -1,8 +1,8 @@
 <?php
 /** @var $geneInterventionToVitalProcess \cms\models\GeneInterventionToVitalProcess */
 ?>
-<div class="form-split protein-activity js-lifespan-experiment js-gene-link-section">
-    <div class="js-lifespan-experiment-block js-gene-link-block">
+<div class="form-split protein-activity js-intervention-to-vital-process js-gene-link-section">
+    <div class="js-intervention-to-vital-process-block js-gene-link-block">
         <div class="form-split">
             <div class="form-half-without-margin">
                 <div class="form-half-without-margin">

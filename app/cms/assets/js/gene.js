@@ -24,7 +24,14 @@ $('.js-add-age-related-change').click(function () {
 $('.js-add-intervention-to-vital-process').click(function () {
     newGeneLinkBlocksCount++;
     $.get('/gene/load-widget-form?modelName=GeneInterventionToVitalProcess&widgetName=GeneInterventionToVitalProcessWidget&id=new'+newGeneLinkBlocksCount, function (data) {
-        $('.js-intervention-to-vital-process').append(data);
+        $('.js-intervention-to-vital-processes').append(data);
+    });
+});
+
+$('.js-add-protein-to-gene').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=ProteinToGene&widgetName=ProteinToGeneWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+        $('.js-protein-to-genes').append(data);
     });
 });
 
