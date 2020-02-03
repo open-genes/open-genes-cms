@@ -52,6 +52,7 @@ use Yii;
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToCommentCause[] $geneToCommentCauses
+ * @property GeneToProgeria[] $geneToProgerias
  * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
  * @property LifespanExperiment[] $lifespanExperiments
@@ -173,6 +174,14 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneToCommentCauses()
     {
         return $this->hasMany(GeneToCommentCause::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToProgerias()
+    {
+        return $this->hasMany(GeneToProgeria::className(), ['gene_id' => 'id']);
     }
 
     /**

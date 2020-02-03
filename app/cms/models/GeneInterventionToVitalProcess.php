@@ -84,6 +84,9 @@ class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVi
                     $modelAR->organism_line_id = $arOrganismLine->id;
                 }
                 $modelAR->gene_id = $geneId;
+                if($modelAR->organism_line_id === '') {
+                    $modelAR->organism_line_id = null;
+                }
                 if(!$modelAR->save()) {
                     var_dump($modelAR->errors); die;
                 }

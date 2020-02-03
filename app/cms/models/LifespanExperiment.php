@@ -80,6 +80,9 @@ class LifespanExperiment extends \common\models\LifespanExperiment
                     $modelAR->organism_line_id = $arProteinActivity->id;
                 }
                 $modelAR->gene_id = $geneId;
+                if($modelAR->organism_line_id === '') {
+                    $modelAR->organism_line_id = null;
+                }
                 if(!$modelAR->save()) {
                     var_dump($modelAR->errors); die;
                 }

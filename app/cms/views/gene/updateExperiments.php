@@ -51,6 +51,13 @@ $this->params['breadcrumbs'][] = 'Update';
             <?= \cms\widgets\ProteinToGeneWidget::widget(['model' => $proteinToGene]) ?>
         <?php endforeach; ?>
     </div>
+    <br>
+    <h4>Ассоциации гена с ускоренным старением у человека</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-gene-to-progeria']) ?>
+    <div class="js-gene-to-progerias">
+        <?php foreach ($model->geneToProgerias as $geneToProgeria): ?>
+            <?= \cms\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]) ?>
+        <?php endforeach; ?>
+    </div>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

@@ -35,6 +35,13 @@ $('.js-add-protein-to-gene').click(function () {
     });
 });
 
+$('.js-add-gene-to-progeria').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=GeneToProgeria&widgetName=GeneToProgeriaWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+        $('.js-gene-to-progerias').append(data);
+    });
+});
+
 $('.js-delete').click(function () {
     if ($(this).is(':checked')) {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');

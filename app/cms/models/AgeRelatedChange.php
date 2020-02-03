@@ -78,6 +78,9 @@ class AgeRelatedChange extends \common\models\AgeRelatedChange
                     $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
                     $modelAR->organism_line_id = $arProteinActivity->id;
                 }
+                if($modelAR->organism_line_id === '') {
+                    $modelAR->organism_line_id = null;
+                }
                 $modelAR->gene_id = $geneId;
                 if(!$modelAR->save()) {
                     var_dump($modelAR->errors); die;

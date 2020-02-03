@@ -87,6 +87,8 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Процессы', 'url' => '/vital-process'],
                     '<li class="divider"></li>',
                     ['label' => 'Результаты вмешательства (для процессов)', 'url' => '/intervention-result-for-vital-process'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Прогерические синдромы', 'url' => '/progeria-syndrome'],
                 ],
             ],
             ],
