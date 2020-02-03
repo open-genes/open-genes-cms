@@ -118,6 +118,15 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
+        $geneDto->why = explode(',', $geneArray['why']);
+        $geneDto->band = $geneArray['band'];
+        $geneDto->locationStart = $geneArray['locationStart'];
+        $geneDto->locationEnd = $geneArray['locationEnd'];
+        $geneDto->orientation = $geneArray['orientation'];
+        $geneDto->accPromoter = $geneArray['accPromoter'];
+        $geneDto->accOrf = $geneArray['accOrf'];
+        $geneDto->accCds = $geneArray['accCds'];
+        $geneDto->orthologs = $this->prepareOrthologs($geneArray['orthologs']);
 
         return $geneDto;
     }
@@ -189,5 +198,20 @@ class GeneInfoService implements GeneInfoServiceInterface
             throw new Exception('invalid $expressionChange value');
         }
         return array_search($expressionChange, self::$expressionChangeEn);
+    }
+
+    private function prepareOrthologs($orthologsString): array
+    {
+        $result = [];
+        $orthologs = explode(';', $orthologsString);
+        foreach ($orthologs as $orthologString) {
+            if(strpos($orthologString, ',')) {
+                list($organism, $ortholog) = explode(',', $orthologString);
+                $result[$organism] = $ortholog;
+            } else {
+                $result[$orthologString] = '';
+            }
+        }
+        return $result;
     }
 }

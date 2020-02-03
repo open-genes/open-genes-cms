@@ -41,20 +41,30 @@ class GeneFullViewDto
     public $proteinClasses;
     /** @var string */
     public $expressionChange;
+    /** @var string */
+    public $band;
+    /** @var int */
+    public $locationStart;
+    /** @var int */
+    public $locationEnd;
+    /** @var int */
+    public $orientation;
+    /** @var string */
+    public $accPromoter;
+    /** @var string */
+    public $accOrf;
+    /** @var string */
+    public $accCds;
+//    /** @var array */
+//    public $references;
+    /** @var array */
+    public $orthologs;
+    /** @var array */
+    public $why;
 
 //    public $isHidden;
-//    public $references;
-//    public $orthologs;
 //    public $dateAdded;
 //    public $userEdited;
 //    public $hylo;
-//    public $why;
-//    public $band;
-//    public $locationStart;
-//    public $locationEnd;
-//    public $orientation;
-//    public $accPromoter;
-//    public $accOrf;
-//    public $accCds;
 }
 
