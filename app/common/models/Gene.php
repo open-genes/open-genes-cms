@@ -47,8 +47,8 @@ use Yii;
  * @property string $protein_complex_ru
  * @property string $protein_complex_en
  *
- * @property AgeRelatedChange[] $ageRelatedChanges
  * @property Phylum $age
+ * @property AgeRelatedChange[] $ageRelatedChanges
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToCommentCause[] $geneToCommentCauses
