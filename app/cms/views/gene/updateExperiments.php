@@ -58,6 +58,14 @@ $this->params['breadcrumbs'][] = 'Update';
             <?= \cms\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]) ?>
         <?php endforeach; ?>
     </div>
+    <br>
+    <h4>Ассоциация гена с долголетием или ассоциированным с возрастом фенотипом</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-gene-to-longevity-effect']) ?>
+    <div class="js-gene-to-longevity-effects">
+        <?php foreach ($model->geneToLongevityEffects as $geneToLongevityEffect): ?>
+            <?= \cms\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]) ?>
+        <?php endforeach; ?>
+    </div>
+    <br>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

@@ -260,6 +260,14 @@ class Gene extends \common\models\Gene
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getGeneToLongevityEffects()
+    {
+        return $this->hasMany(GeneToLongevityEffect::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getGeneInterventionToVitalProcesses()
     {
         return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);

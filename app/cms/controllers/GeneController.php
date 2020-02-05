@@ -3,6 +3,7 @@
 namespace cms\controllers;
 
 use cms\models\AgeRelatedChange;
+use cms\models\GeneToLongevityEffect;
 use cms\models\GeneToProgeria;
 use cms\models\Phylum;
 use cms\models\CommentCause;
@@ -140,6 +141,9 @@ class GeneController extends Controller
             }
             if(is_array(Yii::$app->request->post('GeneToProgeria'))) {
                 GeneToProgeria::saveMultipleForGene(Yii::$app->request->post('GeneToProgeria'), $id);
+            }
+            if(is_array(Yii::$app->request->post('GeneToLongevityEffect'))) {
+                GeneToLongevityEffect::saveMultipleForGene(Yii::$app->request->post('GeneToLongevityEffect'), $id);
             }
             return $this->redirect(['update-experiments', 'id' => $model->id]);
         }

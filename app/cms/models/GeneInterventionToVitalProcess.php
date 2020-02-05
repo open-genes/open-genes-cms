@@ -79,7 +79,7 @@ class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVi
                     $arVitalProcess = VitalProcess::createFromNameString($modelArray['vital_process_id']);
                     $modelAR->vital_process_id = $arVitalProcess->id;
                 }
-                if(!is_numeric($modelArray['organism_line_id'])) {
+                if(!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
                     $arOrganismLine = OrganismLine::createFromNameString($modelArray['organism_line_id']);
                     $modelAR->organism_line_id = $arOrganismLine->id;
                 }
