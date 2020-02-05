@@ -9,7 +9,7 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "age".
  *
  */
-class Age extends \common\models\Age
+class Phylum extends \common\models\Phylum
 {
     public function behaviors()
     {
