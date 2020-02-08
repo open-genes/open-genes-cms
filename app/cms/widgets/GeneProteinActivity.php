@@ -8,7 +8,7 @@ use yii\base\Widget;
 class GeneProteinActivity extends Widget
 {
     /** @var GeneToProteinActivity */
-    public $geneToProteinActivity;
+    public $model;
 
     public function init()
     {
@@ -17,6 +17,6 @@ class GeneProteinActivity extends Widget
 
     public function run()
     {
-        return $this->render('geneProteinActivity', ['geneToProteinActivity' => $this->geneToProteinActivity]);
+        return $this->render('geneProteinActivity', ['geneToProteinActivity' => $this->model]);
     }
 }

@@ -217,6 +217,14 @@ class Gene extends \common\models\Gene
         parent::afterSave($insert, $changedAttributes);
     }
 
+    public static function getAllNamesAsArray()
+    {
+        $result = parent::find()
+            ->select(['id', 'concat(symbol, \' \', \'(\', name, \')\') as name'])
+            ->all();
+        return ArrayHelper::map($result, 'id', 'name');
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -225,5 +233,52 @@ class Gene extends \common\models\Gene
         return $this->hasMany(GeneToProteinActivity::className(), ['gene_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLifespanExperiments()
+    {
+        return $this->hasMany(LifespanExperiment::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProteinToGenes()
+    {
+        return $this->hasMany(ProteinToGene::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAgeRelatedChanges()
+    {
+        return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToLongevityEffects()
+    {
+        return $this->hasMany(GeneToLongevityEffect::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneInterventionToVitalProcesses()
+    {
+        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToProgerias()
+    {
+        return $this->hasMany(GeneToProgeria::className(), ['gene_id' => 'id']);
+    }
 
 }
