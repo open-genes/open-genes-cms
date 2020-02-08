@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model cms\models\Genotype */
 
-$this->title = 'Добавить генотип';
+$this->title = 'Добавить аллельныей полиморфизм';
 $this->params['breadcrumbs'][] = ['label' => 'Genotypes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
