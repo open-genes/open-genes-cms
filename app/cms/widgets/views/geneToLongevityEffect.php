@@ -7,6 +7,23 @@
             <div class="form-third">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
+                    'data' => \cms\models\Genotype::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Генотип',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']gene_longevity_association_type_id',
                     'data' => \cms\models\GeneLongevityAssociationType::getAllNamesAsArray(),
                     'options' => [
@@ -38,6 +55,8 @@
                 ]);
                 ?>
             </div>
+        </div>
+        <div class="form-split">
             <div class="form-third">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
@@ -54,8 +73,6 @@
                 ]);
                 ?>
             </div>
-        </div>
-        <div class="form-split">
             <div class="form-third">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
@@ -63,22 +80,6 @@
                     'data' => \cms\models\OrganismLine::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Линия организмов',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                        'tokenSeparators' => [','],
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="form-third">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneToLongevityEffect,
-                    'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
-                    'data' => \cms\models\Genotype::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Генотип',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [

@@ -49,7 +49,7 @@ $('.js-add-gene-to-longevity-effect').click(function () {
     });
 });
 
-$('.js-delete').click(function () {
+$(document).on('click', '.js-delete', function() {
     if ($(this).is(':checked')) {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');
     } else {

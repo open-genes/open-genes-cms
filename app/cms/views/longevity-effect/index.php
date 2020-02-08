@@ -6,15 +6,15 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Результаты вмешательства для процессов';
+$this->title = 'Эффекты продолжительности жизни';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="intervention-result-for-vital-process-index">
+<div class="longevity-effect-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить результат вмешательства для процесса', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить эффект продолжительности жизни', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
