@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -12,6 +13,13 @@ use yii\helpers\ArrayHelper;
 class GeneToProgeria extends \common\models\GeneToProgeria
 {
     public $delete = false;
+
+    public function behaviors()
+    {
+        return [
+            ChangelogBehavior::class
+        ];
+    }
 
     /**
      * {@inheritdoc}

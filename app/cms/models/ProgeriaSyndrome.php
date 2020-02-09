@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use cms\models\traits\RuEnActiveRecordTrait;
 use yii\behaviors\TimestampBehavior;
 
@@ -19,6 +20,7 @@ class ProgeriaSyndrome extends \common\models\ProgeriaSyndrome
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 

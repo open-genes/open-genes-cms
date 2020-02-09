@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
@@ -13,6 +14,13 @@ use yii\helpers\ArrayHelper;
 class ProteinToGene extends \common\models\ProteinToGene
 {
     public $delete = false;
+
+    public function behaviors()
+    {
+        return [
+            ChangelogBehavior::class
+        ];
+    }
 
     /**
      * {@inheritdoc}

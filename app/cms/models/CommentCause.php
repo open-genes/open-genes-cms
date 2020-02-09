@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -15,6 +16,7 @@ class CommentCause extends \common\models\CommentCause
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 

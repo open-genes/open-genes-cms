@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -12,4 +13,11 @@ use yii\behaviors\TimestampBehavior;
 class GeneToCommentCause extends \common\models\GeneToCommentCause
 {
 
+
+    public function behaviors()
+    {
+        return [
+            ChangelogBehavior::class
+        ];
+    }
 }

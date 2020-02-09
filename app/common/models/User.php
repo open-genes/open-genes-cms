@@ -1,6 +1,7 @@
 <?php
 namespace common\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -44,6 +45,7 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 

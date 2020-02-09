@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use Yii;
 
 /**
@@ -16,4 +17,11 @@ use Yii;
 class GeneToFunctionalCluster extends \common\models\GeneToFunctionalCluster
 {
 
+
+    public function behaviors()
+    {
+        return [
+            ChangelogBehavior::class
+        ];
+    }
 }

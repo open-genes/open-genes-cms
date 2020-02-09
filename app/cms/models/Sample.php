@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use cms\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -20,6 +21,7 @@ class Sample extends \common\models\Sample
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 
