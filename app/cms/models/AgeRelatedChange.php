@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -11,6 +12,13 @@ use yii\helpers\ArrayHelper;
 class AgeRelatedChange extends \common\models\AgeRelatedChange
 {
     public $delete = false;
+
+    public function behaviors()
+    {
+        return [
+            ChangelogBehavior::class
+        ];
+    }
 
     /**
      * {@inheritdoc}

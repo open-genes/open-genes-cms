@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
@@ -15,6 +16,7 @@ class FunctionalCluster extends \common\models\FunctionalCluster
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 

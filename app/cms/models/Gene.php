@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use cms\models\traits\ConditionActiveRecordTrait;
 use cms\models\traits\RuEnActiveRecordTrait;
 use common\models\GeneToProteinClass;
@@ -30,6 +31,7 @@ class Gene extends \common\models\Gene
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 

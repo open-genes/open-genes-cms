@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
@@ -29,6 +30,7 @@ class GeneToProteinActivity extends \common\models\GeneToProteinActivity
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 
