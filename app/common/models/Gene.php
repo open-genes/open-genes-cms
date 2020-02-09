@@ -48,10 +48,17 @@ use Yii;
  * @property string $protein_complex_en
  *
  * @property Phylum $age
+ * @property AgeRelatedChange[] $ageRelatedChanges
  * @property GeneExpressionInSample[] $geneExpressionInSamples
+ * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToCommentCause[] $geneToCommentCauses
+ * @property GeneToLongevityEffect[] $geneToLongevityEffects
+ * @property GeneToProgeria[] $geneToProgerias
  * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
+ * @property LifespanExperiment[] $lifespanExperiments
+ * @property ProteinToGene[] $proteinToGenes
+ * @property ProteinToGene[] $proteinToGenes0
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -133,6 +140,14 @@ class Gene extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getAgeRelatedChanges()
+    {
+        return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getAge()
     {
         return $this->hasOne(Phylum::className(), ['id' => 'age_id']);
@@ -149,9 +164,33 @@ class Gene extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getGeneInterventionToVitalProcesses()
+    {
+        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getGeneToCommentCauses()
     {
         return $this->hasMany(GeneToCommentCause::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToLongevityEffects()
+    {
+        return $this->hasMany(GeneToLongevityEffect::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToProgerias()
+    {
+        return $this->hasMany(GeneToProgeria::className(), ['gene_id' => 'id']);
     }
 
     /**
@@ -168,6 +207,22 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneToProteinClasses()
     {
         return $this->hasMany(GeneToProteinClass::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLifespanExperiments()
+    {
+        return $this->hasMany(LifespanExperiment::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProteinToGenes()
+    {
+        return $this->hasMany(ProteinToGene::className(), ['gene_id' => 'id']);
     }
 
     /**

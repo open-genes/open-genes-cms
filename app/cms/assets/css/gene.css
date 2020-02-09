@@ -52,6 +52,14 @@ textarea {
     background: #e4e3f9;
     border-radius: 5px;
 }
+a.gene-link {
+    float: right;
+    display: inline-block;
+    padding: 2px 5px;
+    margin: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid #6663bb;
+}
 @media (max-width: 992px) {
     .form-half {
         width: inherit;
