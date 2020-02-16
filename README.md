@@ -1,12 +1,21 @@
 # Open Longevity Genes
 
+Мануальный деплой:
+
+Создать базу данных
+Установить композер
+Создать файл .env на основе примера и записать в него доступы
+ВАЖНО: установить локальный адрес 127.0.0.1 вместо localhost
+
+
+
 Yii2 web app
 
 ## Dev environment
 
 ### Build backend
 ```
-docker compose up -d
+docker-compose up -d
 ```
 Open http://127.0.0.1:8080/
 

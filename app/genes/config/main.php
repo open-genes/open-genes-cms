@@ -73,7 +73,9 @@ $config = [
                 return new \genes\infrastructure\dataProvider\GeneDataProvider(Yii::$app->language);
             },
             \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class,
-            \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class
+            \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class,
+            \genes\application\service\GeneOntologyServiceInterface::class => \genes\application\service\GeneOntologyService::class
+
         ]
     ],
     'defaultRoute' => 'site/index',

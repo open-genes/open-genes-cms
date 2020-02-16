@@ -2,6 +2,7 @@
 namespace genes\controllers;
 
 use genes\application\service\GeneInfoServiceInterface;
+use genes\application\service\GeneOntologyServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
 use yii\filters\Cors;
@@ -95,6 +96,46 @@ class ApiController extends Controller
         }
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
         return $geneInfoService->getByExpressionChange($expressionChange, $this->language);
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntologyMine()
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->mineFromGateway();
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntology()
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->getAllWithGenes();
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntologyGene($id)
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->getForGene($id);
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntologyMineGene($id)
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->mineFromGatewayForGene((int) $id);
     }
 
 }
