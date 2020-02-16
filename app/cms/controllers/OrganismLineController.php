@@ -32,7 +32,12 @@ class OrganismLineController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'update', 'delete'],
+                        'actions' => ['index', 'create', 'update'],
+                        'roles' => ['admin', 'editor', 'contributor'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['delete'],
                         'roles' => ['admin', 'editor'],
                     ],
                 ],

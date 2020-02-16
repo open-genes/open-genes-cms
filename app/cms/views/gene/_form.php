@@ -21,7 +21,7 @@ $this->registerCssFile('/assets/css/gene.css');
 <div class="gene-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?php if(Yii::$app->user->can('admin')): ?>
+    <?php if(Yii::$app->user->can('editor')): ?>
     <?= $form->field($model, 'isHidden')->checkbox() ?>
     <?php endif; ?>
     <div class="form-split">

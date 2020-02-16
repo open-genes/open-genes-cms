@@ -15,7 +15,6 @@ use Yii;
  * @property int $model_organism_id
  * @property int $organism_line_id
  * @property int $age
- * @property int $lifespan_change_percent
  * @property int $sex_of_organism
  * @property string $reference
  * @property string $comment_en
@@ -44,7 +43,7 @@ class GeneInterventionToVitalProcess extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id', 'vital_process_id', 'model_organism_id', 'organism_line_id', 'age', 'lifespan_change_percent', 'sex_of_organism'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id', 'vital_process_id', 'model_organism_id', 'organism_line_id', 'age', 'sex_of_organism'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -70,7 +69,6 @@ class GeneInterventionToVitalProcess extends \yii\db\ActiveRecord
             'model_organism_id' => 'Model Organism ID',
             'organism_line_id' => 'Organism Line ID',
             'age' => 'Age',
-            'lifespan_change_percent' => 'Lifespan Change Percent',
             'sex_of_organism' => 'Sex Of Organism',
             'reference' => 'Reference',
             'comment_en' => 'Comment En',

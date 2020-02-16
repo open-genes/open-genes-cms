@@ -80,23 +80,14 @@
                 </div>
             </div>
             <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $lifespanExperiment,
-                        'attribute' => '[' . $lifespanExperiment->id . ']sex',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
-                        'options' => [
-                            'placeholder' => 'Пол',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                        ],
-                    ]);
-                    ?>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']lifespan_change_percent_male', ['class' => 'form-control', 'placeholder' => 'Изменение (%) муж']) ?>
                 </div>
-                <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']lifespan_change_percent', ['class' => 'form-control', 'placeholder' => 'Изменение прод. жизни (%)']) ?>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']lifespan_change_percent_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
+                </div>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']lifespan_change_percent_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
                 </div>
             </div>
         </div>

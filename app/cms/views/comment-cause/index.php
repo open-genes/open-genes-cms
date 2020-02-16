@@ -24,7 +24,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name_en',
             'name_ru',
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                'visibleButtons' => [
+                    'update' => \Yii::$app->user->can('contributor'),
+                    'delete' => \Yii::$app->user->can('editor'),
+                ]
+            ],
         ],
     ]); ?>
 

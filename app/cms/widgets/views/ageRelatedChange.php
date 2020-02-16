@@ -88,23 +88,14 @@
 
             </div>
             <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $ageRelatedChange,
-                        'attribute' => '[' . $ageRelatedChange->id . ']sex_of_organism',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
-                        'options' => [
-                            'placeholder' => 'Пол',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                        ],
-                    ]);
-                    ?>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_male', ['class' => 'form-control', 'placeholder' => 'Изменение (%) муж']) ?>
                 </div>
-                <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value', ['class' => 'form-control', 'placeholder' => 'Изменение (%)']) ?>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
+                </div>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
                 </div>
             </div>
         </div>
