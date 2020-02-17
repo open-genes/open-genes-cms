@@ -42,7 +42,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
-                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
+                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2=> 'оба'],
                     'options' => [
                         'placeholder' => 'Пол',
                         'multiple' => false

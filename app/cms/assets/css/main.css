@@ -70,6 +70,16 @@
     border-color: #3e3a84;
 }
 
+.open-genes-navbar.navbar-inverse .navbar-nav > .active > a {
+    background-color: #3e3a84;
+    border-color: #3e3a84;
+}
+
+.open-genes-navbar.navbar-inverse .navbar-nav > .active > a, .open-genes-navbar.navbar-inverse .navbar-nav > .active > a:hover {
+    background-color: #3e3a84;
+    border-color: #3e3a84;
+}
+
 @media (max-width: 1200px) {
     .open-genes-navbar .navbar-header {
         float: none;
@@ -180,4 +190,27 @@
     border-color: #cac9f1;
     overflow-x: hidden;
     margin-top: -1px;
+}
+
+section.login-form {
+    display: block;
+    margin: 70px auto 0;
+    width: 440px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #e3e2ff;
+}
+
+section.login-form .btn-primary {
+    color: #fff;
+    background-color: #6563bb;
+    border-color: #6563bb;
+    margin: 0 auto;
+    width: 100px;
+    display: block;
+}
+section.login-form .btn-primary:active, section.login-form .btn-primary:hover {
+    color: #fff;
+    background-color: #3e3c92;
+    border-color: #3e3c92;
 }

@@ -79,22 +79,19 @@
         </div>
         <div class="form-split">
             <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
+                <div class="form-third">
                     <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_from', ['class' => 'form-control', 'placeholder' => 'Возраст - от']) ?>
                 </div>
-                <div class="form-half-without-margin">
+                <div class="form-third">
                     <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_to', ['class' => 'form-control', 'placeholder' => 'Возраст - до']) ?>
                 </div>
-
-            </div>
-            <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
+                <div class="form-third">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $ageRelatedChange,
-                        'attribute' => '[' . $ageRelatedChange->id . ']sex_of_organism',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
+                        'attribute' => '[' . $ageRelatedChange->id . ']age_unit',
+                        'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
                         'options' => [
-                            'placeholder' => 'Пол',
+                            'placeholder' => 'Ед. изм. возраста',
                             'multiple' => false
                         ],
                         'pluginOptions' => [
@@ -103,8 +100,17 @@
                     ]);
                     ?>
                 </div>
-                <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value', ['class' => 'form-control', 'placeholder' => 'Изменение (%)']) ?>
+
+            </div>
+            <div class="form-half-without-margin">
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_male', ['class' => 'form-control', 'placeholder' => 'Изменение (%) муж']) ?>
+                </div>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
+                </div>
+                <div class="form-third">
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
                 </div>
             </div>
         </div>

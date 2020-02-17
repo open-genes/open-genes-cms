@@ -4,60 +4,60 @@
 <div class="form-split protein-activity js-intervention-to-vital-process js-gene-link-section">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
         <div class="form-split">
-            <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneInterventionToVitalProcess,
-                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_id',
-                        'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Вмешательство',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => [','],
-                        ],
-                    ]);
-                    ?>
-                </div>
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneInterventionToVitalProcess,
-                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']intervention_result_for_vital_process_id',
-                        'data' => \cms\models\InterventionResultForVitalProcess::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Результат вмешательства',
-                            'multiple' => false,
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => [','],
-                        ],
-                    ]);
-                    ?>
-                </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_id',
+                    'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Вмешательство',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                    ],
+                ]);
+                ?>
             </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']intervention_result_for_vital_process_id',
+                    'data' => \cms\models\InterventionResultForVitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Результат вмешательства',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']vital_process_id',
+                    'data' => \cms\models\VitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Процесс',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                    ],
+                ]);
+                ?>
+            </div>
+        </div>
+        <div class="form-split">
             <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneInterventionToVitalProcess,
-                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']vital_process_id',
-                        'data' => \cms\models\VitalProcess::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Процесс',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => [','],
-                        ],
-                    ]);
-                    ?>
-                </div>
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
@@ -75,13 +75,28 @@
                     ]);
                     ?>
                 </div>
-            </div>
-        </div>
-        <div class="form-split">
-            <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    <div class="form-half-without-margin">
+                        <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    </div>
+                    <div class="form-half-without-margin">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $geneInterventionToVitalProcess,
+                            'attribute' => '[' . $geneInterventionToVitalProcess->id . ']age_unit',
+                            'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                            'options' => [
+                                'placeholder' => 'Ед. изм. возраста',
+                                'multiple' => false
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ],
+                        ]);
+                        ?>
+                    </div>
                 </div>
+            </div>
+            <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
@@ -99,13 +114,11 @@
                     ]);
                     ?>
                 </div>
-            </div>
-            <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
                         'attribute' => '[' . $geneInterventionToVitalProcess->id . ']sex_of_organism',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
+                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба'],
                         'options' => [
                             'placeholder' => 'Пол',
                             'multiple' => false
@@ -115,9 +128,6 @@
                         ],
                     ]);
                     ?>
-                </div>
-                <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']lifespan_change_percent', ['class' => 'form-control', 'placeholder' => 'Изменение (%)']) ?>
                 </div>
             </div>
         </div>

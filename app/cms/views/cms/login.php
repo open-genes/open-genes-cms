@@ -6,28 +6,22 @@ use yii\widgets\ActiveForm;
 ?>
 <div class="page gene-page">
     <div class="page__inner">
-        <section>
+        <section class="login-form">
             <h2><?= Html::encode($this->title) ?></h2>
 
-            <p>Please fill out the following fields to login:</p>
+            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-            <div class="row">
-                <div class="col-lg-5">
-                    <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Логин'])->label(false) ?>
 
-                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Пароль'])->label(false) ?>
 
-                    <?= $form->field($model, 'password')->passwordInput() ?>
+            <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-                    <?= $form->field($model, 'rememberMe')->checkbox() ?>
-
-                    <div class="form-group">
-                        <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-                    </div>
-
-                    <?php ActiveForm::end(); ?>
-                </div>
+            <div class="form-group">
+                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
+
+            <?php ActiveForm::end(); ?>
         </section>
     </div>
 </div>

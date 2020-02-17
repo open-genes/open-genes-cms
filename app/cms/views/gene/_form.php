@@ -21,7 +21,7 @@ $this->registerCssFile('/assets/css/gene.css');
 <div class="gene-form">
 
     <?php $form = ActiveForm::begin(); ?>
-    <?php if(Yii::$app->user->can('admin')): ?>
+    <?php if(Yii::$app->user->can('editor')): ?>
     <?= $form->field($model, 'isHidden')->checkbox() ?>
     <?php endif; ?>
     <div class="form-split">
@@ -57,12 +57,15 @@ $this->registerCssFile('/assets/css/gene.css');
             'allowClear' => true
         ],
     ]); ?>
-    <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
-    <?= $form->field($model, 'commentAgingEN')->textarea(['rows' => 4]) ?>
+    <?php if(Yii::$app->user->can('editor')): // todo add more operations to auth manager ?>
+        <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
+        <?= $form->field($model, 'commentAgingEN')->textarea(['rows' => 4]) ?>
+        <?= $form->field($model, 'commentFunction')->textarea(['rows' => 4]) ?>
+        <?= $form->field($model, 'commentFunctionEN')->textarea(['rows' => 4]) ?>
+    <?php endif; ?>
+
     <?= $form->field($model, 'commentEvolution')->textarea(['rows' => 4]) ?>
     <?= $form->field($model, 'commentEvolutionEN')->textarea(['rows' => 4]) ?>
-    <?= $form->field($model, 'commentFunction')->textarea(['rows' => 4]) ?>
-    <?= $form->field($model, 'commentFunctionEN')->textarea(['rows' => 4]) ?>
     <?= $form->field($model, 'commentsReferenceLinks')->textarea(['rows' => 4]) ?>
 
     <?php if(Yii::$app->user->can('admin')): // todo add more operations to auth manager ?>

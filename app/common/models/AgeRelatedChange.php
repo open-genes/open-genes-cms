@@ -15,11 +15,13 @@ use Yii;
  * @property int $organism_line_id
  * @property int $age_from
  * @property int $age_to
- * @property int $change_value
- * @property int $sex_of_organism
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
+ * @property int $change_value_male
+ * @property int $change_value_female
+ * @property int $change_value_common
+ * @property int $age_unit
  *
  * @property Gene $gene
  * @property ModelOrganism $modelOrganism
@@ -43,7 +45,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_from', 'age_to', 'change_value', 'sex_of_organism'], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common', 'age_unit'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -68,11 +70,13 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'organism_line_id' => 'Organism Line ID',
             'age_from' => 'Age From',
             'age_to' => 'Age To',
-            'change_value' => 'Change Value',
-            'sex_of_organism' => 'Sex Of Organism',
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
+            'change_value_male' => 'Change Value Male',
+            'change_value_female' => 'Change Value Female',
+            'change_value_common' => 'Change Value Common',
+            'age_unit' => 'Age Unit',
         ];
     }
 

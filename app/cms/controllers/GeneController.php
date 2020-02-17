@@ -43,7 +43,12 @@ class GeneController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'update', 'update-experiments', 'update-functions', 'update-age-related-changes', 'delete', 'load-widget-form'],
+                        'actions' => ['index', 'update', 'update-experiments', 'update-functions', 'update-age-related-changes', 'load-widget-form'],
+                        'roles' => ['admin', 'editor', 'contributor'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'delete'],
                         'roles' => ['admin', 'editor'],
                     ],
                 ],
@@ -75,8 +80,9 @@ class GeneController extends Controller
     {
         $model = new Gene();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['update', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->createByNCBIIds()) {
+            Yii::$app->session->setFlash('add_genes', 'Гены успешно добавлены, Вы можете найти их по id в таблице');
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [

@@ -23,6 +23,8 @@ class Gene extends \common\models\Gene
 {
     use ConditionActiveRecordTrait;
 
+    public $newGenesNcbiIds;
+
     protected $functionalClustersIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
@@ -42,7 +44,8 @@ class Gene extends \common\models\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray', 'commentCauseIdsArray', 'proteinClassesIdsArray'], 'safe'],
+            [['functionalClustersIdsArray', 'commentCauseIdsArray', 'proteinClassesIdsArray', 'newGenesNcbiIds'], 'safe'],
+            ['entrezGene', 'unique'],
         ]);
     }
 
@@ -57,7 +60,7 @@ class Gene extends \common\models\Gene
             'symbol' => 'HGNC',
             'aliases' => 'Синонимы',
             'name' => 'Название',
-            'entrezGene' => 'Entrez Gene',
+            'entrezGene' => 'NCBI id',
             'uniprot' => 'Uniprot',
             'why' => 'why',
             'band' => 'Band',
@@ -103,7 +106,7 @@ class Gene extends \common\models\Gene
         $this->addCondition($query, 'symbol', true);
         $this->addCondition($query, 'aliases', true);
         $this->addCondition($query, 'name', true);
-        $this->addCondition($query, 'ageMya');
+        $this->addCondition($query, 'entrezGene');
 
         return $dataProvider;
     }
@@ -217,6 +220,27 @@ class Gene extends \common\models\Gene
         }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function createByNCBIIds()
+    {
+        $genesNCBIIdsArray = explode(PHP_EOL, $this->newGenesNcbiIds);
+        if(is_array($genesNCBIIdsArray)) {
+            foreach ($genesNCBIIdsArray as $geneNCBIId) {
+                $geneNCBIId = (int)trim($geneNCBIId, PHP_EOL.' \t\n\r\x0B,;');
+                $arGene = self::find()->where(['entrezGene' => $geneNCBIId])->one();
+                if(!$arGene) {
+                    $arGene = new self();
+                    $arGene->entrezGene = $geneNCBIId;
+                    $arGene->dateAdded = 0;
+                    $arGene->isHidden = 1;
+                    if(!$arGene->save()) {
+                        $this->addError('newGenesNcbiIds', current($arGene->getFirstErrors()));
+                    }
+                }
+            }
+        }
+        return empty($this->errors);
     }
 
     public static function getAllNamesAsArray()
