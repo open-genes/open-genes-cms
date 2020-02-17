@@ -79,11 +79,26 @@
         </div>
         <div class="form-split">
             <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
+                <div class="form-third">
                     <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_from', ['class' => 'form-control', 'placeholder' => 'Возраст - от']) ?>
                 </div>
-                <div class="form-half-without-margin">
+                <div class="form-third">
                     <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_to', ['class' => 'form-control', 'placeholder' => 'Возраст - до']) ?>
+                </div>
+                <div class="form-third">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $ageRelatedChange,
+                        'attribute' => '[' . $ageRelatedChange->id . ']age_unit',
+                        'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                        'options' => [
+                            'placeholder' => 'Ед. изм. возраста',
+                            'multiple' => false
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                    ]);
+                    ?>
                 </div>
 
             </div>

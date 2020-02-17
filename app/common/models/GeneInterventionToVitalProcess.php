@@ -19,6 +19,7 @@ use Yii;
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
+ * @property int $age_unit
  *
  * @property Gene $gene
  * @property InterventionResultForVitalProcess $interventionResultForVitalProcess
@@ -43,7 +44,7 @@ class GeneInterventionToVitalProcess extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id', 'vital_process_id', 'model_organism_id', 'organism_line_id', 'age', 'sex_of_organism'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id', 'vital_process_id', 'model_organism_id', 'organism_line_id', 'age', 'sex_of_organism', 'age_unit'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -73,6 +74,7 @@ class GeneInterventionToVitalProcess extends \yii\db\ActiveRecord
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
+            'age_unit' => 'Age Unit',
         ];
     }
 

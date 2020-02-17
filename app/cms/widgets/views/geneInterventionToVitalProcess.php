@@ -76,7 +76,24 @@
                     ?>
                 </div>
                 <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    <div class="form-half-without-margin">
+                        <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    </div>
+                    <div class="form-half-without-margin">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $geneInterventionToVitalProcess,
+                            'attribute' => '[' . $geneInterventionToVitalProcess->id . ']age_unit',
+                            'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                            'options' => [
+                                'placeholder' => 'Ед. изм. возраста',
+                                'multiple' => false
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ],
+                        ]);
+                        ?>
+                    </div>
                 </div>
             </div>
             <div class="form-half-without-margin">
@@ -101,7 +118,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
                         'attribute' => '[' . $geneInterventionToVitalProcess->id . ']sex_of_organism',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2=> 'оба'],
+                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба'],
                         'options' => [
                             'placeholder' => 'Пол',
                             'multiple' => false
