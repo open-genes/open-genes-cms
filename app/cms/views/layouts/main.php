@@ -97,6 +97,7 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
                 ],
             ],
+            ['label' => 'Пользователи', 'url' => '/user', 'visible'=>Yii::$app->user->can('admin')],
             ],
     ]);
     echo Nav::widget([
