@@ -56,6 +56,17 @@ $config = [
             'loginUrl' => ['/cms/login'],
             'identityCookie' => ['name' => '_identity-genes', 'httpOnly' => true],
         ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp-pulse.com',
+                'username' => getenv('SMTP_USER'),
+                'password' => getenv('SMTP_PASS'),
+                'port' => '587',
+                'encryption' => 'tls',
+            ],
+        ]
     ],
     'container' => [
         'definitions' => [

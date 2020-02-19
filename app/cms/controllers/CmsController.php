@@ -2,6 +2,7 @@
 namespace cms\controllers;
 
 use common\models\LoginForm;
+use common\models\SignupForm;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -62,6 +63,32 @@ class CmsController extends Controller
         }
     }
 
+    public function actionRegister()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            $message = 'Спасибо за регистрацию! Скоро мы активируем Ваш аккаунт.';
+            $this->sendNotifyEmail($model->email);
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+            'message' => $message
+        ]);
+    }
+
+    protected function sendNotifyEmail($userEmail)
+    {
+        return Yii::$app
+            ->mailer
+            ->compose()
+            ->setTextBody('Новая регистрация на Open Genes - ' . $userEmail)
+            ->setFrom([Yii::$app->params['adminEmail'] => 'Open Genes'])
+            ->setTo(Yii::$app->params['checkEmail'])
+            ->setSubject('Account registration at Open Genes')
+            ->send();
+    }
+
     /**
      * Logs out the current user.
      *
@@ -86,7 +113,7 @@ class CmsController extends Controller
         }
         Yii::$app->getResponse()->setStatusCodeByException($exception);
 
-        return $this->render('error');
+        return $this->render('error', ['exception' => $exception]);
     }
 
 

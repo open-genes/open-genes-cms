@@ -1,4 +1,5 @@
 <?php
 return [
-    'adminEmail' => 'admin@example.com',
+    'adminEmail' => 'admin@open-genes.com',
+    'checkEmail' => 'sp.olga.inf@gmail.com',
 ];

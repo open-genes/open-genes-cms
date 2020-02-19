@@ -214,3 +214,15 @@ section.login-form .btn-primary:active, section.login-form .btn-primary:hover {
     background-color: #3e3c92;
     border-color: #3e3c92;
 }
+
+section.error {
+    display: block;
+    margin: 70px auto;
+    width: 440px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #e3e2ff;
+}
+section.error h3 {
+    margin-top: 10px;
+}
