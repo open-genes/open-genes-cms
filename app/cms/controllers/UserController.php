@@ -85,8 +85,13 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if($model->recentlyActivated) {
+                $this->sendApprovedUserEmail($model->email);
+                Yii::$app->session->setFlash('success', 'Пользователь был активирован и оповещен по емейлу');
+            }
             return $this->redirect(['index']);
         }
+
 
         return $this->render('update', [
             'model' => $model,
@@ -124,4 +129,20 @@ class UserController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+
+    protected function sendApprovedUserEmail($userEmail)
+    {
+        $link = Yii::$app->urlManager->createAbsoluteUrl(['cms/login']);
+        return Yii::$app
+            ->mailer
+            ->compose()
+            ->setTextBody('Ваш аккаунт в проекте Open Genes успешно активирован!' . PHP_EOL . 'Вы можете зайти на сайт с Вашим логином и паролем ' . $link)
+            ->setFrom([Yii::$app->params['adminEmail'] => 'Open Genes'])
+            ->setTo($userEmail)
+            ->setSubject('Активация аккаунта в Open Genes')
+            ->send();
+    }
+
+
 }

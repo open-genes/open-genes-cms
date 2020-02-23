@@ -21,6 +21,7 @@ use yii\widgets\ActiveForm;
                 <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
 
+            <?= Html::a('Восстановить пароль', 'request-password-reset'); ?>
             <?php ActiveForm::end(); ?>
         </section>
     </div>

@@ -192,6 +192,17 @@
     margin-top: -1px;
 }
 
+.open-genes-cms .alert {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: absolute;
+    top: 70px;
+    left: 30px;
+    max-width: 370px;
+}
+
 section.login-form {
     display: block;
     margin: 70px auto 0;

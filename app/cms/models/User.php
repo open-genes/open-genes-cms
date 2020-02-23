@@ -16,6 +16,7 @@ class User extends \common\models\User
 
     public $newPassword;
     public $roles;
+    public $recentlyActivated = false;
 
     private static $statuses = [
         self::STATUS_ACTIVE => 'активный',
@@ -98,6 +99,9 @@ class User extends \common\models\User
                 $newRole = $auth->getRole($role);
                 $auth->assign($newRole, $this->getId());
             }
+        }
+        if(isset($changedAttributes['status']) && $this->status == self::STATUS_ACTIVE) {
+            $this->recentlyActivated = true;
         }
         return parent::afterSave($insert, $changedAttributes);
     }

@@ -15,9 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="page__inner">
         <section class="login-form">
             <h2><?= Html::encode($this->title) ?></h2>
-            <?php if($message): ?>
-                <?=$message; ?>
-            <?php else: ?>
+            <?=Yii::$app->session->getFlash('success_reg', null, true); ?>
+
                 <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
                 <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
@@ -27,12 +26,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'password')->passwordInput() ?>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Ок', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>
-            <?php endif; ?>
-
 
         </section>
     </div>
