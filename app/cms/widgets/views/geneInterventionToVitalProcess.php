@@ -1,7 +1,7 @@
 <?php
 /** @var $geneInterventionToVitalProcess \cms\models\GeneInterventionToVitalProcess */
 ?>
-<div class="form-split protein-activity js-intervention-to-vital-process js-gene-link-section">
+<div class="form-split protein-activity green js-intervention-to-vital-process js-gene-link-section">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
         <div class="form-split">
             <div class="form-third">
@@ -11,12 +11,14 @@
                     'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Вмешательство',
-                        'multiple' => false
+                        'multiple' => false,
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
                     ],
                 ]);
                 ?>
@@ -28,12 +30,14 @@
                     'data' => \cms\models\InterventionResultForVitalProcess::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Результат вмешательства',
-                        'multiple' => false,
+                        'multiple' => false
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
                     ],
                 ]);
                 ?>
@@ -45,12 +49,14 @@
                     'data' => \cms\models\VitalProcess::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Процесс',
-                        'multiple' => false
+                        'multiple' => false,
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
                     ],
                 ]);
                 ?>
@@ -65,12 +71,14 @@
                         'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Организм',
-                            'multiple' => false
+                            'multiple' => false,
                         ],
                         'pluginOptions' => [
                             'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
                         ],
                     ]);
                     ?>
@@ -90,6 +98,8 @@
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
+                                'containerCssClass' => 'green',
+                                'dropdownCssClass' => 'green',
                             ],
                         ]);
                         ?>
@@ -110,6 +120,8 @@
                             'allowClear' => true,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
                         ],
                     ]);
                     ?>
@@ -118,13 +130,15 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
                         'attribute' => '[' . $geneInterventionToVitalProcess->id . ']sex_of_organism',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба'],
+                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба пола'],
                         'options' => [
                             'placeholder' => 'Пол',
                             'multiple' => false
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
                         ],
                     ]);
                     ?>
@@ -134,7 +148,7 @@
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>
