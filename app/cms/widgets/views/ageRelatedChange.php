@@ -1,7 +1,7 @@
 <?php
 /** @var $ageRelatedChange \cms\models\AgeRelatedChange */
 ?>
-<div class="form-split protein-activity js-age-related-change js-gene-link-section">
+<div class="form-split protein-activity blue js-age-related-change js-gene-link-section">
     <div class="js-age-related-change-block js-gene-link-block">
         <div class="form-split">
             <div class="form-half-without-margin">
@@ -18,6 +18,8 @@
                             'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'blue',
+                            'dropdownCssClass' => 'blue',
                         ],
                     ]);
                     ?>
@@ -35,6 +37,8 @@
                             'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'blue',
+                            'dropdownCssClass' => 'blue',
                         ],
                     ]);
                     ?>
@@ -54,6 +58,8 @@
                             'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'blue',
+                            'dropdownCssClass' => 'blue',
                         ],
                     ]);
                     ?>
@@ -71,6 +77,8 @@
                             'allowClear' => true,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'blue',
+                            'dropdownCssClass' => 'blue',
                         ],
                     ]);
                     ?>
@@ -96,6 +104,8 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
+                            'containerCssClass' => 'blue',
+                            'dropdownCssClass' => 'blue',
                         ],
                     ]);
                     ?>
@@ -117,7 +127,7 @@
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($ageRelatedChange, '[' . $ageRelatedChange->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

@@ -1,7 +1,7 @@
 <?php
 /** @var $geneToLongevityEffect \cms\models\GeneToLongevityEffect */
 ?>
-<div class="form-split protein-activity js-gene-to-longevity-effect js-gene-link-section">
+<div class="form-split protein-activity red js-gene-to-longevity-effect js-gene-link-section">
     <div class="js-gene-to-longevity-effect-block js-gene-link-block">
         <div class="form-split">
             <div class="form-third">
@@ -17,6 +17,8 @@
                         'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => [','],
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
@@ -34,6 +36,8 @@
                         'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
@@ -42,13 +46,15 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
-                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2=> 'оба'],
+                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2=> 'оба пола'],
                     'options' => [
                         'placeholder' => 'Пол',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
@@ -57,7 +63,7 @@
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

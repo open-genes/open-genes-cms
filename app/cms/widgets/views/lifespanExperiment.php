@@ -111,7 +111,7 @@
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($lifespanExperiment, '[' . $lifespanExperiment->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>
