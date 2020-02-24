@@ -192,6 +192,17 @@
     margin-top: -1px;
 }
 
+.open-genes-cms .alert {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: absolute;
+    top: 70px;
+    left: 30px;
+    max-width: 370px;
+}
+
 section.login-form {
     display: block;
     margin: 70px auto 0;
@@ -213,4 +224,16 @@ section.login-form .btn-primary:active, section.login-form .btn-primary:hover {
     color: #fff;
     background-color: #3e3c92;
     border-color: #3e3c92;
+}
+
+section.error {
+    display: block;
+    margin: 70px auto;
+    width: 440px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #e3e2ff;
+}
+section.error h3 {
+    margin-top: 10px;
 }

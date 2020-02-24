@@ -39,7 +39,7 @@ $this->registerCssFile('/assets/css/main.css');
 
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/cms/login']];
+        $menuItems[] = ['label' => 'Войти', 'url' => ['/cms/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/cms/logout'], 'post')
@@ -97,6 +97,7 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
                 ],
             ],
+            ['label' => 'Пользователи', 'url' => '/user', 'visible'=>Yii::$app->user->can('controlUsers')],
             ],
     ]);
     echo Nav::widget([
