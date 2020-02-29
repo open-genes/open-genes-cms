@@ -1,6 +1,5 @@
 <?php
 
-use genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface;
 
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
@@ -70,11 +69,14 @@ $config = [
         'definitions' => [
             \genes\application\service\GeneInfoServiceInterface::class => \genes\application\service\GeneInfoService::class,
             \genes\application\service\PhylumInfoServiceInterface::class => \genes\application\service\PhylumInfoService::class,
+            \genes\application\dto\GeneDtoAssemblerInterface::class => \genes\application\dto\GeneDtoAssembler::class,
+            \genes\application\dto\ResearchDtoAssemblerInterface::class => \genes\application\dto\ResearchDtoAssembler::class,
             \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => function(\yii\di\Container $container){
                 return new \genes\infrastructure\dataProvider\GeneDataProvider(Yii::$app->language);
             },
             \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class,
             \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class,
+            \genes\infrastructure\dataProvider\GeneResearchesDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneResearchesDataProvider::class,
             \genes\infrastructure\dataProvider\PhylumDataProviderInterface::class => \genes\infrastructure\dataProvider\PhylumDataProvider::class,
             \genes\application\service\GeneOntologyServiceInterface::class => \genes\application\service\GeneOntologyService::class
 
