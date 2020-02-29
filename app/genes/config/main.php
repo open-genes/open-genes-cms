@@ -75,6 +75,9 @@ $config = [
             },
             \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class,
             \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class,
+            \genes\application\service\GeneOntologyServiceInterface::class => \genes\application\service\GeneOntologyService::class,
+
+            \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class,
             \genes\infrastructure\dataProvider\PhylumDataProviderInterface::class => \genes\infrastructure\dataProvider\PhylumDataProvider::class
         ]
     ],

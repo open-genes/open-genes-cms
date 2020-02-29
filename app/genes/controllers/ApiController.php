@@ -1,10 +1,16 @@
 <?php
 namespace genes\controllers;
 
+use common\components\CrossService;
+use common\models\Gene;
+use common\models\GeneOntology;
+use common\models\GeneToOntology;
 use genes\application\service\GeneInfoServiceInterface;
 use genes\application\service\PhylumInfoServiceInterface;
+use genes\application\service\GeneOntologyServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
+use yii\db\Exception;
 use yii\filters\Cors;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -103,6 +109,46 @@ class ApiController extends Controller
         /** @var PhylumInfoServiceInterface $phylumInfoService */
         $phylumInfoService = Yii::$container->get(PhylumInfoServiceInterface::class);
         return $phylumInfoService->getAllPhyla();
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntologyMine()
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->mineFromGateway();
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntology()
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->getAllWithGenes();
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntologyGene($id)
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->getForGene($id);
+    }
+
+    /**
+     * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать
+     */
+    public function actionOntologyMineGene($id)
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = Yii::$container->get(GeneOntologyServiceInterface::class);
+        return $geneOntologyService->mineFromGatewayForGene((int) $id);
     }
 
 }
