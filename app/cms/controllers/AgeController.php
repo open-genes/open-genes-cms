@@ -3,7 +3,7 @@
 namespace cms\controllers;
 
 use Yii;
-use cms\models\Age;
+use cms\models\Phylum;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -47,7 +47,7 @@ class AgeController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Age::find(),
+            'query' => Phylum::find(),
         ]);
 
         return $this->render('index', [
@@ -62,7 +62,7 @@ class AgeController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Age();
+        $model = new Phylum();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['update', 'id' => $model->id]);
@@ -111,12 +111,12 @@ class AgeController extends Controller
      * Finds the Age model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Age the loaded model
+     * @return Phylum the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Age::findOne($id)) !== null) {
+        if (($model = Phylum::findOne($id)) !== null) {
             return $model;
         }
 

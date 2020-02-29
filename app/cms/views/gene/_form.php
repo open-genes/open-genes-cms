@@ -1,6 +1,7 @@
 <?php
 
 use cms\widgets\GeneProteinActivity;
+use cms\widgets\LifespanExperimentWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -110,15 +111,6 @@ $this->registerCssFile('/assets/css/gene.css');
         ],
     ]); ?>
     <br>
-    <div class="form-split">
-        <h4>Функции гена <?= $model->symbol ?>:</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-protein-activity']) ?>
-    </div>
-    <div class="js-protein-activities">
-        <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
-            <?= GeneProteinActivity::widget(['geneToProteinActivity' => $geneToProteinActivity]) ?>
-        <?php endforeach; ?>
-    </div>
-
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

@@ -3,11 +3,11 @@
 namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[Age]].
+ * This is the ActiveQuery class for [[GeneIntervention]].
  *
- * @see Age
+ * @see GeneIntervention
  */
-class AgeQuery extends \yii\db\ActiveQuery
+class GeneInterventionQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class AgeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Age[]|array
+     * @return GeneIntervention[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class AgeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Age|array|null
+     * @return GeneIntervention|array|null
      */
     public function one($db = null)
     {

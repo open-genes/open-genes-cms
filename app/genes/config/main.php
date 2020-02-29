@@ -69,13 +69,16 @@ $config = [
     'container' => [
         'definitions' => [
             \genes\application\service\GeneInfoServiceInterface::class => \genes\application\service\GeneInfoService::class,
+            \genes\application\service\PhylumInfoServiceInterface::class => \genes\application\service\PhylumInfoService::class,
             \genes\infrastructure\dataProvider\GeneDataProviderInterface::class => function(\yii\di\Container $container){
                 return new \genes\infrastructure\dataProvider\GeneDataProvider(Yii::$app->language);
             },
             \genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneExpressionDataProvider::class,
             \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class,
-            \genes\application\service\GeneOntologyServiceInterface::class => \genes\application\service\GeneOntologyService::class
+            \genes\application\service\GeneOntologyServiceInterface::class => \genes\application\service\GeneOntologyService::class,
 
+            \genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneFunctionsDataProvider::class,
+            \genes\infrastructure\dataProvider\PhylumDataProviderInterface::class => \genes\infrastructure\dataProvider\PhylumDataProvider::class
         ]
     ],
     'defaultRoute' => 'site/index',

@@ -5,6 +5,7 @@ use genes\application\dto\FunctionalClusterDto;
 use genes\application\dto\GeneFullViewDto;
 use genes\application\dto\GeneListViewDto;
 use genes\application\dto\LatestGeneViewDto;
+use genes\application\dto\PhylumDto;
 use genes\infrastructure\dataProvider\GeneDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneExpressionDataProviderInterface;
 use genes\infrastructure\dataProvider\GeneFunctionsDataProviderInterface;
@@ -102,8 +103,7 @@ class GeneInfoService implements GeneInfoServiceInterface
             $geneCommentsReferenceLinks[$commentsRefLink] = $commentsRef;
         }
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = $geneArray['age_mya'];
-        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->name = $geneArray['name'];
@@ -118,6 +118,15 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
+        $geneDto->why = explode(',', $geneArray['why']);
+        $geneDto->band = $geneArray['band'];
+        $geneDto->locationStart = $geneArray['locationStart'];
+        $geneDto->locationEnd = $geneArray['locationEnd'];
+        $geneDto->orientation = $geneArray['orientation'];
+        $geneDto->accPromoter = $geneArray['accPromoter'];
+        $geneDto->accOrf = $geneArray['accOrf'];
+        $geneDto->accCds = $geneArray['accCds'];
+        $geneDto->orthologs = $this->prepareOrthologs($geneArray['orthologs']);
 
         return $geneDto;
     }
@@ -126,8 +135,7 @@ class GeneInfoService implements GeneInfoServiceInterface
     {
         $geneDto = new LatestGeneViewDto();
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->ageMya = $geneArray['age_mya'];
-        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->symbol = $geneArray['symbol'];
         return $geneDto;
     }
@@ -137,8 +145,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto = new GeneListViewDto();
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->name = $geneArray['name'];
-        $geneDto->ageMya = $geneArray['age_mya'];
-        $geneDto->agePhylo = $geneArray['age_phylo'];
+        $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];
@@ -169,6 +176,16 @@ class GeneInfoService implements GeneInfoServiceInterface
         return $functionalClusterDtos;
     }
 
+    private function prepareOrigin($geneArray)
+    {
+        $phylum = new PhylumDto();
+        $phylum->id = (int)$geneArray['phylum_id'];
+        $phylum->age = $geneArray['phylum_age'];
+        $phylum->phylum = $geneArray['phylum_name'];
+        $phylum->order = (int)$geneArray['phylum_order'];
+        return $phylum;
+    }
+
     private static $expressionChangeEn = [
         'уменьшается' => 'decreased',
         'увеличивается' => 'increased',
@@ -189,5 +206,20 @@ class GeneInfoService implements GeneInfoServiceInterface
             throw new Exception('invalid $expressionChange value');
         }
         return array_search($expressionChange, self::$expressionChangeEn);
+    }
+
+    private function prepareOrthologs($orthologsString): array
+    {
+        $result = [];
+        $orthologs = explode(';', $orthologsString);
+        foreach ($orthologs as $orthologString) {
+            if(strpos($orthologString, ',')) {
+                list($organism, $ortholog) = explode(',', $orthologString);
+                $result[$organism] = $ortholog;
+            } else {
+                $result[$orthologString] = '';
+            }
+        }
+        return $result;
     }
 }
