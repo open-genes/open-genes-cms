@@ -12,6 +12,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         'уменьшается' => 'decreased',
         'увеличивается' => 'increased',
         'неоднозначно' => 'mixed',
+        'не изменяется' => 'not set',
     ];
 
     public function mapViewDto(array $geneArray, string $lang): GeneFullViewDto
@@ -125,7 +126,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
     private function prepareExpressionChangeForView($expressionChange, string $lang): ?string // todo изменить в бд хранение изменения экспрессии
     {
         if(!$expressionChange || !isset(self::$expressionChangeEn[$expressionChange])) {
-            return null;
+            $expressionChange = 'не изменяется';
         }
         return $lang == 'en-US' ? self::$expressionChangeEn[$expressionChange] : $expressionChange;
     }
