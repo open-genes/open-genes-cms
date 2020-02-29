@@ -1,11 +1,16 @@
 <?php
 namespace genes\controllers;
 
+use common\components\CrossService;
+use common\models\Gene;
+use common\models\GeneOntology;
+use common\models\GeneToOntology;
 use genes\application\service\GeneInfoServiceInterface;
 use genes\application\service\PhylumInfoServiceInterface;
 use genes\application\service\GeneOntologyServiceInterface;
 use genes\helpers\LanguageMapHelper;
 use Yii;
+use yii\db\Exception;
 use yii\filters\Cors;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
