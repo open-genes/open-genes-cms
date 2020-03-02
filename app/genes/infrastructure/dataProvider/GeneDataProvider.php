@@ -28,7 +28,6 @@ class GeneDataProvider implements GeneDataProviderInterface
         'gene.references',
         'gene.orthologs',
         'gene.commentsReferenceLinks',
-        'gene.functionalClusters',
         'gene.expressionChange',
     ];
 
