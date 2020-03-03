@@ -84,6 +84,7 @@ class User extends \common\models\User
         if($this->isNewRecord) {
             $this->generateAuthKey();
         }
+        $this->status = (int)$this->status;
         return parent::beforeSave($insert);
     }
 

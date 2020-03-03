@@ -69,6 +69,10 @@ class CmsController extends Controller
 
     public function actionRegister()
     {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Спасибо за регистрацию! Скоро мы активируем Ваш аккаунт.');
