@@ -61,7 +61,7 @@ class GeneInfoService implements GeneInfoServiceInterface
         
         //todo: создать дата провайдер вместо прямого вызова сервиса. Или лучше вызывать сервис, но внутри него отслоить датапровайдер
         $geneOntologyService = new GeneOntologyService();
-        $geneDto->terms = $geneOntologyService->getFunctionsForGene($geneId);
+        $geneDto->terms = $geneOntologyService->getFunctionsForGene($geneDto->entrezGene);
 
         return $geneDto;
     }
