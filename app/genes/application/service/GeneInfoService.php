@@ -41,6 +41,11 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto = $this->mapViewDto($geneArray, $lang);
         $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneId, $lang);
         $geneDto->functions = $this->geneFunctionsDataProvider->getByGeneId($geneId, $lang);
+
+        //todo: создать дата провайдер вместо прямого вызова сервиса. Или лучше вызывать сервис, но внутри него отслоить датапровайдер
+        $geneOntologyService = new GeneOntologyService();
+        $geneDto->terms = $geneOntologyService->getFunctionsForGene($geneId);
+
         return $geneDto;
     }
 
@@ -115,7 +120,8 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->commentFunction = $geneArray['comment_function'];
         $geneDto->commentAging = $geneArray['comment_aging'];
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
-        $geneDto->rating = $geneArray['rating'];
+        //todo: PHP Notice","message":"Undefined index: rating
+        @$geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
         $geneDto->why = explode(',', $geneArray['why']);

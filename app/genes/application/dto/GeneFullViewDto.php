@@ -54,6 +54,10 @@ class GeneFullViewDto
     /** @var string */
     public $accCds;
 //    /** @var array */
+    /** @var @var array */
+    public $terms;
+
+//    public $isHidden;
 //    public $references;
     /** @var array */
     public $orthologs;
@@ -64,5 +68,13 @@ class GeneFullViewDto
 //    public $dateAdded;
 //    public $userEdited;
 //    public $hylo;
+//    public $why;
+//    public $band;
+//    public $locationStart;
+//    public $locationEnd;
+//    public $orientation;
+//    public $accPromoter;
+//    public $accOrf;
+//    public $accCds;
 }
 

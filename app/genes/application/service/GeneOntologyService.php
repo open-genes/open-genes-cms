@@ -167,11 +167,19 @@ class GeneOntologyService implements GeneOntologyServiceInterface
         return $result;
     }
 
+    /**
+     * @return array|GeneOntology[]
+     */
     public function getAllWithGenes()
     {
         return GeneOntology::find()->all();
     }
 
+    /**
+     * @param $gene
+     * @return array|Gene[]
+     * @throws Exception
+     */
     public function getForGene($gene)
     {
         $gene = Gene::find()
@@ -203,5 +211,56 @@ class GeneOntologyService implements GeneOntologyServiceInterface
 
             ->asArray()
             ->all();
+    }
+
+    /**
+     * @param $geneId
+     * @return array
+     * @throws Exception
+     */
+    public function getFunctionsForGene($geneId)
+    {
+        $gene = Gene::find()
+            ->where(['entrezGene' => $geneId])
+            ->one();
+
+        if (!$gene) {
+            throw new Exception('Enter valid gene.entrezGene');
+        }
+
+        $terms = GeneToOntology::find()
+            ->where(['gene_id' => $geneId])
+            ->addSelect('
+                ontology_identifier,
+                gene_ontology.name_en,
+                gene_ontology.name_ru,
+                gene_ontology.category
+                ')
+            ->join(
+                'JOIN',
+                'gene_ontology',
+                'gene_ontology.id = gene_to_ontology.gene_ontology_id'
+            )
+            ->asArray()
+            ->all();
+
+        return $this->termMap($terms);
+    }
+
+    public function termMap($terms)
+    {
+        $categories = [
+            'biological_process' => [],
+            'cellular_component' => [],
+            'molecular_activity' => [],
+        ];
+
+        foreach ($terms as $term) {
+            $categories[$term['category']][] = [
+                $term['ontology_identifier'] => $term['name_en']
+            ];
+        }
+
+        return $categories;
     }
 }
