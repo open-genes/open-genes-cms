@@ -1,7 +1,7 @@
 <?php
 /** @var $proteinToGene \cms\models\ProteinToGene */
 ?>
-<div class="form-split protein-activity js-protein-to-gene js-gene-link-section">
+<div class="form-split protein-activity yellow js-protein-to-gene js-gene-link-section">
     <div class="js-protein-to-gene-block js-gene-link-block">
         <div class="form-split">
                 <div class="form-half-small-margin">
@@ -17,6 +17,8 @@
                             'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'yellow',
+                            'dropdownCssClass' => 'yellow',
                         ],
                     ]);
                     ?>
@@ -33,6 +35,8 @@
                         'pluginOptions' => [
                             'allowClear' => false,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'yellow',
+                            'dropdownCssClass' => 'yellow',
                         ],
                     ]);
                     ?>
@@ -41,7 +45,7 @@
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $proteinToGene, '[' . $proteinToGene->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($proteinToGene, '[' . $proteinToGene->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

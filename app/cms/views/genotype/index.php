@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Генотипы';
+$this->title = 'Аллельные полиморфизмы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="genotype-index">
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить генотип', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить аллельныей полиморфизм', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -26,7 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'name_ru',
             'name_en',
 
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                'visibleButtons' => [
+                    'update' => \Yii::$app->user->can('contributor'),
+                    'delete' => \Yii::$app->user->can('editor'),
+                ]
+            ],
         ],
     ]); ?>
 

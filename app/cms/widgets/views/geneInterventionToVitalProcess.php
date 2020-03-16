@@ -1,63 +1,69 @@
 <?php
 /** @var $geneInterventionToVitalProcess \cms\models\GeneInterventionToVitalProcess */
 ?>
-<div class="form-split protein-activity js-intervention-to-vital-process js-gene-link-section">
+<div class="form-split protein-activity green js-intervention-to-vital-process js-gene-link-section">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
         <div class="form-split">
-            <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneInterventionToVitalProcess,
-                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_id',
-                        'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Вмешательство',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => [','],
-                        ],
-                    ]);
-                    ?>
-                </div>
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneInterventionToVitalProcess,
-                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']intervention_result_for_vital_process_id',
-                        'data' => \cms\models\InterventionResultForVitalProcess::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Результат вмешательства',
-                            'multiple' => false,
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => [','],
-                        ],
-                    ]);
-                    ?>
-                </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_id',
+                    'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Вмешательство',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
+                    ],
+                ]);
+                ?>
             </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']intervention_result_for_vital_process_id',
+                    'data' => \cms\models\InterventionResultForVitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Результат вмешательства',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']vital_process_id',
+                    'data' => \cms\models\VitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Процесс',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => [','],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
+                    ],
+                ]);
+                ?>
+            </div>
+        </div>
+        <div class="form-split">
             <div class="form-half-without-margin">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneInterventionToVitalProcess,
-                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']vital_process_id',
-                        'data' => \cms\models\VitalProcess::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Процесс',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => [','],
-                        ],
-                    ]);
-                    ?>
-                </div>
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
@@ -65,23 +71,42 @@
                         'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Организм',
-                            'multiple' => false
+                            'multiple' => false,
                         ],
                         'pluginOptions' => [
                             'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
                         ],
                     ]);
                     ?>
                 </div>
-            </div>
-        </div>
-        <div class="form-split">
-            <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    <div class="form-half-without-margin">
+                        <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    </div>
+                    <div class="form-half-without-margin">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $geneInterventionToVitalProcess,
+                            'attribute' => '[' . $geneInterventionToVitalProcess->id . ']age_unit',
+                            'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                            'options' => [
+                                'placeholder' => 'Ед. изм. возраста',
+                                'multiple' => false
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'containerCssClass' => 'green',
+                                'dropdownCssClass' => 'green',
+                            ],
+                        ]);
+                        ?>
+                    </div>
                 </div>
+            </div>
+            <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
@@ -95,36 +120,35 @@
                             'allowClear' => true,
                             'tags' => true,
                             'tokenSeparators' => [','],
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
                         ],
                     ]);
                     ?>
                 </div>
-            </div>
-            <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
                         'attribute' => '[' . $geneInterventionToVitalProcess->id . ']sex_of_organism',
-                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
+                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба пола'],
                         'options' => [
                             'placeholder' => 'Пол',
                             'multiple' => false
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
                         ],
                     ]);
                     ?>
-                </div>
-                <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']lifespan_change_percent', ['class' => 'form-control', 'placeholder' => 'Изменение (%)']) ?>
                 </div>
             </div>
         </div>
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

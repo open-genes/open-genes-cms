@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use cms\models\traits\ConditionActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -19,6 +20,7 @@ class ProteinClass extends \common\models\ProteinClass
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 

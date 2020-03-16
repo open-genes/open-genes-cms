@@ -8,8 +8,6 @@ use Yii;
  * This is the model class for table "gene".
  *
  * @property int $id
- * @property string $agePhylo
- * @property int $ageMya
  * @property string $symbol
  * @property string $aliases
  * @property string $name
@@ -34,12 +32,7 @@ use Yii;
  * @property string $commentAgingEN
  * @property string $commentsReferenceLinks
  * @property int $rating
- * @property string $functionalClusters
- * @property int $dateAdded
- * @property string $userEdited
  * @property int $isHidden
- * @property string $expression
- * @property string $expressionEN
  * @property string $expressionChange
  * @property int $created_at
  * @property int $updated_at
@@ -53,6 +46,7 @@ use Yii;
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToCommentCause[] $geneToCommentCauses
  * @property GeneToLongevityEffect[] $geneToLongevityEffects
+ * @property GeneToOntology[] $geneToOntologies
  * @property GeneToProgeria[] $geneToProgerias
  * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
@@ -76,14 +70,12 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ageMya', 'entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'dateAdded', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
-            [['dateAdded'], 'required'],
-            [['expression', 'expressionEN', 'protein_complex_ru', 'protein_complex_en'], 'string'],
-            [['agePhylo', 'symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
-            [['why', 'references', 'orthologs', 'functionalClusters'], 'string', 'max' => 1000],
+            [['entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
+            [['protein_complex_ru', 'protein_complex_en'], 'string'],
+            [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
+            [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
-            [['userEdited'], 'string', 'max' => 50],
             [['expressionChange'], 'string', 'max' => 64],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
@@ -96,8 +88,6 @@ class Gene extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'agePhylo' => 'Age Phylo',
-            'ageMya' => 'Age Mya',
             'symbol' => 'Symbol',
             'aliases' => 'Aliases',
             'name' => 'Name',
@@ -122,12 +112,7 @@ class Gene extends \yii\db\ActiveRecord
             'commentAgingEN' => 'Comment Aging En',
             'commentsReferenceLinks' => 'Comments Reference Links',
             'rating' => 'Rating',
-            'functionalClusters' => 'Functional Clusters',
-            'dateAdded' => 'Date Added',
-            'userEdited' => 'User Edited',
             'isHidden' => 'Is Hidden',
-            'expression' => 'Expression',
-            'expressionEN' => 'Expression En',
             'expressionChange' => 'Expression Change',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -183,6 +168,14 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneToLongevityEffects()
     {
         return $this->hasMany(GeneToLongevityEffect::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToOntologies()
+    {
+        return $this->hasMany(GeneToOntology::className(), ['gene_id' => 'id']);
     }
 
     /**

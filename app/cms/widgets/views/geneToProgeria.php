@@ -1,7 +1,7 @@
 <?php
 /** @var $geneToProgeria \cms\models\GeneToProgeria */
 ?>
-<div class="form-split protein-activity js-gene-to-progeria js-gene-link-section">
+<div class="form-split protein-activity orange js-gene-to-progeria js-gene-link-section">
     <div class="js-gene-to-progeria-block js-gene-link-block">
         <div class="form-split">
             <div class="form-half-small-margin">
@@ -17,6 +17,8 @@
                         'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
+                        'containerCssClass' => 'orange',
+                        'dropdownCssClass' => 'orange',
                     ],
                 ]);
                 ?>
@@ -25,7 +27,7 @@
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToProgeria, '[' . $geneToProgeria->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
             </div>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($geneToProgeria, '[' . $geneToProgeria->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

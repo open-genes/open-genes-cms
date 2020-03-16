@@ -3,11 +3,11 @@
 namespace common\models;
 
 /**
- * This is the ActiveQuery class for [[GeneLongevityAssociationType]].
+ * This is the ActiveQuery class for [[Changelog]].
  *
- * @see GeneLongevityAssociationType
+ * @see Changelog
  */
-class GeneLongevityAssociationTypeQuery extends \yii\db\ActiveQuery
+class ChangelogQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class GeneLongevityAssociationTypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return GeneLongevityAssociationType[]|array
+     * @return Changelog[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class GeneLongevityAssociationTypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return GeneLongevityAssociationType|array|null
+     * @return Changelog|array|null
      */
     public function one($db = null)
     {

@@ -16,8 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2><?= Html::encode($this->title) ?></h2>
 
     <p>
-        <?php if(Yii::$app->user->can('admin')): ?>
-        <?= Html::a('Добавить ген', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php if(Yii::$app->user->can('editor')): ?>
+        <?= Html::a('Добавить гены', ['create'], ['class' => 'btn btn-success']) ?>
+         <?=Yii::$app->session->getFlash('add_genes') ?>
         <?endif; ?>
     </p>
 
@@ -28,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ' - '],
         'columns' => [
             'id',
+            'entrezGene',
             'symbol',
             'name',
             [

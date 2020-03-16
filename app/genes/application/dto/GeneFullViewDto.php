@@ -31,6 +31,8 @@ class GeneFullViewDto
     public $rating;
     /** @var FunctionalClusterDto[] */
     public $functionalClusters;
+    /** @var ResearchDto[] */
+    public $researches;
     /** @var array [$geneName => $geneExpression[]] */
     public $expression;
     /** @var array */

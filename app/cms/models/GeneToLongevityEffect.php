@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -12,6 +13,13 @@ class GeneToLongevityEffect extends \common\models\GeneToLongevityEffect
 {
     public $delete = false;
 
+    public function behaviors()
+    {
+        return [
+            ChangelogBehavior::class
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -19,7 +27,7 @@ class GeneToLongevityEffect extends \common\models\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'gene_longevity_association_type_id'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'genotype_id'], 'required'],
         ]);
     }
 
@@ -31,17 +39,6 @@ class GeneToLongevityEffect extends \common\models\GeneToLongevityEffect
         ]);
     }
 
-    public static function findAllAsArray()
-    {
-        $result = [];
-        $ages = self::find()->all();
-        foreach ($ages as $age) {
-            $result[$age->id] = $age->name_phylo;
-        }
-
-        return $result;
-    }
-
     /**
      * @param array $modelArrays
      * @param int $geneId
@@ -51,7 +48,7 @@ class GeneToLongevityEffect extends \common\models\GeneToLongevityEffect
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['gene_longevity_association_type_id'] && $modelArray['longevity_effect_id']) {
+            if($modelArray['genotype_id'] && $modelArray['longevity_effect_id']) {
                 if(is_numeric($id)) {
                     $modelAR = self::findOne($id);
                 } else {
@@ -66,24 +63,9 @@ class GeneToLongevityEffect extends \common\models\GeneToLongevityEffect
                     $arLongevityEffect = LongevityEffect::createFromNameString($modelArray['longevity_effect_id']);
                     $modelAR->longevity_effect_id = $arLongevityEffect->id;
                 }
-                if(!is_numeric($modelArray['gene_longevity_association_type_id'])) {
-                    $arGeneLongevityAssociationType = GeneLongevityAssociationType::createFromNameString($modelArray['gene_longevity_association_type_id']);
-                    $modelAR->gene_longevity_association_type_id = $arGeneLongevityAssociationType->id;
-                }
-                if(!is_numeric($modelArray['model_organism_id'])) {
-                    $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
-                    $modelAR->model_organism_id = $arProcessLocalization->id;
-                }
                 if(!empty($modelArray['genotype_id']) && !is_numeric($modelArray['genotype_id'])) {
                     $arGenotype = Genotype::createFromNameString($modelArray['genotype_id']);
                     $modelAR->genotype_id = $arGenotype->id;
-                }
-                if(!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
-                    $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
-                    $modelAR->organism_line_id = $arProteinActivity->id;
-                }
-                if($modelAR->organism_line_id === '') {
-                    $modelAR->organism_line_id = null;
                 }
                 if($modelAR->genotype_id === '') {
                     $modelAR->genotype_id = null;

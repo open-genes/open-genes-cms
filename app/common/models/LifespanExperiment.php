@@ -13,13 +13,15 @@ use Yii;
  * @property int $intervention_result_id
  * @property int $model_organism_id
  * @property int $age
- * @property int $lifespan_change_percent
- * @property int $sex_of_organism
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
  * @property int $sex
  * @property int $organism_line_id
+ * @property int $lifespan_change_percent_male
+ * @property int $lifespan_change_percent_female
+ * @property int $lifespan_change_percent_common
+ * @property int $age_unit
  *
  * @property Gene $gene
  * @property GeneIntervention $geneIntervention
@@ -43,7 +45,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'age', 'lifespan_change_percent', 'sex_of_organism', 'sex', 'organism_line_id'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'age', 'sex', 'organism_line_id', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common', 'age_unit'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -66,13 +68,15 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'intervention_result_id' => 'Intervention Result ID',
             'model_organism_id' => 'Model Organism ID',
             'age' => 'Age',
-            'lifespan_change_percent' => 'Lifespan Change Percent',
-            'sex_of_organism' => 'Sex Of Organism',
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
             'sex' => 'Sex',
             'organism_line_id' => 'Organism Line ID',
+            'lifespan_change_percent_male' => 'Lifespan Change Percent Male',
+            'lifespan_change_percent_female' => 'Lifespan Change Percent Female',
+            'lifespan_change_percent_common' => 'Lifespan Change Percent Common',
+            'age_unit' => 'Age Unit',
         ];
     }
 
@@ -118,10 +122,10 @@ class LifespanExperiment extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return LifespanExperimentQuery the active query used by this AR class.
+     * @return AgeRelatedChangeQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new LifespanExperimentQuery(get_called_class());
+        return new AgeRelatedChangeQuery(get_called_class());
     }
 }

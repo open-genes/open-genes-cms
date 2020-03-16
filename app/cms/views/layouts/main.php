@@ -39,7 +39,7 @@ $this->registerCssFile('/assets/css/main.css');
 
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Login', 'url' => ['/cms/login']];
+        $menuItems[] = ['label' => 'Войти', 'url' => ['/cms/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/cms/logout'], 'post')
@@ -90,15 +90,14 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Прогерические синдромы', 'url' => '/progeria-syndrome'],
                     '<li class="divider"></li>',
-                    ['label' => 'Генотипы', 'url' => '/genotype'],
+                    ['label' => 'Аллельные полиморфизмы', 'url' => '/genotype'],
                     '<li class="divider"></li>',
                     ['label' => 'Виды активности белка', 'url' => '/protein-activity'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Типы ассоциации с долголетием', 'url' => '/gene-longevity-association-type'],
                     '<li class="divider"></li>',
                     ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
                 ],
             ],
+            ['label' => 'Пользователи', 'url' => '/user', 'visible'=>Yii::$app->user->can('controlUsers')],
             ],
     ]);
     echo Nav::widget([
@@ -121,7 +120,7 @@ $this->registerCssFile('/assets/css/main.css');
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right"></p>
     </div>
 </footer>
 

@@ -1,7 +1,7 @@
 <?php
 /** @var $geneToLongevityEffect \cms\models\GeneToLongevityEffect */
 ?>
-<div class="form-split protein-activity js-gene-to-longevity-effect js-gene-link-section">
+<div class="form-split protein-activity red js-gene-to-longevity-effect js-gene-link-section">
     <div class="js-gene-to-longevity-effect-block js-gene-link-block">
         <div class="form-split">
             <div class="form-third">
@@ -10,30 +10,15 @@
                     'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
                     'data' => \cms\models\Genotype::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Генотип',
+                        'placeholder' => 'Аллельный полиморфизм',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
                         'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => [','],
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="form-third">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneToLongevityEffect,
-                    'attribute' => '[' . $geneToLongevityEffect->id . ']gene_longevity_association_type_id',
-                    'data' => \cms\models\GeneLongevityAssociationType::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Ассоциация',
-                        'multiple' => false
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tags' => true,
-                        'tokenSeparators' => [','],
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
@@ -51,40 +36,8 @@
                         'allowClear' => false,
                         'tags' => true,
                         'tokenSeparators' => [','],
-                    ],
-                ]);
-                ?>
-            </div>
-        </div>
-        <div class="form-split">
-            <div class="form-third">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneToLongevityEffect,
-                    'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
-                    'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Организм',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tokenSeparators' => [','],
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="form-third">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneToLongevityEffect,
-                    'attribute' => '[' . $geneToLongevityEffect->id . ']organism_line_id',
-                    'data' => \cms\models\OrganismLine::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Линия организмов',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                        'tokenSeparators' => [','],
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
@@ -93,13 +46,15 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
-                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской'],
+                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2=> 'оба пола'],
                     'options' => [
                         'placeholder' => 'Пол',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
@@ -108,7 +63,7 @@
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
         </div>
-        <div class="form-split">
+        <div class="form-split no-margin">
             <div class="form-half-small-margin">
                 <?= \yii\bootstrap\Html::activeTextarea($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

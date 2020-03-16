@@ -2,6 +2,7 @@
 
 namespace cms\models;
 
+use cms\models\behaviors\ChangelogBehavior;
 use cms\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -21,6 +22,7 @@ class LongevityEffect extends \common\models\LongevityEffect
     {
         return [
             TimestampBehavior::class,
+            ChangelogBehavior::class
         ];
     }
 
