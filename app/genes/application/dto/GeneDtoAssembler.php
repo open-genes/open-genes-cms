@@ -26,6 +26,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         }
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->origin = $this->prepareOrigin($geneArray);
+        $geneDto->homologueTaxon = $geneArray['taxon_name'];
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->aliases = explode(' ', $geneArray['aliases']);
         $geneDto->name = $geneArray['name'];
@@ -58,6 +59,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto = new LatestGeneViewDto();
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->origin = $this->prepareOrigin($geneArray);
+        $geneDto->homologueTaxon = $geneArray['taxon_name'];
         $geneDto->symbol = $geneArray['symbol'];
         return $geneDto;
     }
@@ -68,6 +70,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->name = $geneArray['name'];
         $geneDto->origin = $this->prepareOrigin($geneArray);
+        $geneDto->homologueTaxon = $geneArray['taxon_name'];
         $geneDto->symbol = $geneArray['symbol'];
         $geneDto->entrezGene = $geneArray['entrezGene'];
         $geneDto->uniprot = $geneArray['uniprot'];

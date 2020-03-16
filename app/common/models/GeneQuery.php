@@ -109,10 +109,16 @@ class GeneQuery extends \yii\db\ActiveQuery
     {
         return $this
             ->addSelect('age.name_mya as phylum_age, age.name_phylo as phylum_name, age.order as phylum_order, age.id as phylum_id')
+            ->addSelect('taxon.name_en as taxon_name')
             ->join(
                 'LEFT JOIN',
                 'age',
                 'gene.age_id = age.id'
+            )
+            ->join(
+                'LEFT JOIN',
+                'taxon',
+                'gene.taxon_id = taxon.id'
             );
     }
 }
