@@ -58,6 +58,11 @@ class GeneInfoService implements GeneInfoServiceInterface
         $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneId, $lang);
         $geneDto->functions = $this->geneFunctionsDataProvider->getByGeneId($geneId, $lang);
         $geneDto->researches = $this->getGeneResearches($geneId, $lang);
+        
+        //todo: создать дата провайдер вместо прямого вызова сервиса. Или лучше вызывать сервис, но внутри него отслоить датапровайдер
+        $geneOntologyService = new GeneOntologyService();
+        $geneDto->terms = $geneOntologyService->getFunctionsForGene($geneId);
+
         return $geneDto;
     }
 
