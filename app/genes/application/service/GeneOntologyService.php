@@ -229,7 +229,7 @@ class GeneOntologyService implements GeneOntologyServiceInterface
         }
 
         $terms = GeneToOntology::find()
-            ->where(['gene_id' => $geneId])
+            ->where(['gene_id' => $gene->id])
             ->addSelect('
                 ontology_identifier,
                 gene_ontology.name_en,
