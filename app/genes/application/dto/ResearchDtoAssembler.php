@@ -16,34 +16,55 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
     ): ResearchDto
     {
         $researchesDto = new ResearchDto();
+        $researchesDto->increaseLifespan = [];
+        $researchesDto->geneAssociatedWithProgeriaSyndromes = [];
+        $researchesDto->geneAssociatedWithLongevityEffects = [];
+        $researchesDto->ageRelatedChangesOfGene = [];
+        $researchesDto->interventionToGeneImprovesVitalProcesses = [];
+        $researchesDto->proteinRegulatesOtherGenes = [];
         foreach ($lifespanExperiments as $lifespanExperiment) {
             $this->preparePercentChange($lifespanExperiment);
             $this->prepareAge($lifespanExperiment, $lang);
+            $this->prepareEmpty($lifespanExperiment);
             $researchesDto->increaseLifespan[] = $lifespanExperiment;
         }
         foreach ($geneToProgerias as $geneToProgeria) {
+            $this->prepareEmpty($geneToProgeria);
             $researchesDto->geneAssociatedWithProgeriaSyndromes[] = $geneToProgeria;
         }
         foreach ($geneToLongevityEffects as $geneToLongevityEffect) {
             $this->prepareSex($geneToLongevityEffect, $lang);
+            $this->prepareEmpty($geneToLongevityEffect);
             $researchesDto->geneAssociatedWithLongevityEffects[] = $geneToLongevityEffect;
         }
         foreach ($ageRelatedChanges as $ageRelatedChange) {
             $this->prepareAge($ageRelatedChange, $lang);
             $this->preparePercentChange($ageRelatedChange);
+            $this->prepareEmpty($ageRelatedChange);
             $researchesDto->ageRelatedChangesOfGene[] = $ageRelatedChange;
         }
         foreach ($interventionResultForVitalProcesses as $interventionResultForVitalProcess) {
             $this->prepareAge($interventionResultForVitalProcess, $lang);
             $this->prepareSex($interventionResultForVitalProcess, $lang);
+            $this->prepareEmpty($interventionResultForVitalProcess);
             $researchesDto->interventionToGeneImprovesVitalProcesses[] = $interventionResultForVitalProcess;
         }
         foreach ($proteinToGenes as $proteinToGene) {
             $this->prepareGene($proteinToGene);
+            $this->prepareEmpty($proteinToGene);
             $researchesDto->proteinRegulatesOtherGenes[] = $proteinToGene;
         }
 
         return $researchesDto;
+    }
+    
+    private function prepareEmpty(&$data)
+    {
+        foreach($data as $key => $field) {
+            if (empty($data[$key])) {
+                $data[$key] = '';
+            }
+        }
     }
 
     private function prepareGene(&$data)
