@@ -39,6 +39,17 @@ class AgeRelatedChange extends \common\models\AgeRelatedChange
         ]);
     }
 
+    public function beforeValidate()
+    {
+        $this->change_value_male = str_replace(',', '.', $this->change_value_male);
+        $this->change_value_female = str_replace(',', '.', $this->change_value_female);
+        $this->change_value_common = str_replace(',', '.', $this->change_value_common);
+        $this->age_from = str_replace(',', '.', $this->age_from);
+        $this->age_to = str_replace(',', '.', $this->age_to);
+
+        return parent::beforeValidate();
+    }
+
     public static function findAllAsArray()
     {
         $result = [];

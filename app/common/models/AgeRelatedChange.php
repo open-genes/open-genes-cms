@@ -13,14 +13,14 @@ use Yii;
  * @property int $sample_id
  * @property int $model_organism_id
  * @property int $organism_line_id
- * @property int $age_from
- * @property int $age_to
+ * @property double $age_from
+ * @property double $age_to
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
- * @property int $change_value_male
- * @property int $change_value_female
- * @property int $change_value_common
+ * @property double $change_value_male
+ * @property double $change_value_female
+ * @property double $change_value_common
  * @property int $age_unit
  *
  * @property Gene $gene
@@ -45,7 +45,8 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common', 'age_unit'], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit'], 'integer'],
+            [['age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],

@@ -40,6 +40,13 @@ class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVi
         ]);
     }
 
+    public function beforeValidate()
+    {
+        $this->age = str_replace(',', '.', $this->age);
+
+        return parent::beforeValidate();
+    }
+
     public static function findAllAsArray()
     {
         $result = [];

@@ -14,7 +14,7 @@ use Yii;
  * @property int $vital_process_id
  * @property int $model_organism_id
  * @property int $organism_line_id
- * @property int $age
+ * @property double $age
  * @property int $sex_of_organism
  * @property string $reference
  * @property string $comment_en
@@ -44,7 +44,8 @@ class GeneInterventionToVitalProcess extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id', 'vital_process_id', 'model_organism_id', 'organism_line_id', 'age', 'sex_of_organism', 'age_unit'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id', 'vital_process_id', 'model_organism_id', 'organism_line_id', 'sex_of_organism', 'age_unit'], 'integer'],
+            [['age'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],

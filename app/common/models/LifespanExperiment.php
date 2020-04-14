@@ -12,15 +12,15 @@ use Yii;
  * @property int $gene_intervention_id
  * @property int $intervention_result_id
  * @property int $model_organism_id
- * @property int $age
+ * @property double $age
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
  * @property int $sex
  * @property int $organism_line_id
- * @property int $lifespan_change_percent_male
- * @property int $lifespan_change_percent_female
- * @property int $lifespan_change_percent_common
+ * @property double $lifespan_change_percent_male
+ * @property double $lifespan_change_percent_female
+ * @property double $lifespan_change_percent_common
  * @property int $age_unit
  *
  * @property Gene $gene
@@ -45,7 +45,8 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'age', 'sex', 'organism_line_id', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common', 'age_unit'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'sex', 'organism_line_id', 'age_unit'], 'integer'],
+            [['age', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -122,10 +123,10 @@ class LifespanExperiment extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return AgeRelatedChangeQuery the active query used by this AR class.
+     * @return LifespanExperimentQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new AgeRelatedChangeQuery(get_called_class());
+        return new LifespanExperimentQuery(get_called_class());
     }
 }

@@ -39,6 +39,16 @@ class LifespanExperiment extends \common\models\LifespanExperiment
             'delete' => 'Удалить'
         ]);
     }
+    
+    public function beforeValidate()
+    {
+        $this->lifespan_change_percent_male = str_replace(',', '.', $this->lifespan_change_percent_male);
+        $this->lifespan_change_percent_female = str_replace(',', '.', $this->lifespan_change_percent_female);
+        $this->lifespan_change_percent_common = str_replace(',', '.', $this->lifespan_change_percent_common);
+        $this->age = str_replace(',', '.', $this->age);
+        
+        return parent::beforeValidate();
+    }
 
     public static function findAllAsArray()
     {
