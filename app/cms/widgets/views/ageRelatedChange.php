@@ -17,7 +17,7 @@
                         'pluginOptions' => [
                             'allowClear' => false,
                             'tags' => true,
-                            'tokenSeparators' => [','],
+                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
                             'dropdownCssClass' => 'blue',
                         ],
@@ -36,7 +36,7 @@
                         'pluginOptions' => [
                             'allowClear' => false,
                             'tags' => true,
-                            'tokenSeparators' => [','],
+                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
                             'dropdownCssClass' => 'blue',
                         ],
@@ -57,7 +57,7 @@
                         'pluginOptions' => [
                             'allowClear' => false,
                             'tags' => true,
-                            'tokenSeparators' => [','],
+                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
                             'dropdownCssClass' => 'blue',
                         ],
@@ -76,7 +76,7 @@
                         'pluginOptions' => [
                             'allowClear' => true,
                             'tags' => true,
-                            'tokenSeparators' => [','],
+                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
                             'dropdownCssClass' => 'blue',
                         ],

@@ -16,7 +16,7 @@
                     'pluginOptions' => [
                         'allowClear' => true,
                         'tags' => true,
-                        'tokenSeparators' => [','],
+                        'tokenSeparators' => ['##'],
                         'containerCssClass' => 'red',
                         'dropdownCssClass' => 'red',
                     ],
@@ -35,7 +35,7 @@
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
-                        'tokenSeparators' => [','],
+                        'tokenSeparators' => ['##'],
                         'containerCssClass' => 'red',
                         'dropdownCssClass' => 'red',
                     ],

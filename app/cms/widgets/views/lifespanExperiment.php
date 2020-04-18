@@ -16,7 +16,7 @@
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
-                        'tokenSeparators' => [','],
+                        'tokenSeparators' => ['##'],
                     ],
                 ]);
                 ?>
@@ -33,7 +33,7 @@
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
-                        'tokenSeparators' => [','],
+                        'tokenSeparators' => ['##'],
                     ],
                 ]);
                 ?>
@@ -50,7 +50,7 @@
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => true,
-                        'tokenSeparators' => [','],
+                        'tokenSeparators' => ['##'],
                     ],
                 ]);
                 ?>
@@ -90,7 +90,7 @@
                         'pluginOptions' => [
                             'allowClear' => true,
                             'tags' => true,
-                            'tokenSeparators' => [','],
+                            'tokenSeparators' => ['##'],
                         ],
                     ]);
                     ?>
