@@ -30,7 +30,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->symbol = (string)$geneArray['symbol'];
         $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
         $geneDto->name = (string)$geneArray['name'];
-        $geneDto->entrezGene = (string)$geneArray['entrezGene'];
+        $geneDto->ncbiId = (string)$geneArray['ncbi_id'];
         $geneDto->uniprot = (string)$geneArray['uniprot'];
         $geneDto->commentCause =  $geneArray['comment_cause'] ? explode(',', $geneArray['comment_cause']) : [];
         $geneDto->proteinClasses =  $geneArray['protein_class'] ? explode('||', $geneArray['protein_class']) : []; // todo одинаковый сепаратор для всех group_concat
@@ -72,7 +72,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->homologueTaxon = (string)$geneArray['taxon_name'];
         $geneDto->symbol = (string)$geneArray['symbol'];
-        $geneDto->entrezGene = (string)$geneArray['entrezGene'];
+        $geneDto->ncbiId = (string)$geneArray['ncbi_id'];
         $geneDto->uniprot = (string)$geneArray['uniprot'];
         $geneDto->expressionChange = (string)$this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
         $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];

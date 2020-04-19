@@ -112,7 +112,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "regulated_gene.id as regulatedGeneId",
                 "regulated_gene.symbol as regulatedGeneSymbol",
                 "regulated_gene.name as regulatedGeneName",
-                "regulated_gene.entrezGene as regulatedGeneNcbiId",
+                "regulated_gene.ncbi_id as regulatedGeneNcbiId",
                 "protein_activity.{$nameField} as proteinActivity",
                 "protein_to_gene.reference",
                 "protein_to_gene.{$commentField} as comment",

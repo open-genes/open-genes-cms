@@ -11,7 +11,7 @@ use Yii;
  * @property string $symbol
  * @property string $aliases
  * @property string $name
- * @property int $entrezGene
+ * @property int $ncbi_id
  * @property string $uniprot
  * @property string $why
  * @property string $band
@@ -70,7 +70,7 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['entrezGene', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
+            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
             [['protein_complex_ru', 'protein_complex_en'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
@@ -91,7 +91,7 @@ class Gene extends \yii\db\ActiveRecord
             'symbol' => 'Symbol',
             'aliases' => 'Aliases',
             'name' => 'Name',
-            'entrezGene' => 'Entrez Gene',
+            'ncbi_id' => 'Entrez Gene',
             'uniprot' => 'Uniprot',
             'why' => 'Why',
             'band' => 'Band',

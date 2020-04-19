@@ -16,7 +16,7 @@ class GeneFullViewDto
     /** @var string */
     public $name;
     /** @var string */
-    public $entrezGene;
+    public $ncbiId;
     /** @var string */
     public $uniprot;
     /** @var string */

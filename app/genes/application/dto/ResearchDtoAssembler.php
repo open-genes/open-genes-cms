@@ -74,7 +74,7 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
                 'id' => $data['regulatedGeneId'],
                 'symbol' => $data['regulatedGeneSymbol'],
                 'name' => $data['regulatedGeneName'],
-                'entrezGene' => $data['regulatedGeneNcbiId'],
+                'ncbiId' => $data['regulatedGeneNcbiId'],
             ];
             unset($data['regulatedGeneId'], $data['regulatedGeneSymbol'], $data['regulatedGeneName'], $data['regulatedGeneNcbiId']);
         }

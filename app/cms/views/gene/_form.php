@@ -76,7 +76,7 @@ $this->registerCssFile('/assets/css/gene.css');
                 <div class="form-half">
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'orientation')->dropDownList([-1 => -1, 0 => 0, 1 => 1]) ?>
-                    <?= $form->field($model, 'entrezGene')->textInput() ?>
+                    <?= $form->field($model, 'ncbi_id')->textInput() ?>
                     <?= $form->field($model, 'uniprot')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="form-half">

@@ -57,24 +57,24 @@ class GeneOntologyService implements GeneOntologyServiceInterface
         $result = [];
         if (is_numeric($geneRecord)) {
             $geneRecord = Gene::find()
-                ->where(['entrezGene' => $geneRecord])
+                ->where(['ncbi_id' => $geneRecord])
                 ->one();
 
             if (!$geneRecord) {
-                throw new Exception('Enter valid gene.entrezGene');
+                throw new Exception('Enter valid gene.ncbi_id');
             }
         }
 
-        if (empty($geneRecord->entrezGene)) {
-            throw new Exception('Enter valid gene.entrezGene');
+        if (empty($geneRecord->ncbi_id)) {
+            throw new Exception('Enter valid gene.ncbi_id');
         }
 
-        $result['entrez_gene'] = $geneRecord->entrezGene;
+        $result['entrez_gene'] = $geneRecord->ncbi_id;
 
         //todo: добавить это в params.php
         Yii::$app->params['servicesPath']['geneontology'] = 'http://api.geneontology.org';
         $geneOntologyGateway = CrossService::requestGetGateway('geneontology',
-            'api/bioentity/gene/'.$geneRecord->entrezGene.'/function?rows=100&facet=false&unselect_evidence=false&exclude_automatic_assertions=false&fetch_objects=false&use_compact_associations=false', []);
+            'api/bioentity/gene/'.$geneRecord->ncbi_id.'/function?rows=100&facet=false&unselect_evidence=false&exclude_automatic_assertions=false&fetch_objects=false&use_compact_associations=false', []);
 
         $geneOntologyGateway->unsetJson();
         $geneOntologyGateway->unsetInnerRequest();
@@ -82,12 +82,12 @@ class GeneOntologyService implements GeneOntologyServiceInterface
         $genesJson = $geneOntologyGateway->request();
 
         if ($geneOntologyGateway->status == 301) {
-            $result['errors'] = '301 for entrezGene :' . $geneRecord->entrezGene;
+            $result['errors'] = '301 for ncbi_id :' . $geneRecord->ncbi_id;
             return $result;
         }
 
         if ($geneOntologyGateway->status == 404) {
-            $result['errors'] = '404 for entrezGene :' . $geneRecord->entrezGene;
+            $result['errors'] = '404 for ncbi_id :' . $geneRecord->ncbi_id;
             return $result;
         }
 
@@ -183,11 +183,11 @@ class GeneOntologyService implements GeneOntologyServiceInterface
     public function getForGene($gene)
     {
         $gene = Gene::find()
-            ->where(['entrezGene' => $gene])
+            ->where(['ncbi_id' => $gene])
             ->one();
 
         if (!$gene) {
-            throw new Exception('Enter valid gene.entrezGene');
+            throw new Exception('Enter valid gene.ncbi_id');
         }
 
         return Gene::find()
@@ -221,11 +221,11 @@ class GeneOntologyService implements GeneOntologyServiceInterface
     public function getFunctionsForGene($geneId)
     {
         $gene = Gene::find()
-            ->where(['entrezGene' => $geneId])
+            ->where(['ncbi_id' => $geneId])
             ->one();
 
         if (!$gene) {
-            throw new Exception('Enter valid gene.entrezGene');
+            throw new Exception('Enter valid gene.ncbi_id');
         }
 
         $terms = GeneToOntology::find()
