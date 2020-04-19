@@ -15,7 +15,7 @@ class GeneDataProvider implements GeneDataProviderInterface
         'gene.symbol',
         'gene.aliases',
         'gene.name',
-        'gene.entrezGene',
+        'gene.ncbi_id',
         'gene.uniprot',
         'gene.why',
         'gene.band',
@@ -65,6 +65,25 @@ class GeneDataProvider implements GeneDataProviderInterface
             ->one();
         if(!$geneArray) {
             throw new NotFoundHttpException("Gene {$geneId} not found");
+        }
+        return $geneArray;
+    }
+    
+    /** @inheritDoc */
+    public function getGeneBySymbol($geneSymbol): array
+    {
+        $geneArray = Gene::find()
+            ->select($this->fields)
+            ->withFunctionalClusters($this->lang)
+            ->withCommentCause($this->lang)
+            ->withProteinClasses($this->lang)
+            ->where(['gene.symbol' => $geneSymbol])
+            ->withAge()
+            ->asArray()
+            ->groupBy('gene.id')
+            ->one();
+        if(!$geneArray) {
+            throw new NotFoundHttpException("Gene {$geneSymbol} not found");
         }
         return $geneArray;
     }

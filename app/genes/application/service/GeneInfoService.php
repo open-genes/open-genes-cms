@@ -50,18 +50,22 @@ class GeneInfoService implements GeneInfoServiceInterface
     /**
      * @inheritDoc
      */
-    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneFullViewDto
+    public function getGeneViewInfo(string $geneSymbol, string $lang = 'en-US'): GeneFullViewDto
     {
-        $geneArray = $this->geneDataProvider->getGene($geneId);
+        if(is_numeric($geneSymbol)) { // todo временно для обратной совместимости 
+            $geneArray = $this->geneDataProvider->getGene($geneSymbol);
+        } else {
+            $geneArray = $this->geneDataProvider->getGeneBySymbol($geneSymbol);
+        }
 
         $geneDto = $this->geneDtoAssembler->mapViewDto($geneArray, $lang);
-        $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneId, $lang);
-        $geneDto->functions = $this->geneFunctionsDataProvider->getByGeneId($geneId, $lang);
-        $geneDto->researches = $this->getGeneResearches($geneId, $lang);
+        $geneDto->expression = $this->geneExpressionDataProvider->getByGeneId($geneArray['id'], $lang);
+        $geneDto->functions = $this->geneFunctionsDataProvider->getByGeneId($geneArray['id'], $lang);
+        $geneDto->researches = $this->getGeneResearches($geneArray['id'], $lang);
         
         //todo: создать дата провайдер вместо прямого вызова сервиса. Или лучше вызывать сервис, но внутри него отслоить датапровайдер
         $geneOntologyService = new GeneOntologyService();
-        $geneDto->terms = $geneOntologyService->getFunctionsForGene($geneDto->entrezGene);
+        $geneDto->terms = $geneOntologyService->getFunctionsForGene($geneDto->ncbiId);
 
         return $geneDto;
     }

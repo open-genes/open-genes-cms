@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'formatter' => ['class' => 'yii\i18n\Formatter','nullDisplay' => ' - '],
         'columns' => [
             'id',
-            'entrezGene',
+            'ncbi_id',
             'symbol',
             'name',
             [
@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw'
             ],
-            //'entrezGene',
+            //'ncbi_id',
             //'uniprot',
             //'why',
             //'band',

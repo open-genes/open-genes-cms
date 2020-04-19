@@ -59,9 +59,13 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'about' => 'site/about',
-                'api/gene/<id:\d+>' => 'api/gene',
-                'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster',
-                'api/by-expression-change/<expressionChange>' => 'api/by-expression-change'
+                'api/gene/?' => 'api/index',
+                'api/gene/by-functional-cluster/<ids>' => 'api/by-functional-cluster',
+                'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster', // todo 
+                'api/gene/by-expression-change/<expressionChange>' => 'api/by-expression-change',
+                'api/by-expression-change/<expressionChange>' => 'api/by-expression-change', // todo 
+                'api/gene/by-latest' => 'api/latest',
+                'api/gene/<symbol:\w+>' => 'api/gene',
             ],
         ],
     ],

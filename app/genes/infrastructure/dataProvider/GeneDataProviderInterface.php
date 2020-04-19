@@ -11,6 +11,8 @@ interface GeneDataProviderInterface
      * @throws NotFoundHttpException
      */
     public function getGene($geneId): array;
+    
+    public function getGeneBySymbol($geneId): array;
 
     public function getLatestGenes(int $count): array;
 

@@ -8,11 +8,11 @@ use genes\application\dto\LatestGeneViewDto;
 interface GeneInfoServiceInterface
 {
     /**
-     * @param int $geneId
+     * @param string $geneSymbol
      * @param string $lang
      * @return GeneFullViewDto
      */
-    public function getGeneViewInfo(int $geneId, string $lang = 'en-US'): GeneFullViewDto;
+    public function getGeneViewInfo(string $geneSymbol, string $lang = 'en-US'): GeneFullViewDto;
 
     /**
      * @param int $count

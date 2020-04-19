@@ -19,36 +19,36 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
     {
         $geneDto = new GeneFullViewDto();
         $geneCommentsReferenceLinks = [];
-        $geneCommentsReferenceLinksSource = explode(',', $geneArray['commentsReferenceLinks']);
+        $geneCommentsReferenceLinksSource = $geneArray['commentsReferenceLinks'] ? explode(',', $geneArray['commentsReferenceLinks']) : [];
         foreach ($geneCommentsReferenceLinksSource as $commentsRef) {
             $commentsRefLink = preg_replace('/^(\s?<br>)?\s*\[[0-9\-]*\s*[[0-9\-]*]\s*/', '', $commentsRef);
             $geneCommentsReferenceLinks[$commentsRefLink] = $commentsRef;
         }
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->origin = $this->prepareOrigin($geneArray);
-        $geneDto->homologueTaxon = $geneArray['taxon_name'];
-        $geneDto->symbol = $geneArray['symbol'];
-        $geneDto->aliases = explode(' ', $geneArray['aliases']);
-        $geneDto->name = $geneArray['name'];
-        $geneDto->entrezGene = $geneArray['entrezGene'];
-        $geneDto->uniprot = $geneArray['uniprot'];
-        $geneDto->commentCause =  explode(',', $geneArray['comment_cause']);
-        $geneDto->proteinClasses =  explode('||', $geneArray['protein_class']); // todo одинаковый сепаратор для всех group_concat
+        $geneDto->homologueTaxon = (string)$geneArray['taxon_name'];
+        $geneDto->symbol = (string)$geneArray['symbol'];
+        $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
+        $geneDto->name = (string)$geneArray['name'];
+        $geneDto->ncbiId = (string)$geneArray['ncbi_id'];
+        $geneDto->uniprot = (string)$geneArray['uniprot'];
+        $geneDto->commentCause =  $geneArray['comment_cause'] ? explode(',', $geneArray['comment_cause']) : [];
+        $geneDto->proteinClasses =  $geneArray['protein_class'] ? explode('||', $geneArray['protein_class']) : []; // todo одинаковый сепаратор для всех group_concat
         $geneDto->commentEvolution = $geneArray['comment_evolution'];
-        $geneDto->commentFunction = $geneArray['comment_function'];
-        $geneDto->commentAging = $geneArray['comment_aging'];
+        $geneDto->commentFunction = (string)$geneArray['comment_function'];
+        $geneDto->commentAging = (string)$geneArray['comment_aging'];
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
         $geneDto->why = explode(',', $geneArray['why']);
-        $geneDto->band = $geneArray['band'];
-        $geneDto->locationStart = $geneArray['locationStart'];
-        $geneDto->locationEnd = $geneArray['locationEnd'];
-        $geneDto->orientation = $geneArray['orientation'];
-        $geneDto->accPromoter = $geneArray['accPromoter'];
-        $geneDto->accOrf = $geneArray['accOrf'];
-        $geneDto->accCds = $geneArray['accCds'];
+        $geneDto->band = (string)$geneArray['band'];
+        $geneDto->locationStart = (string)$geneArray['locationStart'];
+        $geneDto->locationEnd = (string)$geneArray['locationEnd'];
+        $geneDto->orientation = (string)$geneArray['orientation'];
+        $geneDto->accPromoter = (string)$geneArray['accPromoter'];
+        $geneDto->accOrf = (string)$geneArray['accOrf'];
+        $geneDto->accCds = (string)$geneArray['accCds'];
         $geneDto->orthologs = $this->prepareOrthologs($geneArray['orthologs']);
 
         return $geneDto;
@@ -68,14 +68,14 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
     {
         $geneDto = new GeneListViewDto();
         $geneDto->id = (int)$geneArray['id'];
-        $geneDto->name = $geneArray['name'];
+        $geneDto->name = (string)$geneArray['name'];
         $geneDto->origin = $this->prepareOrigin($geneArray);
-        $geneDto->homologueTaxon = $geneArray['taxon_name'];
-        $geneDto->symbol = $geneArray['symbol'];
-        $geneDto->entrezGene = $geneArray['entrezGene'];
-        $geneDto->uniprot = $geneArray['uniprot'];
-        $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
-        $geneDto->aliases = explode(' ', $geneArray['aliases']);
+        $geneDto->homologueTaxon = (string)$geneArray['taxon_name'];
+        $geneDto->symbol = (string)$geneArray['symbol'];
+        $geneDto->ncbiId = (string)$geneArray['ncbi_id'];
+        $geneDto->uniprot = (string)$geneArray['uniprot'];
+        $geneDto->expressionChange = (string)$this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
+        $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         return $geneDto;
     }
