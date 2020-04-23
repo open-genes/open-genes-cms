@@ -23,6 +23,8 @@ class GeneListViewDto
     public $functionalClusters;
     /** @var string */
     public $expressionChange;
+    /** @var int */
+    public $timestamp;
 
 }
 

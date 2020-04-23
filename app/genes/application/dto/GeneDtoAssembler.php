@@ -50,6 +50,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->accOrf = (string)$geneArray['accOrf'];
         $geneDto->accCds = (string)$geneArray['accCds'];
         $geneDto->orthologs = $this->prepareOrthologs($geneArray['orthologs']);
+        $geneDto->timestamp = $this->prepareTimestamp($geneArray);
 
         return $geneDto;
     }
@@ -61,6 +62,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->homologueTaxon = $geneArray['taxon_name'];
         $geneDto->symbol = $geneArray['symbol'];
+        $geneDto->timestamp = $this->prepareTimestamp($geneArray);
         return $geneDto;
     }
 
@@ -77,6 +79,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->expressionChange = (string)$this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
         $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
+        $geneDto->timestamp = $this->prepareTimestamp($geneArray);
         return $geneDto;
     }
 
@@ -132,6 +135,10 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
             $expressionChange = 'не изменяется';
         }
         return $lang == 'en-US' ? self::$expressionChangeEn[$expressionChange] : $expressionChange;
+    }
+    
+    private function prepareTimestamp($geneArray): int {
+        return (int)($geneArray['updated_at'] ?? $geneArray['created_at']);
     }
 
 }

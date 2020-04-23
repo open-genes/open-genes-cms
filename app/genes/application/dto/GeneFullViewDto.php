@@ -67,6 +67,8 @@ class GeneFullViewDto
     public $orthologs;
     /** @var array */
     public $why;
+    /** @var int */
+    public $timestamp;
 
 //    public $isHidden;
 //    public $dateAdded;

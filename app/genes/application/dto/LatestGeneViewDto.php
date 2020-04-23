@@ -11,5 +11,7 @@ class LatestGeneViewDto
     public $homologueTaxon;
     /** @var string */
     public $symbol;
+    /** @var int */
+    public $timestamp;
 }
 
