@@ -97,11 +97,8 @@ class ApiController extends Controller
     public function actionByExpressionChange($expressionChange)
     {
         /** @var GeneInfoServiceInterface $geneInfoService */
-        if(!in_array($expressionChange, ['increased', 'decreased', 'mixed'])) { // todo сделать форму с валидацией
-            throw new BadRequestHttpException('expressionChange must be one of \'increased\', \'decreased\', \'mixed\'');
-        }
         $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
-        return $geneInfoService->getByExpressionChange($expressionChange, $this->language);
+        return $geneInfoService->getByExpressionChange((int)$expressionChange, $this->language);
     }
 
     public function actionPhyla()

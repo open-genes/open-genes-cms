@@ -20,6 +20,17 @@
     width: 67%;
     float: left;
 }
+.form-sixth {
+    width: 16%;
+    float: left;
+}
+.form-five-sixths {
+    width: 83%;
+    float: left;
+}
+.form-small-margin {
+    margin-right: 1%;
+}
 .form-split {
     margin-bottom: 10px;
 }

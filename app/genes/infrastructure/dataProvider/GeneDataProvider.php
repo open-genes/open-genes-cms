@@ -143,7 +143,7 @@ class GeneDataProvider implements GeneDataProviderInterface
     }
 
     /** @inheritDoc */
-    public function getByExpressionChange(string $expressionChange): array
+    public function getByExpressionChange(int $expressionChange): array
     {
         $genesArrayQuery = Gene::find()
             ->select($this->fields)

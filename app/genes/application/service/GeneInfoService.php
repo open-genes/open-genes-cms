@@ -108,9 +108,9 @@ class GeneInfoService implements GeneInfoServiceInterface
         return $geneDtos;
     }
 
-    public function getByExpressionChange(string $expressionChange, string $lang = 'en-US'): array
+    public function getByExpressionChange(int $expressionChange, string $lang = 'en-US'): array
     {
-        $genesArray = $this->geneDataProvider->getByExpressionChange($this->prepareExpressionChangeForQuery($expressionChange));
+        $genesArray = $this->geneDataProvider->getByExpressionChange($expressionChange);
         $geneDtos = [];
         foreach ($genesArray as $gene) {
             $geneDtos[] = $this->geneDtoAssembler->mapListViewDto($gene, $lang);
@@ -137,20 +137,6 @@ class GeneInfoService implements GeneInfoServiceInterface
             $proteinToGenes,
             $lang
         );
-    }
-
-    private static $expressionChangeEn = [
-        'уменьшается' => 'decreased',
-        'увеличивается' => 'increased',
-        'неоднозначно' => 'mixed',
-    ];
-
-    private function prepareExpressionChangeForQuery($expressionChange): ?string // todo изменить в бд хранение изменения экспрессии
-    {
-        if(!$expressionChange || !in_array($expressionChange, self::$expressionChangeEn)) {
-            throw new Exception('invalid $expressionChange value');
-        }
-        return array_search($expressionChange, self::$expressionChangeEn);
     }
 
 }

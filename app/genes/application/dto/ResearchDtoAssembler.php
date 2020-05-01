@@ -40,6 +40,7 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
         foreach ($ageRelatedChanges as $ageRelatedChange) {
             $this->prepareAge($ageRelatedChange, $lang);
             $this->preparePercentChange($ageRelatedChange);
+            $this->prepareMeasurementType($ageRelatedChange, $lang);
             $this->prepareEmpty($ageRelatedChange);
             $researchesDto->ageRelatedChangesOfGene[] = $ageRelatedChange;
         }
@@ -126,6 +127,20 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
         ];
         if (isset($data['sex']) && isset($sexes[$data['sex']])) {
             $data['sex'] = $sexes[$data['sex']];
+        }
+    }
+
+    private function prepareMeasurementType(&$data, $lang)
+    {
+        $types = $lang == 'en-US' ? [
+            1 => 'mRNA',
+            2 => 'protein',
+        ] : [
+            1 => 'мРНК',
+            2 => 'белок',
+        ];
+        if (isset($data['measurementType']) && isset($types[$data['measurementType']])) {
+            $data['measurementType'] = $types[$data['measurementType']];
         }
     }
 }

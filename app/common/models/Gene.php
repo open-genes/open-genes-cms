@@ -33,7 +33,7 @@ use Yii;
  * @property string $commentsReferenceLinks
  * @property int $rating
  * @property int $isHidden
- * @property string $expressionChange
+ * @property int $expressionChange
  * @property int $created_at
  * @property int $updated_at
  * @property int $age_id
@@ -70,13 +70,12 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id'], 'integer'],
+            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id', 'expressionChange'], 'integer'],
             [['protein_complex_ru', 'protein_complex_en'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
-            [['expressionChange'], 'string', 'max' => 64],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }

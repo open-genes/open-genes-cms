@@ -62,6 +62,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "age_related_change.change_value_male as valueForMale",
                 "age_related_change.change_value_female as valueForFemale",
                 "age_related_change.change_value_common as valueForAll",
+                "age_related_change.measurement_type as measurementType",
                 "age_related_change.reference",
                 "age_related_change.{$commentField} as comment",
             ])
@@ -82,7 +83,6 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
         return GeneInterventionToVitalProcess::find()
             ->select([
                 "gene_intervention.{$nameField} as geneIntervention",
-                "intervention_result_for_vital_process.{$nameField} as interventionResultForVitalProcess",
                 "vital_process.{$nameField} as vitalProcess",
                 "model_organism.{$nameField} as modelOrganism",
                 "organism_line.{$nameField} as organismLine",

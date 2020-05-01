@@ -28,7 +28,7 @@ class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVi
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_for_vital_process_id'], 'required'],
+            [['gene_id', 'gene_intervention_id'], 'required'],
         ]);
     }
 
@@ -67,7 +67,7 @@ class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVi
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_for_vital_process_id']) {
+            if($modelArray['gene_intervention_id'] && $modelArray['model_organism_id']) {
                 if(is_numeric($id)) {
                     $modelAR = self::findOne($id);
                 } else {
@@ -85,10 +85,6 @@ class GeneInterventionToVitalProcess extends \common\models\GeneInterventionToVi
                 if(!is_numeric($modelArray['model_organism_id'])) {
                     $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
                     $modelAR->model_organism_id = $arProcessLocalization->id;
-                }
-                if(!is_numeric($modelArray['intervention_result_for_vital_process_id'])) {
-                    $arResultForVitalProcess = InterventionResultForVitalProcess::createFromNameString($modelArray['intervention_result_for_vital_process_id']);
-                    $modelAR->intervention_result_for_vital_process_id = $arResultForVitalProcess->id;
                 }
                 if(!is_numeric($modelArray['vital_process_id'])) {
                     $arVitalProcess = VitalProcess::createFromNameString($modelArray['vital_process_id']);

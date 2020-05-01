@@ -22,6 +22,7 @@ use Yii;
  * @property double $change_value_female
  * @property double $change_value_common
  * @property int $age_unit
+ * @property int $measurement_type
  *
  * @property Gene $gene
  * @property ModelOrganism $modelOrganism
@@ -45,7 +46,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit'], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type'], 'integer'],
             [['age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],

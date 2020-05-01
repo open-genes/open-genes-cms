@@ -35,9 +35,9 @@ interface GeneInfoServiceInterface
     public function getByFunctionalClustersIds(array $functionalClustersIds, string $lang = 'en-US'): array;
 
     /**
-     * @param string $expressionChange
+     * @param int $expressionChange
      * @param string $lang
      * @return GeneListViewDto[]
      */
-    public function getByExpressionChange(string $expressionChange, string $lang = 'en-US'): array;
+    public function getByExpressionChange(int $expressionChange, string $lang = 'en-US'): array;
 }

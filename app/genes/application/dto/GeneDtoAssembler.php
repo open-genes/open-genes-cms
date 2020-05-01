@@ -8,12 +8,6 @@ use yii\base\Exception;
 
 class GeneDtoAssembler implements GeneDtoAssemblerInterface
 {
-    private static $expressionChangeEn = [
-        'уменьшается' => 'decreased',
-        'увеличивается' => 'increased',
-        'неоднозначно' => 'mixed',
-        'не изменяется' => 'not set',
-    ];
 
     public function mapViewDto(array $geneArray, string $lang): GeneFullViewDto
     {
@@ -40,7 +34,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
-        $geneDto->expressionChange = $this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
+        $geneDto->expressionChange = (int)$geneArray['expressionChange'];
         $geneDto->why = explode(',', $geneArray['why']);
         $geneDto->band = (string)$geneArray['band'];
         $geneDto->locationStart = (string)$geneArray['locationStart'];
@@ -76,7 +70,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->symbol = (string)$geneArray['symbol'];
         $geneDto->ncbiId = (string)$geneArray['ncbi_id'];
         $geneDto->uniprot = (string)$geneArray['uniprot'];
-        $geneDto->expressionChange = (string)$this->prepareExpressionChangeForView($geneArray['expressionChange'], $lang);
+        $geneDto->expressionChange = (int)$geneArray['expressionChange'];
         $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->timestamp = $this->prepareTimestamp($geneArray);
@@ -127,14 +121,6 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $phylum->phylum = $geneArray['phylum_name'];
         $phylum->order = (int)$geneArray['phylum_order'];
         return $phylum;
-    }
-
-    private function prepareExpressionChangeForView($expressionChange, string $lang): ?string // todo изменить в бд хранение изменения экспрессии
-    {
-        if(!$expressionChange || !isset(self::$expressionChangeEn[$expressionChange])) {
-            $expressionChange = 'не изменяется';
-        }
-        return $lang == 'en-US' ? self::$expressionChangeEn[$expressionChange] : $expressionChange;
     }
     
     private function prepareTimestamp($geneArray): int {

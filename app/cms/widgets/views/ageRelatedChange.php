@@ -125,7 +125,26 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            <div class="form-sixth form-small-margin">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $ageRelatedChange,
+                    'attribute' => '[' . $ageRelatedChange->id . ']measurement_type',
+                    'data' => [1 => 'мРНК', 2 => 'белок'],
+                    'options' => [
+                        'placeholder' => 'мРНК/белок',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'containerCssClass' => 'blue',
+                        'dropdownCssClass' => 'blue',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-five-sixths">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            </div>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

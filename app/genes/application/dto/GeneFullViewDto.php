@@ -41,7 +41,7 @@ class GeneFullViewDto
     public $functions;
     /** @var array */
     public $proteinClasses;
-    /** @var string */
+    /** @var int */
     public $expressionChange;
     /** @var string */
     public $band;

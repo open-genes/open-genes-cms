@@ -21,7 +21,7 @@ class GeneListViewDto
     public $uniprot;
     /** @var FunctionalClusterDto[] */
     public $functionalClusters;
-    /** @var string */
+    /** @var int */
     public $expressionChange;
     /** @var int */
     public $timestamp;
