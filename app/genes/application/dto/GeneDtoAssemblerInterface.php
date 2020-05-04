@@ -11,4 +11,6 @@ interface GeneDtoAssemblerInterface
     public function mapLatestViewDto(array $geneArray): LatestGeneViewDto;
 
     public function mapListViewDto(array $geneArray, string $lang): GeneListViewDto;
+    
+    public function mapListViewWithTermsDto(array $geneArray, string $lang): GeneListViewDto;
 }

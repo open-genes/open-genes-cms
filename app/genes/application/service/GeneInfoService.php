@@ -119,6 +119,17 @@ class GeneInfoService implements GeneInfoServiceInterface
         return $geneDtos;
     }
 
+    public function getByGoTerm(string $term, string $lang = 'en-US'): array
+    {
+        $genesArray = $this->geneDataProvider->getByGoTerm($term);
+        $geneDtos = [];
+        foreach ($genesArray as $gene) {
+            $geneDtos[] = $this->geneDtoAssembler->mapListViewWithTermsDto($gene, $lang);
+        }
+
+        return $geneDtos;
+    }
+
     private function getGeneResearches($geneId, $lang)
     {
         $lifespanExperiments = $this->geneResearchesDataProvider->getLifespanExperimentsByGeneId($geneId, $lang);

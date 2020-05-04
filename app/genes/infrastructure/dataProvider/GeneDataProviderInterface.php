@@ -29,4 +29,10 @@ interface GeneDataProviderInterface
      * @return array
      */
     public function getByExpressionChange(int $expressionChange): array;
+    
+    /**
+     * @param string $term
+     * @return array
+     */
+    public function getByGoTerm(string $term): array;
 }

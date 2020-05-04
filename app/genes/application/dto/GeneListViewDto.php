@@ -25,6 +25,8 @@ class GeneListViewDto
     public $expressionChange;
     /** @var int */
     public $timestamp;
+    /** @var array */
+    public $terms;
 
 }
 

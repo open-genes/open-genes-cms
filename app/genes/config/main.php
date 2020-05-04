@@ -64,6 +64,7 @@ $config = [
                 'api/by-functional-cluster/<ids>' => 'api/by-functional-cluster', // todo 
                 'api/gene/by-expression-change/<expressionChange>' => 'api/by-expression-change',
                 'api/by-expression-change/<expressionChange>' => 'api/by-expression-change', // todo 
+                'api/gene/by-go-term/<term>' => 'api/by-go-term',
                 'api/gene/by-latest' => 'api/latest',
                 'api/gene/<symbol:\w+>' => 'api/gene',
             ],

@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use yii\db\Expression;
+
 /**
  * This is the ActiveQuery class for [[Gene]].
  *
@@ -120,5 +122,15 @@ class GeneQuery extends \yii\db\ActiveQuery
                 'taxon',
                 'gene.taxon_id = taxon.id'
             );
+    }
+    
+    public function withGoTerms($lang)
+    {
+        $nameField = $lang == 'en-US' ? 'name_en' : 'name_ru';
+        return $this
+            ->addSelect(new Expression("
+                group_concat(distinct concat(`gene_ontology`.`ontology_identifier`,'|',`gene_ontology`.`name_en`,'|',`gene_ontology`.`category`) separator  '||') as `go_terms`"))
+            ->innerJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
+            ->innerJoin('gene_ontology', 'gene_ontology.id = gene_to_ontology.gene_ontology_id');
     }
 }

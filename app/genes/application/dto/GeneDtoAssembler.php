@@ -74,6 +74,28 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->timestamp = $this->prepareTimestamp($geneArray);
+        unset($geneDto->terms);
+        return $geneDto;
+    }
+
+    public function mapListViewWithTermsDto(array $geneArray, string $lang): GeneListViewDto
+    {
+        $geneDto = $this->mapListViewDto($geneArray, $lang);
+        $termsArray = explode('||', $geneArray['go_terms']);
+        $geneTerms = [
+            'biological_process' => [],
+            'cellular_component' => [],
+            'molecular_activity' => [],
+        ];
+        if(is_array($termsArray)) {
+            foreach ($termsArray as $term) {
+                list($identifier, $termName, $category) = explode('|', $term);
+                $geneTerms[$category][] = [
+                    $identifier => $termName
+                ];
+            }
+        }
+        $geneDto->terms = $geneTerms;
         return $geneDto;
     }
 
@@ -126,5 +148,4 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
     private function prepareTimestamp($geneArray): int {
         return (int)($geneArray['updated_at'] ?? $geneArray['created_at']);
     }
-
 }

@@ -156,4 +156,19 @@ class GeneDataProvider implements GeneDataProviderInterface
             ->asArray();
         return $genesArrayQuery->all();
     }
+
+    public function getByGoTerm(string $term): array
+    {
+        $genesArrayQuery = Gene::find()
+            ->select($this->fields)
+            ->withAge()
+            ->withFunctionalClusters($this->lang)
+            ->withGoTerms($this->lang)
+            ->andWhere('isHidden != 1')
+            ->andWhere(['like', 'gene_ontology.name_en', '%' . $term . '%', false])
+            ->orderBy('age.order DESC')
+            ->groupBy('gene.id')
+            ->asArray();
+        return $genesArrayQuery->all();
+    }
 }

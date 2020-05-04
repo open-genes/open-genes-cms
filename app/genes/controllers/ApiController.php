@@ -107,6 +107,18 @@ class ApiController extends Controller
         $phylumInfoService = Yii::$container->get(PhylumInfoServiceInterface::class);
         return $phylumInfoService->getAllPhyla();
     }
+    
+    public function actionByGoTerm($term)
+    {
+        /** @var GeneInfoServiceInterface $geneInfoService */
+        // todo валидация
+        $term = strip_tags(trim($term));
+        if(strlen($term) < 3) {
+            return [];
+        }
+        $geneInfoService = Yii::$container->get(GeneInfoServiceInterface::class);
+        return $geneInfoService->getByGoTerm($term, $this->language);
+    }
 
     /**
      * todo: ВНИМАНИЕ! Это только для тестов! Нужно перенести в консольное приложение и декомпозировать

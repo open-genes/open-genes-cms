@@ -40,4 +40,11 @@ interface GeneInfoServiceInterface
      * @return GeneListViewDto[]
      */
     public function getByExpressionChange(int $expressionChange, string $lang = 'en-US'): array;
+    
+    /**
+     * @param string $term
+     * @param string $lang
+     * @return GeneListViewDto[]
+     */
+    public function getByGoTerm(string $term, string $lang = 'en-US'): array;
 }
