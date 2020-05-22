@@ -31,6 +31,9 @@ class GeneDataProvider implements GeneDataProviderInterface
         'gene.expressionChange',
         'gene.created_at',
         'gene.updated_at',
+        'gene.rating',
+        'gene.ensembl',
+        'gene.human_protein_atlas',
     ];
 
     private $fieldsEn = [

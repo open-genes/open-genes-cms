@@ -46,6 +46,9 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->orthologs = $this->prepareOrthologs($geneArray['orthologs']);
         $geneDto->timestamp = $this->prepareTimestamp($geneArray);
 
+        $geneDto->ensembl = $geneArray['ensembl'] ?? '';
+        $geneDto->human_protein_atlas = !empty($geneArray['human_protein_atlas']) ? json_decode($geneArray['human_protein_atlas']) : '';
+
         return $geneDto;
     }
 

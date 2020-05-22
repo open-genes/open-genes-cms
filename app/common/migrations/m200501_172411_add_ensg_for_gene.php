@@ -13,6 +13,7 @@ class m200501_172411_add_ensg_for_gene extends Migration
     public function safeUp()
     {
         $this->addColumn('gene', 'ensembl', \yii\db\Schema::TYPE_STRING);
+        $this->addColumn('gene', 'human_protein_atlas', \yii\db\Schema::TYPE_TEXT);
     }
 
     /**
@@ -21,6 +22,7 @@ class m200501_172411_add_ensg_for_gene extends Migration
     public function safeDown()
     {
         $this->dropColumn('gene', 'ensembl');
+        $this->dropColumn('gene', 'human_protein_atlas');
     }
 
     /*
