@@ -94,7 +94,6 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
             ])
             ->distinct()
             ->innerJoin('gene_intervention', 'gene_intervention_to_vital_process.gene_intervention_id=gene_intervention.id')
-            ->innerJoin('intervention_result_for_vital_process', 'gene_intervention_to_vital_process.intervention_result_for_vital_process_id=intervention_result_for_vital_process.id')
             ->innerJoin('vital_process', 'gene_intervention_to_vital_process.vital_process_id=vital_process.id')
             ->leftJoin('model_organism', 'gene_intervention_to_vital_process.model_organism_id=model_organism.id')
             ->leftJoin('organism_line', 'gene_intervention_to_vital_process.organism_line_id=organism_line.id')
