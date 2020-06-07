@@ -71,7 +71,6 @@ class GeneFullViewDto
     public $timestamp;
 
 //    public $isHidden;
-//    public $dateAdded;
 //    public $userEdited;
 //    public $hylo;
 //    public $why;

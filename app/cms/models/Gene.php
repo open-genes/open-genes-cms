@@ -83,7 +83,6 @@ class Gene extends \common\models\Gene
             'functionalClusters' => 'Функциональные кластеры',
             'functionalClustersIdsArray' => 'Функциональные кластеры',
             'commentCauseIdsArray' => 'Причины отбора',
-            'dateAdded' => 'Date Added',
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
             'proteinClassesIdsArray' => 'Классы белков',
@@ -232,7 +231,6 @@ class Gene extends \common\models\Gene
                 if(!$arGene) {
                     $arGene = new self();
                     $arGene->ncbi_id = $geneNCBIId;
-                    $arGene->dateAdded = 0;
                     $arGene->isHidden = 1;
                     if(!$arGene->save()) {
                         $this->addError('newGenesNcbiIds', current($arGene->getFirstErrors()));
