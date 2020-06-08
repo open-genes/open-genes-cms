@@ -101,6 +101,9 @@ class LifespanExperiment extends \common\models\LifespanExperiment
                 if($modelAR->organism_line_id === '') {
                     $modelAR->organism_line_id = null;
                 }
+                if($modelAR->genotype === '') {
+                    $modelAR->genotype = null;
+                }
                 if(!$modelAR->save()) {
                     var_dump($modelAR->errors); die;
                 }

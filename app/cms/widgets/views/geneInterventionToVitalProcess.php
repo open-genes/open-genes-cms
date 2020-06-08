@@ -105,21 +105,38 @@
                 ?>
             </div>
             <div class="form-third">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneInterventionToVitalProcess,
-                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']sex_of_organism',
-                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба пола'],
-                    'options' => [
-                        'placeholder' => 'Пол',
-                        'multiple' => false
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                        'containerCssClass' => 'green',
-                        'dropdownCssClass' => 'green',
-                    ],
-                ]);
-                ?>
+                <div class="form-half-without-margin">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $geneInterventionToVitalProcess,
+                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']genotype',
+                        'data' => [0 => '', 1 => '+/-', 2 => '-/-', 3 => '+/-, -/-'],
+                        'options' => [
+                            'placeholder' => 'Генотип',
+                            'multiple' => false
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ],
+                    ]);
+                    ?>
+                </div>
+                <div class="form-half-without-margin">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $geneInterventionToVitalProcess,
+                        'attribute' => '[' . $geneInterventionToVitalProcess->id . ']sex_of_organism',
+                        'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба пола'],
+                        'options' => [
+                            'placeholder' => 'Пол',
+                            'multiple' => false
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                            'containerCssClass' => 'green',
+                            'dropdownCssClass' => 'green',
+                        ],
+                    ]);
+                    ?>
+                </div>
             </div>
         </div>
         <div class="form-split">

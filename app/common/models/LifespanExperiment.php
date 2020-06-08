@@ -22,6 +22,7 @@ use Yii;
  * @property double $lifespan_change_percent_female
  * @property double $lifespan_change_percent_common
  * @property int $age_unit
+ * @property int $genotype
  *
  * @property Gene $gene
  * @property GeneIntervention $geneIntervention
@@ -45,7 +46,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'sex', 'organism_line_id', 'age_unit'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'sex', 'organism_line_id', 'age_unit', 'genotype'], 'integer'],
             [['age', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
@@ -78,6 +79,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'lifespan_change_percent_female' => 'Lifespan Change Percent Female',
             'lifespan_change_percent_common' => 'Lifespan Change Percent Common',
             'age_unit' => 'Age Unit',
+            'genotype' => 'Genotype',
         ];
     }
 

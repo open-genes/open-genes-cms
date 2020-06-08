@@ -29,6 +29,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "model_organism.{$nameField} as modelOrganism",
                 "organism_line.{$nameField} as organismLine",
                 "lifespan_experiment.age",
+                "lifespan_experiment.genotype",
                 "lifespan_experiment.age_unit as ageUnit",
                 "lifespan_experiment.lifespan_change_percent_male as valueForMale",
                 "lifespan_experiment.lifespan_change_percent_female as valueForFemale",
@@ -87,6 +88,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "model_organism.{$nameField} as modelOrganism",
                 "organism_line.{$nameField} as organismLine",
                 "gene_intervention_to_vital_process.age",
+                "gene_intervention_to_vital_process.genotype",
                 "gene_intervention_to_vital_process.age_unit as ageUnit",
                 "gene_intervention_to_vital_process.sex_of_organism as sex",
                 "gene_intervention_to_vital_process.reference",
@@ -150,6 +152,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "longevity_effect.{$nameField} as longevityEffect",
                 "genotype.{$nameField} as allelicPolymorphism",
                 "gene_to_longevity_effect.sex_of_organism as sex",
+                "gene_to_longevity_effect.allele_variant",
                 "gene_to_longevity_effect.reference",
                 "gene_to_longevity_effect.{$commentField} as comment",
             ])

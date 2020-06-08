@@ -26,6 +26,7 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
             $this->preparePercentChange($lifespanExperiment);
             $this->prepareAge($lifespanExperiment, $lang);
             $this->prepareEmpty($lifespanExperiment);
+            $this->prepareGenotype($lifespanExperiment);
             $researchesDto->increaseLifespan[] = $lifespanExperiment;
         }
         foreach ($geneToProgerias as $geneToProgeria) {
@@ -48,6 +49,7 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
             $this->prepareAge($interventionResultForVitalProcess, $lang);
             $this->prepareSex($interventionResultForVitalProcess, $lang);
             $this->prepareEmpty($interventionResultForVitalProcess);
+            $this->prepareGenotype($interventionResultForVitalProcess);
             $researchesDto->interventionToGeneImprovesVitalProcesses[] = $interventionResultForVitalProcess;
         }
         foreach ($proteinToGenes as $proteinToGene) {
@@ -141,6 +143,18 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
         ];
         if (isset($data['measurementType']) && isset($types[$data['measurementType']])) {
             $data['measurementType'] = $types[$data['measurementType']];
+        }
+    }
+
+    private function prepareGenotype(&$data)
+    {
+        $types = [
+            1 => '+/-',
+            2 => '-/-',
+            3 => '+/-, -/-',
+        ];
+        if (isset($data['genotype']) && isset($types[$data['genotype']])) {
+            $data['genotype'] = $types[$data['genotype']];
         }
     }
 }
