@@ -15,6 +15,7 @@ use Yii;
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
+ * @property string $allele_variant
  *
  * @property Gene $gene
  * @property Genotype $genotype
@@ -37,7 +38,7 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'longevity_effect_id', 'genotype_id', 'sex_of_organism'], 'integer'],
-            [['comment_en', 'comment_ru'], 'string'],
+            [['comment_en', 'comment_ru', 'allele_variant'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['genotype_id'], 'exist', 'skipOnError' => true, 'targetClass' => Genotype::className(), 'targetAttribute' => ['genotype_id' => 'id']],

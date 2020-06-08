@@ -152,7 +152,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "longevity_effect.{$nameField} as longevityEffect",
                 "genotype.{$nameField} as allelicPolymorphism",
                 "gene_to_longevity_effect.sex_of_organism as sex",
-                "gene_to_longevity_effect.allele_variant",
+                "gene_to_longevity_effect.allele_variant as allelicVariant",
                 "gene_to_longevity_effect.reference",
                 "gene_to_longevity_effect.{$commentField} as comment",
             ])
