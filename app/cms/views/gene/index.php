@@ -91,7 +91,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visibleButtons' => [
                     'update' => \Yii::$app->user->can('contributor'),
                     'delete' => \Yii::$app->user->can('admin'),
-                ]
+                ],
+                'headerOptions' => ['style' => 'min-width:50px'],
             ],
         ],
     ]); ?>
