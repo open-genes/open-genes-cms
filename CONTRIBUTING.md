@@ -14,7 +14,7 @@ open http://127.0.0.1:8080/
 
 Add to your /etc/hosts:
 ```
-127.0.0.1 open-genes.dev cms.open-genes.dev
+127.0.0.1 open-genes.develop cms.open-genes.develop
 ```
 if you haven't local .env file yet, copy it from .env.sample
 ```

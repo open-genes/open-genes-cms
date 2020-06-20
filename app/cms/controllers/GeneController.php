@@ -17,6 +17,7 @@ use cms\models\ProteinToGene;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -190,8 +191,9 @@ class GeneController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $redirectUrl = strpos(Yii::$app->request->referrer, Url::to(['index'])) !== false
+            ? Yii::$app->request->referrer : Url::to(['index']);
+        return $this->redirect($redirectUrl);
     }
 
     public function actionLoadWidgetForm($id, string $modelName, string $widgetName)

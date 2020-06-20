@@ -226,7 +226,7 @@ class Gene extends \common\models\Gene
         $genesNCBIIdsArray = explode(PHP_EOL, $this->newGenesNcbiIds);
         if(is_array($genesNCBIIdsArray)) {
             foreach ($genesNCBIIdsArray as $geneNCBIId) {
-                $geneNCBIId = (int)trim($geneNCBIId, PHP_EOL.' \t\n\r\x0B,;');
+                $geneNCBIId = (int)trim($geneNCBIId, PHP_EOL.' \t\n\r,;');
                 $arGene = self::find()->where(['ncbi_id' => $geneNCBIId])->one();
                 if(!$arGene) {
                     $arGene = new self();

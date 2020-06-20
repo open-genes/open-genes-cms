@@ -85,7 +85,14 @@ $this->params['breadcrumbs'][] = $this->title;
             //'expressionEN:ntext',
             //'expressionChange',
 
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{update}'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update} {delete}',
+                'visibleButtons' => [
+                    'update' => \Yii::$app->user->can('contributor'),
+                    'delete' => \Yii::$app->user->can('admin'),
+                ]
+            ],
         ],
     ]); ?>
 
