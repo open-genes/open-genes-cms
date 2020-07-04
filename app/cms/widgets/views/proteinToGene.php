@@ -43,7 +43,26 @@
                 </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $proteinToGene, '[' . $proteinToGene->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            <div class="form-half-small-margin">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $proteinToGene,
+                    'attribute' => '[' . $proteinToGene->id . ']regulation_type',
+                    'data' => ['' => '', 1 => 'экспрессия гена', 2 => 'активность белка'],
+                    'options' => [
+                        'placeholder' => 'Вид регуляции',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'containerCssClass' => 'yellow',
+                        'dropdownCssClass' => 'yellow',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-half-small-margin">
+                <?= \yii\bootstrap\Html::activeInput('text', $proteinToGene, '[' . $proteinToGene->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            </div>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

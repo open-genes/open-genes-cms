@@ -54,6 +54,7 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
         }
         foreach ($proteinToGenes as $proteinToGene) {
             $this->prepareGene($proteinToGene);
+            $this->prepareRegulationType($proteinToGene, $lang);
             $this->prepareEmpty($proteinToGene);
             $researchesDto->proteinRegulatesOtherGenes[] = $proteinToGene;
         }
@@ -155,6 +156,20 @@ class ResearchDtoAssembler implements ResearchDtoAssemblerInterface
         ];
         if (isset($data['genotype']) && isset($types[$data['genotype']])) {
             $data['genotype'] = $types[$data['genotype']];
+        }
+    }
+
+    private function prepareRegulationType(&$data, $lang) 
+    {
+        $types = $lang == 'en-US' ? [
+            1 => 'gene expression',
+            2 => 'protein activity', 
+        ] : [
+            1 => 'экспрессия гена',
+            2 => 'активность белка',
+        ];
+        if (isset($data['regulationType']) && isset($types[$data['regulationType']])) {
+            $data['regulationType'] = $types[$data['regulationType']];
         }
     }
 }

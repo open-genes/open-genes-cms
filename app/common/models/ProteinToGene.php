@@ -14,6 +14,7 @@ use Yii;
  * @property string $reference
  * @property string $comment_en
  * @property string $comment_ru
+ * @property int $regulation_type
  *
  * @property Gene $gene
  * @property ProteinActivity $proteinActivity
@@ -35,7 +36,7 @@ class ProteinToGene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'regulated_gene_id', 'protein_activity_id'], 'integer'],
+            [['gene_id', 'regulated_gene_id', 'protein_activity_id', 'regulation_type'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -57,6 +58,7 @@ class ProteinToGene extends \yii\db\ActiveRecord
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
+            'regulation_type' => 'Regulation Type',
         ];
     }
 

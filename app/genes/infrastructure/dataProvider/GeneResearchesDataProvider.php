@@ -115,6 +115,7 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "regulated_gene.name as regulatedGeneName",
                 "regulated_gene.ncbi_id as regulatedGeneNcbiId",
                 "protein_activity.{$nameField} as proteinActivity",
+                "protein_to_gene.regulation_type as regulationType",
                 "protein_to_gene.reference",
                 "protein_to_gene.{$commentField} as comment",
             ])
@@ -153,12 +154,14 @@ class GeneResearchesDataProvider implements GeneResearchesDataProviderInterface
                 "genotype.{$nameField} as allelicPolymorphism",
                 "gene_to_longevity_effect.sex_of_organism as sex",
                 "gene_to_longevity_effect.allele_variant as allelicVariant",
+                "model_organism.{$nameField} as modelOrganism",
                 "gene_to_longevity_effect.reference",
                 "gene_to_longevity_effect.{$commentField} as comment",
             ])
             ->distinct()
             ->innerJoin('longevity_effect', 'gene_to_longevity_effect.longevity_effect_id=longevity_effect.id')
             ->innerJoin('genotype', 'gene_to_longevity_effect.genotype_id=genotype.id')
+            ->leftJoin('model_organism', 'gene_to_longevity_effect.model_organism_id=model_organism.id')
             ->where(['gene_id' => $geneId])
             ->asArray()
             ->all();

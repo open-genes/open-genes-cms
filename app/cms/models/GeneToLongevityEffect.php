@@ -67,8 +67,15 @@ class GeneToLongevityEffect extends \common\models\GeneToLongevityEffect
                     $arGenotype = Genotype::createFromNameString($modelArray['genotype_id']);
                     $modelAR->genotype_id = $arGenotype->id;
                 }
+                if(!is_numeric($modelArray['model_organism_id'])) {
+                    $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
+                    $modelAR->model_organism_id = $arProcessLocalization->id;
+                }
                 if($modelAR->genotype_id === '') {
                     $modelAR->genotype_id = null;
+                }
+                if($modelAR->model_organism_id === '') {
+                    $modelAR->model_organism_id = null;
                 }
                 $modelAR->gene_id = $geneId;
                 if(!$modelAR->save()) {

@@ -29,6 +29,7 @@
                 </div>
             </div>
             <div class="form-split">
+                <div class="form-five-sixths">
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneToLongevityEffect,
@@ -49,6 +50,26 @@
                     ?>
                 </div>
                 <div class="form-half-without-margin">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $geneToLongevityEffect,
+                        'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
+                        'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
+                        'options' => [
+                            'placeholder' => 'Организм',
+                            'multiple' => false,
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => false,
+                            'tags' => true,
+                            'tokenSeparators' => ['##'],
+                            'containerCssClass' => 'red',
+                            'dropdownCssClass' => 'red',
+                        ],
+                    ]);
+                    ?>
+                </div>
+                </div>
+                <div class="form-sixth">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneToLongevityEffect,
                         'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
