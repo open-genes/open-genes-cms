@@ -12,12 +12,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
     public function mapViewDto(array $geneArray, string $lang): GeneFullViewDto
     {
         $geneDto = new GeneFullViewDto();
-        $geneCommentsReferenceLinks = [];
-        $geneCommentsReferenceLinksSource = $geneArray['commentsReferenceLinks'] ? explode(',', $geneArray['commentsReferenceLinks']) : [];
-        foreach ($geneCommentsReferenceLinksSource as $commentsRef) {
-            $commentsRefLink = preg_replace('/^(\s?<br>)?\s*\[[0-9\-]*\s*[[0-9\-]*]\s*/', '', $commentsRef);
-            $geneCommentsReferenceLinks[$commentsRefLink] = $commentsRef;
-        }
+
         $geneDto->id = (int)$geneArray['id'];
         $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->homologueTaxon = (string)$geneArray['taxon_name'];
@@ -31,7 +26,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->commentEvolution = $geneArray['comment_evolution'];
         $geneDto->commentFunction = (string)$geneArray['comment_function'];
         $geneDto->commentAging = (string)$geneArray['comment_aging'];
-        $geneDto->commentsReferenceLinks = $geneCommentsReferenceLinks;
+        $geneDto->commentsReferenceLinks = $this->prepareLinks($geneArray);
         $geneDto->rating = $geneArray['rating'];
         $geneDto->functionalClusters = $this->mapFunctionalClusterDtos($geneArray['functional_clusters']);
         $geneDto->expressionChange = (int)$geneArray['expressionChange'];
@@ -148,7 +143,25 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         return $phylum;
     }
     
-    private function prepareTimestamp($geneArray): int {
+    private function prepareTimestamp($geneArray): int 
+    {
         return (int)($geneArray['updated_at'] ?? $geneArray['created_at']);
+    }
+    
+    private function prepareLinks($geneArray): array
+    {
+        $geneCommentsReferenceLinks = [];
+        $geneCommentsReferenceLinksSource = $geneArray['commentsReferenceLinks'] ? explode(',', $geneArray['commentsReferenceLinks']) : [];
+        foreach ($geneCommentsReferenceLinksSource as $commentsRef) {
+            if (preg_match('/\[(\d+)]/', $commentsRef, $commentsRefLinkIdMatch)) {
+                $commentsRefLinkId = $commentsRefLinkIdMatch[1];
+                $commentsRefLinkText = str_replace('<br>', '', trim(explode(']', $commentsRef)[1]));
+                $geneCommentsReferenceLinks[$commentsRefLinkId] = $commentsRefLinkText;
+            } else {
+                $geneCommentsReferenceLinks[1] = $commentsRef;
+            }
+        }
+        
+        return $geneCommentsReferenceLinks;
     }
 }
