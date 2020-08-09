@@ -4,7 +4,7 @@
 
 Build backend
 ```
-docker-compose up -d
+sh open-genes-up.sh
 ```
 Build composer dependencies
 ```
