@@ -14,7 +14,7 @@ services:
       - ./docker/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx:/etc/nginx/conf.d
       - ./app:/var/www
-      - ./../../logs:/var/log/nginx
+      - ./../open-genes-logs:/var/log/nginx
     # link nginx container to php container
     links:
       - php
@@ -35,7 +35,7 @@ services:
       - "3307:3306"
     user: ${OPEN_GENES_UID}
     volumes:
-      - ./../../mysql:/var/lib/mysql
+      - ./../open-genes-mysql:/var/lib/mysql
       - ./docker/mysql/charset.cnf:/etc/mysql/conf.d/charset.cnf
     environment:
       MYSQL_ROOT_PASSWORD: secret
