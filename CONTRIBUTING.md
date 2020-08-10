@@ -4,13 +4,12 @@
 
 Build backend
 ```
-docker-compose up -d
+sh open-genes-up.sh
 ```
 Build composer dependencies
 ```
 docker run --rm -v $PWD/app:/app composer install
 ```
-open http://127.0.0.1:8080/
 
 Add to your /etc/hosts:
 ```
@@ -20,7 +19,7 @@ if you haven't local .env file yet, copy it from .env.sample
 ```
 cp app/.env.sample app/.env
 ```
-Open http://open-genes.dev:8080/api, http://cms.open-genes.dev:8080/
+Open http://open-genes.develop:8080/api, http://cms.open-genes.develop:8080/
 
 DB will be available at localhost:3307 with root-secret credentials. Please ask the team for the db dump for development.  
 

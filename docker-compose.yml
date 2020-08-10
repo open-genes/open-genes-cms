@@ -6,13 +6,15 @@ services:
     # the latest stable nginx image
     image: nginx:latest
     ports:
-      - "8080:80"
-      - "4443:443"
+      - "8080:8080"
+      - "4443:4443"
+    user: ${OPEN_GENES_UID}
     # mount directories from:to
     volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
       - ./docker/nginx:/etc/nginx/conf.d
       - ./app:/var/www
-      - ./../../logs:/var/log/nginx
+      - ./../open-genes-logs:/var/log/nginx
     # link nginx container to php container
     links:
       - php
@@ -23,6 +25,7 @@ services:
     links:
       - mysql
     # mount project's dir
+    user: ${OPEN_GENES_UID}
     volumes:
       - ./app:/var/www
     command: bash -c "composer install && php-fpm"
@@ -30,8 +33,9 @@ services:
     image: mysql:5.7
     ports:
       - "3307:3306"
+    user: ${OPEN_GENES_UID}
     volumes:
-      - ./../../mysql:/var/lib/mysql
+      - ./../open-genes-mysql:/var/lib/mysql
       - ./docker/mysql/charset.cnf:/etc/mysql/conf.d/charset.cnf
     environment:
       MYSQL_ROOT_PASSWORD: secret
