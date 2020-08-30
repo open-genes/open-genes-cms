@@ -89,6 +89,8 @@ class Gene extends \common\models\Gene
             'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
+            'summary_ru' => 'Описание Ru',
+            'summary_en' => 'Описание En',
         ];
     }
 

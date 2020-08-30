@@ -58,6 +58,8 @@ $this->registerCssFile('/assets/css/gene.css');
         ],
     ]); ?>
     <?php if(Yii::$app->user->can('editor')): // todo add more operations to auth manager ?>
+        <?= $form->field($model, 'summary_ru')->textarea(['rows' => 4]) ?>
+        <?= $form->field($model, 'summary_en')->textarea(['rows' => 4]) ?>
         <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
         <?= $form->field($model, 'commentAgingEN')->textarea(['rows' => 4]) ?>
         <?= $form->field($model, 'commentFunction')->textarea(['rows' => 4]) ?>

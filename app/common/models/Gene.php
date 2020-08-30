@@ -39,6 +39,8 @@ use Yii;
  * @property int $age_id
  * @property string $protein_complex_ru
  * @property string $protein_complex_en
+ * @property string $summary_ru
+ * @property string $summary_en
  * @property string $ensembl
  * @property string $human_protein_atlas
  *
@@ -73,7 +75,7 @@ class Gene extends \yii\db\ActiveRecord
     {
         return [
             [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id', 'expressionChange'], 'integer'],
-            [['protein_complex_ru', 'protein_complex_en', 'ensembl', 'human_protein_atlas'], 'string'],
+            [['protein_complex_ru', 'protein_complex_en','summary_ru','summary_en', 'ensembl', 'human_protein_atlas'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
@@ -120,6 +122,8 @@ class Gene extends \yii\db\ActiveRecord
             'age_id' => 'Age ID',
             'protein_complex_ru' => 'Protein Complex Ru',
             'protein_complex_en' => 'Protein Complex En',
+            'summary_ru' => 'Summary Ru',
+            'summary_en' => 'Summary En',
             'ensembl' => 'Ensembl',
             'human_protein_atlas' => 'Human Protein Atlas',
         ];
