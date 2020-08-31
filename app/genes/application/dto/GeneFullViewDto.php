@@ -23,6 +23,8 @@ class GeneFullViewDto
     public $commentEvolution;
     /** @var string */
     public $commentFunction;
+    /** @var string */
+    public $descriptionNCBI;
     /** @var array */
     public $commentCause;
     /** @var string */
@@ -69,6 +71,10 @@ class GeneFullViewDto
     public $why;
     /** @var int */
     public $timestamp;
+    /** @var array */
+    public $human_protein_atlas;
+    /** @var string */
+    public $ensembl;
 
 //    public $isHidden;
 //    public $userEdited;

@@ -1,10 +1,6 @@
 <?php
 
-
 namespace genes\application\dto;
-
-
-use yii\base\Exception;
 
 class GeneDtoAssembler implements GeneDtoAssemblerInterface
 {
@@ -25,6 +21,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->proteinClasses =  $geneArray['protein_class'] ? explode('||', $geneArray['protein_class']) : []; // todo одинаковый сепаратор для всех group_concat
         $geneDto->commentEvolution = $geneArray['comment_evolution'];
         $geneDto->commentFunction = (string)$geneArray['comment_function'];
+        $geneDto->descriptionNCBI = (string)$geneArray['description_ncbi'];
         $geneDto->commentAging = (string)$geneArray['comment_aging'];
         $geneDto->commentsReferenceLinks = $this->prepareLinks($geneArray);
         $geneDto->rating = $geneArray['rating'];
