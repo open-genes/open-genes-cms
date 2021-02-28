@@ -22,7 +22,7 @@ build:
   services:
     - docker:dind
   script:
-    - docker run --rm -v $PWD/app:/app composer install
+    - docker run --rm -v $PWD/app:/app composer install -d /app/common
   artifacts:
     paths:
       - app/common/vendor/
@@ -65,7 +65,7 @@ deploy-prod:
     - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DROPLET_USER}@${DROPLET_IP} "php ${PROJECT_DIR}/app/common/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@common/migrations"
   before_script:
     - mkdir ~/.ssh
-    - echo ${PROJECT_DOTENV} | base64 -d > app/.env
+    - echo ${PROJECT_DOTENV} | base64 -d > app/common/.env
     - echo ${DROPLET_KEY} | base64 -d > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - mkdir -p app/cms/runtime/assets || true

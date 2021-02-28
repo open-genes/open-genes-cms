@@ -16,7 +16,7 @@ Yii2 web app
 
 ### Build backend
 ```
-sh open-genes-up.sh
+sh open-genes.sh up
 ```
 Open http://127.0.0.1:8080/
 

@@ -18,9 +18,9 @@ services:
     # link nginx container to php container
     links:
       - php
-  php:
+  cms:
     # path to our PHP image that will be built
-    build: ./docker/php
+    build: ./docker/php${PHP_IMAGE_ALTER}
     # link it to mysql
     links:
       - mysql
@@ -28,7 +28,9 @@ services:
     user: ${OPEN_GENES_UID}
     volumes:
       - ./app:/var/www
-    command: bash -c "composer install && php-fpm"
+    environment:
+      XDEBUG_CONFIG: client_host=${CLIENT_HOST} client_port=9003
+    command: bash -c "XDEBUG_CONFIG= composer install && php-fpm"
   mysql:
     image: mysql:5.7
     ports:
