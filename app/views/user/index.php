@@ -28,13 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'label' => 'Статус',
-                'value' => function($model, $index, $dataColumn) { /** @var $model \cms\models\User */
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\User */
                     return $model->getStatusName();
                 },
             ],
             [
                 'label' => 'Роль',
-                'value' => function($model, $index, $dataColumn) { /** @var $model \cms\models\User */
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\User */
                     return implode(', ', $model->getRolesArray()) ;
                 },
             ],

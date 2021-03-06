@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Genotype */
+/* @var $model app\models\Genotype */
 
 $this->title = 'Редактировать аллельныей полиморфизм ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Genotypes', 'url' => ['index']];

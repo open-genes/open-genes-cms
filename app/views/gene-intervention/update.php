@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\GeneIntervention */
+/* @var $model app\models\GeneIntervention */
 
 $this->title = 'Редактировать метод вмешательства ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Gene Interventions', 'url' => ['index']];

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\OrganismLine */
+/* @var $model app\models\OrganismLine */
 
 $this->title = 'Добавить линию организмов';
 $this->params['breadcrumbs'][] = ['label' => 'Organism Lines', 'url' => ['index']];

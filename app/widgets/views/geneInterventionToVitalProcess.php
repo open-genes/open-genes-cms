@@ -1,5 +1,5 @@
 <?php
-/** @var $geneInterventionToVitalProcess \cms\models\GeneInterventionToVitalProcess */
+/** @var $geneInterventionToVitalProcess \app\models\GeneInterventionToVitalProcess */
 ?>
 <div class="form-split protein-activity green js-intervention-to-vital-process js-gene-link-section">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
@@ -8,7 +8,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_id',
-                    'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
+                    'data' => \app\models\GeneIntervention::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Вмешательство',
                         'multiple' => false,
@@ -27,7 +27,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']vital_process_id',
-                    'data' => \cms\models\VitalProcess::getAllNamesAsArray(),
+                    'data' => \app\models\VitalProcess::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Процесс',
                         'multiple' => false,
@@ -46,7 +46,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']model_organism_id',
-                    'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
+                    'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Организм',
                         'multiple' => false,
@@ -89,7 +89,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']organism_line_id',
-                    'data' => \cms\models\OrganismLine::getAllNamesAsArray(),
+                    'data' => \app\models\OrganismLine::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Линия организма',
                         'multiple' => false,

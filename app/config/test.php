@@ -1,6 +1,6 @@
 <?php
 
-use cms\models\common\User;
+use app\models\common\User;
 
 return [
     'id' => 'cms-tests',

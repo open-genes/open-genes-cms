@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Genotype */
+/* @var $model app\models\Genotype */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

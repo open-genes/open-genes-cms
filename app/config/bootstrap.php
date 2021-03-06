@@ -1,2 +1,2 @@
 <?php
-Yii::setAlias('@cms', dirname(__DIR__, 2) . '/');
+Yii::setAlias('@app', dirname(__DIR__ ) . '/');

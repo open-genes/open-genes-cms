@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\widgets;
+namespace app\widgets;
 
-use cms\models\LifespanExperiment;
+use app\models\LifespanExperiment;
 use yii\base\Widget;
 
 class LifespanExperimentWidget extends Widget

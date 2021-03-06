@@ -1,9 +1,9 @@
 <?php
 
-namespace cms\models;
+namespace app\models;
 
-use cms\models\behaviors\ChangelogBehavior;
-use cms\models\traits\ConditionActiveRecordTrait;
+use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ConditionActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;

@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\widgets;
+namespace app\widgets;
 
-use cms\models\AgeRelatedChange;
+use app\models\AgeRelatedChange;
 use yii\base\Widget;
 
 class AgeRelatedChangeWidget extends Widget

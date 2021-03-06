@@ -1,6 +1,6 @@
 <?php
 /** @var $model */
 /** @var $widgetName */
-use cms\widgets\GeneProteinActivity;
+use app\widgets\GeneProteinActivity;
 
 echo $widgetName::widget(['model' => $model]);

@@ -1,5 +1,5 @@
 <?php
-/** @var $ageRelatedChange \cms\models\AgeRelatedChange */
+/** @var $ageRelatedChange \app\models\AgeRelatedChange */
 ?>
 <div class="form-split protein-activity blue js-age-related-change js-gene-link-section">
     <div class="js-age-related-change-block js-gene-link-block">
@@ -9,7 +9,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $ageRelatedChange,
                         'attribute' => '[' . $ageRelatedChange->id . ']age_related_change_type_id',
-                        'data' => \cms\models\AgeRelatedChangeType::getAllNamesAsArray(),
+                        'data' => \app\models\AgeRelatedChangeType::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Вид изменений',
                             'multiple' => false
@@ -28,7 +28,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $ageRelatedChange,
                         'attribute' => '[' . $ageRelatedChange->id . ']sample_id',
-                        'data' => \cms\models\Sample::getAllNamesAsArray(),
+                        'data' => \app\models\Sample::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Образец',
                             'multiple' => false,
@@ -49,7 +49,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $ageRelatedChange,
                         'attribute' => '[' . $ageRelatedChange->id . ']model_organism_id',
-                        'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
+                        'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Организм',
                             'multiple' => false
@@ -68,7 +68,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $ageRelatedChange,
                         'attribute' => '[' . $ageRelatedChange->id . ']organism_line_id',
-                        'data' => \cms\models\OrganismLine::getAllNamesAsArray(),
+                        'data' => \app\models\OrganismLine::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Линия организма',
                             'multiple' => false,

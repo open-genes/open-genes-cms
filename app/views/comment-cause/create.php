@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\CommentCause */
+/* @var $model app\models\CommentCause */
 
 $this->title = 'Create Comment Cause';
 $this->params['breadcrumbs'][] = ['label' => 'Comment Causes', 'url' => ['index']];

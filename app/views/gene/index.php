@@ -1,6 +1,6 @@
 <?php
 
-use cms\models\Gene;
+use app\models\Gene;
 use yii\helpers\Html;
 use yii\grid\GridView;
 

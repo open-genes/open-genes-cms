@@ -1,9 +1,9 @@
 <?php
 
-namespace cms\controllers;
+namespace app\controllers;
 
 use Yii;
-use cms\models\AgeRelatedChangeType;
+use app\models\AgeRelatedChangeType;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;

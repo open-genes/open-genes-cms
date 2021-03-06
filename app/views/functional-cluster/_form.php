@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\FunctionalCluster */
+/* @var $model app\models\FunctionalCluster */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

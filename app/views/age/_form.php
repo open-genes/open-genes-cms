@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Phylum */
+/* @var $model app\models\Phylum */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

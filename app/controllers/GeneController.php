@@ -1,19 +1,19 @@
 <?php
 
-namespace cms\controllers;
+namespace app\controllers;
 
-use cms\models\AgeRelatedChange;
-use cms\models\GeneToLongevityEffect;
-use cms\models\GeneToProgeria;
-use cms\models\Phylum;
-use cms\models\CommentCause;
-use cms\models\Gene;
-use cms\models\FunctionalCluster;
-use cms\models\GeneInterventionToVitalProcess;
-use cms\models\GeneToProteinActivity;
-use cms\models\LifespanExperiment;
-use cms\models\ProteinClass;
-use cms\models\ProteinToGene;
+use app\models\AgeRelatedChange;
+use app\models\GeneToLongevityEffect;
+use app\models\GeneToProgeria;
+use app\models\Phylum;
+use app\models\CommentCause;
+use app\models\Gene;
+use app\models\FunctionalCluster;
+use app\models\GeneInterventionToVitalProcess;
+use app\models\GeneToProteinActivity;
+use app\models\LifespanExperiment;
+use app\models\ProteinClass;
+use app\models\ProteinToGene;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -198,8 +198,8 @@ class GeneController extends Controller
 
     public function actionLoadWidgetForm($id, string $modelName, string $widgetName)
     {
-        $modelName = "cms\models\\$modelName";
-        $widgetName = "cms\widgets\\$widgetName";
+        $modelName = "app\models\\$modelName";
+        $widgetName = "app\widgets\\$widgetName";
         if ($id) {
             $model = $modelName::findOne($id);
         }

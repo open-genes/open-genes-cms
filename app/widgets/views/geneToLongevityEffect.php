@@ -1,5 +1,5 @@
 <?php
-/** @var $geneToLongevityEffect \cms\models\GeneToLongevityEffect */
+/** @var $geneToLongevityEffect \app\models\GeneToLongevityEffect */
 ?>
 <div class="form-split protein-activity red js-gene-to-longevity-effect js-gene-link-section">
     <div class="js-gene-to-longevity-effect-block js-gene-link-block">
@@ -9,7 +9,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneToLongevityEffect,
                         'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
-                        'data' => \cms\models\Genotype::getAllNamesAsArray(),
+                        'data' => \app\models\Genotype::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Аллельный полиморфизм',
                             'multiple' => false,
@@ -34,7 +34,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneToLongevityEffect,
                         'attribute' => '[' . $geneToLongevityEffect->id . ']longevity_effect_id',
-                        'data' => \cms\models\LongevityEffect::getAllNamesAsArray(),
+                        'data' => \app\models\LongevityEffect::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Эффект',
                             'multiple' => false,
@@ -53,7 +53,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneToLongevityEffect,
                         'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
-                        'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
+                        'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Организм',
                             'multiple' => false,

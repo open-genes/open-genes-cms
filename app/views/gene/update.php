@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Gene */
+/* @var $model app\models\Gene */
 /* @var $allFunctionalClusters [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */

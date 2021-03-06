@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\widgets;
+namespace app\widgets;
 
-use cms\models\GeneInterventionToVitalProcess;
+use app\models\GeneInterventionToVitalProcess;
 use yii\base\Widget;
 
 class GeneInterventionToVitalProcessWidget extends Widget

@@ -1,11 +1,11 @@
 <?php
 
-namespace cms\models;
+namespace app\models;
 
-use cms\models\behaviors\ChangelogBehavior;
-use cms\models\traits\ConditionActiveRecordTrait;
-use cms\models\traits\RuEnActiveRecordTrait;
-use cms\models\common\GeneToProteinClass;
+use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ConditionActiveRecordTrait;
+use app\models\traits\RuEnActiveRecordTrait;
+use app\models\common\GeneToProteinClass;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\ProgeriaSyndrome */
+/* @var $model app\models\ProgeriaSyndrome */
 
 $this->title = 'Update Progeria Syndrome: ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Progeria Syndromes', 'url' => ['index']];

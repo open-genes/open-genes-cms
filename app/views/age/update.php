@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Phylum */
+/* @var $model app\models\Phylum */
 
 $this->title = 'Редактировать филум ' . $model->name_phylo;
 $this->params['breadcrumbs'][] = ['label' => 'Ages', 'url' => ['index']];

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\FunctionalCluster */
+/* @var $model app\models\FunctionalCluster */
 
 $this->title = 'Редактировать функциональный кластер ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Functional Clusters', 'url' => ['index']];

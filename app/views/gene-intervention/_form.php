@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\GeneIntervention */
+/* @var $model app\models\GeneIntervention */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

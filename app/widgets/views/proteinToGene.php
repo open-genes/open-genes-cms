@@ -1,5 +1,5 @@
 <?php
-/** @var $proteinToGene \cms\models\ProteinToGene */
+/** @var $proteinToGene \app\models\ProteinToGene */
 ?>
 <div class="form-split protein-activity yellow js-protein-to-gene js-gene-link-section">
     <div class="js-protein-to-gene-block js-gene-link-block">
@@ -8,7 +8,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $proteinToGene,
                         'attribute' => '[' . $proteinToGene->id . ']protein_activity_id',
-                        'data' => \cms\models\ProteinActivity::getAllNamesAsArray(),
+                        'data' => \app\models\ProteinActivity::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Активность',
                             'multiple' => false
@@ -27,7 +27,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $proteinToGene,
                         'attribute' => '[' . $proteinToGene->id . ']regulated_gene_id',
-                        'data' => \cms\models\Gene::getAllNamesAsArray(),
+                        'data' => \app\models\Gene::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Ген',
                             'multiple' => false,

@@ -1,5 +1,5 @@
 <?php
-/** @var $geneToProteinActivity \cms\models\GeneToProteinActivity */
+/** @var $geneToProteinActivity \app\models\GeneToProteinActivity */
 ?>
 <div class="form-split protein-activity js-protein-activity js-gene-link-section">
     <div class="js-protein-activity-block js-gene-link-block">
@@ -8,7 +8,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']protein_activity_id',
-                    'data' => \cms\models\ProteinActivity::getAllNamesAsArray(),
+                    'data' => \app\models\ProteinActivity::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Активность',
                         'multiple' => false
@@ -25,7 +25,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']protein_activity_object_id',
-                    'data' => \cms\models\ProteinActivityObject::getAllNamesAsArray(),
+                    'data' => \app\models\ProteinActivityObject::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Объект',
                         'multiple' => false,
@@ -42,7 +42,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']process_localization_id',
-                    'data' => \cms\models\ProcessLocalization::getAllNamesAsArray(),
+                    'data' => \app\models\ProcessLocalization::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Локализация',
                         'multiple' => false

@@ -18,7 +18,7 @@ Yii2 web app
 ```
 sh open-genes.sh up
 ```
-Open http://127.0.0.1:8080/
+Open http://127.0.0.1:8081/
 
 DB wil be available at localhost:3307 root-secret
 

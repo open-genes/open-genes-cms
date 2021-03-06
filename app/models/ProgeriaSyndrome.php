@@ -1,9 +1,9 @@
 <?php
 
-namespace cms\models;
+namespace app\models;
 
-use cms\models\behaviors\ChangelogBehavior;
-use cms\models\traits\RuEnActiveRecordTrait;
+use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\RuEnActiveRecordTrait;
 use yii\behaviors\TimestampBehavior;
 
 /**

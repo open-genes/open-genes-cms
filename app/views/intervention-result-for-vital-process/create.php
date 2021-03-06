@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\InterventionResultForVitalProcess */
+/* @var $model app\models\InterventionResultForVitalProcess */
 
 $this->title = 'Добавить результат вмешательства для процесса';
 $this->params['breadcrumbs'][] = ['label' => 'Intervention Result For Vital Processes', 'url' => ['index']];

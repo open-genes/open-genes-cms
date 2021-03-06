@@ -1,12 +1,12 @@
 <?php
 
-use cms\widgets\GeneProteinActivity;
-use cms\widgets\LifespanExperimentWidget;
+use app\widgets\GeneProteinActivity;
+use app\widgets\LifespanExperimentWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Gene */
+/* @var $model app\models\Gene */
 /* @var $allFunctionalClusters [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */

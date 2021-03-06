@@ -1,6 +1,6 @@
 <?php
 
-namespace cms\models\common;
+namespace app\models\common;
 
 /**
  * This is the ActiveQuery class for [[LongevityEffect]].

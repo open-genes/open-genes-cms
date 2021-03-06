@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\ProteinClass */
+/* @var $model app\models\ProteinClass */
 
 $this->title = 'Create Protein Class';
 $this->params['breadcrumbs'][] = ['label' => 'Protein Classes', 'url' => ['index']];

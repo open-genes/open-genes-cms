@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\models;
+namespace app\models;
 
-use cms\models\behaviors\ChangelogBehavior;
+use app\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;

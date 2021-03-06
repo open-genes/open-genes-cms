@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\ProcessLocalization */
+/* @var $model app\models\ProcessLocalization */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

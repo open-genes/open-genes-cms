@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\widgets;
+namespace app\widgets;
 
-use cms\models\GeneToProgeria;
+use app\models\GeneToProgeria;
 use yii\base\Widget;
 
 class GeneToProgeriaWidget extends Widget

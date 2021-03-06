@@ -5,7 +5,7 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel \cms\models\ProteinClass */
+/* @var $searchModel \app\models\ProteinClass */
 
 $this->title = 'Классы белков';
 $this->params['breadcrumbs'][] = $this->title;

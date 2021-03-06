@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Sample */
+/* @var $model app\models\Sample */
 
 $this->title = 'Редактировать образец ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Samples', 'url' => ['index']];

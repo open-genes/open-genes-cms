@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\LongevityEffect */
+/* @var $model app\models\LongevityEffect */
 
 $this->title = 'Добавить эффект продолжительности жизни';
 $this->params['breadcrumbs'][] = ['label' => 'Longevity Effects', 'url' => ['index']];

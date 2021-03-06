@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Gene */
+/* @var $model app\models\Gene */
 
 $this->title = 'Добавить гены';
 $this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];

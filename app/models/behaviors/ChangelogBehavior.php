@@ -1,7 +1,7 @@
 <?php
-namespace cms\models\behaviors;
+namespace app\models\behaviors;
 
-use cms\models\Changelog;
+use app\models\Changelog;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 

@@ -1,5 +1,5 @@
 <?php
-/** @var $lifespanExperiment \cms\models\LifespanExperiment */
+/** @var $lifespanExperiment \app\models\LifespanExperiment */
 ?>
 <div class="form-split protein-activity js-lifespan-experiment js-gene-link-section">
     <div class="js-lifespan-experiment-block js-gene-link-block">
@@ -8,7 +8,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']gene_intervention_id',
-                    'data' => \cms\models\GeneIntervention::getAllNamesAsArray(),
+                    'data' => \app\models\GeneIntervention::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Вмешательство',
                         'multiple' => false
@@ -25,7 +25,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']intervention_result_id',
-                    'data' => \cms\models\InterventionResultForLongevity::getAllNamesAsArray(),
+                    'data' => \app\models\InterventionResultForLongevity::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Результат вмешательства',
                         'multiple' => false,
@@ -42,7 +42,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']model_organism_id',
-                    'data' => \cms\models\ModelOrganism::getAllNamesAsArray(),
+                    'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Организм',
                         'multiple' => false
@@ -82,7 +82,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $lifespanExperiment,
                         'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
-                        'data' => \cms\models\OrganismLine::getAllNamesAsArray(),
+                        'data' => \app\models\OrganismLine::getAllNamesAsArray(),
                         'options' => [
                             'placeholder' => 'Линия организма',
                             'multiple' => false,

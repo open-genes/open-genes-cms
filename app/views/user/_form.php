@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\User */
+/* @var $model app\models\User */
 /* @var $form yii\widgets\ActiveForm */
 
 $model->roles = $model->getRolesArray();
@@ -16,9 +16,9 @@ $model->roles = $model->getRolesArray();
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'status')->dropDownList([
-            \cms\models\User::STATUS_ACTIVE => 'активный',
-            \cms\models\User::STATUS_INACTIVE => 'неактивный',
-            \cms\models\User::STATUS_DELETED => 'удален',
+            \app\models\User::STATUS_ACTIVE => 'активный',
+            \app\models\User::STATUS_INACTIVE => 'неактивный',
+            \app\models\User::STATUS_DELETED => 'удален',
     ]) ?>
     <?= $form->field($model, 'email')->textInput() ?>
     <?= $form->field($model, 'username')->textInput() ?>
@@ -27,7 +27,7 @@ $model->roles = $model->getRolesArray();
     <?= \kartik\select2\Select2::widget([
         'model' => $model,
         'attribute' => 'roles',
-        'data' => \cms\models\User::getAllRolesArray(),
+        'data' => \app\models\User::getAllRolesArray(),
         'options' => [
             'placeholder' => 'Роли',
             'multiple' => true

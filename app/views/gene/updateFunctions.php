@@ -1,11 +1,11 @@
 <?php
 
-use cms\widgets\LifespanExperimentWidget;
+use app\widgets\LifespanExperimentWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Gene */
+/* @var $model app\models\Gene */
 /* @var $allFunctionalClusters [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-protein-activity']) ?>
     <div class="js-protein-activities">
         <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
-            <?= \cms\widgets\GeneProteinActivity::widget(['model' => $geneToProteinActivity]) ?>
+            <?= \app\widgets\GeneProteinActivity::widget(['model' => $geneToProteinActivity]) ?>
         <?php endforeach; ?>
     </div>
     <div class="form-group">

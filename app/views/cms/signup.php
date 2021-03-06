@@ -2,7 +2,7 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model cms\models\common\SignupForm */
+/* @var $model app\models\common\SignupForm */
 /* @var $message string */
 
 use yii\helpers\Html;

@@ -1,12 +1,12 @@
 <?php
 
-use cms\widgets\AgeRelatedChangeWidget;
-use cms\widgets\LifespanExperimentWidget;
+use app\widgets\AgeRelatedChangeWidget;
+use app\widgets\LifespanExperimentWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\Gene */
+/* @var $model app\models\Gene */
 /* @var $allFunctionalClusters [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
@@ -41,28 +41,28 @@ $this->params['breadcrumbs'][] = 'Update';
     <h4>Вмешательство в работу гена/продукта предотвращает связанное со старением ухудшение процесса или системы</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity green js-add-intervention-to-vital-process']) ?>
     <div class="js-intervention-to-vital-processes">
         <?php foreach ($model->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess): ?>
-            <?= \cms\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]) ?>
+            <?= \app\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]) ?>
         <?php endforeach; ?>
     </div>
     
     <h4>Участие продукта гена в регуляции генов, связанных со старением</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity yellow js-add-protein-to-gene']) ?>
     <div class="js-protein-to-genes">
         <?php foreach ($model->proteinToGenes as $proteinToGene): ?>
-            <?= \cms\widgets\ProteinToGeneWidget::widget(['model' => $proteinToGene]) ?>
+            <?= \app\widgets\ProteinToGeneWidget::widget(['model' => $proteinToGene]) ?>
         <?php endforeach; ?>
     </div>
     
     <h4>Связь гена с ускоренным старением у человека</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity orange js-add-gene-to-progeria']) ?>
     <div class="js-gene-to-progerias">
         <?php foreach ($model->geneToProgerias as $geneToProgeria): ?>
-            <?= \cms\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]) ?>
+            <?= \app\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]) ?>
         <?php endforeach; ?>
     </div>
     
     <h4>Аллельный полиморфизм, ассоциированный с долголетием или возрастным фенотипом</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity red js-add-gene-to-longevity-effect']) ?>
     <div class="js-gene-to-longevity-effects">
         <?php foreach ($model->geneToLongevityEffects as $geneToLongevityEffect): ?>
-            <?= \cms\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]) ?>
+            <?= \app\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]) ?>
         <?php endforeach; ?>
     </div>
     

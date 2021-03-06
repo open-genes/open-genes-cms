@@ -1,7 +1,7 @@
 <?php
 
 
-namespace cms\models\traits;
+namespace app\models\traits;
 
 
 use yii\db\ActiveQuery;

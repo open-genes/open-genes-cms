@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\VitalProcess */
+/* @var $model app\models\VitalProcess */
 
 $this->title = 'Добавить процесс';
 $this->params['breadcrumbs'][] = ['label' => 'Vital Processes', 'url' => ['index']];

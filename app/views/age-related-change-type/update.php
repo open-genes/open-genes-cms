@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\AgeRelatedChangeType */
+/* @var $model app\models\AgeRelatedChangeType */
 
 $this->title = 'Редактировать вид возрастных изменений гена/белка ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Age Related Change Types', 'url' => ['index']];

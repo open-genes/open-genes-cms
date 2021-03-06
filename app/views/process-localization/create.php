@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\ProcessLocalization */
+/* @var $model app\models\ProcessLocalization */
 
 $this->title = 'Добавить локализацию процесса';
 $this->params['breadcrumbs'][] = ['label' => 'Process Localizations', 'url' => ['index']];

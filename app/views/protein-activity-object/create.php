@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model cms\models\ProteinActivityObject */
+/* @var $model app\models\ProteinActivityObject */
 
 $this->title = 'Create Protein Activity Object';
 $this->params['breadcrumbs'][] = ['label' => 'Protein Activity Objects', 'url' => ['index']];

@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\widgets;
+namespace app\widgets;
 
-use cms\models\GeneToProteinActivity;
+use app\models\GeneToProteinActivity;
 use yii\base\Widget;
 
 class GeneProteinActivity extends Widget

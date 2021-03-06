@@ -1,6 +1,6 @@
 <?php
 
-use cms\models\common\User;
+use app\models\common\User;
 
 $params = require __DIR__ . '/params.php';
 
@@ -11,8 +11,8 @@ $config = [
     'sourceLanguage' => 'en-GB', // todo костыль на то, что у нас переводы не в yii-формате ['english phrase' => 'русская фраза'], переделаем?
     'basePath' => dirname(__DIR__),
     'homeUrl' => '/',
-    'controllerNamespace' => 'cms\controllers',
-    'vendorPath' => '@cms/vendor',
+    'controllerNamespace' => 'app\controllers',
+    'vendorPath' => '@app/vendor',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
@@ -24,7 +24,7 @@ $config = [
             'translations' => [
                 'main' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => __DIR__ . '/../assets/translations',
+                    'basePath' => __DIR__ . '/assets/translations',
 //                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'main' => 'main.php',
@@ -37,7 +37,7 @@ $config = [
             'name' => 'genes-cms',
         ],
         'errorHandler' => [
-            'errorAction' => 'cms/error',
+            'errorAction' => 'error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

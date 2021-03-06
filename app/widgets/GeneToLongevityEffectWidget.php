@@ -1,8 +1,8 @@
 <?php
 
-namespace cms\widgets;
+namespace app\widgets;
 
-use cms\models\GeneToLongevityEffect;
+use app\models\GeneToLongevityEffect;
 use yii\base\Widget;
 
 class GeneToLongevityEffectWidget extends Widget
