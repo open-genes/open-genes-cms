@@ -1,0 +1,42 @@
+# docker-compose version
+version: '2'
+# containers
+services:
+  nginx:
+    # the latest stable nginx image
+    image: nginx:latest
+    ports:
+      - "8081:8080"
+      - "4444:4443"
+    user: ${OPEN_GENES_UID}
+    # mount directories from:to
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./app:/var/www
+      - ./../open-genes-logs:/var/log/nginx
+    # link nginx container to php container
+    links:
+      - cms
+    networks:
+      - default
+  cms:
+    # path to our PHP image that will be built
+    build: ./docker/php${PHP_IMAGE_ALTER}
+    # mount project's dir
+    user: ${OPEN_GENES_UID}
+    volumes:
+      - ./app:/var/www
+    environment:
+      XDEBUG_CONFIG: client_host=${CLIENT_HOST} client_port=9003
+    command: bash -c "XDEBUG_CONFIG= composer install && php-fpm"
+    networks:
+      - db_net
+      - default
+
+networks:
+  db_net:
+    external:
+      name: db_net
+  default:
+    external: false

@@ -1,0 +1,27 @@
+{
+  "name": "open-genes",
+  "version": "1.0.0",
+  "description": "Web app and database",
+  "main": "index.js",
+  "dependencies": {
+    "postcss": "^7.0.18"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "node-sass": "^4.12.0",
+    "nodemon": "^1.19.3",
+    "postcss-cli": "^6.1.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prefixer": "postcss  app/genes/assets/css/style.css --use=autoprefixer --map=false --output=app/genes/assets/css/style.css",
+    "sass": "node-sass --output-style compressed --include-path styles app/genes/assets/css/style.scss app/genes/assets/css/style.css && npm run prefixer",
+    "sass-watch": "nodemon -e scss -x npm run sass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.gateline.net/b2c/search-widget.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,238 @@
+.form-half {
+    width: 47%;
+    float: left;
+    margin-right: 3%;
+}
+.form-half-without-margin {
+    width: 50%;
+    float: left;
+}
+.form-half-small-margin {
+    width: 49%;
+    margin-right: 1%;
+    float: left;
+}
+.form-third {
+    width: 33.333%;
+    float: left;
+}
+.form-two-thirds {
+    width: 67%;
+    float: left;
+}
+.form-sixth {
+    width: 16%;
+    float: left;
+}
+.form-five-sixths {
+    width: 83%;
+    float: left;
+}
+.form-small-margin {
+    margin-right: 1%;
+}
+.form-split {
+    margin-bottom: 10px;
+}
+.form-split.no-margin {
+    margin-bottom: 5px;
+}
+.open-genes-cms input[type="checkbox"] {
+    margin: 0;
+}
+.open-genes-cms label {
+    margin: 0;
+}
+.form-split:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.rel-link {
+    position: absolute;
+    margin-top: -13px;
+    font-size: smaller;
+}
+
+.open-genes-cms .btn.add-protein-activity {
+    background: #cbcbef;
+}
+.open-genes-cms .btn.add-protein-activity.blue {
+    background: #c8e5fd;
+}
+.open-genes-cms .btn.add-protein-activity.green {
+    background: #c1e2aa;
+}
+.open-genes-cms .btn.add-protein-activity.yellow {
+    background: #fbea95;
+}
+.open-genes-cms .btn.add-protein-activity.orange {
+    background: #ffd8a9;
+}
+.open-genes-cms .btn.add-protein-activity.red {
+    background: #f5c3c2;
+}
+
+textarea {
+    white-space: pre-wrap;
+}
+.select2-selection__rendered {
+    cursor: text;
+}
+.delete-protein label {
+    font-weight: normal;
+    color: #464646;
+}
+.protein-activity {
+    margin: 10px 0;
+    padding: 5px;
+    background: #e4e3f9;
+    border-radius: 5px;
+}
+.protein-activity.blue {
+    background: #dcefff;
+}
+.protein-activity.green {
+    background: #d1eac1;
+}
+.protein-activity.yellow {
+    background: #fff5c1;
+}
+.protein-activity.orange {
+    background: #ffe6c9;
+}
+.protein-activity.red {
+    background: #f7d6d3;
+}
+a.gene-link {
+    float: right;
+    display: inline-block;
+    padding: 2px 5px;
+    margin: 2px 5px;
+    border-radius: 3px;
+    border: 1px solid #6663bb;
+}
+@media (max-width: 992px) {
+    .form-half {
+        width: inherit;
+        float: none;
+        margin-right: inherit;
+    }
+}
+
+/* select2 */
+
+.open-genes-cms .select2-container--krajee .select2-selection--multiple .select2-selection__choice {
+    color: #565656;
+    background: #ffffff;
+    border: 1px solid #c8c6ef;
+    border-radius: 4px;
+    cursor: default;
+    float: left;
+    margin: 5px 0 0 6px;
+    padding: 0 6px;
+}
+
+.open-genes-cms .select2-container--krajee.select2-container--open .select2-selection, .open-genes-cms .select2-container--krajee .select2-selection:focus {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px rgb(209, 208, 255);
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    border-color: #cac9f1;
+}
+
+
+.open-genes-cms .select2-container--krajee .select2-results__option--highlighted[aria-selected] {
+    background-color: #6563bb;
+    color: #fff;
+}
+
+.open-genes-cms .select2-container--krajee .blue .select2-results__option--highlighted[aria-selected] {
+    background-color: #65a5da;
+}
+
+.open-genes-cms .select2-container--krajee .blue .select2-results__option[aria-selected=true] {
+    color: #374437;
+    background-color: #ddefff;
+}
+
+.open-genes-cms .select2-container--krajee  .select2-dropdown.blue, .open-genes-cms .select2-container--krajee.select2-container--open .select2-selection.blue, .open-genes-cms .select2-container--krajee .select2-selection.blue:focus {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgb(169, 185, 199);
+    border-color: #90a1b1;
+}
+
+.open-genes-cms .select2-container--krajee .green .select2-results__option--highlighted[aria-selected] {
+    background-color: #769c5a;
+}
+
+.open-genes-cms .select2-container--krajee .green .select2-results__option[aria-selected=true] {
+    color: #374437;
+    background-color: #d2eac1;
+}
+
+.open-genes-cms .select2-container--krajee  .select2-dropdown.green, .open-genes-cms .select2-container--krajee.select2-container--open .select2-selection.green, .open-genes-cms .select2-container--krajee .select2-selection.green:focus {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgb(180, 199, 166);
+    border-color: #a5b59a;
+}
+
+.open-genes-cms .select2-container--krajee .yellow .select2-results__option--highlighted[aria-selected] {
+    background-color: #bd972a;
+}
+
+.open-genes-cms .select2-container--krajee .yellow .select2-results__option[aria-selected=true] {
+    color: #374437;
+    background-color: #fff5c1;
+}
+
+.open-genes-cms .select2-container--krajee  .select2-dropdown.yellow, .open-genes-cms .select2-container--krajee.select2-container--open .select2-selection.yellow, .open-genes-cms .select2-container--krajee .select2-selection.yellow:focus {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgb(189, 151, 42);
+    border-color: #bd972a;
+}
+
+.open-genes-cms .select2-container--krajee .orange .select2-results__option--highlighted[aria-selected] {
+    background-color: #e4932c;
+}
+
+.open-genes-cms .select2-container--krajee .orange .select2-results__option[aria-selected=true] {
+    color: #374437;
+    background-color: #ffe6ca;
+}
+
+.open-genes-cms .select2-container--krajee  .select2-dropdown.orange, .open-genes-cms .select2-container--krajee.select2-container--open .select2-selection.orange, .open-genes-cms .select2-container--krajee .select2-selection.orange:focus {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(175, 124, 60, 0.88);
+    border-color: #b7966b;
+}
+
+.open-genes-cms .select2-container--krajee .red .select2-results__option--highlighted[aria-selected] {
+    background-color: #d05653;
+}
+
+.open-genes-cms .select2-container--krajee .red .select2-results__option[aria-selected=true] {
+    color: #374437;
+    background-color: #f7d6d3;
+}
+
+.open-genes-cms .select2-container--krajee  .select2-dropdown.red, .open-genes-cms .select2-container--krajee.select2-container--open .select2-selection.red, .open-genes-cms .select2-container--krajee .select2-selection.red:focus {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(154, 86, 84, 0.95);
+    border-color: #b98180;
+}
+
+.open-genes-cms .select2-container--krajee .select2-results__option[aria-selected=true] {
+    color: #3e3c92;
+    background-color: #e4e3f9;
+}
+
+
+.open-genes-cms .select2-container--krajee .select2-dropdown {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgb(186, 185, 210);
+    border-color: #cac9f1;
+    overflow-x: hidden;
+    margin-top: -1px;
+}
