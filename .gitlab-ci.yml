@@ -60,6 +60,7 @@ deploy-demo:
     - build
   image: instrumentisto/rsync-ssh
   script:
+    - echo ${DROPLET_USER}@${DROPLET_IP}
     - rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ ${DROPLET_USER}@${DROPLET_IP}:${PROJECT_DIR}/app/
     - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DROPLET_USER}@${DROPLET_IP} "php ${PROJECT_DIR}/app/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@app/migrations"
   before_script:
