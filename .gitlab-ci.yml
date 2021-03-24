@@ -43,16 +43,16 @@ deploy-demo:
     PROJECT_DIR: /var/www/${PROJECT_DEMO_DOMAIN}/cms
     PROJECT_DOTENV: ${DROPLET_DEMO_DOTENV}
 
-#deploy-prod:
-#  extends: .deploy
-#  stage: release
-#  environment:
-#    name: production
-#  variables:
-#    PROJECT_DIR: /var/www/${PROJECT_NAME}
-#    PROJECT_DOTENV: ${DROPLET_PROD_DOTENV}
-#  only:
-#    - master
+deploy-prod:
+  extends: .deploy
+  stage: release
+  environment:
+    name: production
+  variables:
+    PROJECT_DIR: /var/www/${PROJECT_NAME}/cms
+    PROJECT_DOTENV: ${DROPLET_PROD_DOTENV}
+  only:
+    - master
 
 .deploy:
   stage: staging
@@ -60,7 +60,6 @@ deploy-demo:
     - build
   image: instrumentisto/rsync-ssh
   script:
-    - echo ${DROPLET_USER}@${DROPLET_IP}
     - rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ ${DROPLET_USER}@${DROPLET_IP}:${PROJECT_DIR}/app/
     - ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${DROPLET_USER}@${DROPLET_IP} "php ${PROJECT_DIR}/app/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@app/migrations"
   before_script:
