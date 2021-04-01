@@ -79,4 +79,15 @@ class Disease extends DiseaseModel
 
         return $dataProvider;
     }
+
+    public static function findAllAsArray()
+    {
+        $result = [];
+        $diseases = self::find()->all();
+        foreach ($diseases as $disease) {
+            $result[$disease->id] = $disease->name_ru ?: $disease->name_en;
+        }
+
+        return $result;
+    }
 }
