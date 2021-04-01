@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\AgeRelatedChange;
+use app\models\Disease;
 use app\models\GeneToLongevityEffect;
 use app\models\GeneToProgeria;
 use app\models\Phylum;
@@ -111,11 +112,13 @@ class GeneController extends Controller
         }
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
         $allCommentCauses = CommentCause::findAllAsArray();
+        $allDiseases = Disease::findAllAsArray();
         $allAges = Phylum::findAllAsArray();
         $allProteinClasses = ProteinClass::findAllAsArray();
         return $this->render('update', [
             'model' => $model,
             'allFunctionalClusters' => $allFunctionalClusters,
+            'allDiseases' => $allDiseases,
             'allCommentCauses' => $allCommentCauses,
             'allProteinClasses' => $allProteinClasses,
             'allAges' => $allAges,

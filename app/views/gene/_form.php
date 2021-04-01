@@ -8,6 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Gene */
 /* @var $allFunctionalClusters [] */
+/* @var $allDiseases [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
 /* @var $allAges[] */
@@ -49,6 +50,15 @@ $this->registerCssFile('/assets/css/gene.css');
                 ],
             ]); ?>
         </div>
+    </div>
+    <div>
+        <?= $form->field($model, 'diseasesIdsArray')->widget(\kartik\select2\Select2::class, [
+            'data' => $allDiseases,
+            'options' => ['multiple' => true],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
     </div>
     <?= $form->field($model, 'commentCauseIdsArray')->widget(\kartik\select2\Select2::class, [
         'data' => $allCommentCauses,

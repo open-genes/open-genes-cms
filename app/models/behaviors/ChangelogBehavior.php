@@ -33,8 +33,10 @@ class ChangelogBehavior extends Behavior
                 $arChengelog->object_name = (new \ReflectionClass($this->owner))->getShortName();
                 $arChengelog->object_id = $this->owner->id;
                 $arChengelog->diff = json_encode($changes, JSON_UNESCAPED_UNICODE);
-                $arChengelog->user_id = \Yii::$app->user->id;
-                $arChengelog->user_login = \Yii::$app->user->identity->username;
+                if (isset(\Yii::$app->user)) {
+                    $arChengelog->user_id = \Yii::$app->user->id;
+                    $arChengelog->user_login = \Yii::$app->user->identity->username;
+                }
                 $arChengelog->time = time();
                 $arChengelog->save();
             }

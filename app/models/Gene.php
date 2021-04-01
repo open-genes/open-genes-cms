@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\common\GeneToDisease;
 use app\models\traits\ConditionActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
 use app\models\common\GeneToProteinClass;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * @property int[] $functionalClustersIdsArray
+ * @property int[] $diseasesIdsArray
  * @property int[] $commentCauseIdsArray
  * @property int[] $proteinClassesIdsArray
  * @property array $functionalClustersArray
@@ -26,6 +28,7 @@ class Gene extends common\Gene
     public $newGenesNcbiIds;
 
     protected $functionalClustersIdsArray;
+    protected $diseasesIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
 
@@ -44,7 +47,7 @@ class Gene extends common\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray', 'commentCauseIdsArray', 'proteinClassesIdsArray', 'newGenesNcbiIds'], 'safe'],
+            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray', 'proteinClassesIdsArray', 'newGenesNcbiIds'], 'safe'],
             ['ncbi_id', 'unique'],
         ]);
     }
@@ -82,6 +85,7 @@ class Gene extends common\Gene
             'commentsReferenceLinks' => 'Ссылки на источники',
             'functionalClusters' => 'Функциональные кластеры',
             'functionalClustersIdsArray' => 'Функциональные кластеры',
+            'diseasesIdsArray' => 'Заболевания',
             'commentCauseIdsArray' => 'Причины отбора',
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
@@ -121,6 +125,16 @@ class Gene extends common\Gene
             ->asArray()
             ->column();
     }
+    
+    public function getDiseasesIdsArray()
+    {
+        return Disease::find()
+            ->select('disease.id')
+            ->join('INNER JOIN', 'gene_to_disease', 'gene_to_disease.disease_id = disease.id')
+            ->where(['gene_to_disease.gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
 
     public function getCommentCauseIdsArray()
     {
@@ -145,6 +159,11 @@ class Gene extends common\Gene
     public function setFunctionalClustersIdsArray(array $ids)
     {
         $this->functionalClustersIdsArray = $ids;
+    }
+
+    public function setDiseasesIdsArray(array $ids)
+    {
+        $this->diseasesIdsArray = $ids;
     }
 
     public function setCommentCauseIdsArray(array $ids)
@@ -217,6 +236,26 @@ class Gene extends common\Gene
             GeneToProteinClass::deleteAll(
                 ['and', ['gene_id' => $this->id],
                     ['in', 'protein_class_id', $proteinClassesIdsToDelete]]
+            );
+        }
+
+        $currentDiseasesIdsArray = $this->getDiseasesIdsArray();
+        if($currentDiseasesIdsArray !== $this->diseasesIdsArray) {
+            if($this->diseasesIdsArray) {
+                $diseasesIdsArrayToDelete = array_diff($currentDiseasesIdsArray, $this->diseasesIdsArray);
+                $diseasesIdsIdsToAdd = array_diff($this->diseasesIdsArray, $currentDiseasesIdsArray);
+                foreach($diseasesIdsIdsToAdd as $diseasesIdToAdd) {
+                    $geneToDisease = new GeneToDisease();
+                    $geneToDisease->gene_id = $this->id;
+                    $geneToDisease->disease_id = $diseasesIdToAdd;
+                    $geneToDisease->save();
+                }
+            } else {
+                $diseasesIdsArrayToDelete = $currentDiseasesIdsArray;
+            }
+            GeneToDisease::deleteAll(
+                ['and', ['gene_id' => $this->id],
+                    ['in', 'disease_id', $diseasesIdsArrayToDelete]]
             );
         }
 
