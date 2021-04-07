@@ -42,8 +42,7 @@ $config = [
     ],
     'container' => [
         'definitions' => [
-            \app\application\service\GeneInfoServiceInterface::class => \genes\application\service\GeneInfoService::class,
-            \app\infrastructure\dataProvider\GeneDataProviderInterface::class => \genes\infrastructure\dataProvider\GeneDataProvider::class
+            \app\service\GeneOntologyServiceInterface::class => \app\service\GeneOntologyService::class
         ]
     ],
     'params' => $params,
