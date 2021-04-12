@@ -2,6 +2,8 @@
 
 ## Dev environment
 
+_Note: To get this work, please checkout and run https://gitlab.com/open-genes/open-genes first (projects use shared db)_
+
 Build or rebuild backend
 ```
 sh open-genes.sh build
