@@ -13,7 +13,7 @@ class GeneDtoAssembler implements GeneDtoAssemblerInterface
         $geneDto->origin = $this->prepareOrigin($geneArray);
         $geneDto->homologueTaxon = (string)$geneArray['taxon_name'];
         $geneDto->symbol = (string)$geneArray['symbol'];
-        $geneDto->aliases = $geneArray['aliases'] ? explode(' ', $geneArray['aliases']) : [];
+        $geneDto->aliases = $geneArray['aliases'] ? explode(' ', str_replace(',', '', $geneArray['aliases'])) : [];
         $geneDto->name = (string)$geneArray['name'];
         $geneDto->ncbiId = (string)$geneArray['ncbi_id'];
         $geneDto->uniprot = (string)$geneArray['uniprot'];
