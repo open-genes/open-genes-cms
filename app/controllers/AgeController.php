@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\common\Gene;
 use Yii;
 use app\models\Phylum;
+use yii\base\InvalidArgumentException;
 use yii\data\ActiveDataProvider;
+use yii\db\IntegrityException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -103,11 +106,17 @@ class AgeController extends Controller
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws IntegrityException
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        try {
+            $this->findModel($id)->delete();
+        } catch (IntegrityException $e) {
+            $genesLinks = $this->getGenesLinks($id);
+            throw new IntegrityException(sprintf('Пожалуйста, сначала удалите этот филум для следующих генов: %s', $genesLinks));
+        }
 
         return $this->redirect(['index']);
     }
@@ -126,5 +135,15 @@ class AgeController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    private function getGenesLinks($id): string
+    {
+        $genes      = Gene::findAll(['age_id' => $id]);
+        $genesLinks = [];
+        foreach ($genes as $gene) {
+            $genesLinks[] = sprintf('https://cms.open-genes.com/gene/update?id=%d', $gene->id);
+        }
+        return implode(', ', $genesLinks);
     }
 }
