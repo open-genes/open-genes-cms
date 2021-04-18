@@ -54,17 +54,17 @@ docker exec -it (container_hash) bash
 Inside the php container you can: 
 * apply db migrations:
     ```
-    cd common/console
+    cd console
     php yii.php migrate
     ```
 * create new user for cms: 
     ```
-    cd common/console
+    cd console
     php yii.php user/create user_name password email role
     ```
 * re-assign roles for user: 
     ```
-    cd common/console
+    cd console
     php yii.php user/assign user_name role [revokeOtherRoles=]true
     ```
   For now there are two roles available, `admin` and `editor`
