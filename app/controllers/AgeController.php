@@ -142,7 +142,7 @@ class AgeController extends Controller
         $genes      = Gene::findAll(['age_id' => $id]);
         $genesLinks = [];
         foreach ($genes as $gene) {
-            $genesLinks[] = sprintf('https://cms.open-genes.com/gene/update?id=%d', $gene->id);
+            $genesLinks[] = sprintf('<a href="https://cms.open-genes.com/gene/update?id=%1$d">%1$d</a>', $gene->id);
         }
         return implode(', ', $genesLinks);
     }
