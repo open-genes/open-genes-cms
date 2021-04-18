@@ -26,55 +26,31 @@ use Yii;
  */
 class GeneOntologyService implements GeneOntologyServiceInterface
 {
-    private $geneOntologyAll = [];
 
     /**
-     *
-     */
-    public function mineFromGateway()
-    {
-        $genes = Gene::find()->all();
-        $result = [];
-        foreach ($genes as $gene) {
-            try {
-                $result[] = $this->mineFromGatewayForGene($gene);
-            } catch (\Exception $e) {
-                Yii::info('Gene mapping error: ' . $e->getMessage());
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * @param $geneRecord
+     * @param $geneNcbiId int
+     * @param $rows int
      * @return array (errors, gene_ontology, gene_entrez
      * @throws Exception
      */
-    public function mineFromGatewayForGene($geneRecord)
+    public function mineFromGatewayForGene($geneNcbiId, $rows = 1000)
     {
-        ini_set('max_execution_time', 1000);
-
         $result = [];
-        if (is_numeric($geneRecord)) {
-            $geneRecord = Gene::find()
-                ->where(['ncbi_id' => $geneRecord])
-                ->one();
+        $geneRecord = Gene::find()
+            ->where(['ncbi_id' => $geneNcbiId])
+            ->one();
 
-            if (!$geneRecord) {
-                throw new Exception('Enter valid gene.ncbi_id');
-            }
-        }
-
-        if (empty($geneRecord->ncbi_id)) {
-            throw new Exception('Enter valid gene.ncbi_id');
+        if (!$geneRecord) {
+            throw new Exception('Gene not found ' . $geneNcbiId);
         }
 
         $result['entrez_gene'] = $geneRecord->ncbi_id;
 
         //todo: добавить это в params.php
+        // todo что это вообще такое и зачем оно нужно? спросить Олега
         Yii::$app->params['servicesPath']['geneontology'] = 'http://api.geneontology.org';
         $geneOntologyGateway = CrossService::requestGetGateway('geneontology',
-            'api/bioentity/gene/'.$geneRecord->ncbi_id.'/function?rows=100&facet=false&unselect_evidence=false&exclude_automatic_assertions=false&fetch_objects=false&use_compact_associations=false', []);
+            "api/bioentity/gene/{$geneRecord->ncbi_id}/function?rows={$rows}&facet=false&unselect_evidence=false&exclude_automatic_assertions=false&fetch_objects=false&use_compact_associations=false", []);
 
         $geneOntologyGateway->unsetJson();
         $geneOntologyGateway->unsetInnerRequest();
@@ -101,69 +77,60 @@ class GeneOntologyService implements GeneOntologyServiceInterface
         получаем список функций, процессов и компонентов
         */
 
-        if (!$this->geneOntologyAll) {
-            $gos = GeneOntology::find()->asArray()->all();
-            foreach ($gos as $go) $this->geneOntologyAll[$go['ontology_identifier'].$go['category']] = $go                    ;
+        if (!isset($genes['associations'])) {
+            throw new \Exception('No associations for gene ');
         }
-
         foreach ($genes['associations'] as $gene) {
 
             if ($gene['subject']['taxon']['label'] != 'Homo sapiens') {
                 throw new \Exception('No Homo sapiens' . json_encode($gene));
             }
-
-            $geneOntology = new GeneOntology();
-
-            if (!empty($gene['object']['category'])) {
-                //CATEGORIES  //biological_process //cellular_component //molecular_activity
-                $geneOntology->category = $gene['object']['category'][0];
-            }
-
+            
             if (!empty($gene['object']['id'])) {
                 $go = explode(':', $gene['object']['id']);
                 if (empty($go[1])) {
                     throw new Exception('GO id is out of format: ' . $gene['object']['id']);
                 }
+            }
+
+            $geneOntology = GeneOntology::find()
+                ->where(['ontology_identifier' => $go[1]])->one();
+            
+            if(!$geneOntology) {
+                $geneOntology = new GeneOntology();
+
                 $geneOntology->ontology_identifier = $go[1];
-            }
+                if (!empty($gene['object']['category'])) {
+                    //CATEGORIES  //biological_process //cellular_component //molecular_activity
+                    $geneOntology->category = $gene['object']['category'][0];
+                }
 
-            if (!empty($gene['object']['label'])) {
-                $geneOntology->name_en = $gene['object']['label'];
-            }
+                if (!empty($gene['object']['label'])) {
+                    $geneOntology->name_en = $gene['object']['label'];
+                }
 
-            $geneOntology->created_at = time();
-
-            //Gene Ontology exists
-            if (empty($this->geneOntologyAll[$geneOntology->ontology_identifier.$geneOntology->category])) {
                 if (!$geneOntology->save()) {
                     $result['errors'] = $geneOntology->getErrors();
                 }
                 $result['gene_ontology'] = $geneOntology->attributes;
-                $this->geneOntologyAll[$geneOntology->ontology_identifier.$geneOntology->category] = $geneOntology->attributes;
-                $go_id = $geneOntology->id;
-            } else {
-                $result['isset_in_db'] = true;
-                $go_id = $this->geneOntologyAll[$geneOntology->ontology_identifier.$geneOntology->category]['id'];
             }
-
+            
             $gto = GeneToOntology::find()->where([
                 'gene_id' => $geneRecord->id,
-                'gene_ontology_id' => $go_id,
+                'gene_ontology_id' => $geneOntology->id,
             ])->one();
 
             if (!$gto) {
                 $gto = new GeneToOntology();
                 $gto->gene_id = $geneRecord->id;
-                $gto->gene_ontology_id = $go_id;
+                $gto->gene_ontology_id = $geneOntology->id;
             }
 
             if (!$gto->save()) {
                 $result['link_errors'] = $gto->getErrors();
             }
         }
-
-        $geneOntologyGateway->throwExceptionIfFail();
-
+        
         return $result;
     }
 

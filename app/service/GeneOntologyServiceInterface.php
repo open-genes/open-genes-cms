@@ -4,9 +4,7 @@ namespace app\service;
 
 interface GeneOntologyServiceInterface
 {
-    public function mineFromGateway();
-
-    public function mineFromGatewayForGene($id);
+    public function mineFromGatewayForGene($geneNcbiId, $rows);
 
     public function getAllWithGenes();
 

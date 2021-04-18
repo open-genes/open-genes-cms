@@ -18,6 +18,35 @@ class GetGoTermsController extends Controller
     }
 
     /**
+     * @param $countGenes integer для какого количества генов собираем записи
+     * @param $countRows integer сколько записей запрашивать из GO
+     * todo доделать для дозагрузки
+     */
+    public function actionGetGoTerms($countGenes=null, $countRows=1000)
+    {
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = \Yii::$container->get(GeneOntologyServiceInterface::class);
+        $ids = Gene::find()
+            ->select('ncbi_id')
+            ->limit($countGenes)
+            ->column();
+        foreach ($ids as $id) {
+            echo PHP_EOL . $id;
+            try {
+                $result = $geneOntologyService->mineFromGatewayForGene((int) $id);
+                if (isset($result['link_errors'])) {
+                    echo ' ERROR ' . $result['link_errors'];
+                    continue;
+                }
+                echo ' ok';
+            } catch (\Exception $e) {
+                echo ' ERROR ' . $e->getMessage();
+            }
+        }
+        echo PHP_EOL;
+    }
+
+    /**
      * Цель алгоритма:   заполнить базу данными атласа (api/gene/ID -> gene.JSON:human_protein_atlas)
      * Источник данных:  https://www.proteinatlas.org/search/<<<SYMBOL>>>?format=json
      *
