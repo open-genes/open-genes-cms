@@ -2,7 +2,9 @@
 
 namespace app\models\common;
 
+use app\models\behaviors\ChangelogBehavior;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "gene_ontology".
@@ -25,6 +27,13 @@ class GeneOntology extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'gene_ontology';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class
+        ];
     }
 
     /**
