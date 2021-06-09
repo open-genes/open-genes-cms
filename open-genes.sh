@@ -1,6 +1,6 @@
 #!/bin/sh
-UID=$(id -u)
-GID=$(id -g)
+uid=$(id -u)
+gid=$(id -g)
 USAGE="usage: $0 <docker-compose args> [xdebug [client_host]]\nexample: $0 up --build xdebug 192.168.1.100"
 COMPOSE_ARGS=`echo $*|awk '{l=NF;if (NF>1 && $(NF-1)=="xdebug") l=NF-2; if (NF>0 && $NF=="xdebug") l=NF-1; if (l>0) for (i=1; i<=l; i++) printf "%s ",$i}'`
 CLIENT_HOST=`echo $* |awk '{if (NF>1 && $(NF-1)=="xdebug") print $NF}'`
@@ -37,7 +37,7 @@ fi
 [ "$COMPOSE_ARGS" = "up --no-detach " ] && COMPOSE_ARGS="up"
 echo "COMPOSE_ARGS '$COMPOSE_ARGS'"
 
-OPEN_GENES_UID=$UID:$GID 
+OPEN_GENES_UID=$uid:$gid
 export OPEN_GENES_UID PHP_IMAGE_ALTER CLIENT_HOST
 
 docker network create db_net || true
