@@ -46,8 +46,6 @@ The default credentials are `admin` - `123`
 
 DB will be available at localhost:3307, user `root` pass `secret` 
 
-For the first time local deployment you may need to create  `app/cms/runtime/assets` dir and make it writable for container user.
-
 Enter php container:
 ```
 docker ps
