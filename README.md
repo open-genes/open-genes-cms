@@ -81,13 +81,11 @@ Build & run with xdebug enabled:
 or ```./open-genes.sh up --build xdebug <your ip address>```
 in case your ip address is not automatically detected by open-genes.sh
 
-setup PHP Storm: File -> Setting, Languages & Frameworks -> PHP -> Debug -> DBGp Proxy
-* Host: your host external ip, accessible from within php container
-* Port: 9003
+setup PHP Storm: https://blog.denisbondar.com/post/phpstorm_docker_xdebug
 
-open-genes.sh detects xdebug ip address for eth0 interface as follows:
+open-genes.sh detects xdebug ip address as follows:
 ```
-    ip -4 -br addr show eth0
+    ip -4 -br addr show | grep "$CLIENT_HOST"
 ```
 
 Port 9003 is default one for xdebug v3 and it cannot be changed

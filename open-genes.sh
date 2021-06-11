@@ -11,10 +11,20 @@ echo CLIENT_HOST $CLIENT_HOST
 
 [ "$COMPOSE_ARGS" = "" ] && echo $USAGE && exit
 
-if [ "$XDEBUG" != "" -a "$CLIENT_HOST" = "" ]
+if [ "$XDEBUG" != "" ]
 then
-	CLIENT_HOST=`ip -4 -br addr show eth0 |awk '{print $3}' |awk -F '/' '{print $1}'`
-	echo CLIENT_HOST ip address autodetected: $CLIENT_HOST
+IP=`ip -4 -br addr show | grep "$CLIENT_HOST" |grep UP |tail -1 |awk '{print $3}' |awk -F '/' '{print $1}'`
+	[ "$IP" = "" ] && echo "CLIENT_HOST: $CLIENT_HOST (forced)"
+	[ "$IP" != "" ] && echo "CLIENT_HOST: $IP (autodetected)"
+	[ "$CLIENT_HOST" = "" ] && CLIENT_HOST=$IP
+	if [ "$CLIENT_HOST" = "" ]
+	then
+		echo "could not detect client host ip address for xdebug"
+		echo "possible variants:"
+		ip -4 -br addr show
+		echo "exiting ..."
+		exit
+	fi
 fi
 
 PHP_IMAGE_ALTER=""
