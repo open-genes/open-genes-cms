@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\FunctionalCluster */
 
-$this->title = 'Редактировать функциональный кластер ' . $model->id;
+$this->title = 'Редактировать возрастозависимый процесс ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Functional Clusters', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
