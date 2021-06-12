@@ -69,7 +69,7 @@ class GeneController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel' => new Gene(Yii::$app->request->get('Gene')),
+            'searchModel' => $arGene,
         ]);
     }
 

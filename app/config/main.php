@@ -37,7 +37,7 @@ $config = [
             'name' => 'genes-cms',
         ],
         'errorHandler' => [
-            'errorAction' => 'error',
+            'errorAction' => 'cms/error',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,

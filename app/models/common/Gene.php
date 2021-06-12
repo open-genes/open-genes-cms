@@ -4,6 +4,8 @@ namespace app\models\common;
 
 use Yii;
 
+use function str_replace;
+
 /**
  * This is the model class for table "gene".
  *
@@ -232,5 +234,11 @@ class Gene extends \yii\db\ActiveRecord
     public static function find()
     {
         return new GeneQuery(get_called_class());
+    }
+
+    public function beforeSave($insert): bool
+    {
+        $this->aliases = str_replace(',', '', $this->aliases);
+        return parent::beforeSave($insert);
     }
 }
