@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Функциональные кластеры';
+$this->title = 'Возрастозависимые процессы';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="functional-cluster-index">
