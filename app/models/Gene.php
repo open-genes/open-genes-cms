@@ -76,11 +76,11 @@ class Gene extends common\Gene
             'references' => 'References',
             'orthologs' => 'Orthologs',
             'commentEvolution' => 'Эволюция',
-            'commentFunction' => 'Функции',
+            'commentFunction' => 'Описание белка Ru',
             'commentCause' => 'Причины отбора',
             'commentAging' => 'Связь со старением/долголетием',
             'commentEvolutionEN' => 'Эволюция En',
-            'commentFunctionEN' => 'Функции En',
+            'commentFunctionEN' => 'Описание белка En',
             'commentAgingEN' => 'Связь со старением/долголетием En',
             'commentsReferenceLinks' => 'Ссылки на источники',
             'functionalClusters' => 'Функциональные кластеры',
@@ -93,8 +93,8 @@ class Gene extends common\Gene
             'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
-            'summary_ru' => 'Описание Ru',
-            'summary_en' => 'Описание En',
+            'summary_ru' => 'Описание гена (NCBI) Ru',
+            'summary_en' => 'Описание гена (NCBI) En',
         ];
     }
 

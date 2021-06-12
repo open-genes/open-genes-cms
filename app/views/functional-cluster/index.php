@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2><?= Html::encode($this->title) ?></h2>
 
     <p>
-        <?= Html::a('Добавить функциональный кластер', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить возрастозависимый процесс', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
