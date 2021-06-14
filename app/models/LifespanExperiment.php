@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\exceptions\UpdateExperimentsException;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -36,7 +37,12 @@ class LifespanExperiment extends common\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::attributeLabels(), [
-            'delete' => 'Удалить'
+            'delete' => 'Удалить',
+            'gene_intervention_id' => 'Вмешательство',
+            'intervention_result_id' => 'Результат вмешательства',
+            'model_organism_id' => 'Модельный организм',
+            'age' => 'Возраст',
+            'reference' => 'Ссылка',
         ]);
     }
     
@@ -70,7 +76,7 @@ class LifespanExperiment extends common\LifespanExperiment
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_id']) {
+//            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_id']) {
                 if(is_numeric($id)) {
                     $modelAR = self::findOne($id);
                 } else {
@@ -81,15 +87,15 @@ class LifespanExperiment extends common\LifespanExperiment
                     continue;
                 }
                 $modelAR->setAttributes($modelArray);
-                if(!is_numeric($modelArray['gene_intervention_id'])) {
+                if(!empty($modelArray['gene_intervention_id']) && !is_numeric($modelArray['gene_intervention_id'])) {
                     $arProteinActivityObject = GeneIntervention::createFromNameString($modelArray['gene_intervention_id']);
                     $modelAR->gene_intervention_id = $arProteinActivityObject->id;
                 }
-                if(!is_numeric($modelArray['model_organism_id'])) {
+                if(!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
                     $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
                     $modelAR->model_organism_id = $arProcessLocalization->id;
                 }
-                if(!is_numeric($modelArray['intervention_result_id'])) {
+                if(!empty($modelArray['intervention_result_id']) && !is_numeric($modelArray['intervention_result_id'])) {
                     $arProteinActivity = InterventionResultForLongevity::createFromNameString($modelArray['intervention_result_id']);
                     $modelAR->intervention_result_id = $arProteinActivity->id;
                 }
@@ -104,10 +110,10 @@ class LifespanExperiment extends common\LifespanExperiment
                 if($modelAR->genotype === '') {
                     $modelAR->genotype = null;
                 }
-                if(!$modelAR->save()) {
-                    var_dump($modelAR->errors); die;
+                if(!$modelAR->validate() || !$modelAR->save()) {
+                    throw new UpdateExperimentsException($id, $modelAR);
                 }
-            }
+//            }
         }
     }
 

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\exceptions\UpdateExperimentsException;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -28,7 +29,7 @@ class GeneToProgeria extends common\GeneToProgeria
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id'], 'required'],
+            [['gene_id', 'progeria_syndrome_id'], 'required'],
         ]);
     }
 
@@ -36,7 +37,8 @@ class GeneToProgeria extends common\GeneToProgeria
     {
         return ArrayHelper::merge(
             parent::attributeLabels(), [
-            'delete' => 'Удалить'
+            'delete' => 'Удалить',
+            'progeria_syndrome_id' => 'Прогерический синдром',
         ]);
     }
 
@@ -49,25 +51,23 @@ class GeneToProgeria extends common\GeneToProgeria
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['progeria_syndrome_id']) {
-                if(is_numeric($id)) {
-                    $modelAR = self::findOne($id);
-                } else {
-                    $modelAR = new self();
-                }
-                if ($modelArray['delete'] === '1') {
-                    $modelAR->delete();
-                    continue;
-                }
-                $modelAR->setAttributes($modelArray);
-                if(!is_numeric($modelArray['progeria_syndrome_id'])) {
-                    $arProgeriaSyndrome = ProgeriaSyndrome::createFromNameString($modelArray['progeria_syndrome_id']);
-                    $modelAR->progeria_syndrome_id = $arProgeriaSyndrome->id;
-                }
-                $modelAR->gene_id = $geneId;
-                if(!$modelAR->save()) {
-                    var_dump($modelAR->errors); die;
-                }
+            if (is_numeric($id)) {
+                $modelAR = self::findOne($id);
+            } else {
+                $modelAR = new self();
+            }
+            if ($modelArray['delete'] === '1') {
+                $modelAR->delete();
+                continue;
+            }
+            $modelAR->setAttributes($modelArray);
+            if (!empty($modelArray['progeria_syndrome_id']) && !is_numeric($modelArray['progeria_syndrome_id'])) {
+                $arProgeriaSyndrome = ProgeriaSyndrome::createFromNameString($modelArray['progeria_syndrome_id']);
+                $modelAR->progeria_syndrome_id = $arProgeriaSyndrome->id;
+            }
+            $modelAR->gene_id = $geneId;
+            if (!$modelAR->validate() || !$modelAR->save()) {
+                throw new UpdateExperimentsException($id, $modelAR);
             }
         }
     }

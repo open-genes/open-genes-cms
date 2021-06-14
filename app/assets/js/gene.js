@@ -56,3 +56,64 @@ $(document).on('click', '.js-delete', function() {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').removeAttr('style');
     }
 });
+
+$('#experiments-form').on('submit', function(e){
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    let form = $(this);
+    let formData = form.serialize();
+    let submitBtn = $('#experiments-form button.btn-success').removeClass('has-error')
+
+    $.ajax({
+        url: form.attr("action"),
+        type: form.attr("method"),
+        data: formData,
+        success: function (data) {
+            let response = $.parseJSON(data);
+            if (typeof response.error !== 'undefined') {
+
+                let model_id = response.error.id
+                let model_name = response.error.model
+                let model_fields = response.error.fields
+
+                submitBtn.addClass('has-error')
+                if (!submitBtn.next('.help-block').length) {
+                    $('<div class="help-block">Форма не прошла валидацию. Пожалуйста, проверьте поля</div>').insertAfter(submitBtn);
+                }
+
+                $.each(model_fields, function (field, error) {
+
+                    let field_id = model_name.toLowerCase() + '-' + model_id + '-' + field
+                    let experimentsInput = $('input#' + field_id)
+                    let select2container = $('.select2-hidden-accessible#' + field_id).next('.select2-container')
+                    console.log(field_id)
+
+                    select2container.find('.select2-selection').addClass('has-error');
+                    if (!select2container.next('.help-block').length) {
+                        $('<div class="help-block">' + error + '</div>').insertAfter(select2container);
+                    }
+                    experimentsInput.addClass('has-error');
+                    if (!experimentsInput.next('.help-block').length) {
+                        $('<div class="help-block">' + error + '</div>').insertAfter('input#' + field_id);
+                    }
+                });
+            } else {
+                submitBtn.removeClass('has-error')
+                submitBtn.next('.help-block').remove()
+                $('<div class="help-block green">OK!</div>').insertAfter(submitBtn);
+                setTimeout(location.reload.bind(location), 1000);
+            }
+        },
+        error: function () {
+            alert("Something went wrong");
+        }
+    });
+    return false;
+});
+
+$(document).on('change', '#experiments-form .form-control', function() {
+    $(this).removeClass('has-error')
+    $(this).next('.select2-container').find('.select2-selection').removeClass('has-error')
+    $(this).next('.select2-container').next('.help-block').remove()
+    $(this).next('.help-block').remove()
+});
