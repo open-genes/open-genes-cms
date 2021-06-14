@@ -33,7 +33,7 @@ class ProteinClassController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['index', 'create', 'update'],
-                        'roles' => ['admin', 'editor', 'contributor'],
+                        'roles' => ['admin', 'editor'],
                     ],
                     [
                         'allow' => true,

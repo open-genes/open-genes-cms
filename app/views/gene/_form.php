@@ -51,23 +51,18 @@ $this->registerCssFile('/assets/css/gene.css');
             ]); ?>
         </div>
     </div>
-    <div>
-        <?= $form->field($model, 'diseasesIdsArray')->widget(\kartik\select2\Select2::class, [
-            'data' => $allDiseases,
-            'options' => ['multiple' => true],
-            'pluginOptions' => [
-                'allowClear' => true
-            ],
-        ]); ?>
-    </div>
-    <?= $form->field($model, 'commentCauseIdsArray')->widget(\kartik\select2\Select2::class, [
-        'data' => $allCommentCauses,
-        'options' => ['multiple' => true],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
+
+
     <?php if(Yii::$app->user->can('editor')): // todo add more operations to auth manager ?>
+        <div>
+            <?= $form->field($model, 'diseasesIdsArray')->widget(\kartik\select2\Select2::class, [
+                'data' => $allDiseases,
+                'options' => ['multiple' => true],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
+        </div>
         <?= $form->field($model, 'summary_ru')->textarea(['rows' => 4]) ?>
         <?= $form->field($model, 'summary_en')->textarea(['rows' => 4]) ?>
         <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
@@ -118,13 +113,16 @@ $this->registerCssFile('/assets/css/gene.css');
     <?php endif; ?>
     <?= $form->field($model, 'protein_complex_ru')->textarea(['rows' => 4]) ?>
     <?= $form->field($model, 'protein_complex_en')->textarea(['rows' => 4]) ?>
-    <?= $form->field($model, 'proteinClassesIdsArray')->widget(\kartik\select2\Select2::class, [
-        'data' => $allProteinClasses,
-        'options' => ['multiple' => true],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
+
+    <?php if(Yii::$app->user->can('editor')): ?>
+        <?= $form->field($model, 'proteinClassesIdsArray')->widget(\kartik\select2\Select2::class, [
+            'data' => $allProteinClasses,
+            'options' => ['multiple' => true],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]); ?>
+    <?php endif; ?>
     <br>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>

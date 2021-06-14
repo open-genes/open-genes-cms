@@ -67,7 +67,7 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Локализация процесса', 'url' => '/process-localization'],
                     '<li class="divider"></li>',
-                    ['label' => 'Классы белков', 'url' => '/protein-class'],
+                    ['label' => 'Классы белков', 'url' => '/protein-class', 'visible'=>Yii::$app->user->can('editor')],
                 ],
             ],
             [
@@ -98,7 +98,7 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
                     '<li class="divider"></li>',
                     '<li class="divider"></li>',
-                    ['label' => 'Заболевания', 'url' => '/disease'],
+                    ['label' => 'Заболевания', 'url' => '/disease', 'visible'=>Yii::$app->user->can('editor')],
                 ],
             ],
             ['label' => 'Пользователи', 'url' => '/user', 'visible'=>Yii::$app->user->can('controlUsers')],
