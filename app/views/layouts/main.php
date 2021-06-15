@@ -55,7 +55,7 @@ $this->registerCssFile('/assets/css/main.css');
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => [
             ['label' => 'Гены', 'url' => ['/gene']],
-            ['label' => 'Причины отбора', 'url' => ['/comment-cause']],
+            ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible'=>Yii::$app->user->can('editor')],
             ['label' => 'Функциональные кластеры', 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
             ['label' => 'Филумы', 'url' => ['/age']],
             [
