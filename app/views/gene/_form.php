@@ -51,8 +51,13 @@ $this->registerCssFile('/assets/css/gene.css');
             ]); ?>
         </div>
     </div>
-
-
+    <?= $form->field($model, 'commentCauseIdsArray')->widget(\kartik\select2\Select2::class, [
+        'data' => $allCommentCauses,
+        'options' => ['multiple' => true],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
     <?php if(Yii::$app->user->can('editor')): // todo add more operations to auth manager ?>
         <div>
             <?= $form->field($model, 'diseasesIdsArray')->widget(\kartik\select2\Select2::class, [
