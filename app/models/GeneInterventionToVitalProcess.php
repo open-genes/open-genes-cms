@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -13,6 +14,8 @@ use yii\helpers\ArrayHelper;
  */
 class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProcess
 {
+    use ValidatorsTrait;
+
     public $delete = false;
 
     public function behaviors()
@@ -29,7 +32,12 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'model_organism_id', 'vital_process_id'], 'required'],
+            [['gene_id', 'gene_intervention_id', 'model_organism_id', 'vital_process_id', 'reference'], 'required'],
+            [['age'], 'number', 'min'=>0],
+            [['age_unit'], 'required', 'when' => function($model) {
+                return !empty($model->age);
+            }],
+            [['reference'], 'validateDOI']
         ]);
     }
 
@@ -42,6 +50,7 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
             'vital_process_id' => 'Процесс',
             'model_organism_id' => 'Организм',
             'organism_line_id' => 'Линия организма',
+            'reference' => 'Ссылка',
             'age' => 'Возраст',
             'sex_of_organism' => 'Пол',
             'age_unit' => 'Ед. изм. возраста',

@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -13,6 +14,8 @@ use yii\helpers\ArrayHelper;
  */
 class LifespanExperiment extends common\LifespanExperiment
 {
+    use ValidatorsTrait;
+
     public $delete = false;
 
     public function behaviors()
@@ -29,7 +32,12 @@ class LifespanExperiment extends common\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id'], 'required'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'reference'], 'required'],
+            [['age'], 'number', 'min'=>0],
+            [['age_unit'], 'required', 'when' => function($model) {
+                return !empty($model->age);
+            }],
+            [['reference'], 'validateDOI']
         ]);
     }
 
@@ -43,8 +51,11 @@ class LifespanExperiment extends common\LifespanExperiment
             'model_organism_id' => 'Модельный организм',
             'age' => 'Возраст',
             'reference' => 'Ссылка',
+            'age_unit' => 'Ед. измерения возраста',
         ]);
     }
+
+
     
     public function beforeValidate()
     {
@@ -52,6 +63,7 @@ class LifespanExperiment extends common\LifespanExperiment
         $this->lifespan_change_percent_female = str_replace(',', '.', $this->lifespan_change_percent_female);
         $this->lifespan_change_percent_common = str_replace(',', '.', $this->lifespan_change_percent_common);
         $this->age = str_replace(',', '.', $this->age);
+        $this->reference = trim($this->reference);
         
         return parent::beforeValidate();
     }

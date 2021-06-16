@@ -89,7 +89,7 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

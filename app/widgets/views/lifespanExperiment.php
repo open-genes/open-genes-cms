@@ -60,7 +60,7 @@
             <div class="form-half-without-margin">
                 <div class="form-half-without-margin">
                     <div class="form-half-without-margin">
-                        <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                        <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']age', ['class' => 'form-control form_age', 'placeholder' => 'Возраст']) ?>
                     </div>
                     <div class="form-half-without-margin">
                         <?= \kartik\select2\Select2::widget([
@@ -73,6 +73,7 @@
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
+                                'containerCssClass' => 'form_age_unit',
                             ],
                         ]);
                         ?>
@@ -128,7 +129,7 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

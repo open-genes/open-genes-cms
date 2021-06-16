@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ValidatorsTrait;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -12,6 +13,8 @@ use yii\helpers\ArrayHelper;
  */
 class GeneToLongevityEffect extends common\GeneToLongevityEffect
 {
+    use ValidatorsTrait;
+
     public $delete = false;
 
     public function behaviors()
@@ -28,7 +31,8 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'model_organism_id'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'genotype_id', 'model_organism_id', 'reference'], 'required'],
+            [['reference'], 'validateDOI']
         ]);
     }
 
@@ -41,6 +45,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'genotype_id' => 'Аллельный полиморфизм',
             'sex_of_organism' => 'Пол',
             'allele_variant' => 'Аллельный вариант',
+            'reference' => 'Ссылка',
             'model_organism_id' => 'Организм',
         ]);
     }

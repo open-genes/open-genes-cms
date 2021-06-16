@@ -24,7 +24,7 @@
                 ?>
             </div>
             <div class="form-half-small-margin">
-                <?= \yii\bootstrap\Html::activeInput('text', $geneToProgeria, '[' . $geneToProgeria->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToProgeria, '[' . $geneToProgeria->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
             </div>
         </div>
         <div class="form-split no-margin">

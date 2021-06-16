@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -13,6 +14,8 @@ use yii\helpers\ArrayHelper;
  */
 class GeneToProgeria extends common\GeneToProgeria
 {
+    use ValidatorsTrait;
+
     public $delete = false;
 
     public function behaviors()
@@ -29,7 +32,8 @@ class GeneToProgeria extends common\GeneToProgeria
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'progeria_syndrome_id'], 'required'],
+            [['gene_id', 'progeria_syndrome_id', 'reference'], 'required'],
+            [['reference'], 'validateDOI']
         ]);
     }
 
@@ -39,6 +43,7 @@ class GeneToProgeria extends common\GeneToProgeria
             parent::attributeLabels(), [
             'delete' => 'Удалить',
             'progeria_syndrome_id' => 'Прогерический синдром',
+            'reference' => 'Ссылка',
         ]);
     }
 

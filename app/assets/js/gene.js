@@ -117,3 +117,10 @@ $(document).on('change', '#experiments-form .form-control', function() {
     $(this).next('.select2-container').next('.help-block').remove()
     $(this).next('.help-block').remove()
 });
+
+$(document).on('change', '#experiments-form .form-control.form_age', function() {
+    if($(this).val() == '') {
+        $(this).closest('.js-gene-link-block').find('.form_age_unit').removeClass('has-error')
+        $(this).closest('.js-gene-link-block').find('.form_age_unit').closest('.select2-container').next('.help-block').remove()
+    }
+});
