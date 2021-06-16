@@ -65,7 +65,7 @@
         <div class="form-split">
             <div class="form-third">
                 <div class="form-half-without-margin">
-                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control', 'placeholder' => 'Возраст']) ?>
+                    <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']age', ['class' => 'form-control age_unit', 'placeholder' => 'Возраст']) ?>
                 </div>
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
@@ -78,7 +78,7 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
-                            'containerCssClass' => 'green',
+                            'containerCssClass' => 'green form_age_unit',
                             'dropdownCssClass' => 'green',
                         ],
                     ]);
@@ -140,7 +140,7 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+            <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

@@ -88,10 +88,10 @@
         <div class="form-split">
             <div class="form-half-without-margin">
                 <div class="form-third">
-                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_from', ['class' => 'form-control', 'placeholder' => 'Возраст - от']) ?>
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_from', ['class' => 'form-control form_age', 'placeholder' => 'Возраст - от']) ?>
                 </div>
                 <div class="form-third">
-                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_to', ['class' => 'form-control', 'placeholder' => 'Возраст - до']) ?>
+                    <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_to', ['class' => 'form-control form_age', 'placeholder' => 'Возраст - до']) ?>
                 </div>
                 <div class="form-third">
                     <?= \kartik\select2\Select2::widget([
@@ -104,7 +104,7 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
-                            'containerCssClass' => 'blue',
+                            'containerCssClass' => 'blue form_age_unit',
                             'dropdownCssClass' => 'blue',
                         ],
                     ]);
@@ -143,7 +143,7 @@
                 ?>
             </div>
             <div class="form-five-sixths">
-                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
             </div>
         </div>
         <div class="form-split no-margin">

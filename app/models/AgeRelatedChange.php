@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ValidatorsTrait;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -12,6 +13,8 @@ use yii\helpers\ArrayHelper;
  */
 class AgeRelatedChange extends common\AgeRelatedChange
 {
+    use ValidatorsTrait;
+
     public $delete = false;
 
     public function behaviors()
@@ -28,7 +31,12 @@ class AgeRelatedChange extends common\AgeRelatedChange
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'age_related_change_type_id', 'model_organism_id', 'sample_id'], 'required'],
+            [['gene_id', 'age_related_change_type_id', 'model_organism_id', 'sample_id', 'reference'], 'required'],
+            [['age_unit'], 'required', 'when' => function($model) {
+                return !empty($model->age_from) || !empty($model->age_to);
+            }],
+            [['age_from', 'age_to'], 'number', 'min'=>0],
+            [['reference'], 'validateDOI']
         ]);
     }
 
@@ -39,6 +47,7 @@ class AgeRelatedChange extends common\AgeRelatedChange
             'delete' => 'Удалить',
             'age_related_change_type_id' => 'Вид изменений',
             'sample_id' => 'Образец',
+            'reference' => 'Ссылка',
             'model_organism_id' => 'Модельный организм',
             'organism_line_id' => 'Линия организма',
             'age_from' => 'Возраст - от',

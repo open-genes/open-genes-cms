@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ValidatorsTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
@@ -14,6 +15,8 @@ use yii\helpers\ArrayHelper;
  */
 class ProteinToGene extends common\ProteinToGene
 {
+    use ValidatorsTrait;
+
     public $delete = false;
 
     public function behaviors()
@@ -30,7 +33,8 @@ class ProteinToGene extends common\ProteinToGene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'protein_activity_id', 'regulated_gene_id'], 'required'],
+            [['gene_id', 'protein_activity_id', 'regulated_gene_id', 'reference'], 'required'],
+            [['reference'], 'validateDOI']
         ]);
     }
 
@@ -41,7 +45,7 @@ class ProteinToGene extends common\ProteinToGene
             'delete' => 'Удалить',
             'regulated_gene_id' => 'Ген',
             'protein_activity_id' => 'Активность',
-            'reference' => 'Reference',
+            'reference' => 'Ссылка',
             'regulation_type' => 'Вид регуляции',
         ]);
     }
