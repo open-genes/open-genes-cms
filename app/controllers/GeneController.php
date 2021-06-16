@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\AgeRelatedChange;
 use app\models\Disease;
+use app\models\exceptions\UpdateExperimentsException;
 use app\models\GeneToLongevityEffect;
 use app\models\GeneToProgeria;
 use app\models\Phylum;
@@ -137,25 +138,30 @@ class GeneController extends Controller
         $model = $this->findModel($id);
 
         if(Yii::$app->request->isPost) {
-            if(is_array(Yii::$app->request->post('LifespanExperiment'))) {
-                LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+            try {
+                if(is_array(Yii::$app->request->post('LifespanExperiment'))) {
+                    LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+                }
+                if(is_array(Yii::$app->request->post('AgeRelatedChange'))) {
+                    AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
+                }
+                if(is_array(Yii::$app->request->post('GeneInterventionToVitalProcess'))) {
+                    GeneInterventionToVitalProcess::saveMultipleForGene(Yii::$app->request->post('GeneInterventionToVitalProcess'), $id);
+                }
+                if(is_array(Yii::$app->request->post('ProteinToGene'))) {
+                    ProteinToGene::saveMultipleForGene(Yii::$app->request->post('ProteinToGene'), $id);
+                }
+                if(is_array(Yii::$app->request->post('GeneToProgeria'))) {
+                    GeneToProgeria::saveMultipleForGene(Yii::$app->request->post('GeneToProgeria'), $id);
+                }
+                if(is_array(Yii::$app->request->post('GeneToLongevityEffect'))) {
+                    GeneToLongevityEffect::saveMultipleForGene(Yii::$app->request->post('GeneToLongevityEffect'), $id);
+                }
+            } catch (UpdateExperimentsException $e) {
+                return json_encode(['error' => $e->getInfoArray(), JSON_UNESCAPED_UNICODE]);
             }
-            if(is_array(Yii::$app->request->post('AgeRelatedChange'))) {
-                AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
-            }
-            if(is_array(Yii::$app->request->post('GeneInterventionToVitalProcess'))) {
-                GeneInterventionToVitalProcess::saveMultipleForGene(Yii::$app->request->post('GeneInterventionToVitalProcess'), $id);
-            }
-            if(is_array(Yii::$app->request->post('ProteinToGene'))) {
-                ProteinToGene::saveMultipleForGene(Yii::$app->request->post('ProteinToGene'), $id);
-            }
-            if(is_array(Yii::$app->request->post('GeneToProgeria'))) {
-                GeneToProgeria::saveMultipleForGene(Yii::$app->request->post('GeneToProgeria'), $id);
-            }
-            if(is_array(Yii::$app->request->post('GeneToLongevityEffect'))) {
-                GeneToLongevityEffect::saveMultipleForGene(Yii::$app->request->post('GeneToLongevityEffect'), $id);
-            }
-            return $this->redirect(['update-experiments', 'id' => $model->id]);
+            return json_encode(['success']);
+//            return $this->redirect(['update-experiments', 'id' => $model->id]);
         }
 
         return $this->render('updateExperiments', [

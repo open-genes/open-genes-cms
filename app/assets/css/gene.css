@@ -228,11 +228,27 @@ a.gene-link {
     background-color: #e4e3f9;
 }
 
-
 .open-genes-cms .select2-container--krajee .select2-dropdown {
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     box-shadow: 0 6px 12px rgb(186, 185, 210);
     border-color: #cac9f1;
     overflow-x: hidden;
     margin-top: -1px;
+}
+
+#experiments-form .help-block {
+    color: #a94442;
+}
+
+#experiments-form .help-block.green {
+    color: #5cb85c;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+#experiments-form .form-control.has-error, #experiments-form .select2-selection.has-error, #experiments-form .btn.has-error {
+    border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    color: #a94442;
 }

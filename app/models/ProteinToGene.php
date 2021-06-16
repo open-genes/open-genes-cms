@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\exceptions\UpdateExperimentsException;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
@@ -37,7 +38,11 @@ class ProteinToGene extends common\ProteinToGene
     {
         return ArrayHelper::merge(
             parent::attributeLabels(), [
-            'delete' => 'Удалить'
+            'delete' => 'Удалить',
+            'regulated_gene_id' => 'Ген',
+            'protein_activity_id' => 'Активность',
+            'reference' => 'Reference',
+            'regulation_type' => 'Вид регуляции',
         ]);
     }
 
@@ -51,25 +56,23 @@ class ProteinToGene extends common\ProteinToGene
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['protein_activity_id'] && $modelArray['regulated_gene_id']) {
-                if(is_numeric($id)) {
-                    $modelAR = self::findOne($id);
-                } else {
-                    $modelAR = new self();
-                }
-                if ($modelArray['delete'] === '1') {
-                    $modelAR->delete();
-                    continue;
-                }
-                $modelAR->setAttributes($modelArray);
-                if(!is_numeric($modelArray['protein_activity_id'])) {
-                    $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
-                    $modelAR->protein_activity_id = $arProteinActivity->id;
-                }
-                $modelAR->gene_id = $geneId;
-                if(!$modelAR->save()) {
-                    var_dump($modelAR->errors); die;
-                }
+            if (is_numeric($id)) {
+                $modelAR = self::findOne($id);
+            } else {
+                $modelAR = new self();
+            }
+            if ($modelArray['delete'] === '1') {
+                $modelAR->delete();
+                continue;
+            }
+            $modelAR->setAttributes($modelArray);
+            if (!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
+                $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
+                $modelAR->protein_activity_id = $arProteinActivity->id;
+            }
+            $modelAR->gene_id = $geneId;
+            if (!$modelAR->validate() || !$modelAR->save()) {
+                throw new UpdateExperimentsException($id, $modelAR);
             }
         }
     }
