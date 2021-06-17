@@ -18,58 +18,83 @@ use yii\httpclient\Client;
 class GetDataController extends Controller
 {
     /**
-     * todo move logic to service
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\httpclient\Exception
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @param string|null $geneSearchName
      */
-    public function actionGetProteinClasses()
+    public function actionGetProteinClasses(string $onlyNew = 'true', string $geneNcbiIds = null, string $geneSearchName = null)
     {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         $apiUrl = 'https://www.proteinatlas.org/search/';
-        $arGenes = Gene::find()
-            ->all();
-        $client = new Client();
-        foreach ($arGenes as $arGene) {
-            $response = $client->createRequest()
-                ->setUrl($apiUrl . $arGene->symbol . '?format=json&columns=g,pc')
-                ->setFormat(Client::FORMAT_JSON)
-                ->send();
-            if (!$response->isOk) {
-                echo $response->getStatusCode();
+        $arGenesQuery = Gene::find();
+        if($onlyNew) {
+            $arGenesQuery->leftJoin('gene_to_protein_class', 'gene_to_protein_class.gene_id=gene.id')
+                ->where('gene_to_protein_class.gene_id is null');
+        }
+        if($geneNcbiIds) {
+            $geneNcbiIdsArray = explode(',', $geneNcbiIds);
+            if($geneSearchName && count($geneNcbiIdsArray) > 1) {
+                echo "We'll take only the first gene from array because of name given" . PHP_EOL;
+                $geneNcbiIdsArray = [current($geneNcbiIdsArray)];
             }
-            $parsedResponse = json_decode($response->content, true);
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);
+        }
+        $arGenes = $arGenesQuery->all();
+        $client = new Client();
+        $counter = 1;
+        $count =  count($arGenes);
 
-            foreach($parsedResponse as $geneInfo) {
-                if ($geneInfo['Gene'] === $arGene->symbol) {
-                    echo $arGene->symbol . ': ';
-                    foreach ($geneInfo['Protein class'] as $proteinClass) {
-                        $nameSearch = [
-                            trim($proteinClass),
-                            trim(str_replace('proteins', '', $proteinClass)),
-                            trim(str_replace('genes', '', $proteinClass))
-                        ];
-                        $arProteinClass = ProteinClass::find()
-                            ->where(['in', 'name_en', $nameSearch])
-                            ->one();
-                        if(!$arProteinClass) {
-                            echo 'NOT FOUND ' . $proteinClass . ' ';
-                            continue;
+        foreach ($arGenes as $arGene) {
+            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
+            $searchGene = $geneSearchName ?? urlencode("{$arGene->ncbi_id} {$arGene->symbol}");
+            try {
+                $response = $client->createRequest()
+                    ->setUrl("{$apiUrl}{$searchGene}?format=json&columns=g,pc")
+                    ->setFormat(Client::FORMAT_JSON)
+                    ->send();
+                if (!$response->isOk) {
+                    throw new \Exception('Failed with status code: ' . $response->getStatusCode());
+                }
+                if((int)$response->headers['content-length'] > 10000000) { // todo
+                    throw new \Exception('Response is too big: ' . $response->headers['content-length']);
+                }
+                $parsedResponse = json_decode($response->content, true);
+
+                foreach ($parsedResponse as $geneInfo) {
+                    if ($geneInfo['Gene'] === $arGene->symbol) {
+                        foreach ($geneInfo['Protein class'] as $proteinClass) {
+                            $nameSearch = [
+                                trim($proteinClass),
+                                trim(str_replace('proteins', '', $proteinClass)),
+                                trim(str_replace('genes', '', $proteinClass))
+                            ];
+                            $arProteinClass = ProteinClass::find()
+                                ->where(['in', 'name_en', $nameSearch])
+                                ->one();
+                            if (!$arProteinClass) {
+                                echo 'NOT FOUND ' . $proteinClass . ' ';
+                                continue;
+                            }
+                            $arGeneToProteinClass = GeneToProteinClass::find()
+                                ->where([
+                                    'protein_class_id' => $arProteinClass->id,
+                                    'gene_id' => $arGene->id,
+                                ])
+                                ->one();
+                            if (!$arGeneToProteinClass) {
+                                $arGeneToProteinClass = new GeneToProteinClass();
+                                $arGeneToProteinClass->gene_id = $arGene->id;
+                                $arGeneToProteinClass->protein_class_id = $arProteinClass->id;
+                                $arGeneToProteinClass->save();
+                            }
+                            echo '"' . $arProteinClass->name_en . '" ';
                         }
-                        $arGeneToProteinClass = GeneToProteinClass::find()
-                            ->where([
-                                'protein_class_id' => $arProteinClass->id,
-                                'gene_id' => $arGene->id,
-                            ])
-                            ->one();
-                        if(!$arGeneToProteinClass) {
-                            $arGeneToProteinClass = new GeneToProteinClass();
-                            $arGeneToProteinClass->gene_id = $arGene->id;
-                            $arGeneToProteinClass->protein_class_id = $arProteinClass->id;
-                            $arGeneToProteinClass->save();
-                        }
-                        echo '"' . $arProteinClass->name_en . '" ';
                     }
                 }
+            } catch (\Exception $e) {
+                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . "{$apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
             }
+            $counter++;
             echo PHP_EOL;
         }
     }
@@ -180,16 +205,24 @@ class GetDataController extends Controller
         }
     }
 
-    public function actionGetGeneExpression($onlyNew = true)
+    /**
+     * get-data/get-gene-expression [onlyNew] true [geneNcbiIds] 1,2,3
+     * @param string $onlyNew
+     * @param null|string $geneNcbiIds
+     */
+    public function actionGetGeneExpression(string $onlyNew = 'true', string $geneNcbiIds = null)
     {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         $apiUrl = 'https://www.ncbi.nlm.nih.gov/';
         $arGenesQuery = Gene::find();
         if($onlyNew) {
             $arGenesQuery->leftJoin('gene_expression_in_sample', 'gene_expression_in_sample.gene_id=gene.id')
                 ->where('gene_expression_in_sample.gene_id is null');
         }
+        if($geneNcbiIds) {
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
+        }
         $arGenes = $arGenesQuery->all();
-//        var_dump($arGenes[0]);
         $counter = 1;
         $count = count($arGenes);
         echo $count;
