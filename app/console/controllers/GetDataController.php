@@ -11,7 +11,7 @@ use app\models\Disease;
 use app\models\Gene;
 use app\models\ProteinClass;
 use app\models\Sample;
-use yii\base\BaseObject;
+use app\service\GeneOntologyServiceInterface;
 use yii\console\Controller;
 use yii\httpclient\Client;
 
@@ -92,7 +92,7 @@ class GetDataController extends Controller
                     }
                 }
             } catch (\Exception $e) {
-                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . "{$apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
+                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
             }
             $counter++;
             echo PHP_EOL;
@@ -143,7 +143,7 @@ class GetDataController extends Controller
                 $arGene->human_protein_atlas = json_encode($parsedResponse);
                 $arGene->save();
             } catch (\Exception $e) {
-                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . "{$apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
+                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
             }
             $counter++;
             echo PHP_EOL;
@@ -151,56 +151,76 @@ class GetDataController extends Controller
     }
 
 
-    public function actionGetDiseasesFromBiocomp()
+    public function actionGetDiseasesFromBiocomp(string $onlyNew = 'true', string $geneNcbiIds = null)
     {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         $apiUrl = 'http://edgar.biocomp.unibo.it/gene_disease_db/csv_files/';
-        $arGenes = Gene::find()
-            ->all();
-        $client = new Client();
-        foreach ($arGenes as $arGene) {
-            $response = $client->createRequest()
-                ->setUrl($apiUrl . $arGene->symbol . '.csv')
-                ->setFormat(Client::FORMAT_JSON)
-                ->send();
-            if (!$response->isOk) {
-                echo $apiUrl . $arGene->symbol . '.csv response: ' . $response->getStatusCode() . PHP_EOL;
-                continue;
-            }
 
-            preg_match('/#Gene-disease associations table(.*?)#/s', $response->content, $matches);
-            $diseases = [];
-            if (!$matches) {
-                continue;
-            }
-            foreach (explode(PHP_EOL, $matches[1]) as $line) {
-                if (!$line || $line[0] == '#' || $line[0] == null || str_starts_with($line, 'Disease ID')  ) {
+        $arGenesQuery = Gene::find()->where('gene.symbol is not null');
+        if($onlyNew) {
+            $arGenesQuery->leftJoin('gene_to_disease', 'gene_to_disease.gene_id=gene.id')
+                ->andWhere('gene_to_disease.gene_id is null');
+        }
+        if ($geneNcbiIds) {
+            $geneNcbiIdsArray = explode(',', $geneNcbiIds);
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);
+        }
+
+        $arGenes = $arGenesQuery->all();
+        $client = new Client();
+        $counter = 1;
+        $count = count($arGenes);
+        foreach ($arGenes as $arGene) {
+            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
+            try {
+                $response = $client->createRequest()
+                    ->setUrl($apiUrl . $arGene->symbol . '.csv')
+                    ->setFormat(Client::FORMAT_JSON)
+                    ->send();
+                if (!$response->isOk) {
+                    throw new \Exception('Failed with status code: ' . $response->getStatusCode());
+                }
+                if ((int)$response->headers['content-length'] > 10000000) { // todo
+                    throw new \Exception('Response is too big: ' . $response->headers['content-length']);
+                }
+                preg_match('/#Gene-disease associations table(.*?)#/s', $response->content, $matches);
+                $diseases = [];
+                if (!$matches) {
                     continue;
                 }
-                $diseases[] = str_getcsv($line, "\t");
-            }
-            $saved = 0;
-            foreach ($diseases as $diseaseArray) {
-                $omimId = (int)filter_var($diseaseArray[0], FILTER_SANITIZE_NUMBER_INT);
-                $arDisease = Disease::findOne(['omim_id' => $omimId]);
-                if (!$arDisease) {
-                    $arDisease = new Disease();
-                    $arDisease->omim_id = $omimId;
-                    $arDisease->name_en = ucfirst(strtolower($diseaseArray[1]));
-                    $arDisease->save();
-                    $arDisease->refresh();
+                foreach (explode(PHP_EOL, $matches[1]) as $line) {
+                    if (!$line || $line[0] == '#' || $line[0] == null || str_starts_with($line, 'Disease ID')  ) {
+                        continue;
+                    }
+                    $diseases[] = str_getcsv($line, "\t");
                 }
-                $arGeneToDisease = GeneToDisease::findOne(['gene_id' => $arGene->id, 'disease_id' => $arDisease->id]);
-                
-                if (!$arGeneToDisease) {
-                    $arGeneToDisease = new GeneToDisease();
-                    $arGeneToDisease->gene_id = $arGene->id;
-                    $arGeneToDisease->disease_id = $arDisease->id;
-                    $arGeneToDisease->save();
-                    $saved++;
-                }
+                $saved = 0;
+                foreach ($diseases as $diseaseArray) {
+                    $omimId = (int)filter_var($diseaseArray[0], FILTER_SANITIZE_NUMBER_INT);
+                    $arDisease = Disease::findOne(['omim_id' => $omimId]);
+                    if (!$arDisease) {
+                        $arDisease = new Disease();
+                        $arDisease->omim_id = $omimId;
+                        $arDisease->name_en = ucfirst(strtolower($diseaseArray[1]));
+                        $arDisease->save();
+                        $arDisease->refresh();
+                    }
+                    $arGeneToDisease = GeneToDisease::findOne(['gene_id' => $arGene->id, 'disease_id' => $arDisease->id]);
 
+                    if (!$arGeneToDisease) {
+                        $arGeneToDisease = new GeneToDisease();
+                        $arGeneToDisease->gene_id = $arGene->id;
+                        $arGeneToDisease->disease_id = $arDisease->id;
+                        $arGeneToDisease->save();
+                        $saved++;
+                    }
+                }
+                echo $saved . ' disease(s) added ' . PHP_EOL;
+            } catch (\Exception $e) {
+                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$apiUrl}{$arGene->symbol}.csv" . PHP_EOL;
             }
-            echo $arGene->symbol . ': ' . $saved . ' disease(s) added ' . PHP_EOL;
+            $counter++;
+            echo PHP_EOL;
         }
     }
 
@@ -270,12 +290,89 @@ class GetDataController extends Controller
         }
     }
 
+    public function actionGetGeneInfo(string $onlyNew = 'true', string $geneNcbiIds = null)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $apiUrl = 'https://mygene.info/v3/gene/';
+        $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
+        if($onlyNew) {
+            $arGenesQuery->andWhere('gene.summary_en is null');
+        }
+        if($geneNcbiIds) {
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
+        }
+        $arGenes = $arGenesQuery->all();
+        $counter = 1;
+        $count = count($arGenes);
+        echo $count;
+        $client = new Client();
+        foreach ($arGenes as $arGene) {
+            try {
+                echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
+                $response = $client->createRequest()
+                    ->setUrl($apiUrl . $arGene->ncbi_id . '?fields=summary,symbol')
+                    ->send();
+                if (!$response->isOk) {
+                    echo $response->getStatusCode();
+                }
+                $parsedResponse = json_decode($response->content, true);
+                $arGene->summary_en = $parsedResponse['summary'];
+                if (!$arGene->symbol) {
+                    $arGene->symbol = $parsedResponse['symbol'];
+                }
+                $arGene->save();
+                echo 'OK' . PHP_EOL;
+            } catch (\Exception $e) {
+                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $apiUrl . $arGene->ncbi_id . '?fields=summary' . PHP_EOL;
+            }
+            $counter++;
+        }
+    }
+
+    /**
+     * params: $onlyNew='true' $geneNcbiIds=1,2,3 $countRows=1000
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @param int $countRows
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionGetGoTerms(string $onlyNew='true', string $geneNcbiIds=null, int $countRows=1000)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = \Yii::$container->get(GeneOntologyServiceInterface::class);
+        $arGenesQuery = \app\models\Gene::find()->where('gene.ncbi_id > 0');
+        if($onlyNew) {
+            $arGenesQuery->leftJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
+                ->andWhere('gene_to_ontology.gene_id is null');
+        }
+        if($geneNcbiIds) {
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
+        }
+        $arGenes = $arGenesQuery->all();
+        foreach ($arGenes as $arGene) {
+            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol}: ";
+            try {
+                $result = $geneOntologyService->mineFromGatewayForGene($arGene->ncbi_id, $countRows);
+                if (isset($result['link_errors'])) {
+                    echo ' ERROR ' . $result['link_errors'];
+                    continue;
+                }
+                echo ' ok' . PHP_EOL;
+            } catch (\Exception $e) {
+                echo ' ERROR ' . $e->getMessage();
+            }
+        }
+        echo PHP_EOL;
+    }
+
     /**
      * @param string $geneInfoPage
      * @return array
      * @throws \Exception
      */
-    protected function parseExpressionFromPage(string $geneInfoPage): array
+    private function parseExpressionFromPage(string $geneInfoPage): array
     {
         preg_match('/tissues_data = ({.*});/', $geneInfoPage, $result);
         $expressionDataString = $result[1] ?? '';
@@ -304,7 +401,7 @@ class GetDataController extends Controller
         return $resultArray;
     }
 
-    public function recursiveCamelCase($items) {
+    private function recursiveCamelCase($items) {
         $newItems = [];
         foreach ($items as $k => $item) {
             $newKey = str_replace('-', ' ', $k);
