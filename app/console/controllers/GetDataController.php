@@ -121,8 +121,10 @@ class GetDataController extends Controller
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
         }
         $arGenes = $arGenesQuery->all();
+        $counter = 1;
+        $count = count($arGenes);
         foreach ($arGenes as $arGene) {
-            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol}: ";
+            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             try {
                 $result = $geneOntologyService->mineFromGatewayForGene($arGene->ncbi_id, $countRows);
                 if (isset($result['link_errors'])) {
@@ -130,6 +132,7 @@ class GetDataController extends Controller
                     continue;
                 }
                 echo ' ok' . PHP_EOL;
+                $counter++;
             } catch (\Exception $e) {
                 echo ' ERROR ' . $e->getMessage();
             }
