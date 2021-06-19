@@ -8,11 +8,8 @@ use app\models\Gene;
 use app\models\common\GeneExpressionInSample;
 use app\models\GeneToCommentCause;
 use app\models\GeneToFunctionalCluster;
-use app\models\common\GeneToProteinClass;
-use app\models\ProteinClass;
 use app\models\Sample;
 use yii\console\Controller;
-use yii\httpclient\Client;
 
 class MigrateDataController extends Controller
 {
