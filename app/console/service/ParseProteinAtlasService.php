@@ -40,8 +40,9 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
             echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             $searchGene = !empty($geneSearchName) ? $geneSearchName : urlencode("{$arGene->ncbi_id} {$arGene->symbol}");
             try {
+                $url = "{$this->apiUrl}{$searchGene}?format=json";
                 $response = $client->createRequest()
-                    ->setUrl("{$this->apiUrl}{$searchGene}?format=json")
+                    ->setUrl($url)
                     ->setFormat(Client::FORMAT_JSON)
                     ->send();
                 if (!$response->isOk) {
@@ -58,7 +59,7 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
                 $arGene->human_protein_atlas = json_encode($parsedResponse);
                 $arGene->save();
             } catch (\Exception $e) {
-                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$this->apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
+                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$url}" . PHP_EOL;
             }
             $counter++;
             echo PHP_EOL;
@@ -88,8 +89,9 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
             echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             $searchGene = !empty($geneSearchName) ? $geneSearchName : urlencode("{$arGene->ncbi_id} {$arGene->symbol}");
             try {
+                $url = "{$this->apiUrl}{$searchGene}?format=json&columns=g,pc";
                 $response = $client->createRequest()
-                    ->setUrl("{$this->apiUrl}{$searchGene}?format=json&columns=g,pc")
+                    ->setUrl($url)
                     ->setFormat(Client::FORMAT_JSON)
                     ->send();
                 if (!$response->isOk) {
@@ -132,7 +134,7 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
                     }
                 }
             } catch (\Exception $e) {
-                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$this->apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
+                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$url}" . PHP_EOL;
             }
             $counter++;
             echo PHP_EOL;

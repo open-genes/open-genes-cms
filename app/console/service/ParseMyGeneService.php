@@ -33,8 +33,9 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         foreach ($arGenes as $arGene) {
             try {
                 echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
+                $url = $this->apiUrl  . $arGene->ncbi_id . '?fields=summary,symbol';
                 $response = $client->createRequest()
-                    ->setUrl($this->apiUrl  . $arGene->ncbi_id . '?fields=summary,symbol')
+                    ->setUrl($url)
                     ->send();
                 if (!$response->isOk) {
                     echo $response->getStatusCode();
@@ -47,7 +48,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                 $arGene->save();
                 echo 'OK' . PHP_EOL;
             } catch (\Exception $e) {
-                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $this->apiUrl  . $arGene->ncbi_id . '?fields=summary' . PHP_EOL;
+                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url. PHP_EOL;
             }
             $counter++;
         }

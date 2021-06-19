@@ -36,8 +36,9 @@ class ParseDiseasesService implements ParseDiseasesServiceInterface
         foreach ($arGenes as $arGene) {
             echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             try {
+                $url = $this->apiUrl . $arGene->symbol . '.csv';
                 $response = $client->createRequest()
-                    ->setUrl($this->apiUrl . $arGene->symbol . '.csv')
+                    ->setUrl($url)
                     ->setFormat(Client::FORMAT_JSON)
                     ->send();
                 if (!$response->isOk) {
@@ -80,7 +81,7 @@ class ParseDiseasesService implements ParseDiseasesServiceInterface
                 }
                 echo $saved . ' disease(s) added ' . PHP_EOL;
             } catch (\Exception $e) {
-                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$this->apiUrl}{$arGene->symbol}.csv" . PHP_EOL;
+                echo PHP_EOL . "ERROR {$e->getMessage()} url: {$url}" . PHP_EOL;
             }
             $counter++;
             echo PHP_EOL;

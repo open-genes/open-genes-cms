@@ -37,7 +37,7 @@ class ParseNCBIService implements ParseNCBIServiceInterface
                 echo 'parsing info for gene id=' . $arGene->id . ' ncbi_id=' . $arGene->ncbi_id . ' (' . $counter . ' from ' . $count . ') ... ';
                 $url = $this->apiUrl . 'gene/' . $arGene->ncbi_id . '/expression/details?p$l=Expression';
                 $geneInfoPage = $response = $client->createRequest()
-                    ->setUrl($url . $arGene->symbol . '?format=json&columns=g,pc')
+                    ->setUrl($url)
                     ->setFormat(Client::FORMAT_JSON)
                     ->send();
                 if (!$response->isOk) {
