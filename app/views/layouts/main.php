@@ -56,7 +56,7 @@ $this->registerCssFile('/assets/css/main.css');
         'items' => [
             ['label' => 'Гены', 'url' => ['/gene']],
             ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible'=>Yii::$app->user->can('editor')],
-            ['label' => 'Функциональные кластеры', 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
+            ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
             ['label' => 'Филумы', 'url' => ['/age']],
             [
                 'label' => 'Функции гена',
