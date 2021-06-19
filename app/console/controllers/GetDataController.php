@@ -26,10 +26,10 @@ class GetDataController extends Controller
     {
         $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         $apiUrl = 'https://www.proteinatlas.org/search/';
-        $arGenesQuery = Gene::find();
+        $arGenesQuery = Gene::find()->where('gene.symbol is not null');
         if($onlyNew) {
             $arGenesQuery->leftJoin('gene_to_protein_class', 'gene_to_protein_class.gene_id=gene.id')
-                ->where('gene_to_protein_class.gene_id is null');
+                ->andWhere('gene_to_protein_class.gene_id is null');
         }
         if($geneNcbiIds) {
             $geneNcbiIdsArray = explode(',', $geneNcbiIds);
@@ -100,55 +100,54 @@ class GetDataController extends Controller
     }
 
 
-    public function actionGetProteinAtlas($onlyNew = false)
+    public function actionGetProteinAtlas(string $onlyNew = 'true', string $geneNcbiIds = null, string $geneSearchName = null)
     {
-        // ENSG for Gene
-        // by symbol
-        // form https://www.proteinatlas.org/search/A2M?format=json
-
-        $result = [
-            'info' => [],
-            'errors' => [],
-            'errorsGetENSG' => [],
-            'errorsGeneSave' => [],
-            'atlasMapper' => [],
-        ];
-
-        $genes = Gene::find()->all();
-
-        foreach ($genes as $gene) {
-
-            if ($onlyNew && !empty($gene->human_protein_atlas)) {
-                $result['info'][] = $gene->id . ' Human Protein Atlas Is Not Empty: CONTINUE!';
-                continue;
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $apiUrl = 'https://www.proteinatlas.org/search/';
+        $arGenesQuery = Gene::find()->where('gene.symbol is not null');
+        if ($onlyNew) {
+            $arGenesQuery->andWhere('gene.human_protein_atlas is null');
+        }
+        if ($geneNcbiIds) {
+            $geneNcbiIdsArray = explode(',', $geneNcbiIds);
+            if ($geneSearchName && count($geneNcbiIdsArray) > 1) {
+                echo "We'll take only the first gene from array because of name given" . PHP_EOL;
+                $geneNcbiIdsArray = [current($geneNcbiIdsArray)];
             }
-
-            $genesJson = file_get_contents('https://www.proteinatlas.org/search/'.$gene->symbol.'?format=json');
-
-            if ($genesJson == '[]') {
-                $result['errorsGetENSG'][] = '404 for gene :' . $gene->symbol;
-                continue;
-            }
-
-            $geneResult = (array)json_decode($genesJson, true)[0];
-
-            if (!empty($gene->ensembl)) {
-                $gene->ensembl = $geneResult["Ensembl"]; //"ENSG00000175899"
-            }
-
-            if ($onlyNew && empty($gene->human_protein_atlas)) {
-                $geneResult = $this->recursiveCamelCase($geneResult);
-                $gene->human_protein_atlas = json_encode($geneResult);
-
-                if (!$gene->save()) {
-                    $result['errorsGeneSave'][] = $gene->errors;
-                } else {
-                    $result['atlasMapper'][$gene->id] = 'ok';//$gene->human_protein_atlas;
-                }
-            }
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);
         }
 
-        return $result;
+        $arGenes = $arGenesQuery->all();
+        $client = new Client();
+        $counter = 1;
+        $count = count($arGenes);
+        foreach ($arGenes as $arGene) {
+            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
+            $searchGene = $geneSearchName ?? urlencode("{$arGene->ncbi_id} {$arGene->symbol}");
+            try {
+                $response = $client->createRequest()
+                    ->setUrl("{$apiUrl}{$searchGene}?format=json")
+                    ->setFormat(Client::FORMAT_JSON)
+                    ->send();
+                if (!$response->isOk) {
+                    throw new \Exception('Failed with status code: ' . $response->getStatusCode());
+                }
+                if ((int)$response->headers['content-length'] > 10000000) { // todo
+                    throw new \Exception('Response is too big: ' . $response->headers['content-length']);
+                }
+                $parsedResponse = (array)json_decode($response->content, true)[0];
+                if (!$arGene->ensembl) {
+                    $arGene->ensembl = $parsedResponse["Ensembl"]; //"ENSG00000175899"
+                }
+                $parsedResponse = $this->recursiveCamelCase($parsedResponse);
+                $arGene->human_protein_atlas = json_encode($parsedResponse);
+                $arGene->save();
+            } catch (\Exception $e) {
+                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . "{$apiUrl}{$searchGene}?format=json&columns=g,pc" . PHP_EOL;
+            }
+            $counter++;
+            echo PHP_EOL;
+        }
     }
 
 
@@ -214,10 +213,10 @@ class GetDataController extends Controller
     {
         $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         $apiUrl = 'https://www.ncbi.nlm.nih.gov/';
-        $arGenesQuery = Gene::find();
+        $arGenesQuery = Gene::find()->where('gene.symbol is not null');
         if($onlyNew) {
             $arGenesQuery->leftJoin('gene_expression_in_sample', 'gene_expression_in_sample.gene_id=gene.id')
-                ->where('gene_expression_in_sample.gene_id is null');
+                ->andWhere('gene_expression_in_sample.gene_id is null');
         }
         if($geneNcbiIds) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
@@ -303,6 +302,23 @@ class GetDataController extends Controller
             throw new \Exception('Couldn\'t parse gene info');
         }
         return $resultArray;
+    }
+
+    public function recursiveCamelCase($items) {
+        $newItems = [];
+        foreach ($items as $k => $item) {
+            $newKey = str_replace('-', ' ', $k);
+            $newKey = str_replace(['_', '.', ',', '/', '[', ']', '(', ')',], ' ', $newKey);
+            $newKey = ucwords($newKey);
+            $newKey = str_replace(' ', '', $newKey);
+            $newItems[$newKey] = $item;
+
+            if (is_array($item)) {
+                $newItems[$newKey] = $this->recursiveCamelCase($item);
+            }
+        }
+
+        return $newItems;
     }
 
 }
