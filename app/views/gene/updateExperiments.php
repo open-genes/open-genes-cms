@@ -71,6 +71,13 @@ $this->params['breadcrumbs'][] = 'Update';
         <?php endforeach; ?>
     </div>
     <br>
+    <h4>Другие подтверждения ассоциации гена со старением</h4> <?= Html::button('Добавить', ['class' => 'btn add-additional-evidence add-protein-activity gray js-add-additional-evidence']) ?>
+    <div class="js-gene-to-additional-evidence">
+        <?php foreach ($model->geneToAdditionalEvidences as $geneToAdditionalEvidence): ?>
+            <?= \app\widgets\AdditionalEvidencesWidget::widget(['model' => $geneToAdditionalEvidence]) ?>
+        <?php endforeach; ?>
+    </div>
+    <br>
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

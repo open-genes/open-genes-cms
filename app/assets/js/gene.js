@@ -49,6 +49,13 @@ $('.js-add-gene-to-longevity-effect').click(function () {
     });
 });
 
+$('.js-add-additional-evidence').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=GeneToAdditionalEvidence&widgetName=AdditionalEvidencesWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+        $('.js-gene-to-additional-evidence').append(data);
+    });
+});
+
 $(document).on('click', '.js-delete', function() {
     if ($(this).is(':checked')) {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');
@@ -85,6 +92,7 @@ $('#experiments-form').on('submit', function(e){
 
                     let field_id = model_name.toLowerCase() + '-' + model_id + '-' + field
                     let experimentsInput = $('input#' + field_id)
+                    let experimentsText = $('textarea#' + field_id)
                     let select2container = $('.select2-hidden-accessible#' + field_id).next('.select2-container')
                     console.log(field_id)
 
@@ -95,6 +103,10 @@ $('#experiments-form').on('submit', function(e){
                     experimentsInput.addClass('has-error');
                     if (!experimentsInput.next('.help-block').length) {
                         $('<div class="help-block">' + error + '</div>').insertAfter('input#' + field_id);
+                    }
+                    experimentsText.addClass('has-error');
+                    if (!experimentsText.next('.help-block').length) {
+                        $('<div class="help-block">' + error + '</div>').insertAfter('textarea#' + field_id);
                     }
                 });
             } else {
