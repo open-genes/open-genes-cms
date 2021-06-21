@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\AgeRelatedChange;
 use app\models\Disease;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\GeneToAdditionalEvidence;
 use app\models\GeneToLongevityEffect;
 use app\models\GeneToProgeria;
 use app\models\Phylum;
@@ -156,6 +157,9 @@ class GeneController extends Controller
                 }
                 if(is_array(Yii::$app->request->post('GeneToLongevityEffect'))) {
                     GeneToLongevityEffect::saveMultipleForGene(Yii::$app->request->post('GeneToLongevityEffect'), $id);
+                }
+                if(is_array(Yii::$app->request->post('GeneToAdditionalEvidence'))) {
+                    GeneToAdditionalEvidence::saveMultipleForGene(Yii::$app->request->post('GeneToAdditionalEvidence'), $id);
                 }
             } catch (UpdateExperimentsException $e) {
                 return json_encode(['error' => $e->getInfoArray(), JSON_UNESCAPED_UNICODE]);

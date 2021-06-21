@@ -325,6 +325,14 @@ class Gene extends common\Gene
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getGeneToAdditionalEvidences()
+    {
+        return $this->hasMany(GeneToAdditionalEvidence::class, ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getGeneToLongevityEffects()
     {
         return $this->hasMany(GeneToLongevityEffect::class, ['gene_id' => 'id']);
