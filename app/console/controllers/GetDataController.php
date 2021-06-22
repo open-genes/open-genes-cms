@@ -4,131 +4,140 @@
 namespace app\console\controllers;
 
 
-use app\models\common\GeneToDisease;
-use app\models\common\GeneToProteinClass;
-use app\models\Disease;
-use app\models\Gene;
-use app\models\ProteinClass;
+use app\console\service\ParseDiseasesServiceInterface;
+use app\console\service\ParseMyGeneServiceInterface;
+use app\console\service\ParseNCBIServiceInterface;
+use app\console\service\ParseProteinAtlasServiceInterface;
+use app\service\GeneOntologyServiceInterface;
 use yii\console\Controller;
-use yii\httpclient\Client;
 
 class GetDataController extends Controller
 {
     /**
-     * todo move logic to service
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\httpclient\Exception
+     * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3 $geneSearchName = ''
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @param string|null $geneSearchName
      */
-    public function actionGetProteinClasses()
+    public function actionGetProteinClasses(string $onlyNew = 'true', string $geneNcbiIds = null, string $geneSearchName = '')
     {
-        $apiUrl = 'https://www.proteinatlas.org/search/';
-        $arGenes = Gene::find()
-            ->where(['isHidden' => 0])
-            ->andWhere('commentEvolution != ""')
-            ->all();
-        $client = new Client();
-        foreach ($arGenes as $arGene) {
-            $response = $client->createRequest()
-                ->setUrl($apiUrl . $arGene->symbol . '?format=json&columns=g,pc')
-                ->setFormat(Client::FORMAT_JSON)
-                ->send();
-            if (!$response->isOk) {
-                echo $response->getStatusCode();
-            }
-            $parsedResponse = json_decode($response->content, true);
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $geneNcbiIdsArray = $geneNcbiIds ? explode(',', $geneNcbiIds) : [];
 
-            foreach($parsedResponse as $geneInfo) {
-                if ($geneInfo['Gene'] === $arGene->symbol) {
-                    echo $arGene->symbol . ': ';
-                    foreach ($geneInfo['Protein class'] as $proteinClass) {
-                        $nameSearch = [
-                            trim($proteinClass),
-                            trim(str_replace('proteins', '', $proteinClass)),
-                            trim(str_replace('genes', '', $proteinClass))
-                        ];
-                        $arProteinClass = ProteinClass::find()
-                            ->where(['in', 'name_en', $nameSearch])
-                            ->one();
-                        if(!$arProteinClass) {
-                            echo 'NOT FOUND ' . $proteinClass . ' ';
-                            continue;
-                        }
-                        $arGeneToProteinClass = GeneToProteinClass::find()
-                            ->where([
-                                'protein_class_id' => $arProteinClass->id,
-                                'gene_id' => $arGene->id,
-                            ])
-                            ->one();
-                        if(!$arGeneToProteinClass) {
-                            $arGeneToProteinClass = new GeneToProteinClass();
-                            $arGeneToProteinClass->gene_id = $arGene->id;
-                            $arGeneToProteinClass->protein_class_id = $arProteinClass->id;
-                            $arGeneToProteinClass->save();
-                        }
-                        echo '"' . $arProteinClass->name_en . '" ';
-                    }
-                }
-            }
-            echo PHP_EOL;
-        }
+        /** @var ParseProteinAtlasServiceInterface $proteinAtlasService */
+        $proteinAtlasService = \Yii::$container->get(ParseProteinAtlasServiceInterface::class);
+        $proteinAtlasService->parseClasses($onlyNew, $geneNcbiIdsArray, $geneSearchName);
+
     }
-    
-    public function actionGetDiseasesFromBiocomp()
-    {
-//        $test = 'PS10101';
-//        var_dump((int)$test);
-//        var_dump(filter_var($test, FILTER_SANITIZE_NUMBER_INT));
-//        die;
-        
-        $apiUrl = 'http://edgar.biocomp.unibo.it/gene_disease_db/csv_files/';
-        $arGenes = Gene::find()
-            ->all();
-        $client = new Client();
-        foreach ($arGenes as $arGene) {
-            $response = $client->createRequest()
-                ->setUrl($apiUrl . $arGene->symbol . '.csv')
-                ->setFormat(Client::FORMAT_JSON)
-                ->send();
-            if (!$response->isOk) {
-                echo $apiUrl . $arGene->symbol . '.csv response: ' . $response->getStatusCode() . PHP_EOL;
-                continue;
-            }
 
-            preg_match('/#Gene-disease associations table(.*?)#/s', $response->content, $matches);
-            $diseases = [];
-            if (!$matches) {
-                continue;
-            }
-            foreach (explode(PHP_EOL, $matches[1]) as $line) {
-                if (!$line || $line[0] == '#' || $line[0] == null || str_starts_with($line, 'Disease ID')  ) {
+    /**
+     * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3 $geneSearchName = ''
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @param string $geneSearchName
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionGetProteinAtlas(string $onlyNew = 'true', string $geneNcbiIds = null, string $geneSearchName = '')
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $geneNcbiIdsArray = $geneNcbiIds ? explode(',', $geneNcbiIds) : [];
+
+        /** @var ParseProteinAtlasServiceInterface $proteinAtlasService */
+        $proteinAtlasService = \Yii::$container->get(ParseProteinAtlasServiceInterface::class);
+        $proteinAtlasService->parseFullAtlas($onlyNew, $geneNcbiIdsArray, $geneSearchName);
+
+    }
+
+    /**
+     * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionGetDiseasesFromBiocomp(string $onlyNew = 'true', string $geneNcbiIds = null)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $geneNcbiIdsArray = $geneNcbiIds ? explode(',', $geneNcbiIds) : [];
+
+        /** @var ParseDiseasesServiceInterface $diseasesService */
+        $diseasesService = \Yii::$container->get(ParseDiseasesServiceInterface::class);
+        $diseasesService->parseBiocomp($onlyNew, $geneNcbiIdsArray);
+
+    }
+
+    /**
+     * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3
+     * @param string $onlyNew
+     * @param null|string $geneNcbiIds
+     */
+    public function actionGetGeneExpression(string $onlyNew = 'true', string $geneNcbiIds = null)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $geneNcbiIdsArray = $geneNcbiIds ? explode(',', $geneNcbiIds) : [];
+
+        /** @var  ParseNCBIServiceInterface $ncbiService */
+        $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
+        $ncbiService->parseExpression($onlyNew, $geneNcbiIdsArray);
+    }
+
+    /**
+     * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionGetGeneInfo(string $onlyNew = 'true', string $geneNcbiIds = null)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $geneNcbiIdsArray = $geneNcbiIds ? explode(',', $geneNcbiIds) : [];
+
+        /** @var ParseMyGeneServiceInterface $myGeneService */
+        $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
+        $myGeneService->parseInfo($onlyNew, $geneNcbiIdsArray);
+    }
+
+    /**
+     * params: $onlyNew='true' $geneNcbiIds=1,2,3 $countRows=1000
+     * @param string $onlyNew
+     * @param string|null $geneNcbiIds
+     * @param int $countRows
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\di\NotInstantiableException
+     */
+    public function actionGetGoTerms(string $onlyNew='true', string $geneNcbiIds=null, int $countRows=1000)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        /** @var GeneOntologyServiceInterface $geneOntologyService */
+        $geneOntologyService = \Yii::$container->get(GeneOntologyServiceInterface::class);
+        $arGenesQuery = \app\models\Gene::find()->where('gene.ncbi_id > 0');
+        if($onlyNew) {
+            $arGenesQuery->leftJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
+                ->andWhere('gene_to_ontology.gene_id is null');
+        }
+        if($geneNcbiIds) {
+            $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
+        }
+        $arGenes = $arGenesQuery->all();
+        $counter = 1;
+        $count = count($arGenes);
+        foreach ($arGenes as $arGene) {
+            echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
+            try {
+                $result = $geneOntologyService->mineFromGatewayForGene($arGene->ncbi_id, $countRows);
+                if (isset($result['link_errors'])) {
+                    echo ' ERROR ' . $result['link_errors'];
                     continue;
                 }
-                $diseases[] = str_getcsv($line, "\t");
+                echo ' ok' . PHP_EOL;
+                $counter++;
+            } catch (\Exception $e) {
+                echo ' ERROR ' . $e->getMessage();
             }
-            $saved = 0;
-            foreach ($diseases as $diseaseArray) {
-                $omimId = (int)filter_var($diseaseArray[0], FILTER_SANITIZE_NUMBER_INT);
-                $arDisease = Disease::findOne(['omim_id' => $omimId]);
-                if (!$arDisease) {
-                    $arDisease = new Disease();
-                    $arDisease->omim_id = $omimId;
-                    $arDisease->name_en = ucfirst(strtolower($diseaseArray[1]));
-                    $arDisease->save();
-                    $arDisease->refresh();
-                }
-                $arGeneToDisease = GeneToDisease::findOne(['gene_id' => $arGene->id, 'disease_id' => $arDisease->id]);
-                
-                if (!$arGeneToDisease) {
-                    $arGeneToDisease = new GeneToDisease();
-                    $arGeneToDisease->gene_id = $arGene->id;
-                    $arGeneToDisease->disease_id = $arDisease->id;
-                    $arGeneToDisease->save();
-                    $saved++;
-                }
-
-            }
-            echo $arGene->symbol . ': ' . $saved . ' disease(s) added ' . PHP_EOL;
-
         }
+        echo PHP_EOL;
     }
+
 }
