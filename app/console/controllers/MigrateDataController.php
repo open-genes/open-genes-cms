@@ -8,11 +8,8 @@ use app\models\Gene;
 use app\models\common\GeneExpressionInSample;
 use app\models\GeneToCommentCause;
 use app\models\GeneToFunctionalCluster;
-use app\models\common\GeneToProteinClass;
-use app\models\ProteinClass;
 use app\models\Sample;
 use yii\console\Controller;
-use yii\httpclient\Client;
 
 class MigrateDataController extends Controller
 {
@@ -164,61 +161,4 @@ class MigrateDataController extends Controller
         }
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\httpclient\Exception
-     */
-    public function actionGetProteinClasses()
-    {
-        $apiUrl = 'https://www.proteinatlas.org/search/';
-        $arGenes = Gene::find()
-            ->where(['isHidden' => 0])
-            ->andWhere('commentEvolution != ""')
-        ->all();
-        $client = new Client();
-        foreach ($arGenes as $arGene) {
-            $response = $client->createRequest()
-                ->setUrl($apiUrl . $arGene->symbol . '?format=json&columns=g,pc')
-                ->setFormat(Client::FORMAT_JSON)
-                ->send();
-            if (!$response->isOk) {
-                echo $response->getStatusCode();
-            }
-            $parsedResponse = json_decode($response->content, true);
-
-            foreach($parsedResponse as $geneInfo) {
-                if ($geneInfo['Gene'] === $arGene->symbol) {
-                    echo $arGene->symbol . ': ';
-                    foreach ($geneInfo['Protein class'] as $proteinClass) {
-                        $nameSearch = [
-                            trim($proteinClass),
-                            trim(str_replace('proteins', '', $proteinClass)),
-                            trim(str_replace('genes', '', $proteinClass))
-                        ];
-                        $arProteinClass = ProteinClass::find()
-                            ->where(['in', 'name_en', $nameSearch])
-                            ->one();
-                        if(!$arProteinClass) {
-                            echo 'NOT FOUND ' . $proteinClass . ' ';
-                            continue;
-                        }
-                        $arGeneToProteinClass = GeneToProteinClass::find()
-                            ->where([
-                                'protein_class_id' => $arProteinClass->id,
-                                'gene_id' => $arGene->id,
-                            ])
-                        ->one();
-                        if(!$arGeneToProteinClass) {
-                            $arGeneToProteinClass = new GeneToProteinClass();
-                            $arGeneToProteinClass->gene_id = $arGene->id;
-                            $arGeneToProteinClass->protein_class_id = $arProteinClass->id;
-                            $arGeneToProteinClass->save();
-                        }
-                        echo '"' . $arProteinClass->name_en . '" ';
-                    }
-                }
-            }
-            echo PHP_EOL;
-        }
-    }
 }

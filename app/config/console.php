@@ -1,4 +1,7 @@
 <?php
+
+use app\console\service\ParseProteinAtlasServiceInterface;
+
 $params = array_merge(
     require __DIR__ . '/../config/params.php',
     require __DIR__ . '/params.php'
@@ -42,7 +45,12 @@ $config = [
     ],
     'container' => [
         'definitions' => [
-            \app\service\GeneOntologyServiceInterface::class => \app\service\GeneOntologyService::class
+            \app\service\GeneOntologyServiceInterface::class => \app\service\GeneOntologyService::class,
+            \app\console\service\ParseProteinAtlasServiceInterface::class => new \app\console\service\ParseProteinAtlasService('https://www.proteinatlas.org/search/'),
+            \app\console\service\ParseDiseasesServiceInterface::class => new \app\console\service\ParseDiseasesService('http://edgar.biocomp.unibo.it/gene_disease_db/csv_files/'),
+            \app\console\service\ParseNCBIServiceInterface::class => new \app\console\service\ParseNCBIService('https://www.ncbi.nlm.nih.gov/'),
+            \app\console\service\ParseMyGeneServiceInterface::class => new \app\console\service\ParseMyGeneService('https://mygene.info/v3/gene/'),
+
         ]
     ],
     'params' => $params,
