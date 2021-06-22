@@ -33,7 +33,7 @@ class GeneOntologyService implements GeneOntologyServiceInterface
      * @return array (errors, gene_ontology, gene_entrez
      * @throws Exception
      */
-    public function mineFromGatewayForGene($geneNcbiId, $rows = 1000)
+    public function mineFromGatewayForGene($geneNcbiId, $rows = 2000)
     {
         $result = [];
         $geneRecord = Gene::find()
