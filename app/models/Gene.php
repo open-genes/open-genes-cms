@@ -178,6 +178,9 @@ class Gene extends common\Gene
 
     public function afterSave($insert, $changedAttributes)
     {
+        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
+            return parent::afterSave($insert, $changedAttributes);
+        }
         // todo move to relational active records
         $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
         if($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
@@ -193,10 +196,13 @@ class Gene extends common\Gene
             } else {
                 $functionalClustersIdsToDelete = $currentFunctionalClustersIds;
             }
-            GeneToFunctionalCluster::deleteAll(
+            $arsToDelete = GeneToFunctionalCluster::find()->where(
                 ['and', ['gene_id' => $this->id],
                 ['in', 'functional_cluster_id', $functionalClustersIdsToDelete]]
-            );
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
         }
 
         $currentCommentCauseIds = $this->getCommentCauseIdsArray();
@@ -213,10 +219,13 @@ class Gene extends common\Gene
             } else {
                 $commentCausesIdsToDelete = $currentCommentCauseIds;
             }
-            GeneToCommentCause::deleteAll(
+            $arsToDelete = GeneToCommentCause::find()->where(
                 ['and', ['gene_id' => $this->id],
                     ['in', 'comment_cause_id', $commentCausesIdsToDelete]]
-            );
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
         }
 
         $currentProteinClassesIdsArray = $this->getProteinClassesIdsArray();
@@ -233,10 +242,13 @@ class Gene extends common\Gene
             } else {
                 $proteinClassesIdsToDelete = $currentProteinClassesIdsArray;
             }
-            GeneToProteinClass::deleteAll(
+            $arsToDelete = GeneToProteinClass::find()->where(
                 ['and', ['gene_id' => $this->id],
                     ['in', 'protein_class_id', $proteinClassesIdsToDelete]]
-            );
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
         }
 
         $currentDiseasesIdsArray = $this->getDiseasesIdsArray();
@@ -253,10 +265,13 @@ class Gene extends common\Gene
             } else {
                 $diseasesIdsArrayToDelete = $currentDiseasesIdsArray;
             }
-            GeneToDisease::deleteAll(
+            $arsToDelete = GeneToDisease::find()->where(
                 ['and', ['gene_id' => $this->id],
                     ['in', 'disease_id', $diseasesIdsArrayToDelete]]
-            );
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
         }
 
         parent::afterSave($insert, $changedAttributes);
