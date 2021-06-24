@@ -32,7 +32,7 @@ class LifespanExperiment extends common\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'reference'], 'required'],
+            [['gene_id', 'gene_intervention_id', 'reference'], 'required'],
             [['age'], 'number', 'min'=>0],
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age);

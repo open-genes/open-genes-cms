@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <?php endforeach; ?>
     </div>
     <br>
-    <h4>Аллельный полиморфизм, ассоциированный с долголетием или возрастным фенотипом</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity red js-add-gene-to-longevity-effect']) ?>
+    <h4>Геномные, транскриптомные и протеомные ассоциации с долголетием</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity red js-add-gene-to-longevity-effect']) ?>
     <div class="js-gene-to-longevity-effects">
         <?php foreach ($model->geneToLongevityEffects as $geneToLongevityEffect): ?>
             <?= \app\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]) ?>

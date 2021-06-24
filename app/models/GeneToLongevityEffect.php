@@ -31,7 +31,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'model_organism_id', 'reference'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'genotype_id', 'reference', 'data_type'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -46,7 +46,8 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'sex_of_organism' => 'Пол',
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
-            'model_organism_id' => 'Организм',
+            'data_type' => 'Вид изменений',
+            'age_related_change_type_id' => 'Вид изменений',
         ]);
     }
 

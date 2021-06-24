@@ -15,25 +15,6 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
-                        'tags' => true,
-                        'tokenSeparators' => ['##'],
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="form-third">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']intervention_result_id',
-                    'data' => \app\models\InterventionResultForLongevity::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Результат вмешательства',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tags' => true,
-                        'tokenSeparators' => ['##'],
                     ],
                 ]);
                 ?>
@@ -55,49 +36,47 @@
                 ]);
                 ?>
             </div>
+            <div class="form-third">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
+                    'data' => \app\models\OrganismLine::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Линия организма',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => true,
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div>
         </div>
         <div class="form-split">
-            <div class="form-half-without-margin">
+            <div class="form-third">
                 <div class="form-half-without-margin">
-                    <div class="form-half-without-margin">
-                        <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']age', ['class' => 'form-control form_age', 'placeholder' => 'Возраст']) ?>
-                    </div>
-                    <div class="form-half-without-margin">
-                        <?= \kartik\select2\Select2::widget([
-                            'model' => $lifespanExperiment,
-                            'attribute' => '[' . $lifespanExperiment->id . ']age_unit',
-                            'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
-                            'options' => [
-                                'placeholder' => 'Ед. изм. возраста',
-                                'multiple' => false
-                            ],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                                'containerCssClass' => 'form_age_unit',
-                            ],
-                        ]);
-                        ?>
-                    </div>
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']age', ['class' => 'form-control form_age', 'placeholder' => 'Возраст']) ?>
                 </div>
                 <div class="form-half-without-margin">
                     <?= \kartik\select2\Select2::widget([
                         'model' => $lifespanExperiment,
-                        'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
-                        'data' => \app\models\OrganismLine::getAllNamesAsArray(),
+                        'attribute' => '[' . $lifespanExperiment->id . ']age_unit',
+                        'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
                         'options' => [
-                            'placeholder' => 'Линия организма',
-                            'multiple' => false,
+                            'placeholder' => 'Ед. изм. возраста',
+                            'multiple' => false
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
-                            'tags' => true,
-                            'tokenSeparators' => ['##'],
+                            'containerCssClass' => 'form_age_unit',
                         ],
                     ]);
                     ?>
                 </div>
             </div>
-            <div class="form-half-without-margin">
+            <div class="form-two-thirds" style="width: 66%;">
                 <div class="form-half-without-margin">
                     <div class="form-half-without-margin">
                         <?= \kartik\select2\Select2::widget([
