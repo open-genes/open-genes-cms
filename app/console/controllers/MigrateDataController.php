@@ -161,4 +161,30 @@ class MigrateDataController extends Controller
         }
     }
 
+    public function actionMigrateAbdb($pathToFile = 'scratch.json')
+    {
+        $json = file_get_contents($pathToFile);
+        $array = json_decode($json, true);
+
+        $counter = 1;
+        $count = count($array['data']);
+        foreach ($array['data'] as $gene) {
+            $symbol = $gene[1];
+            $ncbiId = trim(strip_tags($gene[2]));
+            echo $counter . ' from ' . $count . ': ' . $symbol . ' ' . $ncbiId . ' ';
+            $arGene = Gene::find()->where(['ncbi_id' => $ncbiId])->one();
+            if ($arGene) {
+                echo 'gene found' . PHP_EOL;
+            } else {
+                $arGene = new Gene();
+                $arGene->ncbi_id = $ncbiId;
+                $arGene->symbol = $symbol;
+                $arGene->source = 'abdb';
+                $arGene->save();
+                echo 'SAVED!' . PHP_EOL;
+            }
+        }
+        $source = null;
+echo $source;
+    }
 }

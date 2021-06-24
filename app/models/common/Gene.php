@@ -45,6 +45,7 @@ use function str_replace;
  * @property string $summary_en
  * @property string $ensembl
  * @property string $human_protein_atlas
+ * @property string $source
  *
  * @property Phylum $age
  * @property AgeRelatedChange[] $ageRelatedChanges
@@ -78,7 +79,7 @@ class Gene extends \yii\db\ActiveRecord
     {
         return [
             [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id', 'expressionChange'], 'integer'],
-            [['protein_complex_ru', 'protein_complex_en','summary_ru','summary_en', 'ensembl', 'human_protein_atlas'], 'string'],
+            [['protein_complex_ru', 'protein_complex_en','summary_ru','summary_en', 'ensembl', 'human_protein_atlas', 'source'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
@@ -129,6 +130,7 @@ class Gene extends \yii\db\ActiveRecord
             'summary_en' => 'Summary En',
             'ensembl' => 'Ensembl',
             'human_protein_atlas' => 'Human Protein Atlas',
+            'source' => 'Source',
         ];
     }
 

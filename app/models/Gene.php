@@ -95,6 +95,7 @@ class Gene extends common\Gene
             'protein_complex_en' => 'Белковый комплекс En',
             'summary_ru' => 'Описание гена (NCBI) Ru',
             'summary_en' => 'Описание гена (NCBI) En',
+            'source' => 'Источник',
         ];
     }
 
@@ -178,9 +179,9 @@ class Gene extends common\Gene
 
     public function afterSave($insert, $changedAttributes)
     {
-        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
-            return parent::afterSave($insert, $changedAttributes);
-        }
+//        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
+//            return parent::afterSave($insert, $changedAttributes);
+//        }
         // todo move to relational active records
         $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
         if($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
