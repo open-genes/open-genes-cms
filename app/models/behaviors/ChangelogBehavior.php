@@ -15,6 +15,7 @@ class ChangelogBehavior extends Behavior
         return [
             ActiveRecord::EVENT_AFTER_INSERT => 'afterSave',
             ActiveRecord::EVENT_AFTER_UPDATE => 'afterSave',
+            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
         ];
     }
 
@@ -29,17 +30,36 @@ class ChangelogBehavior extends Behavior
                 }
             }
             if($changes) {
-                $arChengelog = new Changelog();
-                $arChengelog->object_name = (new \ReflectionClass($this->owner))->getShortName();
-                $arChengelog->object_id = $this->owner->id;
-                $arChengelog->diff = json_encode($changes, JSON_UNESCAPED_UNICODE);
-                if (isset(\Yii::$app->user)) {
-                    $arChengelog->user_id = \Yii::$app->user->id;
-                    $arChengelog->user_login = \Yii::$app->user->identity->username;
-                }
-                $arChengelog->time = time();
-                $arChengelog->save();
+                $arChangelog = new Changelog();
+                $arChangelog->object_name = (new \ReflectionClass($this->owner))->getShortName();
+                $arChangelog->object_id = $this->owner->id;
+                $arChangelog->diff = json_encode($changes, JSON_UNESCAPED_UNICODE);
+                $this->setUser($arChangelog);
+                $arChangelog->time = time();
+                $arChangelog->save();
             }
+        }
+    }
+
+    public function afterDelete($event)
+    {
+        $arChangelog = new Changelog();
+        $arChangelog->object_name = (new \ReflectionClass($event->sender))->getShortName();
+        $arChangelog->object_id = $event->sender->id;
+        $arChangelog->diff = json_encode(['deleted'], JSON_UNESCAPED_UNICODE);
+        $this->setUser($arChangelog);
+        $arChangelog->time = time();
+        $arChangelog->save();
+    }
+    
+    private function setUser(&$arChangelog)
+    {
+        if (isset(\Yii::$app->user)) {
+            $arChangelog->user_id = \Yii::$app->user->id;
+            $arChangelog->user_login = \Yii::$app->user->identity->username;
+        } elseif (\Yii::$app instanceof \yii\console\Application) {
+            $arChangelog->user_id = 0;
+            $arChangelog->user_login = 'cli';
         }
     }
 }
