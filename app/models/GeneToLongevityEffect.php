@@ -54,7 +54,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'sex_of_organism' => 'Пол',
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
-            'data_type' => 'Вид изменений',
+            'data_type' => 'Тип изменений',
             'model_organism_id' => 'Организм',
             'age_related_change_type_id' => 'Вид изменений',
         ]);
