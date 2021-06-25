@@ -49,21 +49,42 @@
                     </div>
 
                     <div class="form-half-without-margin">
-                        <?= \kartik\select2\Select2::widget([
-                            'model' => $geneToLongevityEffect,
-                            'attribute' => '[' . $geneToLongevityEffect->id . ']data_type',
-                            'data' => [1 => 'геномные', 2 => 'транскриптомные', 3 => 'протеомные'],
-                            'options' => [
-                                'placeholder' => 'Вид данных',
-                                'multiple' => false
-                            ],
-                            'pluginOptions' => [
-                                'allowClear' => false,
-                                'containerCssClass' => 'red',
-                                'dropdownCssClass' => 'red',
-                            ],
-                        ]);
-                        ?>
+                        <div class="form-half-without-margin">
+                            <?= \kartik\select2\Select2::widget([
+                                'model' => $geneToLongevityEffect,
+                                'attribute' => '[' . $geneToLongevityEffect->id . ']data_type',
+                                'data' => [1 => 'геномные', 2 => 'транскриптомные', 3 => 'протеомные'],
+                                'options' => [
+                                    'placeholder' => 'Вид данных',
+                                    'multiple' => false
+                                ],
+                                'pluginOptions' => [
+                                    'allowClear' => false,
+                                    'containerCssClass' => 'red',
+                                    'dropdownCssClass' => 'red',
+                                ],
+                            ]);
+                            ?>
+                        </div>
+                        <div class="form-half-without-margin">
+                            <?= \kartik\select2\Select2::widget([
+                                'model' => $geneToLongevityEffect,
+                                'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
+                                'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
+                                'options' => [
+                                    'placeholder' => 'Организм',
+                                    'multiple' => false,
+                                ],
+                                'pluginOptions' => [
+                                    'allowClear' => false,
+                                    'tags' => true,
+                                    'tokenSeparators' => ['##'],
+                                    'containerCssClass' => 'red',
+                                    'dropdownCssClass' => 'red',
+                                ],
+                            ]);
+                            ?>
+                        </div>
                     </div>
                 </div>
                 <div class="form-sixth">
@@ -97,8 +118,8 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
-                        'containerCssClass' => 'blue',
-                        'dropdownCssClass' => 'blue',
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
                     ],
                 ]);
                 ?>
