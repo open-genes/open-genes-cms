@@ -24,6 +24,14 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
         ];
     }
 
+    public function init() {
+        parent::init();
+        if ($this->isNewRecord) {
+            $modelOrganismHumanId = ModelOrganism::find()->select('id')->where(['name_en' => 'human'])->scalar();
+            $this->model_organism_id = $modelOrganismHumanId;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +39,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'model_organism_id', 'reference'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'genotype_id', 'reference', 'data_type', 'model_organism_id'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -46,7 +54,9 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'sex_of_organism' => 'Пол',
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
+            'data_type' => 'Тип изменений',
             'model_organism_id' => 'Организм',
+            'age_related_change_type_id' => 'Вид изменений',
         ]);
     }
 

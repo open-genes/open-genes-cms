@@ -30,44 +30,62 @@
             </div>
             <div class="form-split">
                 <div class="form-five-sixths">
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneToLongevityEffect,
-                        'attribute' => '[' . $geneToLongevityEffect->id . ']longevity_effect_id',
-                        'data' => \app\models\LongevityEffect::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Эффект',
-                            'multiple' => false,
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => ['##'],
-                            'containerCssClass' => 'red',
-                            'dropdownCssClass' => 'red',
-                        ],
-                    ]);
-                    ?>
-                </div>
-                <div class="form-half-without-margin">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneToLongevityEffect,
-                        'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
-                        'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Организм',
-                            'multiple' => false,
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => ['##'],
-                            'containerCssClass' => 'red',
-                            'dropdownCssClass' => 'red',
-                        ],
-                    ]);
-                    ?>
-                </div>
+                    <div class="form-half-without-margin">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $geneToLongevityEffect,
+                            'attribute' => '[' . $geneToLongevityEffect->id . ']longevity_effect_id',
+                            'data' => \app\models\LongevityEffect::getAllNamesAsArray(),
+                            'options' => [
+                                'placeholder' => 'Эффект',
+                                'multiple' => false,
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => false,
+                                'containerCssClass' => 'red',
+                                'dropdownCssClass' => 'red',
+                            ],
+                        ]);
+                        ?>
+                    </div>
+
+                    <div class="form-half-without-margin">
+                        <div class="form-half-without-margin">
+                            <?= \kartik\select2\Select2::widget([
+                                'model' => $geneToLongevityEffect,
+                                'attribute' => '[' . $geneToLongevityEffect->id . ']data_type',
+                                'data' => [1 => 'геномные', 2 => 'транскриптомные', 3 => 'протеомные'],
+                                'options' => [
+                                    'placeholder' => 'Вид данных',
+                                    'multiple' => false
+                                ],
+                                'pluginOptions' => [
+                                    'allowClear' => false,
+                                    'containerCssClass' => 'red',
+                                    'dropdownCssClass' => 'red',
+                                ],
+                            ]);
+                            ?>
+                        </div>
+                        <div class="form-half-without-margin">
+                            <?= \kartik\select2\Select2::widget([
+                                'model' => $geneToLongevityEffect,
+                                'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
+                                'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
+                                'options' => [
+                                    'placeholder' => 'Организм',
+                                    'multiple' => false,
+                                ],
+                                'pluginOptions' => [
+                                    'allowClear' => false,
+                                    'tags' => true,
+                                    'tokenSeparators' => ['##'],
+                                    'containerCssClass' => 'red',
+                                    'dropdownCssClass' => 'red',
+                                ],
+                            ]);
+                            ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-sixth">
                     <?= \kartik\select2\Select2::widget([
@@ -89,7 +107,26 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+            <div class="form-half-small-margin">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']age_related_change_type_id',
+                    'data' => \app\models\AgeRelatedChangeType::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Вид изменений',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-half-small-margin">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+            </div>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

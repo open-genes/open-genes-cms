@@ -16,8 +16,6 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => false,
-                            'tags' => true,
-                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
                             'dropdownCssClass' => 'blue',
                         ],
