@@ -6,6 +6,7 @@ use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -32,7 +33,7 @@ class LifespanExperiment extends common\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'reference'], 'required'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'reference'], 'required'],
             [['age'], 'number', 'min'=>0],
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age);
@@ -48,7 +49,7 @@ class LifespanExperiment extends common\LifespanExperiment
             'delete' => 'Удалить',
             'gene_intervention_id' => 'Вмешательство',
             'intervention_result_id' => 'Результат вмешательства',
-            'model_organism_id' => 'Модельный организм',
+            'model_organism_id' => 'Объект',
             'age' => 'Возраст',
             'reference' => 'Ссылка',
             'age_unit' => 'Ед. измерения возраста',
@@ -88,13 +89,12 @@ class LifespanExperiment extends common\LifespanExperiment
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
         foreach ($modelArrays as $id => $modelArray) {
-//            if($modelArray['gene_intervention_id'] && $modelArray['intervention_result_id']) {
                 if(is_numeric($id)) {
                     $modelAR = self::findOne($id);
                 } else {
                     $modelAR = new self();
                 }
-                if ($modelArray['delete'] === '1') {
+                if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                     $modelAR->delete();
                     continue;
                 }
@@ -125,7 +125,6 @@ class LifespanExperiment extends common\LifespanExperiment
                 if(!$modelAR->validate() || !$modelAR->save()) {
                     throw new UpdateExperimentsException($id, $modelAR);
                 }
-//            }
         }
     }
 

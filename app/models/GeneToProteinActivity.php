@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -68,7 +69,7 @@ class GeneToProteinActivity extends common\GeneToProteinActivity
                 } else {
                     $modelAR = new self();
                 }
-                if ($modelArray['delete'] === '1') {
+                if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
                     $modelAR->delete();
                     continue;
                 }

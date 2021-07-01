@@ -15,6 +15,8 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
                     ],
                 ]);
                 ?>
@@ -25,7 +27,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']model_organism_id',
                     'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Организм',
+                        'placeholder' => 'Объект',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
@@ -42,7 +44,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
                     'data' => \app\models\OrganismLine::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Линия организма',
+                        'placeholder' => 'Линия',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -63,7 +65,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $lifespanExperiment,
                         'attribute' => '[' . $lifespanExperiment->id . ']age_unit',
-                        'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                        'data' => [1 => 'дней', 4 => 'недель', 2 => 'месяцев', 3 => 'лет'],
                         'options' => [
                             'placeholder' => 'Ед. изм. возраста',
                             'multiple' => false
@@ -107,8 +109,27 @@
                 </div>
             </div>
         </div>
-        <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+        <div class="form-split no-margin">
+            <div class="form-half-without-margin">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']intervention_result_id',
+                    'data' => \app\models\InterventionResultForLongevity::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Результат вмешательства',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                        'allowClear' => false,
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-half-without-margin">
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+            </div>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = 'Update';
     ]); ?>
     <a href="<?=\yii\helpers\Url::toRoute(['update', 'id' => $model->id])?>" target="_blank" class="gene-link">Редактировать ген <?=$model->symbol ?> <span class="glyphicon glyphicon-pencil"></span></a>
     <h2><?= Html::encode($this->title) ?></h2>
-    <h4>Эксперименты с увеличением продолжительности жизни</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-lifespan-experiment']) ?>
+    <h4>Эксперименты с изменением продолжительности жизни</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-lifespan-experiment']) ?>
     <div class="js-lifespan-experiments">
         <?php foreach ($model->lifespanExperiments as $lifespanExperiment): ?>
             <?= LifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <?php endforeach; ?>
     </div>
     <br>
-    <h4>Вмешательство в работу гена/продукта предотвращает связанное со старением ухудшение процесса или системы</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity green js-add-intervention-to-vital-process']) ?>
+    <h4>Влияние модификации гена/продукта на связанный со старением процесс/систему</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity green js-add-intervention-to-vital-process']) ?>
     <div class="js-intervention-to-vital-processes">
         <?php foreach ($model->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess): ?>
             <?= \app\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]) ?>
