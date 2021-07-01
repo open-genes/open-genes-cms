@@ -3,14 +3,14 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\ModelOrganism */
+/* @var $model app\models\GeneRegulationType */
 
-$this->title = 'Редактировать объект (модельный организм) ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Model Organisms', 'url' => ['index']];
+$this->title = 'Редактировать вид регуляции ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Gene Regulation Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="model-organism-update">
+<div class="gene-regulation-type-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

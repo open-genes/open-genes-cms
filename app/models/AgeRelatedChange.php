@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -48,8 +49,8 @@ class AgeRelatedChange extends common\AgeRelatedChange
             'age_related_change_type_id' => 'Вид изменений',
             'sample_id' => 'Образец',
             'reference' => 'Ссылка',
-            'model_organism_id' => 'Модельный организм',
-            'organism_line_id' => 'Линия организма',
+            'model_organism_id' => 'Объект',
+            'organism_line_id' => 'Линия',
             'age_from' => 'Возраст - от',
             'age_to' => 'Возраст - до',
             'change_value_male' => 'Изменение муж.',
@@ -95,7 +96,7 @@ class AgeRelatedChange extends common\AgeRelatedChange
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
                 $modelAR->delete();
                 continue;
             }

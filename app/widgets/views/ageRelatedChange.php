@@ -16,6 +16,8 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => false,
+                            'tags' => Yii::$app->user->can('admin'),
+                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
                             'dropdownCssClass' => 'blue',
                         ],
@@ -49,7 +51,7 @@
                         'attribute' => '[' . $ageRelatedChange->id . ']model_organism_id',
                         'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                         'options' => [
-                            'placeholder' => 'Организм',
+                            'placeholder' => 'Объект',
                             'multiple' => false
                         ],
                         'pluginOptions' => [
@@ -68,7 +70,7 @@
                         'attribute' => '[' . $ageRelatedChange->id . ']organism_line_id',
                         'data' => \app\models\OrganismLine::getAllNamesAsArray(),
                         'options' => [
-                            'placeholder' => 'Линия организма',
+                            'placeholder' => 'Линия',
                             'multiple' => false,
                         ],
                         'pluginOptions' => [
@@ -95,7 +97,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $ageRelatedChange,
                         'attribute' => '[' . $ageRelatedChange->id . ']age_unit',
-                        'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                        'data' => [1 => 'дней', 4 => 'недель', 2 => 'месяцев', 3 => 'лет'],
                         'options' => [
                             'placeholder' => 'Ед. изм. возраста',
                             'multiple' => false
@@ -127,9 +129,9 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $ageRelatedChange,
                     'attribute' => '[' . $ageRelatedChange->id . ']measurement_type',
-                    'data' => [1 => 'мРНК', 2 => 'белок'],
+                    'data' => [1 => 'мРНК', 2 => 'белок', 3 => 'Количество клеток, экспрессирующих ген'],
                     'options' => [
-                        'placeholder' => 'мРНК/белок',
+                        'placeholder' => 'Метод измерения',
                         'multiple' => false
                     ],
                     'pluginOptions' => [

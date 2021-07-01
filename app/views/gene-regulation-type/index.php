@@ -6,16 +6,17 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Объекты (модельные организмы)';
+$this->title = 'Виды регуляции';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="model-organism-index">
+<div class="gene-regulation-type-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить объект (модельный организм)', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить вид регуляции', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

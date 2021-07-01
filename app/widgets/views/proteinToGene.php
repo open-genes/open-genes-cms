@@ -15,6 +15,8 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => false,
+                            'tags' => Yii::$app->user->can('admin'),
+                            'tokenSeparators' => ['##'],
                             'containerCssClass' => 'yellow',
                             'dropdownCssClass' => 'yellow',
                         ],
@@ -44,14 +46,16 @@
             <div class="form-half-small-margin">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $proteinToGene,
-                    'attribute' => '[' . $proteinToGene->id . ']regulation_type',
-                    'data' => ['' => '', 1 => 'экспрессия гена', 2 => 'активность белка'],
+                    'attribute' => '[' . $proteinToGene->id . ']regulation_type_id',
+                    'data' => app\models\GeneRegulationType::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Вид регуляции',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
                         'containerCssClass' => 'yellow',
                         'dropdownCssClass' => 'yellow',
                     ],

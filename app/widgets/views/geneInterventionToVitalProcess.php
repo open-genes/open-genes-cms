@@ -1,5 +1,8 @@
 <?php
 /** @var $geneInterventionToVitalProcess \app\models\GeneInterventionToVitalProcess */
+
+use app\models\InterventionResultForVitalProcess;
+
 ?>
 <div class="form-split protein-activity green js-intervention-to-vital-process js-gene-link-section">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
@@ -15,6 +18,8 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
                         'containerCssClass' => 'green',
                         'dropdownCssClass' => 'green',
                     ],
@@ -32,6 +37,8 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
                         'containerCssClass' => 'green',
                         'dropdownCssClass' => 'green',
                     ],
@@ -44,7 +51,7 @@
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']model_organism_id',
                     'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Организм',
+                        'placeholder' => 'Объект',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -67,7 +74,7 @@
                     <?= \kartik\select2\Select2::widget([
                         'model' => $geneInterventionToVitalProcess,
                         'attribute' => '[' . $geneInterventionToVitalProcess->id . ']age_unit',
-                        'data' => [1 => 'дней', 2 => 'месяцев', 3 => 'лет'],
+                        'data' => [1 => 'дней', 4 => 'недель', 2 => 'месяцев', 3 => 'лет'],
                         'options' => [
                             'placeholder' => 'Ед. изм. возраста',
                             'multiple' => false
@@ -87,7 +94,7 @@
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']organism_line_id',
                     'data' => \app\models\OrganismLine::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Линия организма',
+                        'placeholder' => 'Линия',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -136,7 +143,28 @@
             </div>
         </div>
         <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+            <div class="form-half-without-margin">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']intervention_result_for_vital_process_id',
+                    'data' => InterventionResultForVitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Результат вмешательства',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="form-half-without-margin">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+            </div>
         </div>
         <div class="form-split no-margin">
             <div class="form-half-small-margin">

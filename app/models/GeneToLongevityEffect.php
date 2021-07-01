@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -55,7 +56,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
             'data_type' => 'Тип изменений',
-            'model_organism_id' => 'Организм',
+            'model_organism_id' => 'Объект',
             'age_related_change_type_id' => 'Вид изменений',
         ]);
     }
@@ -74,7 +75,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                 $modelAR->delete();
                 continue;
             }
@@ -90,6 +91,10 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
                 $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
                 $modelAR->model_organism_id = $arProcessLocalization->id;
+            }
+            if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
+                $arProcessLocalization = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
+                $modelAR->age_related_change_type_id = $arProcessLocalization->id;
             }
             if ($modelAR->genotype_id === '') {
                 $modelAR->genotype_id = null;

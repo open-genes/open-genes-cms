@@ -7,6 +7,7 @@ use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -33,7 +34,7 @@ class ProteinToGene extends common\ProteinToGene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'protein_activity_id', 'regulated_gene_id', 'reference'], 'required'],
+            [['gene_id', 'protein_activity_id', 'regulated_gene_id', 'regulation_type_id', 'reference'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -46,7 +47,7 @@ class ProteinToGene extends common\ProteinToGene
             'regulated_gene_id' => 'Ген',
             'protein_activity_id' => 'Активность',
             'reference' => 'Ссылка',
-            'regulation_type' => 'Вид регуляции',
+            'regulation_type_id' => 'Вид регуляции',
         ]);
     }
 
@@ -65,7 +66,7 @@ class ProteinToGene extends common\ProteinToGene
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                 $modelAR->delete();
                 continue;
             }
@@ -73,6 +74,10 @@ class ProteinToGene extends common\ProteinToGene
             if (!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
                 $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
                 $modelAR->protein_activity_id = $arProteinActivity->id;
+            }
+            if (!empty($modelArray['regulation_type_id']) && !is_numeric($modelArray['regulation_type_id'])) {
+                $arProteinActivity = GeneRegulationType::createFromNameString($modelArray['regulation_type_id']);
+                $modelAR->regulation_type_id = $arProteinActivity->id;
             }
             $modelAR->gene_id = $geneId;
             if (!$modelAR->validate() || !$modelAR->save()) {

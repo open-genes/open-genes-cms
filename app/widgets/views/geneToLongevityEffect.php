@@ -41,6 +41,8 @@
                             ],
                             'pluginOptions' => [
                                 'allowClear' => false,
+                                'tags' => Yii::$app->user->can('admin'),
+                                'tokenSeparators' => ['##'],
                                 'containerCssClass' => 'red',
                                 'dropdownCssClass' => 'red',
                             ],
@@ -72,7 +74,7 @@
                                 'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
                                 'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
                                 'options' => [
-                                    'placeholder' => 'Организм',
+                                    'placeholder' => 'Объект',
                                     'multiple' => false,
                                 ],
                                 'pluginOptions' => [
@@ -118,6 +120,8 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
                         'containerCssClass' => 'red',
                         'dropdownCssClass' => 'red',
                     ],
