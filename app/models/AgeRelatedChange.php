@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -32,11 +33,11 @@ class AgeRelatedChange extends common\AgeRelatedChange
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'age_related_change_type_id', 'model_organism_id', 'sample_id', 'reference'], 'required'],
-            [['age_unit'], 'required', 'when' => function($model) {
+            [['gene_id', 'age_related_change_type_id', 'model_organism_id', 'reference'], 'required'],
+            [['age_unit'], 'required', 'when' => function ($model) {
                 return !empty($model->age_from) || !empty($model->age_to);
             }],
-            [['age_from', 'age_to'], 'number', 'min'=>0],
+            [['age_from', 'age_to'], 'number', 'min' => 0],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -83,47 +84,29 @@ class AgeRelatedChange extends common\AgeRelatedChange
     }
 
     /**
-     * @param array $modelArrays
-     * @param int $geneId
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @param $modelAR
+     * @param $geneId
      */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    private static function setExperimentValuesForGene($modelAR, $modelArray)
     {
-        foreach ($modelArrays as $id => $modelArray) {
-            if (is_numeric($id)) {
-                $modelAR = self::findOne($id);
-            } else {
-                $modelAR = new self();
-            }
-            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
-                $modelAR->delete();
-                continue;
-            }
-            $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
-                $arProteinActivityObject = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
-                $modelAR->age_related_change_type_id = $arProteinActivityObject->id;
-            }
-            if (!empty($modelArray['sample_id']) && !is_numeric($modelArray['sample_id'])) {
-                $arProcessLocalization = Sample::createFromNameString($modelArray['sample_id']);
-                $modelAR->sample_id = $arProcessLocalization->id;
-            }
-            if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
-                $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
-                $modelAR->model_organism_id = $arProcessLocalization->id;
-            }
-            if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
-                $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
-                $modelAR->organism_line_id = $arProteinActivity->id;
-            }
-            if ($modelAR->organism_line_id === '') {
-                $modelAR->organism_line_id = null;
-            }
-            $modelAR->gene_id = $geneId;
-            if (!$modelAR->validate() || !$modelAR->save()) {
-                throw new UpdateExperimentsException($id, $modelAR);
-            }
+        if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
+            $arProteinActivityObject = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
+            $modelAR->age_related_change_type_id = $arProteinActivityObject->id;
+        }
+        if (!empty($modelArray['sample_id']) && !is_numeric($modelArray['sample_id'])) {
+            $arProcessLocalization = Sample::createFromNameString($modelArray['sample_id']);
+            $modelAR->sample_id = $arProcessLocalization->id;
+        }
+        if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
+            $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
+            $modelAR->model_organism_id = $arProcessLocalization->id;
+        }
+        if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
+            $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+            $modelAR->organism_line_id = $arProteinActivity->id;
+        }
+        if ($modelAR->organism_line_id === '') {
+            $modelAR->organism_line_id = null;
         }
     }
 
