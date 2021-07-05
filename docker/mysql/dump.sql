@@ -15,8 +15,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE DATABASE IF NOT EXISTS `open_genes` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE open_genes;
+DROP DATABASE IF EXISTS `open_genes`;
+CREATE DATABASE `open_genes` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `open_genes`;
 
 --
 -- Table structure for table `age`
