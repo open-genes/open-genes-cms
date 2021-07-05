@@ -34,7 +34,7 @@
                             'multiple' => false,
                         ],
                         'pluginOptions' => [
-                            'allowClear' => true,
+                            'allowClear' => false,
                             'tags' => true,
                             'tokenSeparators' => ['##'],
                             'containerCssClass' => 'blue',
