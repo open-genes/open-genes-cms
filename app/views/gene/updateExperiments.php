@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = 'Update';
     ]); ?>
     <a href="<?=\yii\helpers\Url::toRoute(['update', 'id' => $model->id])?>" target="_blank" class="gene-link">Редактировать ген <?=$model->symbol ?> <span class="glyphicon glyphicon-pencil"></span></a>
     <h2><?= Html::encode($this->title) ?></h2>
-    <h4>Эксперименты с изменением продолжительности жизни</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-lifespan-experiment']) ?>
+    <h4>Влияние модуляции активности гена на продолжительность жизни</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-lifespan-experiment']) ?>
     <div class="js-lifespan-experiments">
         <?php foreach ($model->lifespanExperiments as $lifespanExperiment): ?>
             <?= LifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <?php endforeach; ?>
     </div>
     <br>
-    <h4>Влияние модификации гена/продукта на связанный со старением процесс/систему</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity green js-add-intervention-to-vital-process']) ?>
+    <h4>Влияние модуляции активности гена на возрастной процесс</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity green js-add-intervention-to-vital-process']) ?>
     <div class="js-intervention-to-vital-processes">
         <?php foreach ($model->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess): ?>
             <?= \app\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]) ?>
@@ -57,14 +57,14 @@ $this->params['breadcrumbs'][] = 'Update';
         <?php endforeach; ?>
     </div>
     <br>
-    <h4>Связь гена с ускоренным старением у человека</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity orange js-add-gene-to-progeria']) ?>
+    <h4>Ассоциация гена с ускоренным старением у человека</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity orange js-add-gene-to-progeria']) ?>
     <div class="js-gene-to-progerias">
         <?php foreach ($model->geneToProgerias as $geneToProgeria): ?>
             <?= \app\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]) ?>
         <?php endforeach; ?>
     </div>
     <br>
-    <h4>Геномные, транскриптомные и протеомные ассоциации с долголетием</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity red js-add-gene-to-longevity-effect']) ?>
+    <h4>Геномные, транскриптомные и протеомные ассоциации с продолжительностью жизни/возрастным фенотипом</h4> <?= Html::button('Добавить', ['class' => 'btn add-protein-activity red js-add-gene-to-longevity-effect']) ?>
     <div class="js-gene-to-longevity-effects">
         <?php foreach ($model->geneToLongevityEffects as $geneToLongevityEffect): ?>
             <?= \app\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]) ?>
