@@ -25,6 +25,7 @@ use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\View;
 
 /**
  * GeneController implements the CRUD actions for Gene model.
@@ -140,39 +141,41 @@ class GeneController extends Controller
         $model = $this->findModel($id);
 
         if(Yii::$app->request->isPost) {
+            $newSavedARs = [];
             try {
                 if(is_array(Yii::$app->request->post('LifespanExperiment'))) {
-                    LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+                    $newSavedARs['LifespanExperiment'] = LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
                 }
                 if(is_array(Yii::$app->request->post('AgeRelatedChange'))) {
-                    AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
+                    $newSavedARs['AgeRelatedChange'] = AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
                 }
                 if(is_array(Yii::$app->request->post('GeneInterventionToVitalProcess'))) {
-                    GeneInterventionToVitalProcess::saveMultipleForGene(Yii::$app->request->post('GeneInterventionToVitalProcess'), $id);
+                    $newSavedARs['GeneInterventionToVitalProcess'] = GeneInterventionToVitalProcess::saveMultipleForGene(Yii::$app->request->post('GeneInterventionToVitalProcess'), $id);
                 }
                 if(is_array(Yii::$app->request->post('ProteinToGene'))) {
-                    ProteinToGene::saveMultipleForGene(Yii::$app->request->post('ProteinToGene'), $id);
+                    $newSavedARs['ProteinToGene'] = ProteinToGene::saveMultipleForGene(Yii::$app->request->post('ProteinToGene'), $id);
                 }
                 if(is_array(Yii::$app->request->post('GeneToProgeria'))) {
-                    GeneToProgeria::saveMultipleForGene(Yii::$app->request->post('GeneToProgeria'), $id);
+                    $newSavedARs['GeneToProgeria'] = GeneToProgeria::saveMultipleForGene(Yii::$app->request->post('GeneToProgeria'), $id);
                 }
                 if(is_array(Yii::$app->request->post('GeneToLongevityEffect'))) {
-                    GeneToLongevityEffect::saveMultipleForGene(Yii::$app->request->post('GeneToLongevityEffect'), $id);
+                    $newSavedARs['GeneToLongevityEffect'] = GeneToLongevityEffect::saveMultipleForGene(Yii::$app->request->post('GeneToLongevityEffect'), $id);
                 }
                 if(is_array(Yii::$app->request->post('GeneToAdditionalEvidence'))) {
-                    GeneToAdditionalEvidence::saveMultipleForGene(Yii::$app->request->post('GeneToAdditionalEvidence'), $id);
+                    $newSavedARs['GeneToAdditionalEvidence'] = GeneToAdditionalEvidence::saveMultipleForGene(Yii::$app->request->post('GeneToAdditionalEvidence'), $id);
                 }
             } catch (UpdateExperimentsValidationException $e) {
                 return json_encode(['error' => $e->getInfoArray(), JSON_UNESCAPED_UNICODE]);
             } catch (UpdateExperimentsErrorException $e) {
                 return json_encode(['fatal_error' => $e->getMessage()]);
             }
-            return json_encode(['success']);
+            return json_encode(['success' => $newSavedARs, JSON_UNESCAPED_UNICODE]);
 //            return $this->redirect(['update-experiments', 'id' => $model->id]);
         }
 
         return $this->render('updateExperiments', [
             'model' => $model,
+            'userId' => Yii::$app->user->getId(),
         ]);
     }
 

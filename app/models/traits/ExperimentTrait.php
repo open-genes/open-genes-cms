@@ -13,6 +13,7 @@ trait ExperimentTrait
 {
     public static function saveMultipleForGene(array $modelArrays, int $geneId)
     {
+        $newSavedARs = [];
         try {
             $modelARs = []; // collect them first to validate all before saving
             foreach ($modelArrays as $id => $modelArray) {
@@ -42,11 +43,15 @@ trait ExperimentTrait
                 if(!$modelAR->save()) {
                     throw new UpdateExperimentsValidationException($id, $modelAR);
                 }
+                if ($modelAR->isNewRecord) {
+                    $modelAR->refresh();
+                    $newSavedARs[$id] = $modelAR->id;
+                }
             }
         } catch (Exception $e) {
             throw new UpdateExperimentsErrorException($e->getMessage());
         }
-
+        return $newSavedARs;
     }
 
 }

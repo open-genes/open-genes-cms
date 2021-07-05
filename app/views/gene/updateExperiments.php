@@ -11,6 +11,11 @@ use yii\widgets\ActiveForm;
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
 /* @var $allAges [] */
+/* @var $userId */
+
+$this->registerJs("
+let currentUserId = {$userId};
+", \yii\web\View::POS_HEAD);
 
 $this->registerJsFile('/assets/js/experiments.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerCssFile('/assets/css/gene.css');
