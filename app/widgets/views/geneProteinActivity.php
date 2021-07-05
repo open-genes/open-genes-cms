@@ -1,10 +1,10 @@
 <?php
 /** @var $geneToProteinActivity \app\models\GeneToProteinActivity */
 ?>
-<div class="form-split protein-activity js-protein-activity js-gene-link-section">
+<div class="protein-activity js-protein-activity js-gene-link-section">
     <div class="js-protein-activity-block js-gene-link-block">
-        <div class="form-split">
-            <div class="form-third">
+        <div class="row form-row">
+            <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']protein_activity_id',
@@ -21,7 +21,7 @@
                 ]);
                 ?>
             </div>
-            <div class="form-third">
+            <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']protein_activity_object_id',
@@ -38,7 +38,7 @@
                 ]);
                 ?>
             </div>
-            <div class="form-third">
+            <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProteinActivity,
                     'attribute' => '[' . $geneToProteinActivity->id . ']process_localization_id',
@@ -55,18 +55,31 @@
                 ]);
                 ?>
             </div>
-        </div>
-        <div class="form-split">
-            <?= \yii\bootstrap\Html::activeInput('text', $geneToProteinActivity, '[' . $geneToProteinActivity->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
-        </div>
-        <div class="form-split">
-            <div class="form-half-small-margin">
-                <?= \yii\bootstrap\Html::activeTextarea($geneToProteinActivity, '[' . $geneToProteinActivity->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Комментарий']) ?>
+            <div class="col-xs-6 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToProteinActivity,
+                    '[' . $geneToProteinActivity->id . ']reference',
+                    ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")'])
+                ?>
             </div>
-            <div class="form-half-small-margin">
-                <?= \yii\bootstrap\Html::activeTextarea($geneToProteinActivity, '[' . $geneToProteinActivity->id . ']comment_en', ['class' => 'form-control', 'placeholder' => 'Комментарий EN']) ?>
+        </div>
+
+        <div class="row form-row">
+            <div class="col-xs-12 col-sm-6">
+                <?= \yii\bootstrap\Html::activeTextarea($geneToProteinActivity,
+                    '[' . $geneToProteinActivity->id . ']comment_ru',
+                    ['class' => 'form-control', 'placeholder' => 'Комментарий'])
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <?= \yii\bootstrap\Html::activeTextarea($geneToProteinActivity,
+                    '[' . $geneToProteinActivity->id . ']comment_en',
+                    ['class' => 'form-control', 'placeholder' => 'Комментарий EN'])
+                ?>
             </div>
         </div>
     </div>
-    <div class="delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($geneToProteinActivity, '[' . $geneToProteinActivity->id . ']delete', ['class' => 'js-delete']) ?></div>
+
+    <div class="row form-row">
+        <div class="col-xs-12 delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($geneToProteinActivity, '[' . $geneToProteinActivity->id . ']delete', ['class' => 'js-delete']) ?></div>
+    </div>
 </div>

@@ -2,60 +2,15 @@
     margin-left: -4px;
     margin-right: -4px;
 }
-
 .row.form-row > [class*='col-'] {
     padding: 4px;
 }
 
-/*.form-half {*/
-/*    width: 47%;*/
-/*    float: left;*/
-/*    margin-right: 3%;*/
-/*}*/
-/*.form-half-without-margin {*/
-/*    width: 50%;*/
-/*    float: left;*/
-/*}*/
-/*.form-half-small-margin {*/
-/*    width: 49%;*/
-/*    margin-right: 1%;*/
-/*    float: left;*/
-/*}*/
-/*.form-third {*/
-/*    width: 33.333%;*/
-/*    float: left;*/
-/*}*/
-/*.form-two-thirds {*/
-/*    width: 67%;*/
-/*    float: left;*/
-/*}*/
-/*.form-sixth {*/
-/*    width: 16%;*/
-/*    float: left;*/
-/*}*/
-/*.form-five-sixths {*/
-/*    width: 83%;*/
-/*    float: left;*/
-/*}*/
-/*.form-small-margin {*/
-/*    margin-right: 1%;*/
-/*}*/
-/*.form-split {*/
-/*    margin-bottom: 10px;*/
-/*}*/
-/*.form-split.no-margin {*/
-/*    margin-bottom: 5px;*/
-/*}*/
 .open-genes-cms input[type="checkbox"] {
     margin: 0;
 }
 .open-genes-cms label {
     margin: 0;
-}
-.form-split:after {
-    content: "";
-    display: table;
-    clear: both;
 }
 .rel-link {
     position: absolute;
