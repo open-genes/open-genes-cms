@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ExperimentTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -14,6 +15,8 @@ use yii\helpers\ArrayHelper;
  */
 class GeneToProteinActivity extends common\GeneToProteinActivity
 {
+    use ExperimentTrait;
+
     public $delete = false;
 
     /**
@@ -54,46 +57,22 @@ class GeneToProteinActivity extends common\GeneToProteinActivity
         return $result;
     }
 
-    /**
-     * @param array $modelArrays
-     * @param int $geneId
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    private static function setExperimentValuesForGene($modelAR, $modelArray)
     {
-        foreach ($modelArrays as $id => $modelArray) {
-            if($modelArray['protein_activity_id'] && $modelArray['protein_activity_object_id']) {
-                if(is_numeric($id)) {
-                    $modelAR = self::findOne($id);
-                } else {
-                    $modelAR = new self();
-                }
-                if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
-                    $modelAR->delete();
-                    continue;
-                }
-                $modelAR->setAttributes($modelArray);
-                if(!is_numeric($modelArray['protein_activity_object_id'])) {
-                    $arProteinActivityObject = ProteinActivityObject::createFromNameString($modelArray['protein_activity_object_id']);
-                    $modelAR->protein_activity_object_id = $arProteinActivityObject->id;
-                }
-                if(!is_numeric($modelArray['process_localization_id'])) {
-                    $arProcessLocalization = ProcessLocalization::createFromNameString($modelArray['process_localization_id']);
-                    $modelAR->process_localization_id = $arProcessLocalization->id;
-                }
-                if(!is_numeric($modelArray['protein_activity_id'])) {
-                    $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
-                    $modelAR->protein_activity_id = $arProteinActivity->id;
-                }
-                $modelAR->gene_id = $geneId;
-                if($modelAR->process_localization_id === '') {
-                    $modelAR->process_localization_id = null;
-                }
-                if(!$modelAR->save()) {
-                    var_dump($modelAR->errors); die;
-                }
-            }
+        if(!empty($modelArray['protein_activity_object_id']) && !is_numeric($modelArray['protein_activity_object_id'])) {
+            $arProteinActivityObject = ProteinActivityObject::createFromNameString($modelArray['protein_activity_object_id']);
+            $modelAR->protein_activity_object_id = $arProteinActivityObject->id;
+        }
+        if(!empty($modelArray['process_localization_id']) && !is_numeric($modelArray['process_localization_id'])) {
+            $arProcessLocalization = ProcessLocalization::createFromNameString($modelArray['process_localization_id']);
+            $modelAR->process_localization_id = $arProcessLocalization->id;
+        }
+        if(!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
+            $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
+            $modelAR->protein_activity_id = $arProteinActivity->id;
+        }
+        if($modelAR->process_localization_id === '') {
+            $modelAR->process_localization_id = null;
         }
     }
 

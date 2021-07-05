@@ -3,7 +3,8 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
-use app\models\exceptions\UpdateExperimentsException;
+use app\models\exceptions\UpdateExperimentsValidationException;
+use app\models\traits\ExperimentTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class GeneToAdditionalEvidence extends common\GeneToAdditionalEvidence
 {
     use ValidatorsTrait;
+    use ExperimentTrait;
 
     public $delete = false;
 
@@ -48,30 +50,9 @@ class GeneToAdditionalEvidence extends common\GeneToAdditionalEvidence
         ]);
     }
 
-    /**
-     * @param array $modelArrays
-     * @param int $geneId
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    private static function setExperimentValuesForGene($modelAR, $modelArray)
     {
-        foreach ($modelArrays as $id => $modelArray) {
-            if (is_numeric($id)) {
-                $modelAR = self::findOne($id);
-            } else {
-                $modelAR = new self();
-            }
-            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
-                $modelAR->delete();
-                continue;
-            }
-            $modelAR->setAttributes($modelArray);
-            $modelAR->gene_id = $geneId;
-            if (!$modelAR->validate() || !$modelAR->save()) {
-                throw new UpdateExperimentsException($id, $modelAR);
-            }
-        }
+
     }
 
 }

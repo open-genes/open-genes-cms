@@ -3,11 +3,8 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
-use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentTrait;
 use app\models\traits\ValidatorsTrait;
-use Yii;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -17,6 +14,7 @@ use yii\helpers\ArrayHelper;
 class ProteinToGene extends common\ProteinToGene
 {
     use ValidatorsTrait;
+    use ExperimentTrait;
 
     public $delete = false;
 
@@ -51,38 +49,15 @@ class ProteinToGene extends common\ProteinToGene
         ]);
     }
 
-
-    /**
-     * @param array $modelArrays
-     * @param int $geneId
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    private static function setExperimentValuesForGene($modelAR, $modelArray)
     {
-        foreach ($modelArrays as $id => $modelArray) {
-            if (is_numeric($id)) {
-                $modelAR = self::findOne($id);
-            } else {
-                $modelAR = new self();
-            }
-            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
-                $modelAR->delete();
-                continue;
-            }
-            $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
-                $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
-                $modelAR->protein_activity_id = $arProteinActivity->id;
-            }
-            if (!empty($modelArray['regulation_type_id']) && !is_numeric($modelArray['regulation_type_id'])) {
-                $arProteinActivity = GeneRegulationType::createFromNameString($modelArray['regulation_type_id']);
-                $modelAR->regulation_type_id = $arProteinActivity->id;
-            }
-            $modelAR->gene_id = $geneId;
-            if (!$modelAR->validate() || !$modelAR->save()) {
-                throw new UpdateExperimentsException($id, $modelAR);
-            }
+        if (!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
+            $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
+            $modelAR->protein_activity_id = $arProteinActivity->id;
+        }
+        if (!empty($modelArray['regulation_type_id']) && !is_numeric($modelArray['regulation_type_id'])) {
+            $arProteinActivity = GeneRegulationType::createFromNameString($modelArray['regulation_type_id']);
+            $modelAR->regulation_type_id = $arProteinActivity->id;
         }
     }
 

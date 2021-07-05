@@ -3,7 +3,8 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
-use app\models\exceptions\UpdateExperimentsException;
+use app\models\exceptions\UpdateExperimentsValidationException;
+use app\models\traits\ExperimentTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class GeneToLongevityEffect extends common\GeneToLongevityEffect
 {
     use ValidatorsTrait;
+    use ExperimentTrait;
 
     public $delete = false;
 
@@ -61,48 +63,26 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
         ]);
     }
 
-    /**
-     * @param array $modelArrays
-     * @param int $geneId
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    private static function setExperimentValuesForGene($modelAR, $modelArray)
     {
-        foreach ($modelArrays as $id => $modelArray) {
-            if (is_numeric($id)) {
-                $modelAR = self::findOne($id);
-            } else {
-                $modelAR = new self();
-            }
-            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
-                $modelAR->delete();
-                continue;
-            }
-            $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['longevity_effect_id']) && !is_numeric($modelArray['longevity_effect_id'])) {
-                $arLongevityEffect = LongevityEffect::createFromNameString($modelArray['longevity_effect_id']);
-                $modelAR->longevity_effect_id = $arLongevityEffect->id;
-            }
-            if (!empty($modelArray['genotype_id']) && !is_numeric($modelArray['genotype_id'])) {
-                $arGenotype = Genotype::createFromNameString($modelArray['genotype_id']);
-                $modelAR->genotype_id = $arGenotype->id;
-            }
-            if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
-                $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
-                $modelAR->model_organism_id = $arProcessLocalization->id;
-            }
-            if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
-                $arProcessLocalization = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
-                $modelAR->age_related_change_type_id = $arProcessLocalization->id;
-            }
-            if ($modelAR->genotype_id === '') {
-                $modelAR->genotype_id = null;
-            }
-            $modelAR->gene_id = $geneId;
-            if (!$modelAR->validate() || !$modelAR->save()) {
-                throw new UpdateExperimentsException($id, $modelAR);
-            }
+        if (!empty($modelArray['longevity_effect_id']) && !is_numeric($modelArray['longevity_effect_id'])) {
+            $arLongevityEffect = LongevityEffect::createFromNameString($modelArray['longevity_effect_id']);
+            $modelAR->longevity_effect_id = $arLongevityEffect->id;
+        }
+        if (!empty($modelArray['genotype_id']) && !is_numeric($modelArray['genotype_id'])) {
+            $arGenotype = Genotype::createFromNameString($modelArray['genotype_id']);
+            $modelAR->genotype_id = $arGenotype->id;
+        }
+        if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
+            $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
+            $modelAR->model_organism_id = $arProcessLocalization->id;
+        }
+        if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
+            $arProcessLocalization = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
+            $modelAR->age_related_change_type_id = $arProcessLocalization->id;
+        }
+        if ($modelAR->genotype_id === '') {
+            $modelAR->genotype_id = null;
         }
     }
 

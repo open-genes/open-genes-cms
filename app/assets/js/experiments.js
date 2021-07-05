@@ -67,17 +67,30 @@ $(document).on('click', '.js-delete', function() {
 $('#experiments-form').on('submit', function(e){
     e.preventDefault();
     e.stopImmediatePropagation();
-    let form = $(this);
+    let form = $('#experiments-form');
     let formData = form.serialize();
-    let submitBtn = $('#experiments-form button.btn-success').removeClass('has-error')
+    let formUrl = form.attr("action");
+    if (saveExperimentsForm(formUrl, formData)) {
+        $('<div class="help-block green">OK!</div>').insertAfter(submitBtn);
+        setTimeout(location.reload.bind(location), 1000);
+    }
+
+    return false;
+});
+
+function saveExperimentsForm(url, formData) {
+    let submitBtn = $('#experiments-form button.btn-success');
 
     $.ajax({
-        url: form.attr("action"),
-        type: form.attr("method"),
+        url: url,
+        type: 'POST',
         data: formData,
         success: function (data) {
             let response = $.parseJSON(data);
-            if (typeof response.error !== 'undefined') {
+            if (typeof response.fatal_error !== 'undefined') {
+                alert(response.fatal_error);
+            }
+            else if (typeof response.error !== 'undefined') {
 
                 let model_id = response.error.id
                 let model_name = response.error.model
@@ -112,8 +125,7 @@ $('#experiments-form').on('submit', function(e){
             } else {
                 submitBtn.removeClass('has-error')
                 submitBtn.next('.help-block').remove()
-                $('<div class="help-block green">OK!</div>').insertAfter(submitBtn);
-                setTimeout(location.reload.bind(location), 1000);
+                return true;
             }
         },
         error: function () {
@@ -121,13 +133,26 @@ $('#experiments-form').on('submit', function(e){
         }
     });
     return false;
-});
+}
+
+function saveFormChanges(exceptId) {
+    let form = $('#experiments-form');
+    let formData = $('#experiments-form .js-form-changed:not(#'+exceptId+') .form-control').serialize();
+    console.log(formData);
+    let formUrl = form.attr("action");
+    if(formData.length) {
+        saveExperimentsForm(formUrl, formData)
+    }
+}
 
 $(document).on('change', '#experiments-form .form-control', function() {
     $(this).removeClass('has-error')
     $(this).next('.select2-container').find('.select2-selection').removeClass('has-error')
     $(this).next('.select2-container').next('.help-block').remove()
     $(this).next('.help-block').remove()
+    let section = $(this).closest('.js-gene-link-section');
+    section.addClass('js-form-changed')
+    saveFormChanges(section.id)
 });
 
 $(document).on('change', '#experiments-form .form-control.form_age', function() {

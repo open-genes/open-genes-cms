@@ -6,7 +6,7 @@ namespace app\models\exceptions;
 use Throwable;
 use yii\db\ActiveRecord;
 
-class UpdateExperimentsException extends \Exception
+class UpdateExperimentsValidationException extends \Exception
 {
     /**
      * @var ActiveRecord

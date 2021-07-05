@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $allProteinClasses [] */
 /* @var $allAges [] */
 
-$this->registerJsFile('/assets/js/gene.js', ['depends' => [\yii\web\JqueryAsset::class]]);
+$this->registerJsFile('/assets/js/experiments.js', ['depends' => [\yii\web\JqueryAsset::class]]);
 $this->registerCssFile('/assets/css/gene.css');
 
 $this->title = 'Функции гена ' . $model->symbol;

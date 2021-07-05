@@ -3,7 +3,8 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
-use app\models\exceptions\UpdateExperimentsException;
+use app\models\exceptions\UpdateExperimentsValidationException;
+use app\models\traits\ExperimentTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -16,6 +17,7 @@ use yii\helpers\ArrayHelper;
 class GeneToProgeria extends common\GeneToProgeria
 {
     use ValidatorsTrait;
+    use ExperimentTrait;
 
     public $delete = false;
 
@@ -48,33 +50,11 @@ class GeneToProgeria extends common\GeneToProgeria
         ]);
     }
 
-    /**
-     * @param array $modelArrays
-     * @param int $geneId
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    private static function setExperimentValuesForGene($modelAR, $modelArray)
     {
-        foreach ($modelArrays as $id => $modelArray) {
-            if (is_numeric($id)) {
-                $modelAR = self::findOne($id);
-            } else {
-                $modelAR = new self();
-            }
-            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
-                $modelAR->delete();
-                continue;
-            }
-            $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['progeria_syndrome_id']) && !is_numeric($modelArray['progeria_syndrome_id'])) {
-                $arProgeriaSyndrome = ProgeriaSyndrome::createFromNameString($modelArray['progeria_syndrome_id']);
-                $modelAR->progeria_syndrome_id = $arProgeriaSyndrome->id;
-            }
-            $modelAR->gene_id = $geneId;
-            if (!$modelAR->validate() || !$modelAR->save()) {
-                throw new UpdateExperimentsException($id, $modelAR);
-            }
+        if (!empty($modelArray['progeria_syndrome_id']) && !is_numeric($modelArray['progeria_syndrome_id'])) {
+            $arProgeriaSyndrome = ProgeriaSyndrome::createFromNameString($modelArray['progeria_syndrome_id']);
+            $modelAR->progeria_syndrome_id = $arProgeriaSyndrome->id;
         }
     }
 
