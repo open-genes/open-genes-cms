@@ -33,10 +33,10 @@ class AgeRelatedChange extends common\AgeRelatedChange
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'age_related_change_type_id', 'model_organism_id', 'reference'], 'required'],
-            [['age_unit'], 'required', 'when' => function ($model) {
+            [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age_from) || !empty($model->age_to);
             }],
-            [['age_from', 'age_to'], 'number', 'min' => 0],
+            [['age_from', 'age_to'], 'number', 'min'=>0],
             [['reference'], 'validateDOI']
         ]);
     }
