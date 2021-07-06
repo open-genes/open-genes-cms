@@ -49,7 +49,7 @@ class ProteinToGene extends common\ProteinToGene
         ]);
     }
 
-    private static function setExperimentValuesForGene($modelAR, $modelArray)
+    private static function setExperimentValuesForGene(&$modelAR, $modelArray)
     {
         if (!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
             $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);

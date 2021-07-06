@@ -82,7 +82,7 @@ class AgeRelatedChange extends common\AgeRelatedChange
         return $result;
     }
 
-    private static function setExperimentValuesForGene($modelAR, $modelArray)
+    private static function setExperimentValuesForGene(&$modelAR, $modelArray)
     {
         if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
             $arProteinActivityObject = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);

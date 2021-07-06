@@ -4,7 +4,7 @@
 use app\models\InterventionResultForVitalProcess;
 
 ?>
-<div class="form-split protein-activity green js-intervention-to-vital-process js-gene-link-section">
+<div class="form-split protein-activity green js-intervention-to-vital-process js-gene-link-section" id="interventiontovitalprocess_form_<?= $geneInterventionToVitalProcess->id ?>">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
         <div class="form-split">
             <div class="form-third">

@@ -50,7 +50,7 @@ class GeneToProgeria extends common\GeneToProgeria
         ]);
     }
 
-    private static function setExperimentValuesForGene($modelAR, $modelArray)
+    private static function setExperimentValuesForGene(&$modelAR, $modelArray)
     {
         if (!empty($modelArray['progeria_syndrome_id']) && !is_numeric($modelArray['progeria_syndrome_id'])) {
             $arProgeriaSyndrome = ProgeriaSyndrome::createFromNameString($modelArray['progeria_syndrome_id']);

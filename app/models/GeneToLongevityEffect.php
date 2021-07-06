@@ -63,7 +63,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
         ]);
     }
 
-    private static function setExperimentValuesForGene($modelAR, $modelArray)
+    private static function setExperimentValuesForGene(&$modelAR, $modelArray)
     {
         if (!empty($modelArray['longevity_effect_id']) && !is_numeric($modelArray['longevity_effect_id'])) {
             $arLongevityEffect = LongevityEffect::createFromNameString($modelArray['longevity_effect_id']);

@@ -1,7 +1,8 @@
 <?php
 /** @var $geneToAdditionalEvidence \app\models\GeneToAdditionalEvidence */
 ?>
-<div class="form-split additional-evidence protein-activity gray js-additional-evidence js-gene-link-section">
+<div class="form-split additional-evidence protein-activity gray js-additional-evidence js-gene-link-section"
+     id="genetoadditionalevidence_form_<?= $geneToAdditionalEvidence->id ?>">
     <div class="js-additional-evidence-block js-gene-link-block">
         <div class="form-split">
             <?= \yii\bootstrap\Html::activeTextarea($geneToAdditionalEvidence, '[' . $geneToAdditionalEvidence->id . ']comment_en', ['class' => 'form-control', 'placeholder' => 'Обоснование ассоциации EN']) ?>

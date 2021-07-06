@@ -1,7 +1,7 @@
 <?php
 /** @var $geneToLongevityEffect \app\models\GeneToLongevityEffect */
 ?>
-<div class="form-split protein-activity red js-gene-to-longevity-effect js-gene-link-section">
+<div class="form-split protein-activity red js-gene-to-longevity-effect js-gene-link-section"  id="genetolongevityeffect_form_<?= $geneToLongevityEffect->id ?>">
     <div class="js-gene-to-longevity-effect-block js-gene-link-block">
         <div class="form-split">
             <div class="form-split">

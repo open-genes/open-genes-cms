@@ -1,7 +1,7 @@
 <?php
 /** @var $proteinToGene \app\models\ProteinToGene */
 ?>
-<div class="form-split protein-activity yellow js-protein-to-gene js-gene-link-section">
+<div class="form-split protein-activity yellow js-protein-to-gene js-gene-link-section" id="proteintogene_form_<?= $proteinToGene->id ?>">
     <div class="js-protein-to-gene-block js-gene-link-block">
         <div class="form-split">
                 <div class="form-half-small-margin">

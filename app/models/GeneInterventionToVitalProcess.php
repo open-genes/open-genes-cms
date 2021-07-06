@@ -78,7 +78,7 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
         return $result;
     }
 
-    private static function setExperimentValuesForGene($modelAR, $modelArray)
+    private static function setExperimentValuesForGene(&$modelAR, $modelArray)
     {
         if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
             $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);

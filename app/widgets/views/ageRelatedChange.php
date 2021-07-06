@@ -1,7 +1,7 @@
 <?php
 /** @var $ageRelatedChange \app\models\AgeRelatedChange */
 ?>
-<div class="form-split protein-activity blue js-age-related-change js-gene-link-section">
+<div class="form-split protein-activity blue js-age-related-change js-gene-link-section" id="agerelatedchange_form_<?= $ageRelatedChange->id ?>">
     <div class="js-age-related-change-block js-gene-link-block">
         <div class="form-split">
             <div class="form-half-without-margin">

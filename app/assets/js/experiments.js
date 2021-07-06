@@ -1,62 +1,67 @@
-let newGeneLinkBlocksCount = 0;
+let newFormsCounter = 0;
+let UsId = currentUserId;
 
 $('.js-add-protein-activity').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=GeneToProteinActivity&widgetName=GeneProteinActivity&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=GeneToProteinActivity&widgetName=GeneProteinActivity&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-protein-activities').append(data);
     });
 });
 
 $('.js-add-lifespan-experiment').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-lifespan-experiments').append(data);
     });
 });
 
 $('.js-add-age-related-change').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=AgeRelatedChange&widgetName=AgeRelatedChangeWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=AgeRelatedChange&widgetName=AgeRelatedChangeWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-age-related-changes').append(data);
     });
 });
 
 $('.js-add-intervention-to-vital-process').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=GeneInterventionToVitalProcess&widgetName=GeneInterventionToVitalProcessWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=GeneInterventionToVitalProcess&widgetName=GeneInterventionToVitalProcessWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-intervention-to-vital-processes').append(data);
     });
 });
 
 $('.js-add-protein-to-gene').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=ProteinToGene&widgetName=ProteinToGeneWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=ProteinToGene&widgetName=ProteinToGeneWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-protein-to-genes').append(data);
     });
 });
 
 $('.js-add-gene-to-progeria').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=GeneToProgeria&widgetName=GeneToProgeriaWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=GeneToProgeria&widgetName=GeneToProgeriaWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-gene-to-progerias').append(data);
     });
 });
 
 $('.js-add-gene-to-longevity-effect').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=GeneToLongevityEffect&widgetName=GeneToLongevityEffectWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=GeneToLongevityEffect&widgetName=GeneToLongevityEffectWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-gene-to-longevity-effects').append(data);
     });
 });
 
 $('.js-add-additional-evidence').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=GeneToAdditionalEvidence&widgetName=AdditionalEvidencesWidget&id=new'+currentUserId + '_' + newGeneLinkBlocksCount, function (data) {
+    newFormsCounter++;
+    $.get('/gene/load-widget-form?modelName=GeneToAdditionalEvidence&widgetName=AdditionalEvidencesWidget&id=' + makeNewId(UsId, newFormsCounter), function (data) {
         $('.js-gene-to-additional-evidence').append(data);
     });
 });
 
-$(document).on('click', '.js-delete', function() {
+function makeNewId(userId, newFormsCounter) {
+    return 'new_exp_' + userId + '_' + newFormsCounter;
+}
+
+$(document).on('click', '.js-delete', function () {
     if ($(this).is(':checked')) {
         $(this).closest('.js-gene-link-section').find('.js-gene-link-block').css('opacity', '0.5').css('pointer-events', 'none');
     } else {
@@ -64,7 +69,7 @@ $(document).on('click', '.js-delete', function() {
     }
 });
 
-$('#experiments-form').on('submit', function(e){
+$('#experiments-form').on('submit', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     let form = $('#experiments-form');
@@ -74,7 +79,6 @@ $('#experiments-form').on('submit', function(e){
         $('<div class="help-block green">OK!</div>').insertAfter(submitBtn);
         setTimeout(location.reload.bind(location), 1000);
     }
-
     return false;
 });
 
@@ -91,39 +95,63 @@ function saveExperimentsForm(url, formData) {
                 alert(response.fatal_error);
             }
             if (typeof response.success !== 'undefined') {
-                console.log(response.success)
+                $.each(response.success, function (modelName, saved) {
+                    if (typeof saved.new !== 'undefined') {
+                        console.log(saved.new)
+                        $.each(saved.new, function (old_id, new_id) {
+                            let formId = modelName.toLowerCase() + '_form_' + old_id;
+                            let select2inputs = $('#' + formId + ' select.select2-hidden-accessible');
+                            let inputsIds = [];
+                            $.each(select2inputs, function (i, input) {
+                                inputsIds.push($(input).attr('id'));
+                                $(input).select2('destroy');
+                            });
+                            console.log(old_id)
+                            console.log(new_id)
+                            let regex = new RegExp(old_id, 'g');
+                            $('#' + formId).html($('#' + formId).html().replace(regex, new_id));
+                            let select2newInputs = [];
+
+                            $.each(inputsIds, function (i, inputId) {
+                                console.log(inputId);
+                                let newInputId = inputId.replace(old_id, new_id);
+                                $('#' + newInputId).select2();
+                            });
+                        });
+                    }
+                });
             }
-            else if (typeof response.error !== 'undefined') {
+            if (typeof response.error !== 'undefined') {
+                $.each(response.error, function (index, error) {
+                    let model_id = error.id
+                    let model_name = error.model
+                    let model_fields = error.fields
 
-                let model_id = response.error.id
-                let model_name = response.error.model
-                let model_fields = response.error.fields
-
-                submitBtn.addClass('has-error')
-                if (!submitBtn.next('.help-block').length) {
-                    $('<div class="help-block">Форма не прошла валидацию. Пожалуйста, проверьте поля</div>').insertAfter(submitBtn);
-                }
-
-                $.each(model_fields, function (field, error) {
-
-                    let field_id = model_name.toLowerCase() + '-' + model_id + '-' + field
-                    let experimentsInput = $('input#' + field_id)
-                    let experimentsText = $('textarea#' + field_id)
-                    let select2container = $('.select2-hidden-accessible#' + field_id).next('.select2-container')
-                    console.log(field_id)
-
-                    select2container.find('.select2-selection').addClass('has-error');
-                    if (!select2container.next('.help-block').length) {
-                        $('<div class="help-block">' + error + '</div>').insertAfter(select2container);
+                    submitBtn.addClass('has-error')
+                    if (!submitBtn.next('.help-block').length) {
+                        $('<div class="help-block">Форма не прошла валидацию. Пожалуйста, проверьте поля</div>').insertAfter(submitBtn);
                     }
-                    experimentsInput.addClass('has-error');
-                    if (!experimentsInput.next('.help-block').length) {
-                        $('<div class="help-block">' + error + '</div>').insertAfter('input#' + field_id);
-                    }
-                    experimentsText.addClass('has-error');
-                    if (!experimentsText.next('.help-block').length) {
-                        $('<div class="help-block">' + error + '</div>').insertAfter('textarea#' + field_id);
-                    }
+
+                    $.each(model_fields, function (field, error) {
+
+                        let field_id = model_name.toLowerCase() + '-' + model_id + '-' + field
+                        let experimentsInput = $('input#' + field_id)
+                        let experimentsText = $('textarea#' + field_id)
+                        let select2container = $('.select2-hidden-accessible#' + field_id).next('.select2-container')
+
+                        select2container.find('.select2-selection').addClass('has-error');
+                        if (!select2container.next('.help-block').length) {
+                            $('<div class="help-block">' + error + '</div>').insertAfter(select2container);
+                        }
+                        experimentsInput.addClass('has-error');
+                        if (!experimentsInput.next('.help-block').length) {
+                            $('<div class="help-block">' + error + '</div>').insertAfter('input#' + field_id);
+                        }
+                        experimentsText.addClass('has-error');
+                        if (!experimentsText.next('.help-block').length) {
+                            $('<div class="help-block">' + error + '</div>').insertAfter('textarea#' + field_id);
+                        }
+                    });
                 });
             } else {
                 submitBtn.removeClass('has-error')
@@ -140,26 +168,25 @@ function saveExperimentsForm(url, formData) {
 
 function saveFormChanges(exceptId) {
     let form = $('#experiments-form');
-    let formData = $('#experiments-form .js-form-changed:not(#'+exceptId+') .form-control').serialize();
-    console.log(formData);
+    let formData = $('#experiments-form .js-form-changed:not(#' + exceptId + ') .form-control').serialize();
     let formUrl = form.attr("action");
-    if(formData.length) {
+    if (formData.length) {
         saveExperimentsForm(formUrl, formData)
     }
 }
 
-$(document).on('change', '#experiments-form .form-control', function() {
+$(document).on('change', '#experiments-form .form-control', function () {
     $(this).removeClass('has-error')
     $(this).next('.select2-container').find('.select2-selection').removeClass('has-error')
     $(this).next('.select2-container').next('.help-block').remove()
     $(this).next('.help-block').remove()
     let section = $(this).closest('.js-gene-link-section');
     section.addClass('js-form-changed')
-    saveFormChanges(section.id)
+    saveFormChanges(section.attr('id'))
 });
 
-$(document).on('change', '#experiments-form .form-control.form_age', function() {
-    if($(this).val() == '') {
+$(document).on('change', '#experiments-form .form-control.form_age', function () {
+    if ($(this).val() == '') {
         $(this).closest('.js-gene-link-block').find('.form_age_unit').removeClass('has-error')
         $(this).closest('.js-gene-link-block').find('.form_age_unit').closest('.select2-container').next('.help-block').remove()
     }

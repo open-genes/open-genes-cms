@@ -1,7 +1,7 @@
 <?php
 /** @var $lifespanExperiment \app\models\LifespanExperiment */
 ?>
-<div class="form-split protein-activity js-lifespan-experiment js-gene-link-section">
+<div class="form-split protein-activity js-lifespan-experiment js-gene-link-section" id="lifespanexperiment_form_<?= $lifespanExperiment->id ?>">
     <div class="js-lifespan-experiment-block js-gene-link-block">
         <div class="form-split">
             <div class="form-third">

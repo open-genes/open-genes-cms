@@ -1,7 +1,7 @@
 <?php
 /** @var $geneToProgeria \app\models\GeneToProgeria */
 ?>
-<div class="form-split protein-activity orange js-gene-to-progeria js-gene-link-section">
+<div class="form-split protein-activity orange js-gene-to-progeria js-gene-link-section" id="genetoprogeria_form_<?= $geneToProgeria->id ?>">
     <div class="js-gene-to-progeria-block js-gene-link-block">
         <div class="form-split">
             <div class="form-half-small-margin">

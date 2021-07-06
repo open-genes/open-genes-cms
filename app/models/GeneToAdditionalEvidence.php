@@ -50,7 +50,7 @@ class GeneToAdditionalEvidence extends common\GeneToAdditionalEvidence
         ]);
     }
 
-    private static function setExperimentValuesForGene($modelAR, $modelArray)
+    private static function setExperimentValuesForGene(&$modelAR, $modelArray)
     {
 
     }
