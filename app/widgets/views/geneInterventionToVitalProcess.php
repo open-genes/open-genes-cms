@@ -162,7 +162,7 @@ use app\models\InterventionResultForVitalProcess;
             </div>
         </div>
 
-        <div class="row form-row no-margin">
+        <div class="row form-row">
             <div class="col-xs-12 col-sm-6">
                 <?= \yii\bootstrap\Html::activeTextarea($geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']comment_ru', ['class' => 'form-control', 'placeholder' => 'Дополнительная информация']) ?>
             </div>

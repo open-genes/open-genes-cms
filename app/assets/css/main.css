@@ -1,3 +1,30 @@
+.form-group {
+    position: relative;
+}
+
+.row.form-row {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+.row.form-row > [class*='col-'] {
+    padding: 4px;
+}
+.open-genes-cms .btn.btn-success {
+    min-width: 120px;
+}
+.submit-panel {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+    background-color: #fff;
+    box-shadow: 1px -1px 5px -2px rgba(0,0,0,0.75);
+}
+
 .open-genes-cms {
     min-width: 560px;
     margin-top: 15px;
@@ -195,4 +222,16 @@ section.error h3 {
     top: 70px;
     left: 30px;
     max-width: 370px;
+}
+
+/* Select2 fixes */
+.open-genes-cms .select2-container .select2-selection--multiple .select2-selection__rendered {
+    display: block;
+}
+.select2-container--krajee .select2-selection--multiple .select2-selection__choice__remove {
+    margin: 0 0 0 10px !important;
+    font-size: 16px;
+}
+.footer {
+    padding-bottom: 54px; /* crutch: padding for a fixed panel */
 }

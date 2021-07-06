@@ -101,8 +101,10 @@ $this->params['breadcrumbs'][] = 'Update';
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-additional-evidence add-protein-activity gray js-add-additional-evidence']) ?>
     </div>
 
-    <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+    <div class="submit-panel">
+        <div class="container">
+            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>
