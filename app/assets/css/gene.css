@@ -1,52 +1,8 @@
-.form-half {
-    width: 47%;
-    float: left;
-    margin-right: 3%;
-}
-.form-half-without-margin {
-    width: 50%;
-    float: left;
-}
-.form-half-small-margin {
-    width: 49%;
-    margin-right: 1%;
-    float: left;
-}
-.form-third {
-    width: 33.333%;
-    float: left;
-}
-.form-two-thirds {
-    width: 67%;
-    float: left;
-}
-.form-sixth {
-    width: 16%;
-    float: left;
-}
-.form-five-sixths {
-    width: 83%;
-    float: left;
-}
-.form-small-margin {
-    margin-right: 1%;
-}
-.form-split {
-    margin-bottom: 10px;
-}
-.form-split.no-margin {
-    margin-bottom: 5px;
-}
 .open-genes-cms input[type="checkbox"] {
     margin: 0;
 }
 .open-genes-cms label {
     margin: 0;
-}
-.form-split:after {
-    content: "";
-    display: table;
-    clear: both;
 }
 .rel-link {
     position: absolute;
@@ -54,6 +10,12 @@
     font-size: smaller;
 }
 
+.open-genes-cms .form-group {
+    margin-bottom: 30px;
+}
+.open-genes-cms .btn.btn-add {
+    width: 100%;
+}
 .open-genes-cms .btn.add-protein-activity {
     background: #cbcbef;
 }
@@ -82,15 +44,24 @@ textarea {
 .select2-selection__rendered {
     cursor: text;
 }
+.delete-protein {
+    margin-top: 10px;
+}
 .delete-protein label {
     font-weight: normal;
     color: #464646;
+    vertical-align: middle;
+}
+.delete-protein label input[type='checkbox'] {
+    vertical-align: -1px;
 }
 .protein-activity {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
     margin: 10px 0;
-    padding: 5px;
-    background: #e4e3f9;
     border-radius: 5px;
+    background: #e4e3f9;
 }
 .protein-activity.blue {
     background: #dcefff;
@@ -118,16 +89,8 @@ a.gene-link {
     border-radius: 3px;
     border: 1px solid #6663bb;
 }
-@media (max-width: 992px) {
-    .form-half {
-        width: inherit;
-        float: none;
-        margin-right: inherit;
-    }
-}
 
 /* select2 */
-
 .open-genes-cms .select2-container--krajee .select2-selection--multiple .select2-selection__choice {
     color: #565656;
     background: #ffffff;
@@ -269,7 +232,7 @@ a.gene-link {
 
 #experiments-form .form-control.has-error, #experiments-form .select2-selection.has-error, #experiments-form .btn.has-error {
     border-color: #a94442;
-    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
-    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.8);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.8);
     color: #a94442;
 }

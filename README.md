@@ -42,14 +42,17 @@ cp app/.env.sample app/.env
 ```
 ### Open http://cms.open-genes.develop:8081/
 
-The default credentials are `admin` - `123`
+The default credentials are `admin` `123`
 
-DB will be available at localhost:3307, user `root` pass `secret` 
+DB will be available at http://localhost:3307/ <br>
+user `root` pass `secret`
 
-Enter php container:
+### Enter php container:
 ```
 docker ps
-(copy hash of opengenes_php container)
+```
+copy hash of `opengenes_php` container
+```
 docker exec -it (container_hash) bash
 ```
 
