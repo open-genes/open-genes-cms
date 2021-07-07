@@ -94,27 +94,28 @@ function saveExperimentsForm(url, formData) {
             if (typeof response.fatal_error !== 'undefined') {
                 alert(response.fatal_error);
             }
-            if (typeof response.success !== 'undefined') {
+            if (response.success) {
                 $.each(response.success, function (modelName, saved) {
                     if (typeof saved.new !== 'undefined') {
-                        console.log(saved.new)
-                        $.each(saved.new, function (old_id, new_id) {
-                            let formId = modelName.toLowerCase() + '_form_' + old_id;
-                            let select2inputs = $('#' + formId + ' select.select2-hidden-accessible');
-                            let inputsIds = [];
-                            $.each(select2inputs, function (i, input) {
+                        console.log(saved.new);
+                        $.each(saved.new, (old_id, new_id) => {
+                            const formId = modelName.toLowerCase() + '_form_' + old_id;
+                            const select2inputs = document.querySelectorAll(`#${formId}select.select2-hidden-accessible`);
+                            console.log('select2inputs: ', select2inputs);
+                            const inputsIds = [];
+                            select2inputs.forEach((input) => {
                                 inputsIds.push($(input).attr('id'));
                                 $(input).select2('destroy');
                             });
-                            console.log(old_id)
-                            console.log(new_id)
-                            let regex = new RegExp(old_id, 'g');
+                            console.log('Old id: ', old_id);
+                            console.log('New id: ', new_id);
+                            const regex = new RegExp(old_id, 'g');
                             $('#' + formId).html($('#' + formId).html().replace(regex, new_id));
-                            let select2newInputs = [];
+                            const select2newInputs = [];
 
-                            $.each(inputsIds, function (i, inputId) {
-                                console.log(inputId);
-                                let newInputId = inputId.replace(old_id, new_id);
+                            inputsIds.forEach((inputId) => {
+                                console.log('inputId: ', inputId);
+                                const newInputId = inputId.replace(old_id, new_id);
                                 $('#' + newInputId).select2();
                             });
                         });
