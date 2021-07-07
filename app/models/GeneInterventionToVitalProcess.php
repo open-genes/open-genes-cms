@@ -33,7 +33,7 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'model_organism_id', 'vital_process_id', 'reference'], 'required'],
+            [['gene_id', 'gene_intervention_id', 'model_organism_id', 'vital_process_id'], 'required'],
             [['age'], 'number', 'min'=>0],
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age);

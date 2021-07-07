@@ -23,7 +23,13 @@
             <div class="col-xs-12 col-sm-6">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToAdditionalEvidence,
                     '[' . $geneToAdditionalEvidence->id . ']reference',
-                    ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")'])
+                    ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)'])
+                ?>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToAdditionalEvidence,
+                    '[' . $geneToAdditionalEvidence->id . ']pmid',
+                    ['class' => 'form-control', 'placeholder' => 'PMID (пример: 34225353)'])
                 ?>
             </div>
         </div>

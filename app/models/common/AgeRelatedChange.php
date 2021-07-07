@@ -8,21 +8,22 @@ use Yii;
  * This is the model class for table "age_related_change".
  *
  * @property int $id
- * @property int $gene_id
- * @property int $age_related_change_type_id
- * @property int $sample_id
- * @property int $model_organism_id
- * @property int $organism_line_id
- * @property double $age_from
- * @property double $age_to
- * @property string $reference
- * @property string $comment_en
- * @property string $comment_ru
- * @property double $change_value_male
- * @property double $change_value_female
- * @property double $change_value_common
- * @property int $age_unit
- * @property int $measurement_type
+ * @property int|null $gene_id
+ * @property int|null $age_related_change_type_id
+ * @property int|null $sample_id
+ * @property int|null $model_organism_id
+ * @property int|null $organism_line_id
+ * @property float|null $age_from
+ * @property float|null $age_to
+ * @property string|null $reference
+ * @property string|null $comment_en
+ * @property string|null $comment_ru
+ * @property float|null $change_value_male
+ * @property float|null $change_value_female
+ * @property float|null $change_value_common
+ * @property int|null $age_unit
+ * @property int|null $measurement_type
+ * @property string|null $pmid
  *
  * @property Gene $gene
  * @property ModelOrganism $modelOrganism
@@ -49,12 +50,12 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type'], 'integer'],
             [['age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
-            [['reference'], 'string', 'max' => 255],
-            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
-            [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::class, 'targetAttribute' => ['model_organism_id' => 'id']],
-            [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::class, 'targetAttribute' => ['organism_line_id' => 'id']],
-            [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sample::class, 'targetAttribute' => ['sample_id' => 'id']],
-            [['age_related_change_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AgeRelatedChangeType::class, 'targetAttribute' => ['age_related_change_type_id' => 'id']],
+            [['reference', 'pmid'], 'string', 'max' => 255],
+            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
+            [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::className(), 'targetAttribute' => ['model_organism_id' => 'id']],
+            [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::className(), 'targetAttribute' => ['organism_line_id' => 'id']],
+            [['sample_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sample::className(), 'targetAttribute' => ['sample_id' => 'id']],
+            [['age_related_change_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AgeRelatedChangeType::className(), 'targetAttribute' => ['age_related_change_type_id' => 'id']],
         ];
     }
 
@@ -79,47 +80,59 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'change_value_female' => 'Change Value Female',
             'change_value_common' => 'Change Value Common',
             'age_unit' => 'Age Unit',
+            'measurement_type' => 'Measurement Type',
+            'pmid' => 'Pmid',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Gene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getGene()
     {
-        return $this->hasOne(Gene::class, ['id' => 'gene_id']);
+        return $this->hasOne(Gene::className(), ['id' => 'gene_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[ModelOrganism]].
+     *
+     * @return \yii\db\ActiveQuery|ModelOrganismQuery
      */
     public function getModelOrganism()
     {
-        return $this->hasOne(ModelOrganism::class, ['id' => 'model_organism_id']);
+        return $this->hasOne(ModelOrganism::className(), ['id' => 'model_organism_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[OrganismLine]].
+     *
+     * @return \yii\db\ActiveQuery|OrganismLineQuery
      */
     public function getOrganismLine()
     {
-        return $this->hasOne(OrganismLine::class, ['id' => 'organism_line_id']);
+        return $this->hasOne(OrganismLine::className(), ['id' => 'organism_line_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Sample]].
+     *
+     * @return \yii\db\ActiveQuery|SampleQuery
      */
     public function getSample()
     {
-        return $this->hasOne(Sample::class, ['id' => 'sample_id']);
+        return $this->hasOne(Sample::className(), ['id' => 'sample_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[AgeRelatedChangeType]].
+     *
+     * @return \yii\db\ActiveQuery|AgeRelatedChangeTypeQuery
      */
     public function getAgeRelatedChangeType()
     {
-        return $this->hasOne(AgeRelatedChangeType::class, ['id' => 'age_related_change_type_id']);
+        return $this->hasOne(AgeRelatedChangeType::className(), ['id' => 'age_related_change_type_id']);
     }
 
     /**

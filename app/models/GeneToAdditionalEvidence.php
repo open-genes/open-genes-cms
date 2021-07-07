@@ -32,7 +32,7 @@ class GeneToAdditionalEvidence extends common\GeneToAdditionalEvidence
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'reference', 'comment_en'], 'required'],
+            [['gene_id', 'comment_en'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }

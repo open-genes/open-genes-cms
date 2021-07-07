@@ -34,7 +34,7 @@ class ProteinToGene extends common\ProteinToGene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'protein_activity_id', 'regulated_gene_id', 'regulation_type_id', 'reference'], 'required'],
+            [['gene_id', 'protein_activity_id', 'regulated_gene_id', 'regulation_type_id'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }

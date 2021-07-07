@@ -40,7 +40,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'reference', 'data_type', 'model_organism_id'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'data_type', 'model_organism_id'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }

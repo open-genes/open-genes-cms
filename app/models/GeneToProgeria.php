@@ -33,7 +33,7 @@ class GeneToProgeria extends common\GeneToProgeria
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'progeria_syndrome_id', 'reference'], 'required'],
+            [['gene_id', 'progeria_syndrome_id'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
