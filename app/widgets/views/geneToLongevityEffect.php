@@ -4,74 +4,72 @@
 <div class="row form-row protein-activity red js-gene-to-longevity-effect js-gene-link-section">
     <div class="js-gene-to-longevity-effect-block js-gene-link-block">
         <div class="row form-row">
-            <div class="row form-row">
-                <div class="col-xs-6 col-sm-3">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneToLongevityEffect,
-                        'attribute' => '[' . $geneToLongevityEffect->id . ']data_type',
-                        'data' => [1 => 'геномные', 2 => 'транскриптомные', 3 => 'протеомные'],
-                        'options' => [
-                            'placeholder' => 'Вид данных',
-                            'multiple' => false
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'containerCssClass' => 'red',
-                            'dropdownCssClass' => 'red',
-                        ],
-                    ]);
-                    ?>
-                </div>
-                <div class="col-xs-6 col-sm-3">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneToLongevityEffect,
-                        'attribute' => '[' . $geneToLongevityEffect->id . ']longevity_effect_id',
-                        'data' => \app\models\LongevityEffect::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Признак',
-                            'multiple' => false,
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => false,
-                            'tags' => Yii::$app->user->can('admin'),
-                            'tokenSeparators' => ['##'],
-                            'containerCssClass' => 'red',
-                            'dropdownCssClass' => 'red',
-                        ],
-                    ]);
-                    ?>
-                </div>
-                <div class="col-xs-6 col-sm-3">
-                    <?= \kartik\select2\Select2::widget([
-                        'model' => $geneToLongevityEffect,
-                        'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
-                        'data' => \app\models\Genotype::getAllNamesAsArray(),
-                        'options' => [
-                            'placeholder' => 'Аллельный полиморфизм',
-                            'multiple' => false,
-                        ],
-                        'pluginOptions' => [
-                            'allowClear' => true,
-                            'tags' => true,
-                            'tokenSeparators' => ['##'],
-                            'containerCssClass' => 'red',
-                            'dropdownCssClass' => 'red',
-                        ],
-                    ]);
-                    ?>
-                </div>
-                <div class="col-xs-6 col-sm-3">
-                    <?= \yii\bootstrap\Html::activeInput(
-                            'text', $geneToLongevityEffect,
-                            '[' . $geneToLongevityEffect->id . ']allele_variant',
-                            ['class' => 'form-control', 'placeholder' => 'Аллельный вариант'])
-                    ?>
-                </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']data_type',
+                    'data' => [1 => 'геномные', 2 => 'транскриптомные', 3 => 'протеомные'],
+                    'options' => [
+                        'placeholder' => 'Вид данных',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']longevity_effect_id',
+                    'data' => \app\models\LongevityEffect::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Фенотип',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
+                    'data' => \app\models\Genotype::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Аллельный полиморфизм',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => true,
+                        'tokenSeparators' => ['##'],
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput(
+                        'text', $geneToLongevityEffect,
+                        '[' . $geneToLongevityEffect->id . ']allele_variant',
+                        ['class' => 'form-control', 'placeholder' => 'Аллельный вариант'])
+                ?>
             </div>
         </div>
 
         <div class="row form-row">
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']age_related_change_type_id',
@@ -90,7 +88,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
@@ -109,7 +107,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
