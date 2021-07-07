@@ -26,6 +26,17 @@ class Genotype extends common\Genotype
         ];
     }
 
+    public function beforeSave($insert)
+    {
+        if (!$this->name_en) {
+            $this->name_en = $this->name_ru;
+        }
+        if (!$this->name_ru) {
+            $this->name_ru = $this->name_en;
+        }
+        return parent::beforeSave($insert);
+    }
+
     public static function getAllNamesAsArray()
     {
         $result = parent::find()
