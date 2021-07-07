@@ -122,7 +122,9 @@ use app\models\InterventionResultForVitalProcess;
                 ]);
                 ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+        </div>
+        <div class="row form-row">
+            <div class="col-xs-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']organism_line_id',
@@ -142,7 +144,7 @@ use app\models\InterventionResultForVitalProcess;
                 ?>
             </div>
 
-            <div class="col-xs-6 col-sm-4">
+            <div class="col-xs-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']genotype',
@@ -157,8 +159,11 @@ use app\models\InterventionResultForVitalProcess;
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-4">
-                <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+            <div class="col-xs-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']reference', ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)']) ?>
+            </div>
+            <div class="col-xs-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneInterventionToVitalProcess, '[' . $geneInterventionToVitalProcess->id . ']pmid', ['class' => 'form-control', 'placeholder' => 'PMID (пример: 34225353)']) ?>
             </div>
         </div>
 

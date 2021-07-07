@@ -58,7 +58,7 @@
             <div class="col-xs-6 col-sm-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToProteinActivity,
                     '[' . $geneToProteinActivity->id . ']reference',
-                    ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")'])
+                    ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)'])
                 ?>
             </div>
         </div>

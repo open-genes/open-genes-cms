@@ -8,21 +8,22 @@ use Yii;
  * This is the model class for table "lifespan_experiment".
  *
  * @property int $id
- * @property int $gene_id
- * @property int $gene_intervention_id
- * @property int $intervention_result_id
- * @property int $model_organism_id
- * @property double $age
- * @property string $reference
- * @property string $comment_en
- * @property string $comment_ru
- * @property int $sex
- * @property int $organism_line_id
- * @property double $lifespan_change_percent_male
- * @property double $lifespan_change_percent_female
- * @property double $lifespan_change_percent_common
- * @property int $age_unit
- * @property int $genotype
+ * @property int|null $gene_id
+ * @property int|null $gene_intervention_id
+ * @property int|null $intervention_result_id
+ * @property int|null $model_organism_id
+ * @property float|null $age
+ * @property string|null $reference
+ * @property string|null $comment_en
+ * @property string|null $comment_ru
+ * @property int|null $sex
+ * @property int|null $organism_line_id
+ * @property float|null $lifespan_change_percent_male
+ * @property float|null $lifespan_change_percent_female
+ * @property float|null $lifespan_change_percent_common
+ * @property int|null $age_unit
+ * @property int|null $genotype
+ * @property string|null $pmid
  *
  * @property Gene $gene
  * @property GeneIntervention $geneIntervention
@@ -49,7 +50,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'sex', 'organism_line_id', 'age_unit', 'genotype'], 'integer'],
             [['age', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
-            [['reference'], 'string', 'max' => 255],
+            [['reference', 'pmid'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['gene_intervention_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneIntervention::className(), 'targetAttribute' => ['gene_intervention_id' => 'id']],
             [['intervention_result_id'], 'exist', 'skipOnError' => true, 'targetClass' => InterventionResultForLongevity::className(), 'targetAttribute' => ['intervention_result_id' => 'id']],
@@ -80,11 +81,14 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'lifespan_change_percent_common' => 'Lifespan Change Percent Common',
             'age_unit' => 'Age Unit',
             'genotype' => 'Genotype',
+            'pmid' => 'Pmid',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Gene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getGene()
     {
@@ -92,7 +96,9 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[GeneIntervention]].
+     *
+     * @return \yii\db\ActiveQuery|GeneInterventionQuery
      */
     public function getGeneIntervention()
     {
@@ -100,7 +106,9 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[InterventionResult]].
+     *
+     * @return \yii\db\ActiveQuery|InterventionResultForLongevityQuery
      */
     public function getInterventionResult()
     {
@@ -108,7 +116,9 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[ModelOrganism]].
+     *
+     * @return \yii\db\ActiveQuery|ModelOrganismQuery
      */
     public function getModelOrganism()
     {
@@ -116,7 +126,9 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[OrganismLine]].
+     *
+     * @return \yii\db\ActiveQuery|OrganismLineQuery
      */
     public function getOrganismLine()
     {

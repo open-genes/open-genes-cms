@@ -62,16 +62,16 @@
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <?= \yii\bootstrap\Html::activeInput(
-                            'text', $geneToLongevityEffect, 
-                            '[' . $geneToLongevityEffect->id . ']allele_variant', 
-                            ['class' => 'form-control', 'placeholder' => 'Аллельный вариант']) 
+                            'text', $geneToLongevityEffect,
+                            '[' . $geneToLongevityEffect->id . ']allele_variant',
+                            ['class' => 'form-control', 'placeholder' => 'Аллельный вариант'])
                     ?>
                 </div>
             </div>
         </div>
 
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-3 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']age_related_change_type_id',
@@ -90,7 +90,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-3 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
@@ -109,7 +109,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-3 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
@@ -126,8 +126,13 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
-                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'Ссылка в DOI формате ("10.1111/acel.12216")']) ?>
+        </div>
+        <div class="row form-row">
+            <div class="col-xs-12 col-sm-6">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)']) ?>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']pmid', ['class' => 'form-control', 'placeholder' => 'PMID (пример: 34225353)']) ?>
             </div>
         </div>
 
