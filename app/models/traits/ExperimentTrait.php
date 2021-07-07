@@ -25,6 +25,7 @@ trait ExperimentTrait
                 }
                 if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                     $modelAR->delete();
+                    $savedARs['deleted'][$id] = $id;
                     continue;
                 }
                 if(!$modelAR instanceof ActiveRecord) {
