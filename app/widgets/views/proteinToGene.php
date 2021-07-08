@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $proteinToGene,
                     'attribute' => '[' . $proteinToGene->id . ']regulation_type_id',
@@ -62,10 +62,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $proteinToGene, '[' . $proteinToGene->id . ']reference', ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)']) ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $proteinToGene, '[' . $proteinToGene->id . ']pmid', ['class' => 'form-control', 'placeholder' => 'PMID (пример: 34225353)']) ?>
             </div>
         </div>

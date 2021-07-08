@@ -4,7 +4,7 @@
 <div class="protein-activity orange js-gene-to-progeria js-gene-link-section">
     <div class="js-gene-to-progeria-block js-gene-link-block">
         <div class="row form-row">
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToProgeria,
                     'attribute' => '[' . $geneToProgeria->id . ']progeria_syndrome_id',
@@ -23,10 +23,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToProgeria, '[' . $geneToProgeria->id . ']reference', ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)']) ?>
             </div>
-            <div class="col-xs-3 col-sm-4">
+            <div class="col-xs-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToProgeria, '[' . $geneToProgeria->id . ']pmid', ['class' => 'form-control', 'placeholder' => 'PMID (пример: 34225353)']) ?>
             </div>
         </div>
