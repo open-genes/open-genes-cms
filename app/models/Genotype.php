@@ -70,4 +70,10 @@ class Genotype extends common\Genotype
         return $model;
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToLongevityEffects()
+            ->select('gene_id')->distinct()->column();
+    }
+
 }

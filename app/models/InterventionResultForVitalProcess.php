@@ -24,5 +24,11 @@ class InterventionResultForVitalProcess extends common\InterventionResultForVita
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneInterventionToVitalProcesses()
+            ->select('gene_id')->distinct()->column();
+    }
+
 
 }

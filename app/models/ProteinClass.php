@@ -50,4 +50,11 @@ class ProteinClass extends common\ProteinClass
 
         return $dataProvider;
     }
+
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getGenes()
+            ->select('id')->distinct()->column();
+    }
 }

@@ -15,14 +15,14 @@ trait ConditionActiveRecordTrait
      */
     protected function addCondition(&$query, $attribute, $partialMatch = false)
     {
-        $value = $this->$attribute;
-        if (trim($value) === '') {
+        $values = explode(',', $this->$attribute);
+        if (trim(current($values)) === '') {
             return;
         }
         if ($partialMatch) {
-            $query->andWhere(['like', $attribute, $value]);
+            $query->andWhere(['like', $attribute, $values]);
         } else {
-            $query->andWhere([$attribute => $value]);
+            $query->andWhere(['in', $attribute, $values]);
         }
     }
 }

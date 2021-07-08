@@ -90,4 +90,10 @@ class Disease extends DiseaseModel
 
         return $result;
     }
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToDiseases()
+            ->select('gene_id')->distinct()->column();
+    }
 }

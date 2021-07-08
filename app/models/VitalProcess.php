@@ -24,5 +24,9 @@ class VitalProcess extends common\VitalProcess
         ];
     }
 
-
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneInterventionToVitalProcesses()
+            ->select('gene_id')->distinct()->column();
+    }
 }

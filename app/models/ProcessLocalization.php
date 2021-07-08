@@ -26,5 +26,11 @@ class ProcessLocalization extends common\ProcessLocalization
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToProteinActivities()
+            ->select('gene_id')->distinct()->column();
+    }
+
 
 }

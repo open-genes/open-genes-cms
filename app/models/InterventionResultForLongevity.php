@@ -24,5 +24,11 @@ class InterventionResultForLongevity extends common\InterventionResultForLongevi
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
+    }
+
 
 }
