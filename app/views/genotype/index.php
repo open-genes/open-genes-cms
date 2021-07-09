@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name_ru',
-            'name_en',
             [
                 'label' => '🔗 genes',
                 'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\Genotype */
