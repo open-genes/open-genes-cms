@@ -8,8 +8,8 @@ use Yii;
  * This is the model class for table "gene_to_protein_class".
  *
  * @property int $id
- * @property int $gene_id
- * @property int $protein_class_id
+ * @property int|null $gene_id
+ * @property int|null $protein_class_id
  *
  * @property Gene $gene
  * @property ProteinClass $proteinClass
@@ -31,8 +31,8 @@ class GeneToProteinClass extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'protein_class_id'], 'integer'],
-            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
-            [['protein_class_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProteinClass::class, 'targetAttribute' => ['protein_class_id' => 'id']],
+            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
+            [['protein_class_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProteinClass::className(), 'targetAttribute' => ['protein_class_id' => 'id']],
         ];
     }
 
@@ -49,19 +49,23 @@ class GeneToProteinClass extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Gene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getGene()
     {
-        return $this->hasOne(Gene::class, ['id' => 'gene_id']);
+        return $this->hasOne(Gene::className(), ['id' => 'gene_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[ProteinClass]].
+     *
+     * @return \yii\db\ActiveQuery|ProteinClassQuery
      */
     public function getProteinClass()
     {
-        return $this->hasOne(ProteinClass::class, ['id' => 'protein_class_id']);
+        return $this->hasOne(ProteinClass::className(), ['id' => 'protein_class_id']);
     }
 
     /**
