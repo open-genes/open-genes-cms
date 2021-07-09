@@ -162,29 +162,41 @@ class CmsController extends Controller
     }
 
 
+    /**
+     * @param $userEmail
+     * @return bool
+     */
     protected function sendRegisterNotifyEmail($userEmail)
     {
         $link = Yii::$app->urlManager->createAbsoluteUrl(['user']);
-        return Yii::$app
-            ->mailer
-            ->compose()
-            ->setTextBody('Новая регистрация на Open Genes, ' . $userEmail . ', активировать: ' . $link)
-            ->setFrom([Yii::$app->params['adminEmail'] => 'Open Genes'])
-            ->setTo(Yii::$app->params['notifyEmails'])
-            ->setSubject('Новая регистрация на Open Genes')
-            ->send();
+        try {
+            return Yii::$app
+                ->mailer
+                ->compose()
+                ->setTextBody('Новая регистрация на Open Genes, ' . $userEmail . ', активировать: ' . $link)
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Open Genes'])
+                ->setTo(Yii::$app->params['notifyEmails'])
+                ->setSubject('Новая регистрация на Open Genes')
+                ->send();
+        } catch (\Swift_TransportException $e) {
+
+        }
     }
 
     protected function sendRegisterUserEmail($userEmail)
     {
-        return Yii::$app
-            ->mailer
-            ->compose()
-            ->setTextBody('Спасибо за регистрацию в проекте Open Genes! ' . PHP_EOL . 'Мы активируем Ваш аккаунт и сообщим Вам.')
-            ->setFrom([Yii::$app->params['adminEmail'] => 'Open Genes'])
-            ->setTo($userEmail)
-            ->setSubject('Регистрация в Open Genes')
-            ->send();
+        try {
+            return Yii::$app
+                ->mailer
+                ->compose()
+                ->setTextBody('Спасибо за регистрацию в проекте Open Genes! ' . PHP_EOL . 'Мы активируем Ваш аккаунт и сообщим Вам.')
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Open Genes'])
+                ->setTo($userEmail)
+                ->setSubject('Регистрация в Open Genes')
+                ->send();
+        } catch (\Swift_TransportException $e) {
+
+        }
     }
 
 

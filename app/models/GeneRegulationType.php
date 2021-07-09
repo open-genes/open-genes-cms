@@ -91,4 +91,10 @@ class GeneRegulationType extends \app\models\common\GeneRegulationType
 
         return $result;
     }
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getProteinToGenes()
+            ->select('gene_id')->distinct()->column();
+    }
 }

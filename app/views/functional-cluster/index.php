@@ -29,7 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'template' => '{update} {delete}',
                 'visibleButtons' => [
                     'update' => \Yii::$app->user->can('editor'),
-                    'delete' => \Yii::$app->user->can('editor'),
+                    'delete' => function ($model, $key, $index) {
+                        return \Yii::$app->user->can('editor') && ! $model->getAgeRelatedChanges()->select('gene.id')->distinct()->count()
+                            || \Yii::$app->user->can('admin');
+                    }
                 ]
             ],
         ],

@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Query;
 
 /**
  * This is the model class for table "age".
@@ -20,6 +21,14 @@ class Phylum extends common\Phylum
         ];
     }
 
+    public function beforeDelete()
+    {
+        $genesIds = $this->getLinkedGenesIds();
+        Yii::$app->db->createCommand()
+            ->update('gene', ['age_id' => null], ['in', 'id', $genesIds]);
+        return parent::beforeDelete();
+    }
+
     public static function findAllAsArray()
     {
         $result = [];
@@ -30,4 +39,11 @@ class Phylum extends common\Phylum
 
         return $result;
     }
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getGenes()
+            ->select('id')->distinct()->column();
+    }
+
 }

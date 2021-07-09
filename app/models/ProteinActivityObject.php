@@ -26,4 +26,10 @@ class ProteinActivityObject extends common\ProteinActivityObject
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToProteinActivities()
+            ->select('gene_id')->distinct()->column();
+    }
+
 }

@@ -26,4 +26,10 @@ class AgeRelatedChangeType extends common\AgeRelatedChangeType
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getAgeRelatedChanges()
+            ->select('gene_id')->distinct()->column();
+    }
+
 }

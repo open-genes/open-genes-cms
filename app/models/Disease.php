@@ -6,12 +6,11 @@ use app\models\behaviors\ChangelogBehavior;
 use yii\base\Model;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
-use app\models\common\Disease as DiseaseModel;
 
 /**
  * Disease represents the model behind the search form of `app\models\common\Disease`.
  */
-class Disease extends DiseaseModel
+class Disease extends \app\models\common\Disease
 {
     public function behaviors()
     {
@@ -50,7 +49,7 @@ class Disease extends DiseaseModel
      */
     public function search($params)
     {
-        $query = DiseaseModel::find();
+        $query = self::find();
 
         // add conditions that should always apply here
 
@@ -89,5 +88,11 @@ class Disease extends DiseaseModel
         }
 
         return $result;
+    }
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToDiseases()
+            ->select('gene_id')->distinct()->column();
     }
 }

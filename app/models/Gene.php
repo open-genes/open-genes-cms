@@ -108,6 +108,7 @@ class Gene extends common\Gene
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $this->addCondition($query, 'id');
         $this->addCondition($query, 'symbol', true);
         $this->addCondition($query, 'aliases', true);
         $this->addCondition($query, 'name', true);
