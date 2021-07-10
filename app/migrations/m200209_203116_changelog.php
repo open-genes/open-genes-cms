@@ -31,19 +31,4 @@ class m200209_203116_changelog extends Migration
     {
         $this->dropTable('changelog');
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m200209_203116_changelog cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

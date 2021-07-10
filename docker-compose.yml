@@ -33,10 +33,24 @@ services:
     networks:
       - db_net
       - default
-  mysql:
+  genes-db:
     image: mysql:5.7
     ports:
       - "3307:3306"
+    user: ${OPEN_GENES_UID}
+    command: '--init-file /docker-entrypoint-initdb.d/init.sql'
+    volumes:
+      - ./../open-genes-mysql:/var/lib/mysql
+      - ./docker/mysql/charset.cnf:/etc/mysql/conf.d/charset.cnf
+      - ./docker/mysql/dump.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+    networks:
+      - db_net
+  user-db:
+    image: mysql:5.7
+    ports:
+      - "3308:3306"
     user: ${OPEN_GENES_UID}
     command: '--init-file /docker-entrypoint-initdb.d/init.sql'
     volumes:
