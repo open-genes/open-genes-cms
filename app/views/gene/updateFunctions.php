@@ -23,14 +23,20 @@ $this->params['breadcrumbs'][] = 'Update';
     <?php $form = ActiveForm::begin(); ?>
     <a href="<?=\yii\helpers\Url::toRoute(['update', 'id' => $model->id])?>" target="_blank" class="gene-link">Редактировать ген <?=$model->symbol ?> <span class="glyphicon glyphicon-pencil"></span></a>
     <h2><?= Html::encode($this->title) ?></h2>
-    <?= Html::button('Добавить', ['class' => 'btn add-protein-activity js-add-protein-activity']) ?>
-    <div class="js-protein-activities">
-        <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
-            <?= \app\widgets\GeneProteinActivity::widget(['model' => $geneToProteinActivity]) ?>
-        <?php endforeach; ?>
-    </div>
+
     <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        <div class="js-protein-activities">
+            <?php foreach ($model->geneToProteinActivities as $geneToProteinActivity): ?>
+                <?= \app\widgets\GeneProteinActivity::widget(['model' => $geneToProteinActivity]) ?>
+            <?php endforeach; ?>
+        </div>
+        <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity js-add-protein-activity']) ?>
+    </div>
+
+    <div class="submit-panel">
+        <div class="container">
+            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        </div>
     </div>
 
     <?php ActiveForm::end(); ?>

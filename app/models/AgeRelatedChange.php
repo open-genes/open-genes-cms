@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -31,7 +32,7 @@ class AgeRelatedChange extends common\AgeRelatedChange
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'age_related_change_type_id', 'model_organism_id', 'sample_id', 'reference'], 'required'],
+            [['gene_id', 'age_related_change_type_id', 'model_organism_id'], 'required'],
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age_from) || !empty($model->age_to);
             }],
@@ -48,8 +49,8 @@ class AgeRelatedChange extends common\AgeRelatedChange
             'age_related_change_type_id' => 'Вид изменений',
             'sample_id' => 'Образец',
             'reference' => 'Ссылка',
-            'model_organism_id' => 'Модельный организм',
-            'organism_line_id' => 'Линия организма',
+            'model_organism_id' => 'Объект',
+            'organism_line_id' => 'Линия',
             'age_from' => 'Возраст - от',
             'age_to' => 'Возраст - до',
             'change_value_male' => 'Изменение муж.',
@@ -95,7 +96,7 @@ class AgeRelatedChange extends common\AgeRelatedChange
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
                 $modelAR->delete();
                 continue;
             }

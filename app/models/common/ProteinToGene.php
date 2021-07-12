@@ -8,16 +8,19 @@ use Yii;
  * This is the model class for table "protein_to_gene".
  *
  * @property int $id
- * @property int $gene_id
- * @property int $regulated_gene_id
- * @property int $protein_activity_id
- * @property string $reference
- * @property string $comment_en
- * @property string $comment_ru
- * @property int $regulation_type
+ * @property int|null $gene_id
+ * @property int|null $regulated_gene_id
+ * @property int|null $protein_activity_id
+ * @property string|null $reference
+ * @property string|null $comment_en
+ * @property string|null $comment_ru
+ * @property int|null $regulation_type
+ * @property int|null $regulation_type_id
+ * @property string|null $pmid
  *
  * @property Gene $gene
  * @property ProteinActivity $proteinActivity
+ * @property GeneRegulationType $regulationType
  * @property Gene $regulatedGene
  */
 class ProteinToGene extends \yii\db\ActiveRecord
@@ -36,12 +39,13 @@ class ProteinToGene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'regulated_gene_id', 'protein_activity_id', 'regulation_type'], 'integer'],
+            [['gene_id', 'regulated_gene_id', 'protein_activity_id', 'regulation_type', 'regulation_type_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
-            [['reference'], 'string', 'max' => 255],
-            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
-            [['protein_activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProteinActivity::class, 'targetAttribute' => ['protein_activity_id' => 'id']],
-            [['regulated_gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['regulated_gene_id' => 'id']],
+            [['reference', 'pmid'], 'string', 'max' => 255],
+            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
+            [['protein_activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProteinActivity::className(), 'targetAttribute' => ['protein_activity_id' => 'id']],
+            [['regulation_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneRegulationType::className(), 'targetAttribute' => ['regulation_type_id' => 'id']],
+            [['regulated_gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['regulated_gene_id' => 'id']],
         ];
     }
 
@@ -59,31 +63,49 @@ class ProteinToGene extends \yii\db\ActiveRecord
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
             'regulation_type' => 'Regulation Type',
+            'regulation_type_id' => 'Regulation Type ID',
+            'pmid' => 'Pmid',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Gene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getGene()
     {
-        return $this->hasOne(Gene::class, ['id' => 'gene_id']);
+        return $this->hasOne(Gene::className(), ['id' => 'gene_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[ProteinActivity]].
+     *
+     * @return \yii\db\ActiveQuery|ProteinActivityQuery
      */
     public function getProteinActivity()
     {
-        return $this->hasOne(ProteinActivity::class, ['id' => 'protein_activity_id']);
+        return $this->hasOne(ProteinActivity::className(), ['id' => 'protein_activity_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[RegulationType]].
+     *
+     * @return \yii\db\ActiveQuery|GeneRegulationTypeQuery
+     */
+    public function getRegulationType()
+    {
+        return $this->hasOne(GeneRegulationType::className(), ['id' => 'regulation_type_id']);
+    }
+
+    /**
+     * Gets query for [[RegulatedGene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getRegulatedGene()
     {
-        return $this->hasOne(Gene::class, ['id' => 'regulated_gene_id']);
+        return $this->hasOne(Gene::className(), ['id' => 'regulated_gene_id']);
     }
 
     /**

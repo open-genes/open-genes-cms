@@ -8,11 +8,12 @@ use Yii;
  * This is the model class for table "gene_to_progeria".
  *
  * @property int $id
- * @property int $gene_id
- * @property int $progeria_syndrome_id
- * @property string $reference
- * @property string $comment_en
- * @property string $comment_ru
+ * @property int|null $gene_id
+ * @property int|null $progeria_syndrome_id
+ * @property string|null $reference
+ * @property string|null $comment_en
+ * @property string|null $comment_ru
+ * @property string|null $pmid
  *
  * @property Gene $gene
  * @property ProgeriaSyndrome $progeriaSyndrome
@@ -35,9 +36,9 @@ class GeneToProgeria extends \yii\db\ActiveRecord
         return [
             [['gene_id', 'progeria_syndrome_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
-            [['reference'], 'string', 'max' => 255],
-            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
-            [['progeria_syndrome_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProgeriaSyndrome::class, 'targetAttribute' => ['progeria_syndrome_id' => 'id']],
+            [['reference', 'pmid'], 'string', 'max' => 255],
+            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
+            [['progeria_syndrome_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProgeriaSyndrome::className(), 'targetAttribute' => ['progeria_syndrome_id' => 'id']],
         ];
     }
 
@@ -53,23 +54,28 @@ class GeneToProgeria extends \yii\db\ActiveRecord
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
+            'pmid' => 'Pmid',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Gene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getGene()
     {
-        return $this->hasOne(Gene::class, ['id' => 'gene_id']);
+        return $this->hasOne(Gene::className(), ['id' => 'gene_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[ProgeriaSyndrome]].
+     *
+     * @return \yii\db\ActiveQuery|ProgeriaSyndromeQuery
      */
     public function getProgeriaSyndrome()
     {
-        return $this->hasOne(ProgeriaSyndrome::class, ['id' => 'progeria_syndrome_id']);
+        return $this->hasOne(ProgeriaSyndrome::className(), ['id' => 'progeria_syndrome_id']);
     }
 
     /**

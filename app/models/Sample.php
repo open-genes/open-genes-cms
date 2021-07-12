@@ -39,4 +39,10 @@ class Sample extends common\Sample
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneExpressionInSamples()
+            ->select('gene_id')->distinct()->column();
+    }
+
 }

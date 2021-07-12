@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -31,7 +32,7 @@ class GeneToAdditionalEvidence extends common\GeneToAdditionalEvidence
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'reference', 'comment_en'], 'required'],
+            [['gene_id', 'comment_en'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -61,7 +62,7 @@ class GeneToAdditionalEvidence extends common\GeneToAdditionalEvidence
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                 $modelAR->delete();
                 continue;
             }

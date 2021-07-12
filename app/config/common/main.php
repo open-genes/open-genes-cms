@@ -39,7 +39,7 @@ $config = [
     ],
 ];
 
-if (YII_DEBUG) {
+if (getenv('DEBUG')) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [

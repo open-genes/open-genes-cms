@@ -26,4 +26,10 @@ class LongevityEffect extends common\LongevityEffect
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToLongevityEffects()
+            ->select('gene_id')->distinct()->column();
+    }
+
 }

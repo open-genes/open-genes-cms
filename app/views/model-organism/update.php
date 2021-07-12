@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ModelOrganism */
 
-$this->title = 'Редактировать модельный организм ' . $model->id;
+$this->title = 'Редактировать объект (модельный организм) ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Model Organisms', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

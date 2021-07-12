@@ -6,6 +6,7 @@ use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -32,7 +33,7 @@ class GeneToProgeria extends common\GeneToProgeria
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'progeria_syndrome_id', 'reference'], 'required'],
+            [['gene_id', 'progeria_syndrome_id'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -61,7 +62,7 @@ class GeneToProgeria extends common\GeneToProgeria
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                 $modelAR->delete();
                 continue;
             }

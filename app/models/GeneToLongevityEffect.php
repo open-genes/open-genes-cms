@@ -5,6 +5,7 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ValidatorsTrait;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -24,6 +25,14 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
         ];
     }
 
+    public function init() {
+        parent::init();
+        if ($this->isNewRecord) {
+            $modelOrganismHumanId = ModelOrganism::find()->select('id')->where(['name_en' => 'human'])->scalar();
+            $this->model_organism_id = $modelOrganismHumanId;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +40,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'model_organism_id', 'reference'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'data_type', 'model_organism_id'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -46,7 +55,9 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'sex_of_organism' => 'Пол',
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
-            'model_organism_id' => 'Организм',
+            'data_type' => 'Тип изменений',
+            'model_organism_id' => 'Объект',
+            'age_related_change_type_id' => 'Вид изменений',
         ]);
     }
 
@@ -64,7 +75,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1') {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
                 $modelAR->delete();
                 continue;
             }
@@ -80,6 +91,10 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
                 $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
                 $modelAR->model_organism_id = $arProcessLocalization->id;
+            }
+            if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
+                $arProcessLocalization = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
+                $modelAR->age_related_change_type_id = $arProcessLocalization->id;
             }
             if ($modelAR->genotype_id === '') {
                 $modelAR->genotype_id = null;

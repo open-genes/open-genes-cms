@@ -11,17 +11,16 @@ use yii\grid\GridView;
 $this->title = 'Гены';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="gene-index">
-
-    <h2><?= Html::encode($this->title) ?></h2>
-
-    <p>
-        <?php if(Yii::$app->user->can('editor')): ?>
-        <?= Html::a('Добавить гены', ['create'], ['class' => 'btn btn-success']) ?>
-         <?=Yii::$app->session->getFlash('add_genes') ?>
-        <?endif; ?>
-    </p>
-
+<div class="gene-index container-fluid">
+    <div class="row">
+        <h2 class="col-xs-12"><?= Html::encode($this->title) ?></h2>
+        <p class="col-xs-12">
+            <?php if(Yii::$app->user->can('editor')): ?>
+                <?= Html::a('Добавить гены', ['create'], ['class' => 'btn btn-success']) ?>
+                <?=Yii::$app->session->getFlash('add_genes') ?>
+            <?endif; ?>
+        </p>
+    </div>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

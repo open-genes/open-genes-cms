@@ -24,5 +24,15 @@ class ModelOrganism extends common\ModelOrganism
         ];
     }
 
-
+    public function getLinkedGenesIds()
+    {
+        return array_unique(array_merge(
+            $this->getLifespanExperiments()
+                ->select('gene_id')->distinct()->column(),
+            $this->getGeneInterventionToVitalProcesses()
+                ->select('gene_id')->distinct()->column(),
+            $this->getAgeRelatedChanges()
+                ->select('gene_id')->distinct()->column()
+        ));
+    }
 }

@@ -14,6 +14,7 @@ use Yii;
  * @property string|null $comment_en
  * @property int|null $created_at
  * @property int|null $updated_at
+ * @property string|null $pmid
  *
  * @property Gene $gene
  */
@@ -35,7 +36,7 @@ class GeneToAdditionalEvidence extends \yii\db\ActiveRecord
         return [
             [['gene_id', 'created_at', 'updated_at'], 'integer'],
             [['comment_ru', 'comment_en'], 'string'],
-            [['reference'], 'string', 'max' => 255],
+            [['reference', 'pmid'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
         ];
     }
@@ -53,6 +54,7 @@ class GeneToAdditionalEvidence extends \yii\db\ActiveRecord
             'comment_en' => 'Comment En',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'pmid' => 'Pmid',
         ];
     }
 

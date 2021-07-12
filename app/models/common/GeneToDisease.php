@@ -14,6 +14,7 @@ use Yii;
  * @property string|null $comment
  * @property int|null $created_at
  * @property int|null $updated_at
+ * @property string|null $pmid
  *
  * @property Gene $gene
  * @property Disease $disease
@@ -35,7 +36,7 @@ class GeneToDisease extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'disease_id', 'created_at', 'updated_at'], 'integer'],
-            [['reference', 'comment'], 'string', 'max' => 255],
+            [['reference', 'comment', 'pmid'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['disease_id'], 'exist', 'skipOnError' => true, 'targetClass' => Disease::className(), 'targetAttribute' => ['disease_id' => 'id']],
         ];
@@ -54,6 +55,7 @@ class GeneToDisease extends \yii\db\ActiveRecord
             'comment' => 'Comment',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'pmid' => 'Pmid',
         ];
     }
 

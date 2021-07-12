@@ -30,4 +30,10 @@ class CommentCause extends common\CommentCause
 
         return $result;
     }
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToCommentCauses()
+            ->select('gene_id')->distinct()->column();
+    }
 }

@@ -24,5 +24,11 @@ class ProgeriaSyndrome extends common\ProgeriaSyndrome
         ];
     }
 
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToProgerias()
+            ->select('gene_id')->distinct()->column();
+    }
+
 
 }

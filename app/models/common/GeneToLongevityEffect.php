@@ -8,16 +8,20 @@ use Yii;
  * This is the model class for table "gene_to_longevity_effect".
  *
  * @property int $id
- * @property int $gene_id
- * @property int $longevity_effect_id
- * @property int $genotype_id
- * @property int $sex_of_organism
- * @property string $reference
- * @property string $comment_en
- * @property string $comment_ru
- * @property string $allele_variant
- * @property int $model_organism_id
+ * @property int|null $gene_id
+ * @property int|null $longevity_effect_id
+ * @property int|null $genotype_id
+ * @property int|null $sex_of_organism
+ * @property string|null $reference
+ * @property string|null $comment_en
+ * @property string|null $comment_ru
+ * @property string|null $allele_variant
+ * @property int|null $model_organism_id
+ * @property int|null $data_type
+ * @property int|null $age_related_change_type_id
+ * @property string|null $pmid
  *
+ * @property AgeRelatedChangeType $ageRelatedChangeType
  * @property Gene $gene
  * @property Genotype $genotype
  * @property LongevityEffect $longevityEffect
@@ -38,12 +42,13 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'sex_of_organism', 'model_organism_id'], 'integer'],
+            [['gene_id', 'longevity_effect_id', 'genotype_id', 'sex_of_organism', 'model_organism_id', 'data_type', 'age_related_change_type_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
-            [['reference', 'allele_variant'], 'string', 'max' => 255],
-            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
-            [['genotype_id'], 'exist', 'skipOnError' => true, 'targetClass' => Genotype::class, 'targetAttribute' => ['genotype_id' => 'id']],
-            [['longevity_effect_id'], 'exist', 'skipOnError' => true, 'targetClass' => LongevityEffect::class, 'targetAttribute' => ['longevity_effect_id' => 'id']],
+            [['reference', 'allele_variant', 'pmid'], 'string', 'max' => 255],
+            [['age_related_change_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AgeRelatedChangeType::className(), 'targetAttribute' => ['age_related_change_type_id' => 'id']],
+            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
+            [['genotype_id'], 'exist', 'skipOnError' => true, 'targetClass' => Genotype::className(), 'targetAttribute' => ['genotype_id' => 'id']],
+            [['longevity_effect_id'], 'exist', 'skipOnError' => true, 'targetClass' => LongevityEffect::className(), 'targetAttribute' => ['longevity_effect_id' => 'id']],
         ];
     }
 
@@ -63,31 +68,50 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
             'comment_ru' => 'Comment Ru',
             'allele_variant' => 'Allele Variant',
             'model_organism_id' => 'Model Organism ID',
+            'data_type' => 'Data Type',
+            'age_related_change_type_id' => 'Age Related Change Type ID',
+            'pmid' => 'Pmid',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[AgeRelatedChangeType]].
+     *
+     * @return \yii\db\ActiveQuery|AgeRelatedChangeTypeQuery
+     */
+    public function getAgeRelatedChangeType()
+    {
+        return $this->hasOne(AgeRelatedChangeType::className(), ['id' => 'age_related_change_type_id']);
+    }
+
+    /**
+     * Gets query for [[Gene]].
+     *
+     * @return \yii\db\ActiveQuery|GeneQuery
      */
     public function getGene()
     {
-        return $this->hasOne(Gene::class, ['id' => 'gene_id']);
+        return $this->hasOne(Gene::className(), ['id' => 'gene_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Genotype]].
+     *
+     * @return \yii\db\ActiveQuery|GenotypeQuery
      */
     public function getGenotype()
     {
-        return $this->hasOne(Genotype::class, ['id' => 'genotype_id']);
+        return $this->hasOne(Genotype::className(), ['id' => 'genotype_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[LongevityEffect]].
+     *
+     * @return \yii\db\ActiveQuery|LongevityEffectQuery
      */
     public function getLongevityEffect()
     {
-        return $this->hasOne(LongevityEffect::class, ['id' => 'longevity_effect_id']);
+        return $this->hasOne(LongevityEffect::className(), ['id' => 'longevity_effect_id']);
     }
 
     /**
