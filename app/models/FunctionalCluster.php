@@ -44,4 +44,10 @@ class FunctionalCluster extends common\FunctionalCluster
 
         return $result;
     }
+
+    public function getLinkedGenesIds()
+    {
+        return $this->getGeneToFunctionalClusters()
+            ->select('gene_id')->distinct()->column();
+    }
 }

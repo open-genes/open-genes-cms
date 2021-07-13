@@ -21,13 +21,13 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         $this->httpClient = new Client();
     }
 
-    public function parseInfo(bool $onlyNew=true, array $geneNcbiIdsArray=[])
+    public function parseInfo(bool $onlyNew = true, array $geneNcbiIdsArray = [])
     {
         $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
-        if($onlyNew) {
+        if ($onlyNew) {
             $arGenesQuery->andWhere('gene.summary_en is null');
         }
-        if($geneNcbiIdsArray) {
+        if ($geneNcbiIdsArray) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);
         }
         $arGenes = $arGenesQuery->all();
@@ -37,7 +37,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         foreach ($arGenes as $arGene) {
             try {
                 echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
-                $url = $this->apiUrl  . 'gene/' . $arGene->ncbi_id . '?fields=summary,symbol';
+                $url = $this->apiUrl . 'gene/' . $arGene->ncbi_id . '?fields=summary,symbol';
                 $response = $this->httpClient->createRequest()
                     ->setUrl($url)
                     ->send();
@@ -52,7 +52,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                 $arGene->save();
                 echo 'OK' . PHP_EOL;
             } catch (\Exception $e) {
-                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url. PHP_EOL;
+                echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url . PHP_EOL;
             }
             $counter++;
         }
@@ -62,40 +62,36 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
      * @param string $symbol
      * @return string
      */
-    public function parseBySymbol(string $symbol) : string
+    public function parseBySymbol(string $symbol): string
     {
-        try {
-            echo "get {$symbol} from myGene: ";
-            $url = $this->apiUrl  . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
-            $response = $this->httpClient->createRequest()
-                ->setUrl($url)
-                ->send();
-            if (!$response->isOk) {
-                throw new Exception($response->getStatusCode());
-            }
-            $parsedResponse = json_decode($response->content, true);
-            foreach ($parsedResponse['hits'] as $gene) {
-                if($gene['symbol'] === strtoupper($symbol)) {
-                    $arGene = new Gene();
-                    $arGene->symbol = $gene['symbol'];
-                    $arGene->ncbi_id = $gene['entrezgene'];
-                    $arGene->name = $gene['name'];
-                    $arGene->summary_en = $gene['summary'];
-                    $arGene->isHidden = 1;
-                    $arGene->source = 'abdb';
-                    $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
-                    array_walk($aliases, function(&$value, &$key) {
-                        $value = str_replace(' ', '+', $value);
-                    });
-                    $arGene->aliases = implode(' ', $aliases);
-                    $arGene->save();
-                    echo 'OK' . PHP_EOL;
-                    return $arGene->ncbi_id;
-                }
-            }
-        } catch (\Exception $e) {
-            echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url. PHP_EOL;
-            echo $e->getTraceAsString();
+        echo "get {$symbol} from myGene: ";
+        $url = $this->apiUrl . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
+        $response = $this->httpClient->createRequest()
+            ->setUrl($url)
+            ->send();
+        if (!$response->isOk) {
+            throw new Exception($response->getStatusCode());
         }
+        $parsedResponse = json_decode($response->content, true);
+        foreach ($parsedResponse['hits'] as $gene) {
+            if ($gene['symbol'] === strtoupper($symbol)) {
+                $arGene = new Gene();
+                $arGene->symbol = $gene['symbol'];
+                $arGene->ncbi_id = $gene['entrezgene'];
+                $arGene->name = $gene['name'];
+                $arGene->summary_en = $gene['summary'];
+                $arGene->isHidden = 1;
+                $arGene->source = 'abdb';
+                $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
+                array_walk($aliases, function (&$value, &$key) {
+                    $value = str_replace(' ', '+', $value);
+                });
+                $arGene->aliases = implode(' ', $aliases);
+                $arGene->save();
+                echo 'OK' . PHP_EOL;
+                return $arGene->ncbi_id;
+            }
+        }
+
     }
 }

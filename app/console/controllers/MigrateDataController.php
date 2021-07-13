@@ -170,15 +170,19 @@ class MigrateDataController extends Controller
         $counter = 1;
         $count = count($array['data']);
         foreach ($array['data'] as $gene) {
-            $symbol = strtoupper(trim($gene[1]));
-            $arGene = Gene::find()->where(['symbol' => $symbol])->one();
-            if ($arGene) {
-                echo 'gene found' . PHP_EOL;
-            } else {
-                /** @var ParseMyGeneServiceInterface $myGeneService */
-                $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
-                $ncbiId = $myGeneService->parseBySymbol($symbol);
-                echo $counter . ' from ' . $count . ': ' . $symbol . ' ' . $ncbiId . PHP_EOL;
+            try {
+                $symbol = strtoupper(trim($gene[1]));
+                $arGene = Gene::find()->where(['symbol' => $symbol])->one();
+                if ($arGene) {
+                    echo 'gene found' . PHP_EOL;
+                } else {
+                    /** @var ParseMyGeneServiceInterface $myGeneService */
+                    $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
+                    $ncbiId = $myGeneService->parseBySymbol($symbol);
+                    echo $counter . ' from ' . $count . ': ' . $symbol . ' ' . $ncbiId . PHP_EOL;
+                }
+            } catch (\Exception $e) {
+                echo $counter . ' from ' . $count . ': ERROR ' . $e->getMessage() . PHP_EOL;
             }
         }
         $source = null;
