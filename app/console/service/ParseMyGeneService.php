@@ -70,7 +70,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
             ->setUrl($url)
             ->send();
         if (!$response->isOk) {
-            throw new Exception($response->getStatusCode());
+            throw new \Exception($response->getStatusCode());
         }
         $parsedResponse = json_decode($response->content, true);
         foreach ($parsedResponse['hits'] as $gene) {
@@ -79,19 +79,20 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                 $arGene->symbol = $gene['symbol'];
                 $arGene->ncbi_id = $gene['entrezgene'];
                 $arGene->name = $gene['name'];
-                $arGene->summary_en = $gene['summary'];
+                $arGene->summary_en = $gene['summary'] ?? null;
                 $arGene->isHidden = 1;
                 $arGene->source = 'abdb';
-                $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
-                array_walk($aliases, function (&$value, &$key) {
-                    $value = str_replace(' ', '+', $value);
-                });
-                $arGene->aliases = implode(' ', $aliases);
+                if (isset($gene['alias'])) {
+                    $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
+                    array_walk($aliases, function (&$value, &$key) {
+                        $value = str_replace(' ', '+', $value);
+                    });
+                    $arGene->aliases = implode(' ', $aliases);
+                }
                 $arGene->save();
-                echo 'OK' . PHP_EOL;
                 return $arGene->ncbi_id;
             }
         }
-
+        throw new \Exception(' not found ' . $url);
     }
 }

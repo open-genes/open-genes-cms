@@ -171,6 +171,7 @@ class MigrateDataController extends Controller
         $count = count($array['data']);
         foreach ($array['data'] as $gene) {
             try {
+                echo $counter . ' from ' . $count . ': ' ;
                 $symbol = strtoupper(trim($gene[1]));
                 $arGene = Gene::find()->where(['symbol' => $symbol])->one();
                 if ($arGene) {
@@ -179,11 +180,12 @@ class MigrateDataController extends Controller
                     /** @var ParseMyGeneServiceInterface $myGeneService */
                     $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
                     $ncbiId = $myGeneService->parseBySymbol($symbol);
-                    echo $counter . ' from ' . $count . ': ' . $symbol . ' ' . $ncbiId . PHP_EOL;
+                    echo 'OK ' . $symbol . ' ' . $ncbiId . PHP_EOL;
                 }
             } catch (\Exception $e) {
-                echo $counter . ' from ' . $count . ': ERROR ' . $e->getMessage() . PHP_EOL;
+                echo 'ERROR ' . $e->getMessage() . PHP_EOL;
             }
+            $counter++;
         }
         $source = null;
 echo $source;
