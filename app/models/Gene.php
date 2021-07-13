@@ -114,6 +114,7 @@ class Gene extends common\Gene
         $this->addCondition($query, 'aliases', true);
         $this->addCondition($query, 'name', true);
         $this->addCondition($query, 'ncbi_id');
+        $this->addCondition($query, 'source');
 
         return $dataProvider;
     }

@@ -47,6 +47,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw'
             ],
+            [
+                'attribute' => 'source',
+                'filter'=> Html::dropDownList('Gene[source]', $searchModel->source, ['abdb' => 'abdb'],['prompt'=>' ','class' => 'form-control']),
+            ],
             //'ncbi_id',
             //'uniprot',
             //'why',

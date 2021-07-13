@@ -1,6 +1,7 @@
 <?php
 namespace app\console\controllers;
 
+use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
@@ -161,7 +162,7 @@ class MigrateDataController extends Controller
         }
     }
 
-    public function actionMigrateAbdb($pathToFile = 'scratch.json')
+    public function actionMigrateAbdb($pathToFile = 'abdb.json')
     {
         $json = file_get_contents($pathToFile);
         $array = json_decode($json, true);
@@ -169,19 +170,15 @@ class MigrateDataController extends Controller
         $counter = 1;
         $count = count($array['data']);
         foreach ($array['data'] as $gene) {
-            $symbol = $gene[1];
-            $ncbiId = trim(strip_tags($gene[2]));
-            echo $counter . ' from ' . $count . ': ' . $symbol . ' ' . $ncbiId . ' ';
-            $arGene = Gene::find()->where(['ncbi_id' => $ncbiId])->one();
+            $symbol = strtoupper(trim($gene[1]));
+            $arGene = Gene::find()->where(['symbol' => $symbol])->one();
             if ($arGene) {
                 echo 'gene found' . PHP_EOL;
             } else {
-                $arGene = new Gene();
-                $arGene->ncbi_id = $ncbiId;
-                $arGene->symbol = $symbol;
-                $arGene->source = 'abdb';
-                $arGene->save();
-                echo 'SAVED!' . PHP_EOL;
+                /** @var ParseMyGeneServiceInterface $myGeneService */
+                $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
+                $ncbiId = $myGeneService->parseBySymbol($symbol);
+                echo $counter . ' from ' . $count . ': ' . $symbol . ' ' . $ncbiId . PHP_EOL;
             }
         }
         $source = null;

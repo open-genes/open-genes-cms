@@ -5,15 +5,20 @@ namespace app\console\service;
 
 
 use app\models\Gene;
+use yii\db\Exception;
 use yii\httpclient\Client;
 
 class ParseMyGeneService implements ParseMyGeneServiceInterface
 {
+    /** @var string */
     private $apiUrl;
+    /** @var Client */
+    private $httpClient;
 
     public function __construct($apiUrl)
     {
         $this->apiUrl = $apiUrl;
+        $this->httpClient = new Client();
     }
 
     public function parseInfo(bool $onlyNew=true, array $geneNcbiIdsArray=[])
@@ -29,12 +34,11 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         $counter = 1;
         $count = count($arGenes);
         echo $count;
-        $client = new Client();
         foreach ($arGenes as $arGene) {
             try {
                 echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
-                $url = $this->apiUrl  . $arGene->ncbi_id . '?fields=summary,symbol';
-                $response = $client->createRequest()
+                $url = $this->apiUrl  . 'gene/' . $arGene->ncbi_id . '?fields=summary,symbol';
+                $response = $this->httpClient->createRequest()
                     ->setUrl($url)
                     ->send();
                 if (!$response->isOk) {
@@ -51,6 +55,47 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                 echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url. PHP_EOL;
             }
             $counter++;
+        }
+    }
+
+    /**
+     * @param string $symbol
+     * @return string
+     */
+    public function parseBySymbol(string $symbol) : string
+    {
+        try {
+            echo "get {$symbol} from myGene: ";
+            $url = $this->apiUrl  . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
+            $response = $this->httpClient->createRequest()
+                ->setUrl($url)
+                ->send();
+            if (!$response->isOk) {
+                throw new Exception($response->getStatusCode());
+            }
+            $parsedResponse = json_decode($response->content, true);
+            foreach ($parsedResponse['hits'] as $gene) {
+                if($gene['symbol'] === strtoupper($symbol)) {
+                    $arGene = new Gene();
+                    $arGene->symbol = $gene['symbol'];
+                    $arGene->ncbi_id = $gene['entrezgene'];
+                    $arGene->name = $gene['name'];
+                    $arGene->summary_en = $gene['summary'];
+                    $arGene->isHidden = 1;
+                    $arGene->source = 'abdb';
+                    $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
+                    array_walk($aliases, function(&$value, &$key) {
+                        $value = str_replace(' ', '+', $value);
+                    });
+                    $arGene->aliases = implode(' ', $aliases);
+                    $arGene->save();
+                    echo 'OK' . PHP_EOL;
+                    return $arGene->ncbi_id;
+                }
+            }
+        } catch (\Exception $e) {
+            echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url. PHP_EOL;
+            echo $e->getTraceAsString();
         }
     }
 }
