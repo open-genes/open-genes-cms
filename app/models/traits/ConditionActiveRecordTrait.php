@@ -10,10 +10,10 @@ trait ConditionActiveRecordTrait
 {
     /**
      * @param $query ActiveQuery
-     * @param $attribute
+     * @param string $attribute
      * @param bool $partialMatch
      */
-    protected function addCondition(&$query, $attribute, $partialMatch = false)
+    protected function addCondition(ActiveQuery &$query, string $attribute, bool $partialMatch = false)
     {
         $values = explode(',', $this->$attribute);
         if (trim(current($values)) === '') {
