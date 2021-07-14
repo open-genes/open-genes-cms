@@ -179,15 +179,16 @@ class MigrateDataController extends Controller
                 } else {
                     /** @var ParseMyGeneServiceInterface $myGeneService */
                     $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
-                    $ncbiId = $myGeneService->parseBySymbol($symbol);
-                    echo 'OK ' . $symbol . ' ' . $ncbiId . PHP_EOL;
+                    $arGene = $myGeneService->parseBySymbol($symbol);
+                    $arGene->isHidden = 1;
+                    $arGene->source = 'abdb';
+                    $arGene->save();
+                    echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;
                 }
             } catch (\Exception $e) {
                 echo 'ERROR ' . $e->getMessage() . PHP_EOL;
             }
             $counter++;
         }
-        $source = null;
-echo $source;
     }
 }

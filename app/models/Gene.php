@@ -215,9 +215,9 @@ class Gene extends common\Gene
 
     public function afterSave($insert, $changedAttributes)
     {
-//        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
-//            return parent::afterSave($insert, $changedAttributes);
-//        }
+        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
+            return parent::afterSave($insert, $changedAttributes);
+        }
         // todo move to relational active records
         $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
         if ($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {

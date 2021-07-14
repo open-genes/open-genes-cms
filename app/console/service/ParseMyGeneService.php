@@ -62,7 +62,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
      * @param string $symbol
      * @return string
      */
-    public function parseBySymbol(string $symbol): string
+    public function parseBySymbol(string $symbol): Gene
     {
         echo "get {$symbol} from myGene: ";
         $url = $this->apiUrl . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
@@ -80,8 +80,6 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                 $arGene->ncbi_id = $gene['entrezgene'];
                 $arGene->name = $gene['name'];
                 $arGene->summary_en = $gene['summary'] ?? null;
-                $arGene->isHidden = 1;
-                $arGene->source = 'abdb';
                 if (isset($gene['alias'])) {
                     $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
                     array_walk($aliases, function (&$value, &$key) {
@@ -89,8 +87,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                     });
                     $arGene->aliases = implode(' ', $aliases);
                 }
-                $arGene->save();
-                return $arGene->ncbi_id;
+                return $arGene;
             }
         }
         throw new \Exception(' not found ' . $url);
