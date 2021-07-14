@@ -26,6 +26,7 @@ class Gene extends common\Gene
     use ConditionActiveRecordTrait;
 
     public $newGenesNcbiIds;
+    public $filledExperiments;
 
     protected $functionalClustersIdsArray;
     protected $diseasesIdsArray;
@@ -47,7 +48,8 @@ class Gene extends common\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray', 'proteinClassesIdsArray', 'newGenesNcbiIds'], 'safe'],
+            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray',
+                'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments'], 'safe'],
             ['ncbi_id', 'unique'],
         ]);
     }
@@ -95,26 +97,60 @@ class Gene extends common\Gene
             'protein_complex_en' => 'Белковый комплекс En',
             'summary_ru' => 'Описание гена (NCBI) Ru',
             'summary_en' => 'Описание гена (NCBI) En',
+            'source' => 'Источник',
         ];
     }
+
+    public const EXPERIMENTS = [
+        'lifespan_experiment' => 'LifespanExperiment',
+        'age_related_change' => 'AgeRelatedChange',
+        'gene_intervention_to_vital_process' => 'GeneInterventionToVitalProcess',
+        'protein_to_gene' => 'ProteinToGene',
+        'gene_to_progeria' => 'GeneToProgeria',
+        'gene_to_longevity_effect' => 'GeneToLongevityEffect',
+        'gene_to_additional_evidence' => 'GeneToAdditionalEvidence',
+    ];
 
     public function search($params = [])
     {
         $query = self::find();
 
-        if($params) {
+        if ($params) {
             $this->load($params);
         }
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'symbol', true);
         $this->addCondition($query, 'aliases', true);
         $this->addCondition($query, 'name', true);
         $this->addCondition($query, 'ncbi_id');
+        $this->addCondition($query, 'source');
+        $this->addExperimentsCondition($query);
 
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $dataProvider->prepare();
         return $dataProvider;
+    }
+
+    private function addExperimentsCondition(ActiveQuery &$query) // todo make by query builder
+    {
+        if ($this->filledExperiments) {
+            $conditionType = '';
+            $conditionString = '';
+            foreach (self::EXPERIMENTS as $table => $experiment) {
+                $query->leftJoin($table, $table . '.gene_id = gene.id');
+                if ($this->filledExperiments === '+') {
+                    $conditionString .= " {$conditionType} {$table}.gene_id is not null";
+                    $conditionType = 'or';
+                } else {
+                    $conditionString .= " {$conditionType} {$table}.gene_id is null";
+                    $conditionType = 'and';
+                }
+            }
+            $query->groupBy('gene.id');
+            $query->andWhere($conditionString);
+        }
     }
 
     public function getFunctionalClustersIdsArray()
@@ -126,7 +162,7 @@ class Gene extends common\Gene
             ->asArray()
             ->column();
     }
-    
+
     public function getDiseasesIdsArray()
     {
         return Disease::find()
@@ -184,11 +220,11 @@ class Gene extends common\Gene
         }
         // todo move to relational active records
         $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
-        if($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
-            if($this->functionalClustersIdsArray) {
+        if ($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
+            if ($this->functionalClustersIdsArray) {
                 $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
                 $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
-                foreach($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
+                foreach ($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
                     $geneToFunctionalCluster = new GeneToFunctionalCluster();
                     $geneToFunctionalCluster->gene_id = $this->id;
                     $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
@@ -207,11 +243,11 @@ class Gene extends common\Gene
         }
 
         $currentCommentCauseIds = $this->getCommentCauseIdsArray();
-        if($currentCommentCauseIds !== $this->commentCauseIdsArray) {
-            if($this->commentCauseIdsArray) {
+        if ($currentCommentCauseIds !== $this->commentCauseIdsArray) {
+            if ($this->commentCauseIdsArray) {
                 $commentCausesIdsToDelete = array_diff($currentCommentCauseIds, $this->commentCauseIdsArray);
                 $commentCausesIdsToAdd = array_diff($this->commentCauseIdsArray, $currentCommentCauseIds);
-                foreach($commentCausesIdsToAdd as $commentCauseIdToAdd) {
+                foreach ($commentCausesIdsToAdd as $commentCauseIdToAdd) {
                     $geneToCommentCause = new GeneToCommentCause();
                     $geneToCommentCause->gene_id = $this->id;
                     $geneToCommentCause->comment_cause_id = $commentCauseIdToAdd;
@@ -230,11 +266,11 @@ class Gene extends common\Gene
         }
 
         $currentProteinClassesIdsArray = $this->getProteinClassesIdsArray();
-        if($currentProteinClassesIdsArray !== $this->proteinClassesIdsArray) {
-            if($this->proteinClassesIdsArray) {
+        if ($currentProteinClassesIdsArray !== $this->proteinClassesIdsArray) {
+            if ($this->proteinClassesIdsArray) {
                 $proteinClassesIdsToDelete = array_diff($currentProteinClassesIdsArray, $this->proteinClassesIdsArray);
                 $proteinClassesIdsToAdd = array_diff($this->proteinClassesIdsArray, $currentProteinClassesIdsArray);
-                foreach($proteinClassesIdsToAdd as $proteinClassesIdToAdd) {
+                foreach ($proteinClassesIdsToAdd as $proteinClassesIdToAdd) {
                     $geneToProteinClass = new GeneToProteinClass();
                     $geneToProteinClass->gene_id = $this->id;
                     $geneToProteinClass->protein_class_id = $proteinClassesIdToAdd;
@@ -253,11 +289,11 @@ class Gene extends common\Gene
         }
 
         $currentDiseasesIdsArray = $this->getDiseasesIdsArray();
-        if($currentDiseasesIdsArray !== $this->diseasesIdsArray) {
-            if($this->diseasesIdsArray) {
+        if ($currentDiseasesIdsArray !== $this->diseasesIdsArray) {
+            if ($this->diseasesIdsArray) {
                 $diseasesIdsArrayToDelete = array_diff($currentDiseasesIdsArray, $this->diseasesIdsArray);
                 $diseasesIdsIdsToAdd = array_diff($this->diseasesIdsArray, $currentDiseasesIdsArray);
-                foreach($diseasesIdsIdsToAdd as $diseasesIdToAdd) {
+                foreach ($diseasesIdsIdsToAdd as $diseasesIdToAdd) {
                     $geneToDisease = new GeneToDisease();
                     $geneToDisease->gene_id = $this->id;
                     $geneToDisease->disease_id = $diseasesIdToAdd;
@@ -281,15 +317,15 @@ class Gene extends common\Gene
     public function createByNCBIIds()
     {
         $genesNCBIIdsArray = explode(PHP_EOL, $this->newGenesNcbiIds);
-        if(is_array($genesNCBIIdsArray)) {
+        if (is_array($genesNCBIIdsArray)) {
             foreach ($genesNCBIIdsArray as $geneNCBIId) {
-                $geneNCBIId = (int)trim($geneNCBIId, PHP_EOL.' \t\n\r,;');
+                $geneNCBIId = (int)trim($geneNCBIId, PHP_EOL . ' \t\n\r,;');
                 $arGene = self::find()->where(['ncbi_id' => $geneNCBIId])->one();
-                if(!$arGene) {
+                if (!$arGene) {
                     $arGene = new self();
                     $arGene->ncbi_id = $geneNCBIId;
                     $arGene->isHidden = 1;
-                    if(!$arGene->save()) {
+                    if (!$arGene->save()) {
                         $this->addError('newGenesNcbiIds', current($arGene->getFirstErrors()));
                     }
                 }
@@ -368,6 +404,18 @@ class Gene extends common\Gene
     public function getGeneToProgerias()
     {
         return $this->hasMany(GeneToProgeria::class, ['gene_id' => 'id']);
+    }
+
+    public function getAllExperimentsCounts()
+    {
+        $counts = [];
+        foreach (self::EXPERIMENTS as $table => $experiment) {
+            $count = $this->hasMany('app\models\\' . $experiment, ['gene_id' => 'id'])->count();
+            if ($count) {
+                $counts[$table] = $count;
+            }
+        }
+        return $counts;
     }
 
 }
