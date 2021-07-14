@@ -1,6 +1,7 @@
 <?php
 namespace app\console\controllers;
 
+use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
@@ -161,4 +162,33 @@ class MigrateDataController extends Controller
         }
     }
 
+    public function actionMigrateAbdb($pathToFile = 'abdb.json')
+    {
+        $json = file_get_contents($pathToFile);
+        $array = json_decode($json, true);
+
+        $counter = 1;
+        $count = count($array['data']);
+        foreach ($array['data'] as $gene) {
+            try {
+                echo $counter . ' from ' . $count . ': ' ;
+                $symbol = strtoupper(trim($gene[1]));
+                $arGene = Gene::find()->where(['symbol' => $symbol])->one();
+                if ($arGene) {
+                    echo 'gene found' . PHP_EOL;
+                } else {
+                    /** @var ParseMyGeneServiceInterface $myGeneService */
+                    $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
+                    $arGene = $myGeneService->parseBySymbol($symbol);
+                    $arGene->isHidden = 1;
+                    $arGene->source = 'abdb';
+                    $arGene->save();
+                    echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;
+                }
+            } catch (\Exception $e) {
+                echo 'ERROR ' . $e->getMessage() . PHP_EOL;
+            }
+            $counter++;
+        }
+    }
 }

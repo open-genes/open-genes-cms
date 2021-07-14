@@ -10,6 +10,16 @@ use yii\grid\GridView;
 
 $this->title = 'Гены';
 $this->params['breadcrumbs'][] = $this->title;
+
+$experimentsNames = [
+    'lifespan_experiment' => '<span style="background-color: #cbcbef">Влияние модуляции на прод. ж.</span>',
+    'age_related_change' => '<span style="background-color: #c8e5fd">Возр. изменения экспрессии/активности</span>',
+    'gene_intervention_to_vital_process' => '<span style="background-color: #c1e2aa">Влияние модуляции акт. на возр. пр.</span>',
+    'protein_to_gene' => '<span style="background-color: #fbea95">Уч. в регуляции др. генов</span>',
+    'gene_to_progeria' => '<span style="background-color: #ffd8a9">Ассоциация гена с уск. стар.</span>',
+    'gene_to_longevity_effect' => '<span style="background-color: #f5c3c2">Геномные, транскриптомные, протеомные ассоц.</span>',
+    'gene_to_additional_evidence' => '<span style="background-color: #cacaca">Другие</span>',
+]
 ?>
 <div class="gene-index container-fluid">
     <div class="row">
@@ -40,12 +50,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'aliases',
             [
-                'label' => '',
-                'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
+                'attribute' => 'source',
+                'filter'=> Html::dropDownList('Gene[source]', $searchModel->source, ['abdb' => 'abdb'],['prompt'=>' ','class' => 'form-control']),
+            ],
+            [
+                'label' => 'Исследования',
+                'value' => function($model, $index, $dataColumn) use ($experimentsNames) { /** @var $model Gene */
                     $url = \yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id]);
-                    return "<a href='{$url}' target='_blank'>Исследования</a>";
+                    $experimentCounts = $model->getAllExperimentsCounts();
+                    $text = '';
+                    foreach ($experimentCounts as $name => $count) {
+                        $text .= $experimentsNames[$name] . ' - ' . $count . '<br>';
+                    }
+                    $text = $text ?: 'Добавить';
+                    return "<a href='{$url}' target='_blank' style='font-size: 11px; color: black'>{$text}</a>";
                 },
-                'format' => 'raw'
+                'format' => 'raw',
+                'filter'=> Html::dropDownList('Gene[filledExperiments]', $searchModel->filledExperiments, ['+' => '+', '-' => '-'],['prompt'=>' ','class' => 'form-control']),
+                'headerOptions' => ['style' => 'min-width:200px'],
             ],
             //'ncbi_id',
             //'uniprot',
