@@ -46,6 +46,7 @@ class ParseNCBIService implements ParseNCBIServiceInterface
                 $geneExpression = $this->parseExpressionFromPage($geneInfoPage);
                 foreach ($geneExpression as $sample => $expressionValues) {
                     echo $sample . ' ';
+                    $sample = str_replace(" adult", "", $sample);
                     $arSample = Sample::find()
                         ->andWhere(['name_en' => $sample])
                         ->one();
