@@ -3,9 +3,11 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ConditionActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "sample".
@@ -14,6 +16,7 @@ use yii\behaviors\TimestampBehavior;
 class Sample extends common\Sample
 {
     use RuEnActiveRecordTrait;
+    use ConditionActiveRecordTrait;
 
     public $name;
 

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ConditionActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
 use yii\behaviors\TimestampBehavior;
 
@@ -13,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
 class OrganismLine extends common\OrganismLine
 {
     use RuEnActiveRecordTrait;
+    use ConditionActiveRecordTrait;
 
     public $name;
 
