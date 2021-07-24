@@ -25,7 +25,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
     {
         $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
         if ($onlyNew) {
-            $arGenesQuery->andWhere('gene.summary_en is null');
+            $arGenesQuery->andWhere('gene.summary_en is null or gene.summary_en = "" or gene.summary_en = " "');
         }
         if ($geneNcbiIdsArray) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);

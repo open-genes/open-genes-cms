@@ -41,7 +41,7 @@ class Sample extends common\Sample
 
     public function getLinkedGenesIds()
     {
-        return $this->getGeneExpressionInSamples()
+        return $this->getAgeRelatedChanges()
             ->select('gene_id')->distinct()->column();
     }
 

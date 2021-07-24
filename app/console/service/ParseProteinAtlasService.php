@@ -22,7 +22,7 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
     {
         $arGenesQuery = Gene::find()->where('gene.symbol is not null');
         if ($onlyNew) {
-            $arGenesQuery->andWhere('gene.human_protein_atlas is null');
+            $arGenesQuery->andWhere('gene.human_protein_atlas is null or gene.human_protein_atlas = "" or gene.human_protein_atlas = " "');
         }
         if($geneNcbiIdsArray) {
             if($geneSearchName && count($geneNcbiIdsArray) > 1) {

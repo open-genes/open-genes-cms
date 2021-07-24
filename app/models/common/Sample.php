@@ -8,11 +8,12 @@ use Yii;
  * This is the model class for table "sample".
  *
  * @property int $id
- * @property string $name_en
- * @property string $name_ru
- * @property int $created_at
- * @property int $updated_at
+ * @property string|null $name_en
+ * @property string|null $name_ru
+ * @property int|null $created_at
+ * @property int|null $updated_at
  *
+ * @property AgeRelatedChange[] $ageRelatedChanges
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  */
 class Sample extends \yii\db\ActiveRecord
@@ -51,11 +52,23 @@ class Sample extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[AgeRelatedChanges]].
+     *
+     * @return \yii\db\ActiveQuery|AgeRelatedChangeQuery
+     */
+    public function getAgeRelatedChanges()
+    {
+        return $this->hasMany(AgeRelatedChange::className(), ['sample_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneExpressionInSamples]].
+     *
+     * @return \yii\db\ActiveQuery|GeneExpressionInSampleQuery
      */
     public function getGeneExpressionInSamples()
     {
-        return $this->hasMany(GeneExpressionInSample::class, ['sample_id' => 'id']);
+        return $this->hasMany(GeneExpressionInSample::className(), ['sample_id' => 'id']);
     }
 
     /**
