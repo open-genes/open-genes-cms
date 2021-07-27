@@ -336,10 +336,15 @@ class Gene extends common\Gene
 
     public static function getAllNamesAsArray()
     {
-        $result = parent::find()
-            ->select(['id', 'concat(symbol, \' \', \'(\', name, \')\') as name'])
+        $genes = self::find()
+            ->select(['id', 'symbol', 'name'])
+            ->asArray()
             ->all();
-        return ArrayHelper::map($result, 'id', 'name');
+        $result = [];
+        foreach ($genes as $gene) {
+            $result[$gene['id']] = "{$gene['symbol']} ({$gene['name']})";
+        }
+        return $result;
     }
 
     /**
