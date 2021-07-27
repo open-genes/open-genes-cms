@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ConditionActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class Genotype extends common\Genotype
 {
     use RuEnActiveRecordTrait;
+    use ConditionActiveRecordTrait;
 
     public $name;
 

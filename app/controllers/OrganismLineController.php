@@ -51,12 +51,12 @@ class OrganismLineController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => OrganismLine::find(),
-        ]);
+        $searchModel = new OrganismLine(Yii::$app->request->get('OrganismLine'));
+        $dataProvider = $searchModel->search();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 

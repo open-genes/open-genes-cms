@@ -51,12 +51,12 @@ class SampleController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Sample::find(),
-        ]);
+        $searchModel = new Sample(Yii::$app->request->get('Sample'));
+        $dataProvider = $searchModel->search();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 

@@ -51,12 +51,12 @@ class GenotypeController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Genotype::find(),
-        ]);
+        $searchModel = new Genotype(Yii::$app->request->get('Genotype'));
+        $dataProvider = $searchModel->search();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
