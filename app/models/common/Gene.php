@@ -4,54 +4,59 @@ namespace app\models\common;
 
 use Yii;
 
-use function str_replace;
-
 /**
  * This is the model class for table "gene".
  *
  * @property int $id
- * @property string $symbol
- * @property string $aliases
- * @property string $name
- * @property int $ncbi_id
- * @property string $uniprot
- * @property string $why
- * @property string $band
- * @property int $locationStart
- * @property int $locationEnd
- * @property int $orientation
- * @property string $accPromoter
- * @property string $accOrf
- * @property string $accCds
- * @property string $references
- * @property string $orthologs
- * @property string $commentEvolution
- * @property string $commentFunction
- * @property string $commentCause
- * @property string $commentAging
- * @property string $commentEvolutionEN
- * @property string $commentFunctionEN
- * @property string $commentAgingEN
- * @property string $commentsReferenceLinks
- * @property int $rating
+ * @property string|null $symbol
+ * @property string|null $aliases
+ * @property string|null $name
+ * @property int|null $ncbi_id
+ * @property string|null $uniprot
+ * @property string|null $why
+ * @property string|null $band
+ * @property int|null $locationStart
+ * @property int|null $locationEnd
+ * @property int|null $orientation
+ * @property string|null $accPromoter
+ * @property string|null $accOrf
+ * @property string|null $accCds
+ * @property string|null $references
+ * @property string|null $orthologs
+ * @property string|null $commentEvolution
+ * @property string|null $commentFunction
+ * @property string|null $commentCause
+ * @property string|null $commentAging
+ * @property string|null $commentEvolutionEN
+ * @property string|null $commentFunctionEN
+ * @property string|null $commentAgingEN
+ * @property string|null $commentsReferenceLinks
+ * @property int|null $rating
  * @property int $isHidden
- * @property int $expressionChange
- * @property int $created_at
- * @property int $updated_at
- * @property int $age_id
- * @property string $protein_complex_ru
- * @property string $protein_complex_en
- * @property string $summary_ru
- * @property string $summary_en
- * @property string $ensembl
- * @property string $human_protein_atlas
- * @property string $source
+ * @property int|null $expressionChange
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ * @property int|null $age_id
+ * @property string|null $protein_complex_ru
+ * @property string|null $protein_complex_en
+ * @property int|null $taxon_id
+ * @property string|null $ensembl
+ * @property string|null $human_protein_atlas
+ * @property string|null $ncbi_summary_ru
+ * @property string|null $ncbi_summary_en
+ * @property string|null $source
+ * @property string|null $og_summary_en
+ * @property string|null $og_summary_ru
  *
  * @property Phylum $age
  * @property AgeRelatedChange[] $ageRelatedChanges
+ * @property Phylum $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
+ * @property GeneToAdditionalEvidence[] $geneToAdditionalEvidences
  * @property GeneToCommentCause[] $geneToCommentCauses
+ * @property GeneToDisease[] $geneToDiseases
+ * @property GeneToFunctionalCluster[] $geneToFunctionalClusters
  * @property GeneToLongevityEffect[] $geneToLongevityEffects
  * @property GeneToOntology[] $geneToOntologies
  * @property GeneToProgeria[] $geneToProgerias
@@ -78,13 +83,14 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'created_at', 'updated_at', 'age_id', 'expressionChange'], 'integer'],
-            [['protein_complex_ru', 'protein_complex_en','summary_ru','summary_en', 'ensembl', 'human_protein_atlas', 'source'], 'string'],
+            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'expressionChange', 'created_at', 'updated_at', 'age_id', 'taxon_id'], 'integer'],
+            [['protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 1500],
             [['commentsReferenceLinks'], 'string', 'max' => 2000],
-            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::class, 'targetAttribute' => ['age_id' => 'id']],
+            [['ensembl', 'source'], 'string', 'max' => 255],
+            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
     }
 
@@ -98,7 +104,7 @@ class Gene extends \yii\db\ActiveRecord
             'symbol' => 'Symbol',
             'aliases' => 'Aliases',
             'name' => 'Name',
-            'ncbi_id' => 'Entrez Gene',
+            'ncbi_id' => 'Ncbi ID',
             'uniprot' => 'Uniprot',
             'why' => 'Why',
             'band' => 'Band',
@@ -126,116 +132,175 @@ class Gene extends \yii\db\ActiveRecord
             'age_id' => 'Age ID',
             'protein_complex_ru' => 'Protein Complex Ru',
             'protein_complex_en' => 'Protein Complex En',
-            'summary_ru' => 'Summary Ru',
-            'summary_en' => 'Summary En',
+            'taxon_id' => 'Taxon ID',
             'ensembl' => 'Ensembl',
             'human_protein_atlas' => 'Human Protein Atlas',
+            'ncbi_summary_ru' => 'Ncbi Summary Ru',
+            'ncbi_summary_en' => 'Ncbi Summary En',
             'source' => 'Source',
+            'og_summary_en' => 'Og Summary En',
+            'og_summary_ru' => 'Og Summary Ru',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[AgeRelatedChanges]].
+     *
+     * @return \yii\db\ActiveQuery|AgeRelatedChangeQuery
      */
     public function getAgeRelatedChanges()
     {
-        return $this->hasMany(AgeRelatedChange::class, ['gene_id' => 'id']);
+        return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[Age]].
+     *
+     * @return \yii\db\ActiveQuery|PhylumQuery
      */
     public function getAge()
     {
-        return $this->hasOne(Phylum::class, ['id' => 'age_id']);
+        return $this->hasOne(Phylum::className(), ['id' => 'age_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[GeneExpressionInSamples]].
+     *
+     * @return \yii\db\ActiveQuery|GeneExpressionInSampleQuery
      */
     public function getGeneExpressionInSamples()
     {
-        return $this->hasMany(GeneExpressionInSample::class, ['gene_id' => 'id']);
+        return $this->hasMany(GeneExpressionInSample::className(), ['gene_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[GeneInterventionToVitalProcesses]].
+     *
+     * @return \yii\db\ActiveQuery|GeneInterventionToVitalProcessQuery
      */
     public function getGeneInterventionToVitalProcesses()
     {
-        return $this->hasMany(GeneInterventionToVitalProcess::class, ['gene_id' => 'id']);
+        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToCommentCauses()
-    {
-        return $this->hasMany(GeneToCommentCause::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToLongevityEffects()
-    {
-        return $this->hasMany(GeneToLongevityEffect::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToOntologies()
-    {
-        return $this->hasMany(GeneToOntology::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToProgerias()
-    {
-        return $this->hasMany(GeneToProgeria::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToProteinActivities()
-    {
-        return $this->hasMany(GeneToProteinActivity::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToProteinClasses()
-    {
-        return $this->hasMany(GeneToProteinClass::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLifespanExperiments()
-    {
-        return $this->hasMany(LifespanExperiment::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProteinToGenes()
-    {
-        return $this->hasMany(ProteinToGene::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[GeneToAdditionalEvidences]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToAdditionalEvidenceQuery
      */
     public function getGeneToAdditionalEvidences()
     {
-        return $this->hasMany(GeneToAdditionalEvidence::class, ['gene_id' => 'id']);
+        return $this->hasMany(GeneToAdditionalEvidence::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToCommentCauses]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToCommentCauseQuery
+     */
+    public function getGeneToCommentCauses()
+    {
+        return $this->hasMany(GeneToCommentCause::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToDiseases]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToDiseaseQuery
+     */
+    public function getGeneToDiseases()
+    {
+        return $this->hasMany(GeneToDisease::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToFunctionalClusters]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToFunctionalClusterQuery
+     */
+    public function getGeneToFunctionalClusters()
+    {
+        return $this->hasMany(GeneToFunctionalCluster::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToLongevityEffects]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToLongevityEffectQuery
+     */
+    public function getGeneToLongevityEffects()
+    {
+        return $this->hasMany(GeneToLongevityEffect::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToOntologies]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToOntologyQuery
+     */
+    public function getGeneToOntologies()
+    {
+        return $this->hasMany(GeneToOntology::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToProgerias]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToProgeriaQuery
+     */
+    public function getGeneToProgerias()
+    {
+        return $this->hasMany(GeneToProgeria::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToProteinActivities]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToProteinActivityQuery
+     */
+    public function getGeneToProteinActivities()
+    {
+        return $this->hasMany(GeneToProteinActivity::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[GeneToProteinClasses]].
+     *
+     * @return \yii\db\ActiveQuery|GeneToProteinClassQuery
+     */
+    public function getGeneToProteinClasses()
+    {
+        return $this->hasMany(GeneToProteinClass::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[LifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|LifespanExperimentQuery
+     */
+    public function getLifespanExperiments()
+    {
+        return $this->hasMany(LifespanExperiment::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[ProteinToGenes]].
+     *
+     * @return \yii\db\ActiveQuery|ProteinToGeneQuery
+     */
+    public function getProteinToGenes()
+    {
+        return $this->hasMany(ProteinToGene::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[ProteinToGenes0]].
+     *
+     * @return \yii\db\ActiveQuery|ProteinToGeneQuery
+     */
+    public function getProteinToGenes0()
+    {
+        return $this->hasMany(ProteinToGene::className(), ['regulated_gene_id' => 'id']);
     }
 
     /**
@@ -245,11 +310,5 @@ class Gene extends \yii\db\ActiveRecord
     public static function find()
     {
         return new GeneQuery(get_called_class());
-    }
-
-    public function beforeSave($insert): bool
-    {
-        $this->aliases = str_replace(',', '', $this->aliases);
-        return parent::beforeSave($insert);
     }
 }

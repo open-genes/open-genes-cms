@@ -25,7 +25,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
     {
         $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
         if ($onlyNew) {
-            $arGenesQuery->andWhere('gene.summary_en is null or gene.summary_en = "" or gene.summary_en = " "');
+            $arGenesQuery->andWhere('gene.ncbi_summary_en is null or gene.ncbi_summary_en = "" or gene.ncbi_summary_en = " "');
         }
         if ($geneNcbiIdsArray) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);
@@ -37,7 +37,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         foreach ($arGenes as $arGene) {
             try {
                 echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
-                $url = $this->apiUrl . 'gene/' . $arGene->ncbi_id . '?fields=summary,symbol';
+                $url = $this->apiUrl . 'gene/' . $arGene->ncbi_id . '?fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary';
                 $response = $this->httpClient->createRequest()
                     ->setUrl($url)
                     ->send();
@@ -45,11 +45,24 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                     echo $response->getStatusCode();
                 }
                 $parsedResponse = json_decode($response->content, true);
-                $arGene->summary_en = $parsedResponse['summary'];
+                $arGene->ncbi_summary_en = $parsedResponse['summary'] ?? '';
                 if (!$arGene->symbol) {
                     $arGene->symbol = $parsedResponse['symbol'];
                 }
+                if (!$arGene->name) {
+                    $arGene->name = $parsedResponse['name'];
+                }
+                if (isset($parsedResponse['alias'])) {
+                    $aliases = is_array($parsedResponse['alias']) ? $parsedResponse['alias'] : [$parsedResponse['alias']];
+                    array_walk($aliases, function (&$value, &$key) {
+                        $value = str_replace(' ', '+', $value);
+                    });
+                    $arGene->aliases = implode(' ', $aliases);
+                }
                 $arGene->save();
+                if (!isset($parsedResponse['summary'])) {
+                    echo 'no summary! ';
+                }
                 echo 'OK' . PHP_EOL;
             } catch (\Exception $e) {
                 echo PHP_EOL . 'ERROR ' . $e->getMessage() . ' url: ' . $url . PHP_EOL;
@@ -79,13 +92,16 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                 $arGene->symbol = $gene['symbol'];
                 $arGene->ncbi_id = $gene['entrezgene'];
                 $arGene->name = $gene['name'];
-                $arGene->summary_en = $gene['summary'] ?? null;
+                $arGene->ncbi_summary_en = $gene['summary'] ?? null;
                 if (isset($gene['alias'])) {
                     $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
                     array_walk($aliases, function (&$value, &$key) {
                         $value = str_replace(' ', '+', $value);
                     });
                     $arGene->aliases = implode(' ', $aliases);
+                }
+                if (!isset($gene['summary'])) {
+                    echo ' no summary! ';
                 }
                 return $arGene;
             }

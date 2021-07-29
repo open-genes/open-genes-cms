@@ -92,8 +92,10 @@ $this->registerCssFile('/assets/css/gene.css');
             ]); ?>
         </div>
         <div class="col-xs-12">
-            <?= $form->field($model, 'summary_ru')->textarea(['rows' => 4]) ?>
-            <?= $form->field($model, 'summary_en')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'ncbi_summary_ru')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'ncbi_summary_en')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'og_summary_ru')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'og_summary_en')->textarea(['rows' => 4]) ?>
             <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
             <?= $form->field($model, 'commentAgingEN')->textarea(['rows' => 4]) ?>
             <?= $form->field($model, 'commentFunction')->textarea(['rows' => 4]) ?>
