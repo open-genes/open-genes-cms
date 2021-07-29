@@ -95,9 +95,11 @@ class Gene extends common\Gene
             'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
-            'summary_ru' => 'Описание гена (NCBI) Ru',
-            'summary_en' => 'Описание гена (NCBI) En',
             'source' => 'Источник',
+            'ncbi_summary_ru' => 'Описание гена (NCBI) Ru',
+            'ncbi_summary_en' => 'Описание гена (NCBI) En',
+            'og_summary_en' => 'Описание гена Open Genes En',
+            'og_summary_ru' => 'Описание гена Open Genes Ru',
         ];
     }
 
@@ -423,4 +425,9 @@ class Gene extends common\Gene
         return $counts;
     }
 
+    public function beforeSave($insert): bool
+    {
+        $this->aliases = str_replace(',', '', $this->aliases);
+        return parent::beforeSave($insert);
+    }
 }
