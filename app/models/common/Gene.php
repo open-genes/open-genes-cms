@@ -48,7 +48,6 @@ use Yii;
  * @property string|null $og_summary_en
  * @property string|null $og_summary_ru
  *
- * @property Phylum $age
  * @property AgeRelatedChange[] $ageRelatedChanges
  * @property Phylum $age
  * @property GeneExpressionInSample[] $geneExpressionInSamples
@@ -65,7 +64,6 @@ use Yii;
  * @property LifespanExperiment[] $lifespanExperiments
  * @property ProteinToGene[] $proteinToGenes
  * @property ProteinToGene[] $proteinToGenes0
- * @property GeneToAdditionalEvidence[] $geneToAdditionalEvidences
  */
 class Gene extends \yii\db\ActiveRecord
 {
@@ -84,11 +82,9 @@ class Gene extends \yii\db\ActiveRecord
     {
         return [
             [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'expressionChange', 'created_at', 'updated_at', 'age_id', 'taxon_id'], 'integer'],
-            [['protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
+            [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN', 'commentsReferenceLinks', 'protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
-            [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN'], 'string', 'max' => 3000],
-            [['commentsReferenceLinks'], 'string', 'max' => 2000],
             [['ensembl', 'source'], 'string', 'max' => 255],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['age_id' => 'id']],
         ];
