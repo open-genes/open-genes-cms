@@ -18,6 +18,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name_en')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'icd_code')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'icd_name_en')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'icd_name_ru')->textInput(['maxlength' => true]) ?>
+
     <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

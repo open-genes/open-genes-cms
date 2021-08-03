@@ -19,17 +19,6 @@ class Disease extends \app\models\common\Disease
             ChangelogBehavior::class
         ];
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'omim_id', 'created_at', 'updated_at'], 'integer'],
-            [['name_ru', 'name_en'], 'safe'],
-        ];
-    }
 
     /**
      * {@inheritdoc}
@@ -74,7 +63,11 @@ class Disease extends \app\models\common\Disease
         ]);
 
         $query->andFilterWhere(['like', 'name_ru', $this->name_ru])
-            ->andFilterWhere(['like', 'name_en', $this->name_en]);
+            ->andFilterWhere(['like', 'name_en', $this->name_en])
+            ->andFilterWhere(['like', 'icd_code', $this->icd_code])
+            ->andFilterWhere(['like', 'icd_name_en', $this->icd_name_en])
+            ->andFilterWhere(['like', 'icd_name_ru', $this->icd_name_ru])
+        ;
 
         return $dataProvider;
     }

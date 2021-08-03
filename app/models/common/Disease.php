@@ -13,6 +13,10 @@ use Yii;
  * @property string|null $name_en
  * @property int|null $created_at
  * @property int|null $updated_at
+ * @property string|null $icd_code
+ * @property string|null $parent_icd_code
+ * @property string|null $icd_name_en
+ * @property string|null $icd_name_ru
  *
  * @property GeneToDisease[] $geneToDiseases
  */
@@ -33,7 +37,9 @@ class Disease extends \yii\db\ActiveRecord
     {
         return [
             [['omim_id', 'created_at', 'updated_at'], 'integer'],
-            [['name_ru', 'name_en'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'icd_name_en', 'icd_name_ru'], 'string', 'max' => 255],
+            [['icd_code', 'parent_icd_code'], 'string', 'max' => 128],
+            [['omim_id'], 'unique'],
         ];
     }
 
@@ -49,6 +55,10 @@ class Disease extends \yii\db\ActiveRecord
             'name_en' => 'Name En',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'icd_code' => 'Icd Code',
+            'parent_icd_code' => 'Parent Icd Code',
+            'icd_name_en' => 'Icd Name En',
+            'icd_name_ru' => 'Icd Name Ru',
         ];
     }
 
