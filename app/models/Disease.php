@@ -65,6 +65,7 @@ class Disease extends \app\models\common\Disease
         $query->andFilterWhere(['like', 'name_ru', $this->name_ru])
             ->andFilterWhere(['like', 'name_en', $this->name_en])
             ->andFilterWhere(['like', 'icd_code', $this->icd_code])
+            ->andFilterWhere(['like', 'parent_icd_code', $this->parent_icd_code])
             ->andFilterWhere(['like', 'icd_name_en', $this->icd_name_en])
             ->andFilterWhere(['like', 'icd_name_ru', $this->icd_name_ru])
         ;
@@ -87,5 +88,22 @@ class Disease extends \app\models\common\Disease
     {
         return $this->getGeneToDiseases()
             ->select('gene_id')->distinct()->column();
+    }
+
+    public function getIcdCategories()
+    {
+        return $this->getIcdCategoriesRecursive($this->parent_icd_code, [$this->icd_code => $this->icd_name_en]);
+    }
+
+    private function getIcdCategoriesRecursive($parentIcdCode, $icdCategories = [])
+    {
+        $parentIcd = Disease::find()->where(['icd_code' => $parentIcdCode])->one();
+        if ($parentIcd) {
+            $icdCategories[$parentIcd->icd_code] = $parentIcd->icd_name_en;
+            if ($parentIcd->parent_icd_code) {
+                $icdCategories = $this->getIcdCategoriesRecursive($parentIcd->parent_icd_code, $icdCategories);
+            }
+        }
+        return $icdCategories;
     }
 }

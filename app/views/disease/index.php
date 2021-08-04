@@ -27,9 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'omim_id',
-            'icd_code',
             'name_ru',
             'name_en',
+            'icd_code',
+            'parent_icd_code',
             'icd_name_en',
             'icd_name_ru',
 //            'created_at',
