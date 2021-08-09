@@ -138,11 +138,6 @@ php yii.php get-data/get-protein-classes              [onlyNew default=true] tru
 ```
 ## Run tests
 
-In docker
-```
-sh open-genes-cms-test.sh
-
-Outside docker
-
-cd app
-php vendor/bin/codecept run
+  sh open-genes-cms-test.sh db up
+  sh open-genes-cms-test.sh
+  sh open-genes-cms-test.sh db down
