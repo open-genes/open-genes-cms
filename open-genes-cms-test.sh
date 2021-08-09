@@ -27,7 +27,7 @@ then
 		$0 db down
 		exit
 	fi
-	docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --volume `pwd`/env-test:/var/www/.env --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it $CMS_IMAGE php /var/www/console/yii.php migrate --interactive=0
+	docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it $CMS_IMAGE php /var/www/console/yii.php migrate --interactive=0
 	exit
 fi
 
@@ -50,4 +50,4 @@ fi
 
 ECHOCMD=""
 [ "$1" = "echo" ] && ECHOCMD=echo
-$ECHOCMD docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --volume `pwd`/env-test:/var/www/.env --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it $CMS_IMAGE php vendor/bin/codecept run
+$ECHOCMD docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it $CMS_IMAGE php vendor/bin/codecept run
