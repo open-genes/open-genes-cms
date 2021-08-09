@@ -1,8 +1,9 @@
 #!/bin/sh
+CMS_IMAGE=cms
 CONTAINER_NAME=OPENGENESCMSTESTDB
 NETWORK_NAME=$CONTAINER_NAME-net
 
-EXISTING_CONTAINER=`docker ps -q -f "name=$CONTAINER_NAME"`
+EXISTING_CONTAINER=`docker ps -a -q -f "name=$CONTAINER_NAME"`
 
 uid=$(id -u)
 gid=$(id -g)
@@ -21,8 +22,8 @@ then
 	[ "$EXISTING_CONTAINER" != "" ] && echo "db is already running in container $EXISTING_CONTAINER" && exit
 	docker network create $NETWORK_NAME
 	docker run --volume `pwd`/docker/mysql/dump.sql:/docker-entrypoint-initdb.d/init.sql --volume `pwd`/docker/mysql/charset.cnf:/etc/mysql/conf.d/charset.cnf --network $NETWORK_NAME -p 3308:3306 -e MYSQL_ROOT_PASSWORD=secret -d --name $CONTAINER_NAME -it mysql:5.7 --init-file /docker-entrypoint-initdb.d/init.sql
-	php dbwait.php 127.0.0.1 3308 root secret open_genes 30 || exit
-	docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --volume `pwd`/env-test:/var/www/.env --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it cms_cms php //var/www/console/yii.php migrate --interactive=0
+	php dbwait.php 127.0.0.1 3308 root secret open_genes 40 || $0 db down && exit
+	docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --volume `pwd`/env-test:/var/www/.env --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it $CMS_IMAGE php //var/www/console/yii.php migrate --interactive=0
 	exit
 fi
 
@@ -45,4 +46,4 @@ fi
 
 ECHOCMD=""
 [ "$1" = "echo" ] && ECHOCMD=echo
-$ECHOCMD docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --volume `pwd`/env-test:/var/www/.env --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it cms_cms php vendor/bin/codecept run
+$ECHOCMD docker run --user $OPEN_GENES_UID --volume `pwd`/app:/var/www --volume `pwd`/env-test:/var/www/.env --network $NETWORK_NAME -e DB_HOST=$CONTAINER_NAME -e DB_USER=root -e DB_PASS=secret -e "DB_DSN=mysql:host=$CONTAINER_NAME;dbname=open_genes" -it $CMS_IMAGE php vendor/bin/codecept run
