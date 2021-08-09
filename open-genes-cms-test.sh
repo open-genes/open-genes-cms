@@ -22,7 +22,7 @@ then
 	[ "$EXISTING_CONTAINER" != "" ] && echo "db is already running in container $EXISTING_CONTAINER" && exit
 	docker network create $NETWORK_NAME
 	docker run --volume `pwd`/docker/mysql/dump.sql:/docker-entrypoint-initdb.d/init.sql --volume `pwd`/docker/mysql/charset.cnf:/etc/mysql/conf.d/charset.cnf --network $NETWORK_NAME -p 3308:3306 -e MYSQL_ROOT_PASSWORD=secret -d --name $CONTAINER_NAME -it mysql:5.7 --init-file /docker-entrypoint-initdb.d/init.sql
-	if ! php dbwait.php 127.0.0.1 3308 root secret open_genes 40
+	if ! docker run --volume `pwd`/app:/var/www --network $NETWORK_NAME -it $CMS_IMAGE php dbwait.php $CONTAINER_NAME 3306 root secret open_genes 40
 	then
 		$0 db down
 		exit
