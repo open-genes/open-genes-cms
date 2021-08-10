@@ -1,9 +1,17 @@
-# global codeception file to run tests from all apps
-include:
-    - common
-    - frontend
-    - backend
+bootstrap: _bootstrap.php
 paths:
-    log: console/runtime/logs
-settings:
-    colors: true
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+actor_suffix: Tester
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+
+modules:
+    config:
+        Yii2:
+            configFile: 'config/test.php'
+

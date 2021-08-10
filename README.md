@@ -4,28 +4,28 @@
 
 Build or rebuild backend
 ```
-sh open-genes.sh build
+sh open-genes-cms.sh build
 ```
 Build & run backend
 ```
-sh open-genes.sh up --build
+sh open-genes-cms.sh up --build
 ```
 
 Build & run backend, detached mode (runs in background)
 ```
-sh open-genes.sh up -d --build
+sh open-genes-cms.sh up -d --build
 ```
 Run backend, detached mode (runs in background)
 ```
-sh open-genes.sh up
+sh open-genes-cms.sh up
 ```
 Stop backend, detached mode
 ```
-sh open-genes.sh down
+sh open-genes-cms.sh down
 ```
 Run backend, foreground mode
 ```
-sh open-genes.sh up --no-detach
+sh open-genes-cms.sh up --no-detach
 ```
 Build composer dependencies
 ```
@@ -90,15 +90,15 @@ docker exec -it (container_hash) bash
 
 Build & run with xdebug enabled:
 ```
-./open-genes.sh up --build xdebug
+./open-genes-cms.sh up --build xdebug
 ```
 
-or ```./open-genes.sh up --build xdebug <your ip address>```
-in case your ip address is not automatically detected by open-genes.sh
+or ```./open-genes-cms.sh up --build xdebug <your ip address>```
+in case your ip address is not automatically detected by open-genes-cms.sh
 
 setup PHP Storm: https://blog.denisbondar.com/post/phpstorm_docker_xdebug
 
-open-genes.sh detects xdebug ip address as follows:
+open-genes-cms.sh detects xdebug ip address as follows:
 ```
     ip -4 -br addr show | grep "$CLIENT_HOST"
 ```
@@ -135,4 +135,10 @@ php yii.php get-data/get-protein-classes              [onlyNew default=true] tru
 # php yii.php get-data/get-go-terms - get GO terms only for the new genes
 # php yii.php get-data/get-go-terms false 114548,3600 - get GO terms only for 114548 and 3600 genes
 ...
+```
+## Run tests
+```bash
+  sh open-genes-cms-test.sh db up
+  sh open-genes-cms-test.sh
+  sh open-genes-cms-test.sh db down
 ```
