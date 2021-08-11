@@ -31,6 +31,7 @@ services:
       - mysql
     environment:
       XDEBUG_CONFIG: client_host=${CLIENT_HOST} client_port=9003
+    image: open_genes_cms
     command: bash -c "XDEBUG_CONFIG= composer install && php /var/www/console/yii.php migrate --interactive=0 && php-fpm"
     networks:
       - db_net

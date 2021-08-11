@@ -22,13 +22,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
 
             'id',
             'omim_id',
             'name_ru',
             'name_en',
+            'icd_code',
+            'parent_icd_code',
+            'icd_name_en',
+            'icd_name_ru',
+            'icd_code_visible',
 //            'created_at',
             //'updated_at',
             [
