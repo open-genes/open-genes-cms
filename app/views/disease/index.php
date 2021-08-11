@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'parent_icd_code',
             'icd_name_en',
             'icd_name_ru',
+            'icd_code_visible',
 //            'created_at',
             //'updated_at',
             [

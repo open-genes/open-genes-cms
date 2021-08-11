@@ -26,11 +26,25 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'icd_name_ru')->textInput(['maxlength' => true]) ?>
 
+    <?=\kartik\select2\Select2::widget([
+        'model' => $model,
+        'attribute' => 'icd_code_visible',
+        'data' => $model->getIcdParentCategories(),
+        'options' => [
+            'placeholder' => 'Видимый код МКБ (для группировки и API)',
+            'multiple' => false
+        ],
+        'pluginOptions' => [
+            'allowClear' => true,
+        ],
+    ]);
+    ?>
+    <br>
     Категории МКБ:
     <ul>
         <?php
-        foreach ($model->getIcdCategories() as $code => $categoryName) {
-            echo "<li>{$code} - {$categoryName}</li>";
+        foreach ($model->getIcdParentCategories() as $categoryName) {
+            echo "<li> {$categoryName}</li>";
         }
         ?>
     </ul>

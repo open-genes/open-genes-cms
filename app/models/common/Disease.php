@@ -17,6 +17,7 @@ use Yii;
  * @property string|null $parent_icd_code
  * @property string|null $icd_name_en
  * @property string|null $icd_name_ru
+ * @property string|null $icd_code_visible
  *
  * @property GeneToDisease[] $geneToDiseases
  */
@@ -38,7 +39,7 @@ class Disease extends \yii\db\ActiveRecord
         return [
             [['omim_id', 'created_at', 'updated_at'], 'integer'],
             [['name_ru', 'name_en', 'icd_name_en', 'icd_name_ru'], 'string', 'max' => 255],
-            [['icd_code', 'parent_icd_code'], 'string', 'max' => 128],
+            [['icd_code', 'parent_icd_code', 'icd_code_visible'], 'string', 'max' => 128],
             [['omim_id'], 'unique'],
         ];
     }

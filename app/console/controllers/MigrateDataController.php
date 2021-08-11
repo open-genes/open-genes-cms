@@ -1,8 +1,10 @@
 <?php
+
 namespace app\console\controllers;
 
 use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
+use app\models\Disease;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
 use app\models\Gene;
@@ -171,7 +173,7 @@ class MigrateDataController extends Controller
         $count = count($array['data']);
         foreach ($array['data'] as $gene) {
             try {
-                echo $counter . ' from ' . $count . ': ' ;
+                echo $counter . ' from ' . $count . ': ';
                 $symbol = strtoupper(trim($gene[1]));
                 $arGene = Gene::find()->where(['symbol' => $symbol])->one();
                 if ($arGene) {
@@ -189,6 +191,33 @@ class MigrateDataController extends Controller
                 echo 'ERROR ' . $e->getMessage() . PHP_EOL;
             }
             $counter++;
+        }
+    }
+
+    public function actionSetVisibleIcdCodes($onlyNew = 'true', $icdCategoryDepth = 1)
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $diseasesQuery = Disease::find()
+            ->where('name_en is not null');
+        if ($onlyNew) {
+            $diseasesQuery->andWhere('icd_code_visible is null or icd_code_visible = ""');
+        }
+        $diseases = $diseasesQuery->all();
+
+        echo PHP_EOL;
+        foreach ($diseases as $disease) {
+            echo $disease->icd_code;
+            $visibleCategory = $disease->getIcdCategoryByLevel($icdCategoryDepth);
+            if ($visibleCategory) {
+                $disease->icd_code_visible = trim($visibleCategory);
+                if ($disease->save()) {
+                    echo ' -> ' . $visibleCategory . PHP_EOL;
+                } else {
+                    echo ' error ' . var_export($disease->errors, true);
+                }
+            } else {
+                echo ' error!' . PHP_EOL;
+            }
         }
     }
 }

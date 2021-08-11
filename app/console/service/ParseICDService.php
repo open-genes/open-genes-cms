@@ -42,22 +42,26 @@ class ParseICDService implements ParseICDServiceInterface
                 ->send();
             $parsedResult = json_decode($result->content, true);
 
-            $parentIcdCodeArray = explode('/', $parsedResult['parent'][0]);
-            $parentIcdCode = end($parentIcdCodeArray);
+            if (isset($parsedResult['parent'][0])) {
+                $parentIcdCodeArray = explode('/', $parsedResult['parent'][0]);
+                $parentIcdCode = end($parentIcdCodeArray);
 
-            $name = $parsedResult['title']['@value'];
-            $disease->parent_icd_code = $parentIcdCode;
-            $disease->icd_name_en = $name;
-            $disease->save();
+                $name = $parsedResult['title']['@value'];
+                $disease->parent_icd_code = $parentIcdCode;
+                $disease->icd_name_en = $name;
+                $disease->save();
 
-            $parentDisease = Disease::find()
-                ->where(['icd_code' => $parentIcdCode])->one();
-            if (!$parentDisease) {
-                $parentDisease = new Disease();
-                $parentDisease->icd_code = $parentIcdCode;
-                $parentDisease->save();
+                $parentDisease = Disease::find()
+                    ->where(['icd_code' => $parentIcdCode])->one();
+                if (!$parentDisease) {
+                    $parentDisease = new Disease();
+                    $parentDisease->icd_code = $parentIcdCode;
+                    $parentDisease->save();
+                }
+                echo ' - ' . $name . ', parent ' . $parentIcdCode;
+            } else {
+                echo ' parent not set';
             }
-            echo ' - ' . $name . ', parent ' . $parentIcdCode;
             echo PHP_EOL;
             usleep(100000);
         }

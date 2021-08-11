@@ -31,7 +31,7 @@ class DiseaseController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'create', 'update'],
+                        'actions' => ['index', 'create', 'update', 'icd-tree'],
                         'roles' => ['admin', 'editor'],
                     ],
                     [
@@ -109,6 +109,18 @@ class DiseaseController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionIcdTree($depth = 1)
+    {
+        $icdCategories = Disease::getIcdCategoriesSlice($depth);
+//        var_dump($icdCategories);
+        $diseasesByCategories = [];
+        foreach ($icdCategories as $code => $category) {
+            $rootDisease = Disease::find()->where(['icd_code' => $code])->one();
+            $diseasesByCategories[$code . ' ' . $category] = $rootDisease->getDiseasesForIcdCategoriesTree();
+        }
+        return $this->render('icdTree', ['icdTree' => $diseasesByCategories, 'depth' => $depth]);
     }
 
     /**
