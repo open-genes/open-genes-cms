@@ -51,6 +51,15 @@ class Disease extends \app\models\common\Disease
         return Model::scenarios();
     }
 
+    public function beforeSave($insert)
+    {
+        $this->parent_icd_code = trim($this->parent_icd_code);
+        $this->icd_code_visible = trim($this->icd_code_visible);
+        $this->icd_code = trim($this->icd_code);
+        $this->omim_id = trim($this->omim_id);
+        return parent::beforeSave($insert);
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
