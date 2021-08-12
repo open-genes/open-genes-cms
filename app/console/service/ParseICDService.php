@@ -23,7 +23,7 @@ class ParseICDService implements ParseICDServiceInterface
         $httpClient = new Client();
         $diseases = Disease::find()
             ->where('icd_code is not null')
-            ->andWhere('parent_icd_code is null')
+            ->andWhere('parent_icd_code is null or parent_icd_code = ""')
             ->all();
         echo PHP_EOL;
 
