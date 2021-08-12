@@ -207,17 +207,22 @@ class MigrateDataController extends Controller
         echo PHP_EOL;
         foreach ($diseases as $disease) {
             echo $disease->icd_code;
-            $visibleCategory = $disease->getIcdCategoryByLevel($icdCategoryDepth);
-            if ($visibleCategory) {
-                $disease->icd_code_visible = trim($visibleCategory);
-                if ($disease->save()) {
-                    echo ' -> ' . $visibleCategory . PHP_EOL;
+            try {
+                $visibleCategory = $disease->getIcdCategoryByLevel($icdCategoryDepth);
+                if ($visibleCategory) {
+                    $disease->icd_code_visible = trim($visibleCategory);
+                    if ($disease->save()) {
+                        echo ' -> ' . $visibleCategory;
+                    } else {
+                        echo ' error ' . var_export($disease->errors, true);
+                    }
                 } else {
-                    echo ' error ' . var_export($disease->errors, true);
+                    echo ' error!';
                 }
-            } else {
-                echo ' error!' . PHP_EOL;
+            } catch (\Exception $e) {
+                echo $e->getMessage();
             }
+            echo PHP_EOL;
         }
     }
 }
