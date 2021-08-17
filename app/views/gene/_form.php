@@ -24,6 +24,7 @@ $this->registerCssFile('/assets/css/gene.css');
     <?php if(Yii::$app->user->can('editor')): ?>
     <?= $form->field($model, 'isHidden')->checkbox() ?>
     <?php endif; ?>
+    Источник: <?=$model->source ?? 'нет' ?>
 
     <?php if(Yii::$app->user->can('admin')): // todo add more operations to auth manager ?>
     <div class="row form-row">
