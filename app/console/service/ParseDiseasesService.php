@@ -34,6 +34,10 @@ class ParseDiseasesService implements ParseDiseasesServiceInterface
         $counter = 1;
         $count = count($arGenes);
         foreach ($arGenes as $arGene) {
+            if (strtoupper($arGene->symbol)  !== $arGene->symbol) {
+                echo 'not human gene ' . $arGene->symbol . PHP_EOL;
+                continue;
+            }
             echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             try {
                 $url = $this->apiUrl . $arGene->symbol . '.csv';

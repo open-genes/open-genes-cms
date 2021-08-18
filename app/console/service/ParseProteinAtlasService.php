@@ -37,6 +37,10 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
         $count =  count($arGenes);
 
         foreach ($arGenes as $arGene) {
+            if (strtoupper($arGene->symbol)  !== $arGene->symbol) {
+                echo 'not human gene ' . $arGene->symbol . PHP_EOL;
+                continue;
+            }
             echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             $searchGene = !empty($geneSearchName) ? $geneSearchName : urlencode("{$arGene->ncbi_id} {$arGene->symbol}");
             try {
@@ -86,6 +90,10 @@ class ParseProteinAtlasService implements ParseProteinAtlasServiceInterface
         $count =  count($arGenes);
 
         foreach ($arGenes as $arGene) {
+            if (strtoupper($arGene->symbol)  !== $arGene->symbol) {
+                echo 'not human gene ' . $arGene->symbol . PHP_EOL;
+                continue;
+            }
             echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
             $searchGene = !empty($geneSearchName) ? $geneSearchName : urlencode("{$arGene->ncbi_id} {$arGene->symbol}");
             try {

@@ -36,6 +36,10 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         echo $count;
         foreach ($arGenes as $arGene) {
             try {
+                if (strtoupper($arGene->symbol)  !== $arGene->symbol) {
+                    echo 'not human gene ' . $arGene->symbol . PHP_EOL;
+                    continue;
+                }
                 echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
                 $url = $this->apiUrl . 'gene/' . $arGene->ncbi_id . '?fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary';
                 $response = $this->httpClient->createRequest()

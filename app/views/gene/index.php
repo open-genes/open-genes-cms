@@ -51,7 +51,7 @@ $experimentsNames = [
             'aliases',
             [
                 'attribute' => 'source',
-                'filter'=> Html::dropDownList('Gene[source]', $searchModel->source, ['abdb' => 'abdb'],['prompt'=>' ','class' => 'form-control']),
+                'filter'=> Html::dropDownList('Gene[source]', $searchModel->source, ['abdb' => 'abdb', 'horvath' => 'horvath'],['prompt'=>' ','class' => 'form-control']),
             ],
             [
                 'label' => 'Исследования',

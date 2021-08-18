@@ -48,7 +48,9 @@ class ParseICDService implements ParseICDServiceInterface
 
                 $name = $parsedResult['title']['@value'];
                 $disease->parent_icd_code = $parentIcdCode;
-                $disease->icd_name_en = $name;
+                if (!$disease->icd_name_en) {
+                    $disease->icd_name_en = $name;
+                }
                 $disease->save();
 
                 $parentDisease = Disease::find()

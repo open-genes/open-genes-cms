@@ -156,7 +156,7 @@ class GetDataController extends Controller
     public function actionGetIcdCodes() // todo temp
     {
         $httpClient = new Client();
-        $diseases = Disease::find()->where(['icd_code' => null])->all();
+        $diseases = Disease::find()->where('name_en is not null and (icd_code is null or icd_code="")')->all();
         echo PHP_EOL;
         $found = 0;
         foreach ($diseases as $disease) {
