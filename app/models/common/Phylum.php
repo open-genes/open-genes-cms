@@ -23,7 +23,7 @@ class Phylum extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'age';
+        return 'phylum';
     }
 
     /**
@@ -57,7 +57,7 @@ class Phylum extends \yii\db\ActiveRecord
      */
     public function getGenes()
     {
-        return $this->hasMany(Gene::class, ['age_id' => 'id']);
+        return $this->hasMany(Gene::class, ['family_phylum_id' => 'id']);
     }
 
     /**

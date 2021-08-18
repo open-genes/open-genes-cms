@@ -25,7 +25,7 @@ class Phylum extends common\Phylum
     {
         $genesIds = $this->getLinkedGenesIds();
         Yii::$app->db->createCommand()
-            ->update('gene', ['age_id' => null], ['in', 'id', $genesIds]);
+            ->update('gene', ['phylum_id' => null], ['in', 'id', $genesIds]);
         return parent::beforeDelete();
     }
 

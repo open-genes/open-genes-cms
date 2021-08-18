@@ -139,7 +139,7 @@ class AgeController extends Controller
 
     private function getGenesLinks($id): string
     {
-        $genes      = Gene::findAll(['age_id' => $id]);
+        $genes      = Gene::findAll(['phylum_id' => $id]);
         $genesLinks = [];
         foreach ($genes as $gene) {
             $genesLinks[] = sprintf('<a href="https://cms.open-genes.com/gene/update?id=%1$d">%1$d</a>', $gene->id);
