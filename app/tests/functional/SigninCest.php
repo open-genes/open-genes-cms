@@ -2,7 +2,6 @@
 use Codeception\Module\FactoryHelper;
 class SigninCest
 {
-
 public function _before(FunctionalTester $I)
 {
 	$I->amOnRoute('cms/login');

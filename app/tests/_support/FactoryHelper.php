@@ -31,5 +31,4 @@ class FactoryHelper extends \Codeception\Module
 		$auth->assign($r, $u->getId());
 	}
 
-
 }
