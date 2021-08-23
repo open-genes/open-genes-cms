@@ -29,6 +29,23 @@ class Phylum extends common\Phylum
         return parent::beforeDelete();
     }
 
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGenes()
+    {
+        return $this->hasMany(Gene::class, ['phylum_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFamilyGenes()
+    {
+        return $this->hasMany(Gene::class, ['family_phylum_id' => 'id']);
+    }
+
     public static function findAllAsArray()
     {
         $result = [];

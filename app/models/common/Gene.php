@@ -51,6 +51,7 @@ use Yii;
  *
  * @property AgeRelatedChange[] $ageRelatedChanges
  * @property Phylum $phylum
+ * @property Phylum $familyPhylum
  * @property GeneExpressionInSample[] $geneExpressionInSamples
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property GeneToAdditionalEvidence[] $geneToAdditionalEvidences
@@ -87,6 +88,7 @@ class Gene extends \yii\db\ActiveRecord
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['ensembl', 'source'], 'string', 'max' => 255],
+            [['phylum_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['phylum_id' => 'id']],
             [['family_phylum_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['family_phylum_id' => 'id']],
         ];
     }
@@ -149,6 +151,16 @@ class Gene extends \yii\db\ActiveRecord
     public function getAgeRelatedChanges()
     {
         return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Phylum]].
+     *
+     * @return \yii\db\ActiveQuery|PhylumQuery
+     */
+    public function getPhylum()
+    {
+        return $this->hasOne(Phylum::className(), ['id' => 'phylum_id']);
     }
 
     /**
