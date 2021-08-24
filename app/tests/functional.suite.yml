@@ -11,4 +11,5 @@ modules:
         # add a framework module here
         - Yii2:
             configFile: 'tests/yii2-module-conf.php'
+        - FactoryHelper
 

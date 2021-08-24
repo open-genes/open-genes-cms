@@ -1,11 +1,11 @@
 <?php
-
+use Codeception\Module\FactoryHelper;
 class SigninCest
 {
-
 public function _before(FunctionalTester $I)
 {
 	$I->amOnRoute('cms/login');
+	$I->haveUser('vasya','pupkin','vasya.pupkin@test.com','editor');
 }
 
 public function openLoginPage(\FunctionalTester $I)
@@ -30,6 +30,16 @@ public function loginSuccessfully(\FunctionalTester $I)
 	]);
 	$I->amOnPage('/gene');
 	$I->see('Выйти (admin)');
+}
+
+public function loginNonAdmin(\FunctionalTester $I)
+{
+	$I->submitForm('#login-form', [
+		'LoginForm[username]' => 'vasya',
+		'LoginForm[password]' => 'pupkin',
+	]);
+	$I->amOnPage('/gene');
+	$I->see('Выйти (vasya)');
 }
 
 }; // class SigninCest
