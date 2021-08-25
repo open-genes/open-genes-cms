@@ -42,10 +42,17 @@ $experimentsNames = [
             'symbol',
             'name',
             [
-                'attribute' => 'age',
-                'label' => 'Возраст',
+                'attribute' => 'phylum',
+                'label' => 'Происхождение',
                 'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
-                    return $model->age ? "{$model->age->name_phylo} ({$model->age->name_mya})" : '-';
+                    return $model->phylum ? "{$model->phylum->name_phylo} ({$model->phylum->name_mya})" : '-';
+                },
+            ],
+            [
+                'attribute' => 'familyPhylum',
+                'label' => 'Происхождение семейства',
+                'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
+                    return $model->familyPhylum ? "{$model->familyPhylum->name_phylo} ({$model->familyPhylum->name_mya})" : '-';
                 },
             ],
             'aliases',

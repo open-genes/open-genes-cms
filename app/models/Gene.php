@@ -61,7 +61,8 @@ class Gene extends common\Gene
     {
         return [
             'id' => 'id',
-            'age_id' => 'Происхождение',
+            'family_phylum_id' => 'Происхождение семейства гена',
+            'phylum_id' => 'Происхождение гена',
             'symbol' => 'HGNC',
             'aliases' => 'Синонимы',
             'name' => 'Название',

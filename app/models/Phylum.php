@@ -25,8 +25,25 @@ class Phylum extends common\Phylum
     {
         $genesIds = $this->getLinkedGenesIds();
         Yii::$app->db->createCommand()
-            ->update('gene', ['age_id' => null], ['in', 'id', $genesIds]);
+            ->update('gene', ['phylum_id' => null], ['in', 'id', $genesIds]);
         return parent::beforeDelete();
+    }
+
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGenes()
+    {
+        return $this->hasMany(Gene::class, ['phylum_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFamilyGenes()
+    {
+        return $this->hasMany(Gene::class, ['family_phylum_id' => 'id']);
     }
 
     public static function findAllAsArray()
