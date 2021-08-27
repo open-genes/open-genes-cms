@@ -48,7 +48,10 @@ $this->registerCssFile('/assets/css/gene.css');
 
     <div class="row form-row">
         <div class="col-xs-12 col-sm-3">
-            <?= $form->field($model, 'age_id')->dropDownList($allAges) ?>
+            <?= $form->field($model, 'phylum_id')->dropDownList(['' => null] + $allAges) ?>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <?= $form->field($model, 'family_phylum_id')->dropDownList(['' => null] + $allAges) ?>
         </div>
         <div class="col-xs-12 col-sm-3">
             <?= $form->field($model, 'expressionChange')->dropDownList([

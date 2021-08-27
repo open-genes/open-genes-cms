@@ -14,4 +14,8 @@ modules:
     config:
         Yii2:
             configFile: 'config/test.php'
-
+    enabled:
+        - Db:
+            dsn: "mysql:host=OPENGENESCMSTESTDB;dbname=open_genes"
+            user: 'root'
+            password: 'secret'

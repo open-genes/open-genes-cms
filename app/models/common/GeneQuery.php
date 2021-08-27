@@ -114,8 +114,8 @@ class GeneQuery extends \yii\db\ActiveQuery
             ->addSelect('taxon.name_en as taxon_name')
             ->join(
                 'LEFT JOIN',
-                'age',
-                'gene.age_id = age.id'
+                'phylum',
+                'gene.phylum_id = phylum.id'
             )
             ->join(
                 'LEFT JOIN',
