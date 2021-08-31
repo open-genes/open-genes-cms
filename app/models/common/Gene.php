@@ -24,11 +24,11 @@ use Yii;
  * @property string|null $references
  * @property string|null $orthologs
  * @property string|null $commentEvolution
- * @property string|null $commentFunction
+ * @property string|null $uniprot_summary_ru
  * @property string|null $commentCause
  * @property string|null $commentAging
  * @property string|null $commentEvolutionEN
- * @property string|null $commentFunctionEN
+ * @property string|null $uniprot_summary_en
  * @property string|null $commentAgingEN
  * @property string|null $commentsReferenceLinks
  * @property int|null $rating
@@ -84,7 +84,7 @@ class Gene extends \yii\db\ActiveRecord
     {
         return [
             [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'expressionChange', 'created_at', 'updated_at', 'family_phylum_id', 'phylum_id', 'taxon_id'], 'integer'],
-            [['commentEvolution', 'commentFunction', 'commentCause', 'commentAging', 'commentEvolutionEN', 'commentFunctionEN', 'commentAgingEN', 'commentsReferenceLinks', 'protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
+            [['commentEvolution', 'uniprot_summary_ru', 'commentCause', 'commentAging', 'commentEvolutionEN', 'uniprot_summary_en', 'commentAgingEN', 'commentsReferenceLinks', 'protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
             [['ensembl', 'source'], 'string', 'max' => 255],
@@ -116,11 +116,11 @@ class Gene extends \yii\db\ActiveRecord
             'references' => 'References',
             'orthologs' => 'Orthologs',
             'commentEvolution' => 'Comment Evolution',
-            'commentFunction' => 'Comment Function',
+            'uniprot_summary_ru' => 'Comment Function',
             'commentCause' => 'Comment Cause',
             'commentAging' => 'Comment Aging',
             'commentEvolutionEN' => 'Comment Evolution En',
-            'commentFunctionEN' => 'Comment Function En',
+            'uniprot_summary_en' => 'Comment Function En',
             'commentAgingEN' => 'Comment Aging En',
             'commentsReferenceLinks' => 'Comments Reference Links',
             'rating' => 'Rating',

@@ -100,10 +100,8 @@ $this->registerCssFile('/assets/css/gene.css');
             <?= $form->field($model, 'ncbi_summary_en')->textarea(['rows' => 4]) ?>
             <?= $form->field($model, 'og_summary_ru')->textarea(['rows' => 4]) ?>
             <?= $form->field($model, 'og_summary_en')->textarea(['rows' => 4]) ?>
-            <?= $form->field($model, 'commentAging')->textarea(['rows' => 4]) ?>
-            <?= $form->field($model, 'commentAgingEN')->textarea(['rows' => 4]) ?>
-            <?= $form->field($model, 'commentFunction')->textarea(['rows' => 4]) ?>
-            <?= $form->field($model, 'commentFunctionEN')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'uniprot_summary_ru')->textarea(['rows' => 4]) ?>
+            <?= $form->field($model, 'uniprot_summary_en')->textarea(['rows' => 4]) ?>
         </div>
     </div>
     <?php endif; ?>
