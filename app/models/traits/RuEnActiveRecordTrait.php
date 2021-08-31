@@ -11,10 +11,15 @@ trait RuEnActiveRecordTrait
 
     public static function getAllNamesAsArray()
     {
-        $result = parent::find()
-            ->select(['id', 'concat(name_ru, \' \', \'(\', name_en, \')\') as name'])
+        $names = self::find()
+            ->select(['id', 'name_ru', 'name_en'])
+            ->asArray()
             ->all();
-        return ArrayHelper::map($result, 'id', 'name');
+        $result = [];
+        foreach ($names as $name) {
+            $result[$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
+        }
+        return $result;
     }
 
     public static function createFromNameString(string $name)
