@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m210824_150807_extend_lifispan_experiments_form
+ * Class m210901_150807_extend_lifispan_experiments_form
  */
-class m210824_150807_extend_lifispan_experiments_form extends Migration
+class m210901_150807_extend_lifispan_experiments_form extends Migration
 {
     /**
      * {@inheritdoc}
@@ -85,24 +85,35 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
             'tissue_id' => $this->integer(),
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
 
+        $this->createTable('lifespan_experiment_to_strain', [
+            'id' => $this->primaryKey(),
+            'lifespan_experiment_id' => $this->integer(),
+            'strain_id' => $this->integer(),
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
+
+        $this->createTable('lifespan_experiment_to_intervention_way', [
+            'id' => $this->primaryKey(),
+            'lifespan_experiment_id' => $this->integer(),
+            'gene_intervention_way_id' => $this->integer(),
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
+
         $this->createTable('organism_sex', [
             'id' => $this->primaryKey(),
-            'name_ru' => $this->integer(),
-            'name_en' => $this->integer(),
+            'name_ru' => $this->string(),
+            'name_en' => $this->string(),
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->addCommentOnTable('treatment_time_unit', 'Пол организмов');
 
         $this->createTable('statistical_significance', [
             'id' => $this->primaryKey(),
-            'name_ru' => $this->integer(),
-            'name_en' => $this->integer(),
+            'name_ru' => $this->string(),
+            'name_en' => $this->string(),
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->addCommentOnTable('statistical_significance', 'Статистическая значимость');
-
-        $this->createTable('lifespan_experiment_link', [
+        
+        $this->createTable('common_lifespan_experiment', [
             'id' => $this->primaryKey(),
-            'lifespan_experiment_from_id' => $this->integer(),
-            'lifespan_experiment_to_id' => $this->integer(),
+            'name' => $this->string(),
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
 
         $this->addColumn('lifespan_experiment', 'tissue_specificity', $this->tinyInteger(1)
@@ -120,6 +131,10 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
             ->comment('Количество организмов в контроле'));
         $this->addColumn('lifespan_experiment', 'experiment_number', $this->smallInteger()
             ->comment('Количество организмов в эксперименте'));
+        $this->addColumn('lifespan_experiment', 'expression_change', $this->smallInteger()
+            ->comment('Степень изменения экспрессии гена %'));
+        $this->addColumn('lifespan_experiment', 'changed_expression_tissue_id', $this->integer()
+            ->comment('Ткань/клетки'));
         $this->addColumn('lifespan_experiment', 'control_lifespan_min', $this->smallInteger()
             ->comment('Мин. прод-ть жизни контроля'));
         $this->addColumn('lifespan_experiment', 'control_lifespan_mean', $this->smallInteger()
@@ -156,10 +171,12 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->addColumn('lifespan_experiment', 'treatment_end_stage_of_development_id', $this->integer());
         $this->addColumn('lifespan_experiment', 'treatment_start_time_unit_id', $this->integer());
         $this->addColumn('lifespan_experiment', 'treatment_end_time_unit_id', $this->integer());
+        $this->addColumn('lifespan_experiment', 'lifespan_change_time_unit_id', $this->integer());
         $this->addColumn('lifespan_experiment', 'lifespan_min_change_stat_sign_id', $this->integer());
         $this->addColumn('lifespan_experiment', 'lifespan_mean_change_stat_sign_id', $this->integer());
         $this->addColumn('lifespan_experiment', 'lifespan_median_change_stat_sign_id', $this->integer());
         $this->addColumn('lifespan_experiment', 'lifespan_max_change_stat_sign_id', $this->integer());
+        $this->addColumn('lifespan_experiment', 'common_lifespan_experiment_id', $this->integer());
 
         $this->addForeignKey('lifespan_experiment_active_substance', 'lifespan_experiment', 'active_substance_id', 'active_substance', 'id');
         $this->addForeignKey('lifespan_experiment_active_substance_delivery_way', 'lifespan_experiment', 'active_substance_delivery_way_id', 'active_substance_delivery_way', 'id');
@@ -172,16 +189,22 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->addForeignKey('lifespan_experiment_experiment_main_effect', 'lifespan_experiment', 'experiment_main_effect_id', 'experiment_main_effect', 'id');
         $this->addForeignKey('lifespan_experiment_start_time_unit', 'lifespan_experiment', 'treatment_start_time_unit_id', 'treatment_time_unit', 'id');
         $this->addForeignKey('lifespan_experiment_end_time_unit', 'lifespan_experiment', 'treatment_end_time_unit_id', 'treatment_time_unit', 'id');
+        $this->addForeignKey('lifespan_experiment_lifespan_change_time_unit', 'lifespan_experiment', 'lifespan_change_time_unit_id', 'treatment_time_unit', 'id');
         $this->addForeignKey('lifespan_experiment_min_change_stat_sign', 'lifespan_experiment', 'lifespan_min_change_stat_sign_id', 'statistical_significance', 'id');
         $this->addForeignKey('lifespan_experiment_mean_change_stat_sign', 'lifespan_experiment', 'lifespan_mean_change_stat_sign_id', 'statistical_significance', 'id');
         $this->addForeignKey('lifespan_experiment_median_change_stat_sign', 'lifespan_experiment', 'lifespan_median_change_stat_sign_id', 'statistical_significance', 'id');
         $this->addForeignKey('lifespan_experiment_max_change_stat_sign', 'lifespan_experiment', 'lifespan_max_change_stat_sign_id', 'statistical_significance', 'id');
+        $this->addForeignKey('lifespan_experiment_changed_expression_tissue', 'lifespan_experiment', 'changed_expression_tissue_id', 'sample', 'id');
+        $this->addForeignKey('lifespan_experiment_common_lifespan_experiment', 'lifespan_experiment', 'common_lifespan_experiment_id', 'common_lifespan_experiment', 'id');
 
         $this->addForeignKey('lifespan_experiment_to_tissue_lsn', 'lifespan_experiment_to_tissue', 'lifespan_experiment_id', 'lifespan_experiment', 'id');
         $this->addForeignKey('lifespan_experiment_to_tissue_tss', 'lifespan_experiment_to_tissue', 'tissue_id', 'sample', 'id');
-
-        $this->addForeignKey('lifespan_experiment_link_from', 'lifespan_experiment_link', 'lifespan_experiment_from_id', 'lifespan_experiment', 'id');
-        $this->addForeignKey('lifespan_experiment_link_to', 'lifespan_experiment_link', 'lifespan_experiment_to_id', 'lifespan_experiment', 'id');
+        
+        $this->addForeignKey('lifespan_experiment_to_strain_lsn', 'lifespan_experiment_to_strain', 'lifespan_experiment_id', 'lifespan_experiment', 'id');
+        $this->addForeignKey('lifespan_experiment_to_strain_str', 'lifespan_experiment_to_strain', 'strain_id', 'organism_line', 'id');
+        
+        $this->addForeignKey('lifespan_experiment_to_intervention_way_lsn', 'lifespan_experiment_to_intervention_way', 'lifespan_experiment_id', 'lifespan_experiment', 'id');
+        $this->addForeignKey('lifespan_experiment_to_intervention_way_inw', 'lifespan_experiment_to_intervention_way', 'gene_intervention_way_id', 'gene_intervention_way', 'id');
 
         $this->addForeignKey('gene_intervention_method_way', 'gene_intervention_method', 'gene_intervention_way_id', 'gene_intervention_way', 'id');
 
@@ -206,18 +229,23 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->dropForeignKey('lifespan_experiment_experiment_main_effect', 'lifespan_experiment');
         $this->dropForeignKey('lifespan_experiment_start_time_unit', 'lifespan_experiment');
         $this->dropForeignKey('lifespan_experiment_end_time_unit', 'lifespan_experiment');
+        $this->dropForeignKey('lifespan_experiment_lifespan_change_time_unit', 'lifespan_experiment');
         $this->dropForeignKey('lifespan_experiment_min_change_stat_sign', 'lifespan_experiment');
         $this->dropForeignKey('lifespan_experiment_mean_change_stat_sign', 'lifespan_experiment');
         $this->dropForeignKey('lifespan_experiment_median_change_stat_sign', 'lifespan_experiment');
         $this->dropForeignKey('lifespan_experiment_max_change_stat_sign', 'lifespan_experiment');
-
+        $this->dropForeignKey('lifespan_experiment_changed_expression_tissue', 'lifespan_experiment');
+        $this->dropForeignKey('lifespan_experiment_common_lifespan_experiment', 'lifespan_experiment');
 
         $this->dropForeignKey('lifespan_experiment_to_tissue_lsn', 'lifespan_experiment_to_tissue');
         $this->dropForeignKey('lifespan_experiment_to_tissue_tss', 'lifespan_experiment_to_tissue');
 
-        $this->dropForeignKey('lifespan_experiment_link_from', 'lifespan_experiment_link');
-        $this->dropForeignKey('lifespan_experiment_link_to', 'lifespan_experiment_link');
+        $this->dropForeignKey('lifespan_experiment_to_strain_lsn', 'lifespan_experiment_to_strain');
+        $this->dropForeignKey('lifespan_experiment_to_strain_str', 'lifespan_experiment_to_strain');
 
+        $this->dropForeignKey('lifespan_experiment_to_intervention_way_lsn', 'lifespan_experiment_to_intervention_way');
+        $this->dropForeignKey('lifespan_experiment_to_intervention_way_inw', 'lifespan_experiment_to_intervention_way');
+        
         $this->dropColumn('lifespan_experiment', 'active_substance_id');
         $this->dropColumn('lifespan_experiment', 'active_substance_delivery_way_id');
         $this->dropColumn('lifespan_experiment', 'active_substance_dosage_unit_id');
@@ -225,10 +253,13 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->dropColumn('lifespan_experiment', 'gene_intervention_method_id');
         $this->dropColumn('lifespan_experiment', 'experiment_main_effect_id');
         $this->dropColumn('lifespan_experiment', 'organism_sex_id');
+        $this->dropColumn('lifespan_experiment', 'expression_change');
+        $this->dropColumn('lifespan_experiment', 'changed_expression_tissue_id');
         $this->dropColumn('lifespan_experiment', 'treatment_start_stage_of_development_id');
         $this->dropColumn('lifespan_experiment', 'treatment_end_stage_of_development_id');
         $this->dropColumn('lifespan_experiment', 'treatment_end_time_unit_id');
         $this->dropColumn('lifespan_experiment', 'treatment_start_time_unit_id');
+        $this->dropColumn('lifespan_experiment', 'lifespan_change_time_unit_id');
         $this->dropColumn('lifespan_experiment', 'lifespan_min_change_stat_sign_id');
         $this->dropColumn('lifespan_experiment', 'lifespan_mean_change_stat_sign_id');
         $this->dropColumn('lifespan_experiment', 'lifespan_median_change_stat_sign_id');
@@ -253,6 +284,7 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->dropColumn('lifespan_experiment', 'lifespan_mean_change');
         $this->dropColumn('lifespan_experiment', 'lifespan_median_change');
         $this->dropColumn('lifespan_experiment', 'lifespan_max_change');
+        $this->dropColumn('lifespan_experiment', 'common_lifespan_experiment_id');
 
         $this->dropTable('treatment_stage_of_development');
         $this->dropTable('experiment_treatment_period');
@@ -265,12 +297,19 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->dropTable('treatment_time_unit');
         $this->dropTable('lifespan_experiment_to_tissue');
         $this->dropTable('organism_sex');
-        $this->dropTable('lifespan_experiment_link');
         $this->dropTable('statistical_significance');
+        $this->dropTable('lifespan_experiment_to_intervention_way');
+        $this->dropTable('lifespan_experiment_to_strain');
+        $this->dropTable('common_lifespan_experiment');
     }
 
     private function insertData()
     {
+        $this->batchInsert('statistical_significance', ['id', 'name_en', 'name_ru'], [
+            [1, 'yes', 'да'],
+            [2, 'no', 'нет'],
+            [3, 'not measured', 'не измеряли'],
+        ]);
         $this->batchInsert('experiment_main_effect', ['id', 'name_en', 'name_ru'], [
             [1, 'gain of function', 'усиление функции'],
             [2, 'loss of function', 'ослабление функции'],
@@ -309,6 +348,10 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
         $this->execute('update organism_sex set id=0 where id=4'); // batch insert can't insert 0 as id
 
         $this->execute('insert into gene_intervention_method (id, name_ru, name_en) select id, name_ru, name_en FROM gene_intervention');
+        
+        $this->execute('insert into common_lifespan_experiment (id) select id FROM lifespan_experiment');
+        $this->execute('update lifespan_experiment set common_lifespan_experiment_id = id'); // every lifespan experiment should be linked to common
+
         $this->batchInsert('gene_intervention_method', ['name_en', 'name_ru', 'gene_intervention_way_id'], [
             ['extra copies in genome', 'дополнительные копии в геноме', 1],
             ['interfering RNAs in genome', 'интерферирующие РНК в геноме', 1],

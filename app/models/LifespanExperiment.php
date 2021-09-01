@@ -18,6 +18,8 @@ class LifespanExperiment extends common\LifespanExperiment
     use ValidatorsTrait;
 
     public $delete = false;
+    public $geneInterventionWay;
+    public $tissuesIds;
 
     public function behaviors()
     {
@@ -34,6 +36,7 @@ class LifespanExperiment extends common\LifespanExperiment
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'gene_intervention_id', 'intervention_result_id'], 'required'],
+            [['tissuesIds', 'geneInterventionWay', 'intervention_result_id'], 'safe'],
             [['age'], 'number', 'min'=>0],
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age);
