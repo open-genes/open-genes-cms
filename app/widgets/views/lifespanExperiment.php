@@ -4,6 +4,60 @@
 <div class="protein-activity js-lifespan-experiment js-gene-link-section">
     <div class="js-lifespan-experiment-block js-gene-link-block">
         <div class="row form-row">
+            <b>Контроль</b><br>
+            <div class="col-xs-6 col-md-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']model_organism_id',
+                    'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Организм',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => true,
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
+                    'data' => \app\models\OrganismLine::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Линия',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => true,
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']organism_sex_id',
+                    'data' => \app\models\OrganismSex::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Пол',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div><div class="col-xs-6 col-md-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']control_number', ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
+            </div>
             <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
@@ -38,40 +92,8 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']model_organism_id',
-                    'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Объект',
-                        'multiple' => false
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tags' => true,
-                        'tokenSeparators' => ['##'],
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="col-xs-6 col-md-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']organism_line_id',
-                    'data' => \app\models\OrganismLine::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Линия',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                        'tags' => true,
-                        'tokenSeparators' => ['##'],
-                    ],
-                ]);
-                ?>
-            </div>
+            
+            
         </div>
 
         <div class="row form-row">

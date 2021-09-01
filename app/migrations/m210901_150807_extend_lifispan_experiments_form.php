@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m210824_150807_extend_lifispan_experiments_form
+ * Class m210901_150807_extend_lifispan_experiments_form
  */
-class m210824_150807_extend_lifispan_experiments_form extends Migration
+class m210901_150807_extend_lifispan_experiments_form extends Migration
 {
     /**
      * {@inheritdoc}
@@ -87,15 +87,15 @@ class m210824_150807_extend_lifispan_experiments_form extends Migration
 
         $this->createTable('organism_sex', [
             'id' => $this->primaryKey(),
-            'name_ru' => $this->integer(),
-            'name_en' => $this->integer(),
+            'name_ru' => $this->string(),
+            'name_en' => $this->string(),
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->addCommentOnTable('treatment_time_unit', 'Пол организмов');
 
         $this->createTable('statistical_significance', [
             'id' => $this->primaryKey(),
-            'name_ru' => $this->integer(),
-            'name_en' => $this->integer(),
+            'name_ru' => $this->string(),
+            'name_en' => $this->string(),
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->addCommentOnTable('statistical_significance', 'Статистическая значимость');
 
