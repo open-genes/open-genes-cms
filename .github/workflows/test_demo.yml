@@ -18,6 +18,8 @@ jobs:
         with:
           path: .
           name: project
+      - name: Build composer dependencies
+        run: docker run --rm -v $PWD/app:/app composer install
 
   deploy-demo:
     needs: build
