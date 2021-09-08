@@ -1,0 +1,43 @@
+
+
+name: demo-CI
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Build project
+        run: bash open-genes-cms.sh prod
+      - name: Upload project artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          path: .
+          name: project
+
+  deploy-demo:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download project artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: project
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      - name: Deploy with rsync
+        run: |
+          echo $DROPLET_ENV | base64 -d > .env
+          rsync -zhr1 -e 'ssh -o StrictHostKeyChecking = no -o UserKnownHostsFile=/dev/null' . $SSH_USER@$SSH_HOST:$PROJECT_PATH
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          PROJECT_PATH: ${{ secrets.PROJECT_DEMO_PATH }}
+          DROPLET_ENV: ${{ secrets.DROPLET_DEMO_ENV }}
