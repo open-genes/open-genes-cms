@@ -14,7 +14,7 @@ jobs:
       - name: Build project
         run: bash open-genes-cms.sh prod
       - name: Upload project artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           path: .
           name: project
