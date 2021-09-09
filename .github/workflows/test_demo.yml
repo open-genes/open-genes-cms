@@ -32,7 +32,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.DROPLET_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          known_hosts: ${{ secrets.DROPLET_HOST }}
       - name: Deploy with rsync
         run: |
           echo $DROPLET_CMS_DEMO_DOTENV_BASE64 | base64 -d > .env
