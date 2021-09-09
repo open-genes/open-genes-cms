@@ -13,8 +13,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Build project
         run: docker run --rm -v $PWD/app:/app composer@sha256:d374b2e1f715621e9d9929575d6b35b11cf4a6dc237d4a08f2e6d1611f534675 install
-      - name: Update composer dependencies
-        run: docker run --rm -v $PWD/app:/app composer update
       - name: Build composer dependencies
         run: docker run --rm -v $PWD/app:/app composer install
       - name: Upload project artifacts
