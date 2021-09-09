@@ -31,14 +31,14 @@ jobs:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.DROPLET_KEY }}
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       - name: Deploy with rsync
         run: |
-          echo $DROPLET_ENV | base64 -d > .env
-          rsync -zhr1 -e 'ssh -o StrictHostKeyChecking = no -o UserKnownHostsFile=/dev/null' . $SSH_USER@$SSH_HOST:$PROJECT_PATH
+          echo $DROPLET_CMS_DEMO_DOTENV_BASE64 | base64 -d > .env
+          rsync -zhr1 -e 'ssh -o StrictHostKeyChecking = no -o UserKnownHostsFile=/dev/null' . $DROPLET_USER@$DROPLET_HOST:$DROPLET_CMS_DEMO_PATH
         env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          PROJECT_PATH: ${{ secrets.PROJECT_DEMO_PATH }}
-          DROPLET_ENV: ${{ secrets.DROPLET_DEMO_ENV }}
+          SSH_USER: ${{ secrets.DROPLET_USER }}
+          SSH_HOST: ${{ secrets.DROPLET_HOST }}
+          PROJECT_PATH: ${{ secrets.DROPLET_CMS_DEMO_PATH }}
+          DROPLET_ENV: ${{ secrets.DROPLET_CMS_DEMO_DOTENV_BASE64 }}
