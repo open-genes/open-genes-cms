@@ -13,10 +13,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Build project
         run: bash open-genes-cms.sh up
-      - name: Update composer dependencies
-        run: docker run --rm -v $PWD/app:/app composer update
-      - name: Build composer dependencies
-        run: docker run --rm -v $PWD/app:/app composer install
       - name: Upload project artifacts
         uses: actions/upload-artifact@v2
         with:
