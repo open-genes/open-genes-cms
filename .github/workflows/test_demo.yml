@@ -15,9 +15,6 @@ jobs:
         run: bash open-genes-cms.sh up
       - name: Upload project artifacts
         uses: actions/upload-artifact@v2
-        with:
-          path: .
-          name: project
 
 
   deploy-demo:
