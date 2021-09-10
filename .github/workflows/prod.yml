@@ -1,6 +1,4 @@
-
-
-name: demo-CI
+name: prod-CI
 
 on: push
 
