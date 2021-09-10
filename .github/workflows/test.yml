@@ -36,7 +36,7 @@ jobs:
       - name: Deploy with rsync
         run: |
           echo DROPLET_CMS_TEST_DOTENV_BASE64 | base64 -d > .env
-          rsync -e 'ssh -o StrictHostKeyChecking = no -o UserKnownHostsFile=/dev/null' . $DROPLET_USER@$DROPLET_HOST:DROPLET_CMS_TEST_PATH
+          rsync -zhr1 -e 'ssh -o StrictHostKeyChecking = no -o UserKnownHostsFile=/dev/null' . $DROPLET_USER@$DROPLET_HOST:DROPLET_CMS_TEST_PATH
         env:
           SSH_USER: ${{ secrets.DROPLET_USER }}
           SSH_HOST: ${{ secrets.DROPLET_HOST }}
