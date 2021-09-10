@@ -1,0 +1,44 @@
+
+
+name: demo-CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+      - name: Build project
+        run: docker run --rm -v $PWD/app:/app composer@sha256:d374b2e1f715621e9d9929575d6b35b11cf4a6dc237d4a08f2e6d1611f534675 install
+      - name: Upload project artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: .
+          name: project
+
+
+  deploy-demo:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download project artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: project
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DROPLET_KEY }}
+          known_hosts: ${{ secrets.DROPLET_HOST }}
+      - name: Deploy with rsync
+        run: |
+          echo $DROPLET_ENV | base64 -d > .env
+          rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' . $SSH_USER@$SSH_HOST:$PROJECT_PATH
+        env:
+          SSH_USER: ${{ secrets.DROPLET_USER }}
+          SSH_HOST: ${{ secrets.DROPLET_HOST }}
+          PROJECT_PATH: ${{ secrets.DROPLET_CMS_PROD_PATH }}
+          DROPLET_ENV: ${{ secrets.DROPLET_CMS_PROD_DOTENV_BASE64 }}
