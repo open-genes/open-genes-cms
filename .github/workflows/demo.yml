@@ -1,6 +1,6 @@
 
 
-name: test-demo-CI
+name: demo-CI
 
 on: push
 

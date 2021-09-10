@@ -1,6 +1,6 @@
 
 
-name: test-demo-CI
+name: test-CI
 
 on: push
 
@@ -20,7 +20,7 @@ jobs:
           name: project
 
 
-  deploy-demo:
+  deploy-test:
     needs: build
     runs-on: ubuntu-latest
     steps:
