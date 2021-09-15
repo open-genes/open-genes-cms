@@ -1,6 +1,6 @@
 name: demo-CI
 
-on: push
+on: workflow_dispatch
 
 jobs:
   deploy-demo:
