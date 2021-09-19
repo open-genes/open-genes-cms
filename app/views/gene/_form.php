@@ -1,7 +1,6 @@
 <?php
 
 use app\widgets\GeneProteinActivity;
-use app\widgets\LifespanExperimentWidget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
