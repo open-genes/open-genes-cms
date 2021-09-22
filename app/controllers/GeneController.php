@@ -174,27 +174,6 @@ class GeneController extends Controller
     }
 
     /**
-     * @param $id
-     * @return string
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionUpdateFunctions($id)
-    {
-        $model = $this->findModel($id);
-
-        if(is_array(Yii::$app->request->post('GeneToProteinActivity'))) {
-            GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
-            return $this->redirect(['update-functions', 'id' => $model->id]);
-        }
-
-        return $this->render('updateFunctions', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
      * Deletes an existing Gene model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
