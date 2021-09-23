@@ -61,7 +61,6 @@ use Yii;
  * @property GeneToLongevityEffect[] $geneToLongevityEffects
  * @property GeneToOntology[] $geneToOntologies
  * @property GeneToProgeria[] $geneToProgerias
- * @property GeneToProteinActivity[] $geneToProteinActivities
  * @property GeneToProteinClass[] $geneToProteinClasses
  * @property LifespanExperiment[] $lifespanExperiments
  * @property ProteinToGene[] $proteinToGenes
@@ -261,16 +260,6 @@ class Gene extends \yii\db\ActiveRecord
     public function getGeneToProgerias()
     {
         return $this->hasMany(GeneToProgeria::className(), ['gene_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[GeneToProteinActivities]].
-     *
-     * @return \yii\db\ActiveQuery|GeneToProteinActivityQuery
-     */
-    public function getGeneToProteinActivities()
-    {
-        return $this->hasMany(GeneToProteinActivity::className(), ['gene_id' => 'id']);
     }
 
     /**
