@@ -1,12 +1,5 @@
 let newGeneLinkBlocksCount = 0;
 
-$('.js-add-protein-activity').click(function () {
-    newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=GeneToProteinActivity&widgetName=GeneProteinActivity&id=new'+newGeneLinkBlocksCount, function (data) {
-        $('.js-protein-activities').append(data);
-    });
-});
-
 $('.js-add-lifespan-experiment').click(function () {
     newGeneLinkBlocksCount++;
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'+newGeneLinkBlocksCount, function (data) {

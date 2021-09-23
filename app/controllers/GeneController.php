@@ -13,7 +13,6 @@ use app\models\CommentCause;
 use app\models\Gene;
 use app\models\FunctionalCluster;
 use app\models\GeneInterventionToVitalProcess;
-use app\models\GeneToProteinActivity;
 use app\models\LifespanExperiment;
 use app\models\ProteinClass;
 use app\models\ProteinToGene;
