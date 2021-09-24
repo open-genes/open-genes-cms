@@ -13,7 +13,6 @@ use app\models\CommentCause;
 use app\models\Gene;
 use app\models\FunctionalCluster;
 use app\models\GeneInterventionToVitalProcess;
-use app\models\GeneToProteinActivity;
 use app\models\LifespanExperiment;
 use app\models\ProteinClass;
 use app\models\ProteinToGene;
@@ -169,27 +168,6 @@ class GeneController extends Controller
         }
 
         return $this->render('updateExperiments', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * @param $id
-     * @return string
-     * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
-     */
-    public function actionUpdateFunctions($id)
-    {
-        $model = $this->findModel($id);
-
-        if(is_array(Yii::$app->request->post('GeneToProteinActivity'))) {
-            GeneToProteinActivity::saveMultipleForGene(Yii::$app->request->post('GeneToProteinActivity'), $id);
-            return $this->redirect(['update-functions', 'id' => $model->id]);
-        }
-
-        return $this->render('updateFunctions', [
             'model' => $model,
         ]);
     }
