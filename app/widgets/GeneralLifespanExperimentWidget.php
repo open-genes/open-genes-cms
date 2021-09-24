@@ -18,7 +18,6 @@ class GeneralLifespanExperimentWidget extends Widget
 
     public function run()
     {
-//        var_dump($this->model->generalLifespanExperiment); die;
         return $this->render('generalLifespanExperiment', [
             'generalLifespanExperiment' => $this->model->generalLifespanExperiment,
             'currentGeneId' => $this->model->gene_id

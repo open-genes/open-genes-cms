@@ -143,8 +143,8 @@ class GeneController extends Controller
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if (is_array(Yii::$app->request->post('GeneralLifespanExperiment'))) {
-                    foreach (Yii::$app->request->post('GeneralLifespanExperiment') as $generalLifespanExperiment) {
-                        GeneralLifespanExperiment::saveForGene($generalLifespanExperiment, $id);
+                    foreach (Yii::$app->request->post('GeneralLifespanExperiment') as $generalLEId => $generalLifespanExperiment) {
+                        GeneralLifespanExperiment::saveFromExperiments($generalLEId, $generalLifespanExperiment);
                     }
                 }
                 if (is_array(Yii::$app->request->post('LifespanExperiment'))) {
@@ -171,6 +171,9 @@ class GeneController extends Controller
             } catch (UpdateExperimentsException $e) {
                 $transaction->rollBack();
                 return json_encode(['error' => $e->getInfoArray(), JSON_UNESCAPED_UNICODE]);
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                return json_encode(['error' => $e->getMessage(), JSON_UNESCAPED_UNICODE]);
             }
             $transaction->commit();
             return json_encode(['success']);
@@ -218,7 +221,14 @@ class GeneController extends Controller
         return $this->redirect($redirectUrl);
     }
 
-    public function actionLoadWidgetForm($id, string $modelName, string $widgetName)
+    /**
+     * @param $id
+     * @param string $modelName
+     * @param string $widgetName
+     * @param array $params 
+     * @return string
+     */
+    public function actionLoadWidgetForm($id, string $modelName, string $widgetName, array $params =[])
     {
         $modelName = "app\models\\$modelName";
         $widgetName = "app\widgets\\$widgetName";
@@ -229,7 +239,7 @@ class GeneController extends Controller
             $model = new $modelName();
             $model->id = $id;
         }
-        return $this->renderAjax('_geneLinkWidgetForm', ['model' => $model, 'widgetName' => $widgetName]);
+        return $this->renderAjax('_geneLinkWidgetForm', ['model' => $model, 'widgetName' => $widgetName, 'params' => $params]);
     }
 
     /**

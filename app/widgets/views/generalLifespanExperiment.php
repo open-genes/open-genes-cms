@@ -61,18 +61,42 @@
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_number', ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
             </div>
         </div>
+        <div class="row form-row">
+            <div class="form-group">
+                <div class="js-lifespan-experiments-control">
+                    В контроле и в эксперименте
+                    <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control') as $lifespanExperiment): ?>
+                        <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
+                    <?php endforeach; ?>
+                </div>
+                <?= \yii\helpers\Html::button('Добавить', [
+                    'class' => 'btn btn-add add-protein-activity js-add-lifespan-experiment-control',
+                    'currentGeneId' => $currentGeneId,
+                    'generalLifespanExperimentId' => $generalLifespanExperiment->id
+                ]) ?>
+            </div>
+        </div>
         <b>Эксперимент</b>
         <div class="row form-row">
             <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']experiment_number', ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
             </div>
         </div>
-        <pre><?php 
-//            var_dump($generalLifespanExperiment->lifespanExperiments); die;
-             ?></pre>
-        <?php foreach ($generalLifespanExperiment->lifespanExperiments as $lifespanExperiment): ?>
-            <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
-        <?php endforeach; ?>
+
+        <hr class="my-4">
+        <div class="js-lifespan-experiments-gene">
+            В эксперименте
+            <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('experiment') as $lifespanExperiment): ?>
+                <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
+            <?php endforeach; ?>
+
+            <?= \yii\helpers\Html::button('Добавить', [
+                'class' => 'btn btn-add add-protein-activity js-add-lifespan-experiment-gene',
+                'currentGeneId' => $currentGeneId,
+                'generalLifespanExperimentId' => $generalLifespanExperiment->id
+            ]) ?>
+        </div>
+
 
         <b>Результаты</b>
         <div class="row form-row">

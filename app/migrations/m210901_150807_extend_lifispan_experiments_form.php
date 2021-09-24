@@ -365,6 +365,7 @@ class m210901_150807_extend_lifispan_experiments_form extends Migration
         ]);
         $this->execute('update lifespan_experiment set gene_intervention_method_id = gene_intervention_id');
         $this->execute('update lifespan_experiment set treatment_start_time_unit_id = age_unit');
+        $this->execute('update lifespan_experiment set type = "experiment"');
         
         $this->update('lifespan_experiment', ['experiment_main_effect_id' => 1], 'gene_intervention_method_id in (3, 4, 5, 8, 11, 19, 20, 21)');
         $this->update('lifespan_experiment', ['experiment_main_effect_id' => 2], 'gene_intervention_method_id in (1, 2, 7, 9, 14, 16, 17, 18, 22)');

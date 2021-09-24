@@ -7,17 +7,32 @@ $('.js-add-protein-activity').click(function () {
     });
 });
 
-$('.js-add-lifespan-experiment').click(function () {
+$('.js-add-lifespan-experiment-control').click(function () {
     newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'+newGeneLinkBlocksCount, function (data) {
-        $('.js-lifespan-experiments').append(data);
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
+        +newGeneLinkBlocksCount
+        +'&params[generalLifespanExperimentId]='+$(this).attr('generalLifespanExperimentId')
+        +'&params[currentGeneId]='+$(this).attr('currentGeneId')
+        +'&params[type]=control', function (data) {
+        $('.js-lifespan-experiments-control').append(data);
+    });
+});
+
+$('.js-add-lifespan-experiment-gene').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
+        +newGeneLinkBlocksCount
+        +'&params[generalLifespanExperimentId]='+$(this).attr('generalLifespanExperimentId')
+        +'&params[currentGeneId]='+$(this).attr('currentGeneId')
+        +'&params[type]=experiment', function (data) {
+        $('.js-lifespan-experiments-gene').append(data);
     });
 });
 
 $('.js-add-general-lifespan-experiment').click(function () {
     newGeneLinkBlocksCount++;
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=GeneralLifespanExperimentWidget&id=new'+newGeneLinkBlocksCount, function (data) {
-        $('.js-lifespan-experiments').append(data);
+        $('.js-general-lifespan-experiments').append(data);
     });
 });
 

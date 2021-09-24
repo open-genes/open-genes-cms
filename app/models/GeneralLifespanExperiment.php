@@ -193,6 +193,21 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     }
 
     /**
+     * @param $type
+     * @return LifespanExperiment[]
+     */
+    public function getLifespanExperimentsForForm($type): array
+    {
+        return LifespanExperiment::find()
+            ->where([
+                'general_lifespan_experiment_id' => $this->id,
+                'type' => $type
+            ])
+            ->all();
+    }
+    
+
+    /**
      * Gets query for [[LifespanExperiments]].
      *
      * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
@@ -208,15 +223,18 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     }
 
     /**
-     * @param array $modelArrays
-     * @param int $geneId
+     * @param int|string $id
+     * @param array $modelArray
+     * @throws UpdateExperimentsException
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public static function saveForGene(array $modelArray, int $geneId)
+    public static function saveFromExperiments($id, array $modelArray)
     {
-        if (is_numeric($modelArray['id'])) {
-            $modelAR = self::findOne($modelArray['id']);
+//        var_dump(Yii::$app->request->post('GeneralLifespanExperiment'));
+//        var_dump($modelArray);
+        if (is_numeric($id)) {
+            $modelAR = self::findOne($id);
         } else {
             $modelAR = new self();
         }
@@ -225,16 +243,43 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
 //            continue;
         }
         $modelAR->setAttributes($modelArray);
-//        self::setAttributeFromNewAR('gene_intervention_id', 'GeneIntervention', $modelAR);
-        self::setAttributeFromNewAR('model_organism_id', 'ModelOrganism', $modelAR);
-        self::setAttributeFromNewAR('intervention_result_id', 'InterventionResultForLongevity', $modelAR);
-        self::setAttributeFromNewAR('organism_line_id', 'OrganismLine', $modelAR);
-        self::setAttributeFromNewAR('organism_sex_id', 'OrganismSex', $modelAR);
+//        self::setAttributeFromNewAR($modelArray, 'gene_intervention_id', 'GeneIntervention', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'intervention_result_id', 'InterventionResultForLongevity', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'organism_line_id', 'OrganismLine', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'organism_sex_id', 'OrganismSex', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'changed_expression_tissue_id', 'Sample', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
         
         if (!$modelAR->validate() || !$modelAR->save()) {
-            throw new UpdateExperimentsException($modelArray['id'], $modelAR);
+            throw new UpdateExperimentsException($id, $modelAR);
         }
     }
 
-
+    //GeneralLifespanExperiment[94][control_number]: 
+    //GeneralLifespanExperiment[94][experiment_number]: 
+    //GeneralLifespanExperiment[94][expression_change]: 
+    //GeneralLifespanExperiment[94][control_lifespan_min]: 
+    //GeneralLifespanExperiment[94][control_lifespan_mean]: 
+    //GeneralLifespanExperiment[94][control_lifespan_median]: 
+    //GeneralLifespanExperiment[94][control_lifespan_max]: 
+    //GeneralLifespanExperiment[94][experiment_lifespan_min]: 
+    //GeneralLifespanExperiment[94][experiment_lifespan_mean]: 
+    //GeneralLifespanExperiment[94][experiment_lifespan_median]: 
+    //GeneralLifespanExperiment[94][experiment_lifespan_max]: 
+    //GeneralLifespanExperiment[94][control_lifespan_min]: 
+    //GeneralLifespanExperiment[94][control_lifespan_mean]: 
+    //GeneralLifespanExperiment[94][control_lifespan_median]: 
+    //GeneralLifespanExperiment[94][control_lifespan_max]: 
+    //GeneralLifespanExperiment[94][age]: 
+    //GeneralLifespanExperiment[94][age_unit]: 
+    //GeneralLifespanExperiment[94][lifespan_change_percent_male]: 
+    //GeneralLifespanExperiment[94][lifespan_change_percent_female]: 
+    //GeneralLifespanExperiment[94][lifespan_change_percent_common]: 
+    //GeneralLifespanExperiment[94][reference]: 
+    //GeneralLifespanExperiment[94][pmid]: 
+    //GeneralLifespanExperiment[94][comment_ru]: 
+    //GeneralLifespanExperiment[94][comment_en]: 
+    //GeneralLifespanExperiment[94][delete]: 0
 }

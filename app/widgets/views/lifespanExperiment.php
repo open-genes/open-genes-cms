@@ -1,9 +1,36 @@
 <?php
 /** @var $lifespanExperiment \app\models\LifespanExperiment */
+/** @var $generalLifespanExperimentId int */
+/** @var $currentGeneId int */
+/** @var $type string */
 ?>
 <div class="protein-activity js-lifespan-experiment js-gene-link-section">
     <div class="js-lifespan-experiment-block js-gene-link-block">
         <div class="row form-row">
+<!--            --><?php //var_dump($lifespanExperiment->gene_id, $currentGeneId); ?>
+            <?php if ($lifespanExperiment->gene_id != $currentGeneId): ?>
+                <div class="col-xs-6 col-md-2">
+                    <?= \kartik\select2\Select2::widget([
+                        'model' => $lifespanExperiment,
+                        'attribute' => '[' . $lifespanExperiment->id . ']gene_id',
+                        'data' => \app\models\Gene::getAllNamesAsArray(),
+                        'options' => [
+                            'placeholder' => 'Ген',
+                            'multiple' => false
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => false,
+//                        'tags' => Yii::$app->user->can('admin'),
+                            'tokenSeparators' => ['##'],
+                        ],
+                    ]);
+                    ?>
+                </div>
+            <?php endif; ?>
+            <?= \yii\helpers\Html::hiddenInput('type', $type) ?>
+            <?php if ($lifespanExperiment->general_lifespan_experiment_id != $generalLifespanExperimentId): ?>
+                <?= \yii\helpers\Html::hiddenInput('general_lifespan_experiment_id', $generalLifespanExperimentId) ?>
+            <?php endif; ?>
             <div class="col-xs-6 col-md-2">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
@@ -22,6 +49,7 @@
                 ?>
             </div>
             <div class="col-xs-6 col-md-2">
+                <!--                --><?php //var_dump($lifespanExperiment); die; ?>
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']geneInterventionWay',
