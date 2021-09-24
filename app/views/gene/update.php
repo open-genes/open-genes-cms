@@ -16,9 +16,6 @@ $this->params['breadcrumbs'][] = ['label' => $model->symbol, 'url' => ['view', '
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="gene-update">
-    <?php if(Yii::$app->user->can('editor')): ?>
-        <a href="<?=\yii\helpers\Url::toRoute(['update-functions', 'id' => $model->id])?>" target="_blank" class="gene-link">Функции гена <span class="glyphicon glyphicon-pencil"></span></a>
-    <?php endif; ?>
     <a href="<?=\yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id])?>" target="_blank" class="gene-link">Исследования гена <span class="glyphicon glyphicon-pencil"></span></a>
     <h2><?= Html::encode($this->title) ?></h2>
     <?= $this->render('_form', [
