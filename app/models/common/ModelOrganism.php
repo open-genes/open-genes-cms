@@ -59,7 +59,7 @@ class ModelOrganism extends \yii\db\ActiveRecord
      */
     public function getAgeRelatedChanges()
     {
-        return $this->hasMany(AgeRelatedChange::className(), ['model_organism_id' => 'id']);
+        return $this->hasMany(AgeRelatedChange::class, ['model_organism_id' => 'id']);
     }
 
     /**
@@ -69,7 +69,7 @@ class ModelOrganism extends \yii\db\ActiveRecord
      */
     public function getGeneInterventionToVitalProcesses()
     {
-        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['model_organism_id' => 'id']);
+        return $this->hasMany(GeneInterventionToVitalProcess::class, ['model_organism_id' => 'id']);
     }
 
     /**
@@ -79,7 +79,17 @@ class ModelOrganism extends \yii\db\ActiveRecord
      */
     public function getLifespanExperiments()
     {
-        return $this->hasMany(LifespanExperiment::className(), ['model_organism_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['model_organism_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[OrganismLine]].
+     *
+     * @return \yii\db\ActiveQuery|OrganismLineQuery
+     */
+    public function getOrganismLine()
+    {
+        return $this->hasMany(OrganismLine::class, ['model_organism_id' => 'id']);
     }
 
     /**
