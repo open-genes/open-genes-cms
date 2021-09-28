@@ -18,9 +18,12 @@ class GeneralLifespanExperimentWidget extends Widget
 
     public function run()
     {
-        return $this->render('generalLifespanExperiment', [
-            'generalLifespanExperiment' => $this->model->generalLifespanExperiment,
-            'currentGeneId' => $this->model->gene_id
-        ]);
+        if($this->model->generalLifespanExperiment) {
+            return $this->render('generalLifespanExperiment', [
+                'generalLifespanExperiment' => $this->model->generalLifespanExperiment,
+                'currentGeneId' => $this->model->gene_id
+            ]);
+        }
+        return false;
     }
 }

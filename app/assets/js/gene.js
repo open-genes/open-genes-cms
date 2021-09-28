@@ -7,31 +7,35 @@ $('.js-add-protein-activity').click(function () {
     });
 });
 
-$('.js-add-lifespan-experiment-control').click(function () {
+$(document).on('click', '.js-add-lifespan-experiment-control', function() {
     newGeneLinkBlocksCount++;
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
         +newGeneLinkBlocksCount
-        +'&params[generalLifespanExperimentId]='+$(this).attr('generalLifespanExperimentId')
+        +'&modelParams[general_lifespan_experiment_id]='+$(this).attr('generalLifespanExperimentId')
         +'&params[currentGeneId]='+$(this).attr('currentGeneId')
-        +'&params[type]=control', function (data) {
+        +'&modelParams[type]=control', function (data) {
         $('.js-lifespan-experiments-control').append(data);
     });
 });
 
-$('.js-add-lifespan-experiment-gene').click(function () {
+$(document).on('click', '.js-add-lifespan-experiment-gene', function() {
     newGeneLinkBlocksCount++;
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
         +newGeneLinkBlocksCount
-        +'&params[generalLifespanExperimentId]='+$(this).attr('generalLifespanExperimentId')
+        +'&modelParams[general_lifespan_experiment_id]='+$(this).attr('generalLifespanExperimentId')
         +'&params[currentGeneId]='+$(this).attr('currentGeneId')
-        +'&params[type]=experiment', function (data) {
+        +'&modelParams[type]=experiment', function (data) {
         $('.js-lifespan-experiments-gene').append(data);
     });
 });
 
 $('.js-add-general-lifespan-experiment').click(function () {
     newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=GeneralLifespanExperimentWidget&id=new'+newGeneLinkBlocksCount, function (data) {
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=GeneralLifespanExperimentWidget&id=new'
+        +newGeneLinkBlocksCount
+        +'&modelParams[gene_id]='+$(this).attr('geneId')
+        +'&modelParams[type]=experiment'
+        +'&geneId='+$(this).attr('geneId'), function (data) {
         $('.js-general-lifespan-experiments').append(data);
     });
 });

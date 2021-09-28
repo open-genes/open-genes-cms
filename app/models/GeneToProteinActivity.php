@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class GeneToProteinActivity extends common\GeneToProteinActivity
 {
     public $delete = false;
+    use ExperimentsActiveRecordTrait;
 
     /**
      * {@inheritdoc}

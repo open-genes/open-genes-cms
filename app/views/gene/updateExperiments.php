@@ -38,7 +38,10 @@ $this->params['breadcrumbs'][] = 'Update';
                 <?= \app\widgets\GeneralLifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
             <?php endforeach; ?>
         </div>
-        <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity js-add-general-lifespan-experiment']) ?>
+        <?= Html::button('Добавить', [
+                'class' => 'btn btn-add add-protein-activity js-add-general-lifespan-experiment',
+                'geneId' => $model->id,
+        ]) ?>
     </div>
 
     <div class="form-group">

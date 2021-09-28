@@ -24,14 +24,7 @@ class LifespanExperiment extends common\LifespanExperiment
     public $delete = false;
     public $geneInterventionWay;
     public $tissuesIds;
-    private $generalLifespanExperimentId;
     private $tissuesIdsArray;
-
-    public function __construct($generalLifespanExperimentId = null, $config = [])
-    {
-        $this->generalLifespanExperimentId = $generalLifespanExperimentId;
-        parent::__construct($config);
-    }
 
     public function behaviors()
     {
@@ -40,20 +33,22 @@ class LifespanExperiment extends common\LifespanExperiment
         ];
     }
 
-    public function init()
+    public static function createByParams($params = [])
     {
-        parent::init();
-        if (!$this->generalLifespanExperiment) {
-            $generalLifespanExperiment = GeneralLifespanExperiment::find()->where(['id' => $this->generalLifespanExperimentId])->one();
-            if (!$generalLifespanExperiment) {
-                $generalLifespanExperiment = new GeneralLifespanExperiment();
-                $generalLifespanExperiment->save();
-                $generalLifespanExperiment->refresh();
-//                $this->general_lifespan_experiment_id = $generalLifespanExperiment->id;
-            }
-            $this->link('generalLifespanExperiment', $generalLifespanExperiment);
-            $this->populateRelation('generalLifespanExperiment', $generalLifespanExperiment);
+        $ar = new self();
+        foreach ($params as $name => $value) {
+            $ar->$name = $value;
         }
+        if (!$ar->general_lifespan_experiment_id) {
+            $generalLifespanExperiment = new GeneralLifespanExperiment();
+            $generalLifespanExperiment->save();
+            $generalLifespanExperiment->refresh();
+            $ar->general_lifespan_experiment_id = $generalLifespanExperiment->id;
+            $ar->link('generalLifespanExperiment', $generalLifespanExperiment);
+            $ar->populateRelation('generalLifespanExperiment', $generalLifespanExperiment);
+            $ar->save();
+        }
+        return $ar;
     }
 
     /**
@@ -156,9 +151,10 @@ class LifespanExperiment extends common\LifespanExperiment
             self::setAttributeFromNewAR($modelArray, 'treatment_end_time_unit_id', 'TreatmentTimeUnit', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_start_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_end_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
-            $modelAR->saveTissues($modelArray['tissuesIds']);
-            
-            $modelAR->gene_id = $geneId;
+
+            if (!$modelAR->gene_id) {
+                $modelAR->gene_id = $geneId;
+            }
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }
@@ -168,18 +164,20 @@ class LifespanExperiment extends common\LifespanExperiment
             if (!$modelAR->validate() || !$modelAR->save()) {
                 throw new UpdateExperimentsException($id, $modelAR);
             }
+            $modelAR->saveTissues($modelArray['tissuesIdsArray']);
         }
     }
 
     private function saveTissues($tissuesIdsArray)
     {
         $currentTissuesIdsArray = $this->getTissuesIdsArray();
+
         if ($currentTissuesIdsArray !== $tissuesIdsArray) {
             if ($tissuesIdsArray) {
                 $tissuesIdsArrayToDelete = array_diff($currentTissuesIdsArray, $tissuesIdsArray);
                 $tissuesIdsToAdd = array_diff($tissuesIdsArray, $currentTissuesIdsArray);
-                foreach (
-                    $tissuesIdsToAdd as $tissueIdToAdd) {
+
+                foreach ($tissuesIdsToAdd as $tissueIdToAdd) {
                     $lifespanExperimentToTissue = new LifespanExperimentToTissue();
                     $lifespanExperimentToTissue->lifespan_experiment_id = $this->id;
                     $lifespanExperimentToTissue->tissue_id = $tissueIdToAdd;
@@ -188,6 +186,7 @@ class LifespanExperiment extends common\LifespanExperiment
             } else {
                 $tissuesIdsArrayToDelete = $currentTissuesIdsArray;
             }
+
             $arsToDelete = LifespanExperimentToTissue::find()->where(
                 ['and', ['lifespan_experiment_id' => $this->id],
                     ['in', 'tissue_id', $tissuesIdsArrayToDelete]]
@@ -196,10 +195,10 @@ class LifespanExperiment extends common\LifespanExperiment
                 $arToDelete->delete();
             }
         }
-    }    
-    
-    
-    private function getTissuesIdsArray()
+    }
+
+
+    public function getTissuesIdsArray()
     {
         return LifespanExperimentToTissue::find()
             ->select('tissue_id')
@@ -210,7 +209,7 @@ class LifespanExperiment extends common\LifespanExperiment
 
     public function setTissuesIdsArray(array $ids)
     {
-        $tissuesIdsArray = $ids;
+        $this->tissuesIdsArray = $ids;
     }
 
 }

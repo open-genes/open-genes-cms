@@ -31,4 +31,13 @@ trait ExperimentsActiveRecordTrait
             $currentAR->$attrName = null;
         }
     }
+    
+    public static function createByParams($params = [])
+    {
+        $ar = new self();
+        foreach ($params as $name => $value) {
+            $ar->$name = $value;
+        }
+        return $ar;
+    }
 }

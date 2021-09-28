@@ -8,6 +8,7 @@ use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "general_lifespan_experiment".
@@ -76,6 +77,16 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return ArrayHelper::merge(
+            parent::rules(), [
+            [['model_organism_id', 'intervention_result_id'], 'required', 'on' => 'saveFromForm'],
+        ]);
+    }
     /**
      * {@inheritdoc}
      */
@@ -231,8 +242,6 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
      */
     public static function saveFromExperiments($id, array $modelArray)
     {
-//        var_dump(Yii::$app->request->post('GeneralLifespanExperiment'));
-//        var_dump($modelArray);
         if (is_numeric($id)) {
             $modelAR = self::findOne($id);
         } else {
@@ -240,10 +249,9 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         }
         if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
             $modelAR->delete();
-//            continue;
         }
+        $modelAR->setScenario('saveFromForm');
         $modelAR->setAttributes($modelArray);
-//        self::setAttributeFromNewAR($modelArray, 'gene_intervention_id', 'GeneIntervention', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'intervention_result_id', 'InterventionResultForLongevity', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'organism_line_id', 'OrganismLine', $modelAR);

@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class AgeRelatedChange extends common\AgeRelatedChange
 {
     use ValidatorsTrait;
+    use ExperimentsActiveRecordTrait;
 
     public $delete = false;
 

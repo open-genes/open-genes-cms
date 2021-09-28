@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -17,6 +18,7 @@ use yii\helpers\ArrayHelper;
 class ProteinToGene extends common\ProteinToGene
 {
     use ValidatorsTrait;
+    use ExperimentsActiveRecordTrait;
 
     public $delete = false;
 

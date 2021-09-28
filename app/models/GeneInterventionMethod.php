@@ -24,8 +24,8 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
     public $name;
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
@@ -34,37 +34,54 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [
-                    'id' => Yii::t('app', 'ID'),
-                    'name_ru' => Yii::t('app', 'Name Ru'),
-                    'name_en' => Yii::t('app', 'Name En'),
-                    'gene_intervention_way_id' => Yii::t('app', 'Gene Intervention Way ID'),
-                ];
+            'id' => Yii::t('app', 'ID'),
+            'name_ru' => Yii::t('app', 'Name Ru'),
+            'name_en' => Yii::t('app', 'Name En'),
+            'gene_intervention_way_id' => Yii::t('app', 'Gene Intervention Way ID'),
+        ];
+    }
+    
+    public static function getAllNamesByWays()
+    {
+        $names = self::find()
+            ->select(['gene_intervention_way.name_ru way', 'gene_intervention_method.id', 'gene_intervention_method.name_ru', 'gene_intervention_method.name_en'])
+            ->asArray()
+            ->leftJoin('gene_intervention_way', 'gene_intervention_method.gene_intervention_way_id=gene_intervention_way.id')
+            ->all();
+        $result = [];
+        foreach ($names as $name) {
+            if(!$name['way']) {
+                $name['way'] = 'other';
+            }
+            $result[$name['way']][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
+        }
+        return $result;
     }
 
 
     /**
-    * Gets query for [[GeneInterventionWay]].
-    *
-    * @return \yii\db\ActiveQuery|\app\models\common\GeneInterventionWayQuery
-    */
+     * Gets query for [[GeneInterventionWay]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\GeneInterventionWayQuery
+     */
     public function getGeneInterventionWay()
     {
-    return $this->hasOne(GeneInterventionWay::class, ['id' => 'gene_intervention_way_id']);
+        return $this->hasOne(GeneInterventionWay::class, ['id' => 'gene_intervention_way_id']);
     }
 
     /**
-    * Gets query for [[LifespanExperiments]].
-    *
-    * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
-    */
+     * Gets query for [[LifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
+     */
     public function getLifespanExperiments()
     {
-    return $this->hasMany(LifespanExperiment::class, ['gene_intervention_method_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['gene_intervention_method_id' => 'id']);
     }
 
     public function getLinkedGenesIds()

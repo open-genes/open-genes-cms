@@ -27,10 +27,8 @@
                     ?>
                 </div>
             <?php endif; ?>
-            <?= \yii\helpers\Html::hiddenInput('type', $type) ?>
-            <?php if ($lifespanExperiment->general_lifespan_experiment_id != $generalLifespanExperimentId): ?>
-                <?= \yii\helpers\Html::hiddenInput('general_lifespan_experiment_id', $generalLifespanExperimentId) ?>
-            <?php endif; ?>
+            <?= \yii\helpers\Html::hiddenInput('LifespanExperiment[' . $lifespanExperiment->id . '][type]', $lifespanExperiment->type) ?>
+            <?= \yii\helpers\Html::hiddenInput('LifespanExperiment[' . $lifespanExperiment->id . '][general_lifespan_experiment_id]', $lifespanExperiment->general_lifespan_experiment_id) ?>
             <div class="col-xs-6 col-md-2">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
@@ -49,7 +47,6 @@
                 ?>
             </div>
             <div class="col-xs-6 col-md-2">
-                <!--                --><?php //var_dump($lifespanExperiment); die; ?>
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']geneInterventionWay',
@@ -66,11 +63,11 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6 col-md-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']gene_intervention_method_id',
-                    'data' => \app\models\GeneInterventionMethod::getAllNamesAsArray(),
+                    'data' => \app\models\GeneInterventionMethod::getAllNamesByWays(),
                     'options' => [
                         'placeholder' => 'Метод',
                         'multiple' => false
@@ -83,10 +80,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6 col-md-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']tissuesIds',
+                    'attribute' => '[' . $lifespanExperiment->id . ']tissuesIdsArray',
                     'data' => \app\models\Sample::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ткань',
@@ -231,9 +228,9 @@
             </div>
         </div>
     </div>
+    <div class="row form-row">
+        <div class="col-xs-12 delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']delete', ['class' => 'js-delete']) ?></div>
+    </div>
 </div>
 
-<div class="row form-row">
-    <div class="col-xs-12 delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']delete', ['class' => 'js-delete']) ?></div>
-</div>
-</div>
+

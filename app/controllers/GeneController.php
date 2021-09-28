@@ -228,7 +228,7 @@ class GeneController extends Controller
      * @param array $params 
      * @return string
      */
-    public function actionLoadWidgetForm($id, string $modelName, string $widgetName, array $params =[])
+    public function actionLoadWidgetForm($id, string $modelName, string $widgetName, array $params =[], array $modelParams=[], int $geneId = null)
     {
         $modelName = "app\models\\$modelName";
         $widgetName = "app\widgets\\$widgetName";
@@ -236,9 +236,16 @@ class GeneController extends Controller
             $model = $modelName::findOne($id);
         }
         if (!isset($model)) {
-            $model = new $modelName();
-            $model->id = $id;
+            $model = $modelName::createByParams($modelParams);
+            if(!$model->id) {
+                $model->id = $id;
+            }
+            if($geneId && !$model->gene_id) {
+                $model->gene_id = $geneId;
+            }
         }
+        
+//        var_dump($model);
         return $this->renderAjax('_geneLinkWidgetForm', ['model' => $model, 'widgetName' => $widgetName, 'params' => $params]);
     }
 
