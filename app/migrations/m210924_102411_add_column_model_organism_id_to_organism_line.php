@@ -61,6 +61,9 @@ class m210924_102411_add_column_model_organism_id_to_organism_line extends Migra
         )->queryAll();
 
         $doubledLinesIds = implode(', ', array_column($doubledLines, 'organism_line_id'));
+        if(!$doubledLinesIds){
+            return;
+        }
         $lines = Yii::$app->db->createCommand(
             'SELECT * FROM organism_line WHERE id IN (' . $doubledLinesIds . ')')->queryAll();
         $doubledLinesGroup = [];
