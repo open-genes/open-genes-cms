@@ -12,8 +12,7 @@ use Yii;
  * @property string $name_ru
  * @property int $created_at
  * @property int $updated_at
- *
- * @property GeneToProteinActivity[] $geneToProteinActivities
+
  */
 class ProteinActivity extends \yii\db\ActiveRecord
 {
@@ -48,14 +47,6 @@ class ProteinActivity extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToProteinActivities()
-    {
-        return $this->hasMany(GeneToProteinActivity::class, ['protein_activity_id' => 'id']);
     }
 
     /**

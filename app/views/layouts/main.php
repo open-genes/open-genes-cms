@@ -58,18 +58,7 @@ $this->registerCssFile('/assets/css/main.css');
             ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible'=>Yii::$app->user->can('editor')],
             ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
             ['label' => 'Филумы', 'url' => ['/age']],
-            [
-                'label' => 'Функции гена',
-                'items' => [
-                    ['label' => 'Виды активности белка', 'url' => '/protein-activity'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Объекты активности белка', 'url' => '/protein-activity-object'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Локализация процесса', 'url' => '/process-localization'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Классы белков', 'url' => '/protein-class', 'visible'=>Yii::$app->user->can('editor')],
-                ],
-            ],
+            ['label' => 'Классы белков', 'url' => ['/protein-class']],
             [
                 'label' => 'Исследования',
                 'items' => [

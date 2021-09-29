@@ -353,14 +353,6 @@ class Gene extends common\Gene
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getGeneToProteinActivities()
-    {
-        return $this->hasMany(GeneToProteinActivity::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getLifespanExperiments()
     {
         return $this->hasMany(LifespanExperiment::class, ['gene_id' => 'id']);
