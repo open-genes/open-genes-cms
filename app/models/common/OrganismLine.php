@@ -33,7 +33,7 @@ class OrganismLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at', 'model_organism_id'], 'integer'],
             [['name_ru', 'name_en'], 'string', 'max' => 255],
         ];
     }
@@ -45,6 +45,7 @@ class OrganismLine extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'model_organism_id' => 'Organism',
             'name_ru' => 'Name Ru',
             'name_en' => 'Name En',
             'created_at' => 'Created At',
