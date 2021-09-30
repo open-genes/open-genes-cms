@@ -2,23 +2,26 @@ let newGeneLinkBlocksCount = 0;
 
 $(document).on('click', '.js-add-lifespan-experiment-control', function() {
     newGeneLinkBlocksCount++;
+    let block = $(this);
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
         +newGeneLinkBlocksCount
         +'&modelParams[general_lifespan_experiment_id]='+$(this).attr('generalLifespanExperimentId')
         +'&params[currentGeneId]='+$(this).attr('currentGeneId')
         +'&modelParams[type]=control', function (data) {
-        $('.js-lifespan-experiments-control').append(data);
+        $(block).closest('.js-lifespan-experiment-block').find('.js-lifespan-experiments-control').append(data);
     });
 });
 
 $(document).on('click', '.js-add-lifespan-experiment-gene', function() {
     newGeneLinkBlocksCount++;
+    let block = $(this);
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
         +newGeneLinkBlocksCount
         +'&modelParams[general_lifespan_experiment_id]='+$(this).attr('generalLifespanExperimentId')
         +'&params[currentGeneId]='+$(this).attr('currentGeneId')
         +'&modelParams[type]=experiment', function (data) {
-        $('.js-lifespan-experiments-gene').append(data);
+        
+        $(block).closest('.js-lifespan-experiment-block').find('.js-lifespan-experiments-gene').append(data);
     });
 });
 

@@ -77,30 +77,16 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             } else {
                 $modelAR = new self();
             }
-            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord)  {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
                 $modelAR->delete();
                 continue;
             }
             $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['longevity_effect_id']) && !is_numeric($modelArray['longevity_effect_id'])) {
-                $arLongevityEffect = LongevityEffect::createFromNameString($modelArray['longevity_effect_id']);
-                $modelAR->longevity_effect_id = $arLongevityEffect->id;
-            }
-            if (!empty($modelArray['genotype_id']) && !is_numeric($modelArray['genotype_id'])) {
-                $arGenotype = Genotype::createFromNameString($modelArray['genotype_id']);
-                $modelAR->genotype_id = $arGenotype->id;
-            }
-            if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
-                $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
-                $modelAR->model_organism_id = $arProcessLocalization->id;
-            }
-            if (!empty($modelArray['age_related_change_type_id']) && !is_numeric($modelArray['age_related_change_type_id'])) {
-                $arProcessLocalization = AgeRelatedChangeType::createFromNameString($modelArray['age_related_change_type_id']);
-                $modelAR->age_related_change_type_id = $arProcessLocalization->id;
-            }
-            if ($modelAR->genotype_id === '') {
-                $modelAR->genotype_id = null;
-            }
+            self::setAttributeFromNewAR($modelArray, 'longevity_effect_id', 'LongevityEffect', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'genotype_id', 'Genotype', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'age_related_change_type_id', 'AgeRelatedChangeType', $modelAR);
+
             $modelAR->gene_id = $geneId;
             if (!$modelAR->validate() || !$modelAR->save()) {
                 throw new UpdateExperimentsException($id, $modelAR);
