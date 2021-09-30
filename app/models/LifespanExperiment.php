@@ -76,6 +76,7 @@ class LifespanExperiment extends common\LifespanExperiment
             'gene_intervention_id' => 'Вмешательство',
             'intervention_result_id' => 'Результат вмешательства',
             'model_organism_id' => 'Объект',
+            'tissue_specificity' => 'Тканеспецифичность',
             'age' => 'Возраст',
             'reference' => 'Ссылка',
             'age_unit' => 'Ед. измерения возраста',

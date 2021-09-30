@@ -49,7 +49,7 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
     public static function getAllNamesByWays()
     {
         $names = self::find()
-            ->select(['gene_intervention_way.name_ru way', 'gene_intervention_method.id', 'gene_intervention_method.name_ru', 'gene_intervention_method.name_en'])
+            ->select(['gene_intervention_way.name_ru way_ru', 'gene_intervention_way.name_en way_en', 'gene_intervention_method.id', 'gene_intervention_method.name_ru', 'gene_intervention_method.name_en'])
             ->asArray()
             ->leftJoin('gene_intervention_way', 'gene_intervention_method.gene_intervention_way_id=gene_intervention_way.id')
             ->all();
@@ -58,7 +58,7 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
             if(!$name['way']) {
                 $name['way'] = 'other';
             }
-            $result[$name['way']][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
+            $result["{$name['way_ru']} ({$name['way_en']})"][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
         }
         return $result;
     }

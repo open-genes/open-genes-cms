@@ -65,7 +65,6 @@
         <div class="row form-row">
             <div class="form-group">
                 <div class="js-lifespan-experiments-control">
-                    В контроле и в эксперименте
                     <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control') as $lifespanExperiment): ?>
                         <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
                     <?php endforeach; ?>
@@ -82,7 +81,6 @@
             <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']experiment_number', ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
             </div>
-            <hr class="my-4">
             <div class="js-lifespan-experiments-gene">
                 В эксперименте
                 <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('experiment') as $lifespanExperiment): ?>
@@ -214,6 +212,7 @@
                 </div>
             </div>
         </div>
+        <br>-------------------------
         <div class="row form-row">
             <div class="col-xs-6 col-sm-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']age', ['class' => 'form-control form_age', 'placeholder' => 'Возраст']) ?>
@@ -244,6 +243,7 @@
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
             </div>
         </div>
+        <br>-------------------------
         <div class="row form-row">
 
             <div class="col-sm-3">
