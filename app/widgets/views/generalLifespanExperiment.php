@@ -4,6 +4,7 @@
 ?>
 <div class="protein-activity js-lifespan-experiment js-gene-link-section">
     <div class="js-lifespan-experiment-block js-gene-link-block">
+        <?= \yii\helpers\Html::hiddenInput('GeneralLifespanExperiment[' . $generalLifespanExperiment->id . '][currentGeneId]', $currentGeneId) ?>
         <b>Контроль</b>
         <div class="row form-row">
             <div class="col-xs-6 col-md-3">

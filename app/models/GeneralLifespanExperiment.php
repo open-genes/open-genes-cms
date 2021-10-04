@@ -8,6 +8,7 @@ use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -66,6 +67,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
 
     public $name;
     public $delete;
+    public $currentGeneId;
 
     /**
      * {@inheritdoc}
@@ -85,6 +87,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         return ArrayHelper::merge(
             parent::rules(), [
             [['model_organism_id', 'intervention_result_id'], 'required', 'on' => 'saveFromForm'],
+            [['delete', 'currentGeneId'], 'safe'],
         ]);
     }
     /**
@@ -247,8 +250,24 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         } else {
             $modelAR = new self();
         }
-        if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
-            $modelAR->delete();
+        try {
+            if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
+                $arsToDelete = LifespanExperiment::find()->where(
+                    [
+                        'general_lifespan_experiment_id' => $modelAR->id,
+                        'gene_id' => $modelArray['currentGeneId']
+                    ]
+                )->all();
+                foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                    $arToDelete->delete();
+                }
+            }
+            if(!$modelAR->lifespanExperiments) {
+                $modelAR->delete();
+                return;
+            }
+        } catch (Exception $e) {
+            throw new UpdateExperimentsException($id, $modelAR);
         }
         $modelAR->setScenario('saveFromForm');
         $modelAR->setAttributes($modelArray);
@@ -264,30 +283,4 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
             throw new UpdateExperimentsException($id, $modelAR);
         }
     }
-
-    //GeneralLifespanExperiment[94][control_number]: 
-    //GeneralLifespanExperiment[94][experiment_number]: 
-    //GeneralLifespanExperiment[94][expression_change]: 
-    //GeneralLifespanExperiment[94][control_lifespan_min]: 
-    //GeneralLifespanExperiment[94][control_lifespan_mean]: 
-    //GeneralLifespanExperiment[94][control_lifespan_median]: 
-    //GeneralLifespanExperiment[94][control_lifespan_max]: 
-    //GeneralLifespanExperiment[94][experiment_lifespan_min]: 
-    //GeneralLifespanExperiment[94][experiment_lifespan_mean]: 
-    //GeneralLifespanExperiment[94][experiment_lifespan_median]: 
-    //GeneralLifespanExperiment[94][experiment_lifespan_max]: 
-    //GeneralLifespanExperiment[94][control_lifespan_min]: 
-    //GeneralLifespanExperiment[94][control_lifespan_mean]: 
-    //GeneralLifespanExperiment[94][control_lifespan_median]: 
-    //GeneralLifespanExperiment[94][control_lifespan_max]: 
-    //GeneralLifespanExperiment[94][age]: 
-    //GeneralLifespanExperiment[94][age_unit]: 
-    //GeneralLifespanExperiment[94][lifespan_change_percent_male]: 
-    //GeneralLifespanExperiment[94][lifespan_change_percent_female]: 
-    //GeneralLifespanExperiment[94][lifespan_change_percent_common]: 
-    //GeneralLifespanExperiment[94][reference]: 
-    //GeneralLifespanExperiment[94][pmid]: 
-    //GeneralLifespanExperiment[94][comment_ru]: 
-    //GeneralLifespanExperiment[94][comment_en]: 
-    //GeneralLifespanExperiment[94][delete]: 0
 }

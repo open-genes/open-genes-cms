@@ -4,8 +4,8 @@
 /** @var $currentGeneId int */
 /** @var $type string */
 ?>
-<div class="protein-activity js-lifespan-experiment js-gene-link-section">
-    <div class="js-lifespan-experiment-block js-gene-link-block <?=($lifespanExperiment->gene_id != $currentGeneId) ? 'white' : ''?>">
+<div class="protein-activity js-lifespan-experiment js-gene-link-section <?=($lifespanExperiment->gene_id != $currentGeneId) ? 'white' : ''?>">
+    <div class="js-lifespan-experiment-block js-gene-link-block">
         <?=($lifespanExperiment->gene_id != $currentGeneId) ? ($lifespanExperiment->type == 'control' ? 'Воздействие в контроле и в эксперименте' : 'Воздействие в эксперименте') : ''?>
         <div class="row form-row">
             <!--            --><?php //var_dump($lifespanExperiment->gene_id, $currentGeneId); ?>
@@ -99,7 +99,7 @@
                 ?>
             </div>
             <div class="col-xs-6 col-md-2">
-                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, 'tissue_specificity') ?>
+                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specificity') ?>
             </div>
             <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
@@ -233,7 +233,7 @@
         </div>
     </div>
     <div class="row form-row">
-        <div class="col-xs-12 delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']delete', ['class' => 'js-delete']) ?></div>
+        <div class="col-xs-12 delete-protein"><?= ($lifespanExperiment->gene_id != $currentGeneId) ? \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']delete', ['class' => 'js-delete']) : '' ?></div>
     </div>
 </div>
 
