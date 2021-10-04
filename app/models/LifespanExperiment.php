@@ -112,8 +112,11 @@ class LifespanExperiment extends common\LifespanExperiment
                     $modelAR->intervention_result_id = $arProteinActivity->id;
                 }
                 if(!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
-                    $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+                    $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
                     $modelAR->organism_line_id = $arProteinActivity->id;
+                }
+                else {
+                    OrganismLine::fixLine($modelAR, $modelArray);
                 }
                 $modelAR->gene_id = $geneId;
                 if($modelAR->organism_line_id === '') {
