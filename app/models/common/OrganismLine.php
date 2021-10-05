@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $name_ru
  * @property string|null $name_en
+ * @property int|null $model_organism_id
  * @property int|null $created_at
  * @property int|null $updated_at
  *

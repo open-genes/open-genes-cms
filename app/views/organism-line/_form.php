@@ -19,9 +19,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'model_organism_id')->widget(\kartik\select2\Select2::class, [
         'data' => $organismList,
-        'options' => ['multiple' => true],
+        'options' => ['multiple' => false],
         'pluginOptions' => [
-            'allowClear' => true
+            'allowClear' => false
         ],
     ]); ?>
 

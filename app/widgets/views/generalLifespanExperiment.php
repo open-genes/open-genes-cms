@@ -29,7 +29,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
                     'attribute' => '[' . $generalLifespanExperiment->id . ']organism_line_id',
-                    'data' => \app\models\OrganismLine::getAllNamesAsArray(),
+                    'data' => \app\models\OrganismLine::getAllNamesByOrganisms(),
                     'options' => [
                         'placeholder' => 'Линия',
                         'multiple' => false,

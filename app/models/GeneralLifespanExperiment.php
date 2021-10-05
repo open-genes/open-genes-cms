@@ -273,11 +273,17 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         $modelAR->setAttributes($modelArray);
         self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'intervention_result_id', 'InterventionResultForLongevity', $modelAR);
-        self::setAttributeFromNewAR($modelArray, 'organism_line_id', 'OrganismLine', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'organism_sex_id', 'OrganismSex', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'changed_expression_tissue_id', 'Sample', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
+        
+        if(!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
+            $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
+            $modelAR->organism_line_id = $arProteinActivity->id;
+        } else {
+            OrganismLine::fixLine($modelAR, $modelArray);
+        }
         
         if (!$modelAR->validate() || !$modelAR->save()) {
             throw new UpdateExperimentsException($id, $modelAR);

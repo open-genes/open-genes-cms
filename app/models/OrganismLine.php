@@ -79,4 +79,22 @@ class OrganismLine extends common\OrganismLine
         return OrganismLine::createDuplicateLine($modelARC->model_organism_id, $currentOrganismLine->id);
     }
 
+    public static function getAllNamesByOrganisms()
+    {
+        $names = self::find()
+            ->select(['model_organism.name_ru organism_ru', 'model_organism.name_en organism_en', 'organism_line.id', 'organism_line.name_ru', 'organism_line.name_en'])
+            ->asArray()
+            ->leftJoin('model_organism', 'organism_line.model_organism_id=model_organism.id')
+            ->all();
+        $result = [];
+        foreach ($names as $name) {
+            if(!$name['organism_en']) {
+                $name['organism_en'] = 'other';
+                $name['organism_ru'] = 'другой';
+            }
+            $result["{$name['organism_ru']} ({$name['organism_en']})"][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
+        }
+        return $result;
+    }
+
 }
