@@ -10,12 +10,55 @@
     font-size: smaller;
 }
 
+.section-title {
+    font-weight: bold;
+    padding: inherit;
+    margin: 0 0 8px 0;
+}
+
+h2.section-title {
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+h3.section-title {
+    font-size: 14px;
+}
+
 .open-genes-cms .form-group {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 .open-genes-cms .btn.btn-add {
     width: 100%;
 }
+.open-genes-cms .form-group .form-group .btn-add {
+    width: auto;
+    margin-top: 6px;
+}
+.open-genes-cms .btn.btn-add.btn-add--padded {
+    width: auto;
+    margin: 6px 4px 20px 4px;
+}
+
+.open-genes-cms .lifespan-section {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+
+.open-genes-cms .change-section {
+    margin-top: 12px;
+}
+
+.open-genes-cms .meta-section {
+    margin-top: 22px;
+}
+@media screen and (min-width: 991px) {
+    .lifespan-section .lifespan-section__values .row > [class*="col-"]:first-child {
+        padding-left: 40px;
+    }
+}
+
 .open-genes-cms .btn.add-protein-activity {
     background: #cbcbef;
 }
@@ -237,9 +280,61 @@ a.gene-link {
     color: #a94442;
 }
 
-.js-lifespan-experiment-block.js-gene-link-block.white {
-    background: white;
-    padding: 4px;
-    border: white;
-    border-radius: 4px;
+.experiment-block,
+.experiment-block__title {
+    box-sizing: border-box;
+}
+
+.experiment-block {
+    width: 100%;
+    border-radius: 5px;
+    padding: 0 10px 10px 10px;
+    margin-top: 6px;
+}
+
+.experiment-block .experiment-block__title {
+    width: auto;
+    min-width: 100%;
+    border-radius: 5px 5px 0 0;
+    font-size: 14px;
+    padding: 15px 10px;
+    margin: 0 -10px 15px -10px;
+}
+
+.experiment-block.experiment-block--white {
+    background: rgba(255, 255, 255, .75);
+}
+
+.experiment-block.experiment-block--white .experiment-block__title {
+    background: #fff;
+}
+
+.hint {
+    position: relative;
+    padding: 15px 10px;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+.hint.hint--primary {
+    color: #1b1e21;
+    background-color: #d6d8d9;
+    border-color: #c6c8ca;
+}
+
+[class*="col-"].checkbox-wrapper {
+    min-height: 34px;
+    line-height: 34px;
+}
+
+input[type="checkbox"] {
+    vertical-align: -1px;
+}
+
+.no-margins {
+    margin: 0 !important;
+}
+
+.gene-modulation {
+    padding: 0 10px;
 }
