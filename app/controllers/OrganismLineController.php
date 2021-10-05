@@ -72,7 +72,7 @@ class OrganismLineController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-        $organismList = ModelOrganism::getIdName();
+        $organismList = ModelOrganism::getAllNamesAsArray();
 
         return $this->render('create', [
             'model' => $model,
@@ -94,7 +94,7 @@ class OrganismLineController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
-        $organismList = ModelOrganism::getIdName();
+        $organismList = ModelOrganism::getAllNamesAsArray();
 
         return $this->render('update', [
             'model' => $model,

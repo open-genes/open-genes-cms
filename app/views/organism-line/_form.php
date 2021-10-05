@@ -17,8 +17,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name_en')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'model_organism_id')->dropDownList($organismList); ?>
-
+    <?= $form->field($model, 'model_organism_id')->widget(\kartik\select2\Select2::class, [
+        'data' => $organismList,
+        'options' => ['multiple' => true],
+        'pluginOptions' => [
+            'allowClear' => true
+        ],
+    ]); ?>
 
 
     <div class="form-group">
