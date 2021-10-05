@@ -144,10 +144,19 @@ class LifespanExperiment extends common\LifespanExperiment
         foreach ($modelArrays as $id => $modelArray) {
             if (is_numeric($id)) {
                 $modelAR = self::findOne($id);
+                if (!$modelAR) {
+                    continue;
+                }
             } else {
                 $modelAR = new self();
             }
             if ($modelArray['delete'] === '1' && $modelAR instanceof ActiveRecord) {
+                $tissues = LifespanExperimentToTissue::find()->where(
+                    ['lifespan_experiment_id' => $modelAR->id]
+                )->all();
+                foreach ($tissues as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                    $arToDelete->delete();
+                }
                 $modelAR->delete();
                 continue;
             }

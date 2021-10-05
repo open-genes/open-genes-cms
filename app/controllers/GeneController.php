@@ -141,14 +141,13 @@ class GeneController extends Controller
         if (Yii::$app->request->isPost) {
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if (is_array(Yii::$app->request->post('LifespanExperiment'))) {
-                    LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
-                }
-                
                 if (is_array(Yii::$app->request->post('GeneralLifespanExperiment'))) {
                     foreach (Yii::$app->request->post('GeneralLifespanExperiment') as $generalLEId => $generalLifespanExperiment) {
                         GeneralLifespanExperiment::saveFromExperiments($generalLEId, $generalLifespanExperiment);
                     }
+                }
+                if (is_array(Yii::$app->request->post('LifespanExperiment'))) {
+                    LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
                 }
                 if (is_array(Yii::$app->request->post('AgeRelatedChange'))) {
                     AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
