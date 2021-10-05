@@ -17,16 +17,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Добавить линию организмов', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-
             'id',
             'name_ru',
             'name_en',
+            'modelOrganism.name_ru',
             [
                 'label' => '🔗 genes',
                 'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\OrganismLine */

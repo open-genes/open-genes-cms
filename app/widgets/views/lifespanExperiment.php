@@ -87,6 +87,26 @@
                 ]);
                 ?>
             </div>
+        </div>
+        <div class="row form-row">
+            <div class="col-xs-6 col-sm-4">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']genotype',
+                    'data' => [0 => '', 1 => '+/-', 2 => '-/-'],
+                    'options' => [
+                        'placeholder' => 'Генотип',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-md-2">
+                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specificity') ?>
+            </div>
             <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
@@ -239,7 +259,7 @@
         </div>
     </div>
     <div class="row form-row">
-        <div class="col-xs-12 delete-protein"><?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']delete', ['class' => 'js-delete']) ?></div>
+        <div class="col-xs-12 delete-protein"><?= ($lifespanExperiment->gene_id != $currentGeneId) ? \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']delete', ['class' => 'js-delete']) : '' ?></div>
     </div>
 </div>
 

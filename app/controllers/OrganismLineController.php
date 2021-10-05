@@ -2,9 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\ModelOrganism;
 use Yii;
 use app\models\OrganismLine;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -72,9 +72,11 @@ class OrganismLineController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
+        $organismList = ModelOrganism::getAllNamesAsArray();
 
         return $this->render('create', [
             'model' => $model,
+            'organismList' => $organismList,
         ]);
     }
 
@@ -92,9 +94,11 @@ class OrganismLineController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
+        $organismList = ModelOrganism::getAllNamesAsArray();
 
         return $this->render('update', [
             'model' => $model,
+            'organismList' => $organismList,
         ]);
     }
 

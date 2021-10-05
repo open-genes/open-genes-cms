@@ -4,6 +4,7 @@
 ?>
 <div class="protein-activity js-lifespan-experiment js-gene-link-section">
     <div class="js-lifespan-experiment-block js-gene-link-block">
+        <?= \yii\helpers\Html::hiddenInput('GeneralLifespanExperiment[' . $generalLifespanExperiment->id . '][currentGeneId]', $currentGeneId) ?>
         <h2 class="section-title">
             Контроль
         </h2>
@@ -30,7 +31,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
                     'attribute' => '[' . $generalLifespanExperiment->id . ']organism_line_id',
-                    'data' => \app\models\OrganismLine::getAllNamesAsArray(),
+                    'data' => \app\models\OrganismLine::getAllNamesByOrganisms(),
                     'options' => [
                         'placeholder' => 'Линия',
                         'multiple' => false,

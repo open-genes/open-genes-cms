@@ -32,6 +32,14 @@ class LifespanExperiment extends common\LifespanExperiment
             ChangelogBehavior::class
         ];
     }
+    
+    public function afterFind()
+    {
+        if($this->geneInterventionMethod) {
+            $this->geneInterventionWay = $this->geneInterventionMethod->gene_intervention_way_id;
+        }
+        parent::afterFind();
+    }
 
     public static function createByParams($params = [])
     {

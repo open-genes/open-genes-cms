@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\OrganismLine */
+/* @var $organismList array */
 
 $this->title = 'Редактировать линию организмов ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Organism Lines', 'url' => ['index']];
@@ -16,6 +17,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'organismList' => $organismList,
     ]) ?>
 
 </div>

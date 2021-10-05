@@ -55,8 +55,9 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
             ->all();
         $result = [];
         foreach ($names as $name) {
-            if(!$name['way']) {
-                $name['way'] = 'other';
+            if(!$name['way_en']) {
+                $name['way_en'] = 'other';
+                $name['way_ru'] = 'другое';
             }
             $result["{$name['way_ru']} ({$name['way_en']})"][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
         }
