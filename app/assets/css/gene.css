@@ -287,25 +287,27 @@ a.gene-link {
 
 .experiment-block {
     width: 100%;
-    border-radius: 5px;
-    padding: 0 10px 10px 10px;
-    margin-top: 6px;
 }
 
-.experiment-block .experiment-block__title {
+.experiment-block:not(.experiment-block--extra-experiment) {
+    padding: 0;
+}
+
+.experiment-block.experiment-block--extra-experiment {
+    padding: 0 10px 10px 10px;
+    border-radius: 5px;
+    margin-top: 6px;
+
+    background: rgba(255, 255, 255, .5);
+}
+
+.experiment-block.experiment-block--extra-experiment .experiment-block__title {
     width: auto;
     min-width: 100%;
     border-radius: 5px 5px 0 0;
     font-size: 14px;
     padding: 15px 10px;
     margin: 0 -10px 15px -10px;
-}
-
-.experiment-block.experiment-block--white {
-    background: rgba(255, 255, 255, .75);
-}
-
-.experiment-block.experiment-block--white .experiment-block__title {
     background: #fff;
 }
 

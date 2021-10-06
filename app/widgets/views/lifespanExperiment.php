@@ -5,11 +5,16 @@
 /** @var $type string */
 ?>
 <div class="gene-modulation js-lifespan-experiment js-gene-link-section">
-    <div class="js-lifespan-experiment-block js-gene-link-block experiment-block experiment-block--white">
-        <div class="experiment-block__title">Воздействие на другой ген</div>
+    <div class="js-lifespan-experiment-block js-gene-link-block experiment-block
+        <?=($lifespanExperiment->gene_id != $currentGeneId) ? 'experiment-block--extra-experiment' : ''?>">
+        <? if ($lifespanExperiment->gene_id != $currentGeneId): ?>
+            <div class="experiment-block__title">Воздействие на другой ген</div>
+        <? endif; ?>
         <? if ($lifespanExperiment->gene_id != $currentGeneId) { ?>
             <div class="hint hint--primary">
-                <?= $lifespanExperiment->type == 'control' ? 'Воздействие в контроле и в эксперименте' : 'Воздействие в эксперименте' ?>
+                <?= $lifespanExperiment->type == 'control'
+                    ? 'Воздействия на любой ген, кроме аннотируемого, которое есть и в контроле и в эксперименте'
+                    : 'Воздействия на любой ген, кроме аннотируемого, которое есть только в эксперименте' ?>
             </div>
         <? } ?>
 
@@ -87,9 +92,8 @@
                 ]);
                 ?>
             </div>
-        </div>
-        <div class="row form-row">
-            <div class="col-xs-6 col-sm-4">
+
+            <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']genotype',
@@ -104,10 +108,14 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-2">
-                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specificity') ?>
+        </div>
+
+        <div class="row form-row">
+            <div class="col-xs-6 col-md-3 checkbox-wrapper">
+                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, 'tissue_specificity') ?>
             </div>
-            <div class="col-xs-6 col-md-3">
+
+            <div class="col-xs-6 col-md-9">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']tissuesIdsArray',
@@ -125,28 +133,9 @@
                 ?>
             </div>
         </div>
+
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']genotype',
-                    'data' => [0 => '', 1 => '+/-', 2 => '-/-'],
-                    'options' => [
-                        'placeholder' => 'Генотип',
-                        'multiple' => false
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ],
-                ]);
-                ?>
-            </div>
-
-            <div class="col-xs-6 col-md-3 checkbox-wrapper">
-                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, 'tissue_specificity') ?>
-            </div>
-
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_id',
@@ -163,7 +152,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',

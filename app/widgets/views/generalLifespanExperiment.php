@@ -110,7 +110,7 @@
             <h2 class="col-xs-12 section-title">
                 Результаты
             </h2>
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment,
                     '[' . $generalLifespanExperiment->id . ']expression_change',
                     ['class' => 'form-control age_unit', 'placeholder' => '% изменения экспрессии']) ?>
@@ -130,7 +130,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
                     'attribute' => '[' . $generalLifespanExperiment->id . ']changed_expression_tissue_id',
@@ -147,7 +147,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
                     'attribute' => '[' . $generalLifespanExperiment->id . ']intervention_result_id',
