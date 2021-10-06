@@ -50,6 +50,16 @@ class ProteinActivity extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[ProteinToGenes]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProteinToGenes()
+    {
+        return $this->hasMany(ProteinToGene::class, ['protein_activity_id' => 'id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return ProteinActivityQuery the active query used by this AR class.
      */
