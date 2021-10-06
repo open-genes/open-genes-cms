@@ -79,11 +79,11 @@ class Gene extends common\Gene
             'references' => 'References',
             'orthologs' => 'Orthologs',
             'commentEvolution' => 'Эволюция',
-            'uniprot_summary_ru' => 'Описание белка Ru',
+            'uniprot_summary_ru' => 'Описание белка UniProt (Ru)',
+            'uniprot_summary_en' => 'Описание белка UniProt (En)',
             'commentCause' => 'Причины отбора',
             'commentAging' => 'Связь со старением/долголетием',
             'commentEvolutionEN' => 'Эволюция En',
-            'uniprot_summary_en' => 'Описание белка En',
             'commentAgingEN' => 'Связь со старением/долголетием En',
             'commentsReferenceLinks' => 'Ссылки на источники',
             'functionalClusters' => 'Возрастозависимые процессы',
@@ -99,8 +99,8 @@ class Gene extends common\Gene
             'source' => 'Источник',
             'ncbi_summary_ru' => 'Описание гена (NCBI) Ru',
             'ncbi_summary_en' => 'Описание гена (NCBI) En',
-            'og_summary_en' => 'Описание гена Open Genes En',
-            'og_summary_ru' => 'Описание гена Open Genes Ru',
+            'og_summary_en' => 'Описание белка Open Genes (En)',
+            'og_summary_ru' => 'Описание белка Open Genes (Ru)',
         ];
     }
 
