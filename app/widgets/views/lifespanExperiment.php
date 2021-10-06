@@ -169,10 +169,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-2">
+            <div class="col-xs-6 col-md-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_dose', ['class' => 'form-control age_unit', 'placeholder' => 'Дневная доза']) ?>
             </div>
-            <div class="col-xs-6 col-md-2">
+            <div class="col-xs-6 col-md-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_doses_number', ['class' => 'form-control age_unit', 'placeholder' => 'Кол-во доз в день']) ?>
             </div>
             <div class="col-xs-6 col-md-3">
