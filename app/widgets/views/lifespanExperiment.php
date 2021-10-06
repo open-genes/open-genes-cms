@@ -4,7 +4,8 @@
 /** @var $currentGeneId int */
 /** @var $type string */
 ?>
-<div class="gene-modulation js-lifespan-experiment js-gene-link-section">
+<div class="gene-modulation js-lifespan-experiment js-gene-link-section
+<?=($lifespanExperiment->gene_id != $currentGeneId) ? '__padding-0' : ''?>">
     <div class="js-lifespan-experiment-block js-gene-link-block experiment-block
         <?=($lifespanExperiment->gene_id != $currentGeneId) ? 'experiment-block--extra-experiment' : ''?>">
         <? if ($lifespanExperiment->gene_id != $currentGeneId): ?>

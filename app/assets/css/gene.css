@@ -340,3 +340,7 @@ input[type="checkbox"] {
 .gene-modulation {
     padding: 0 10px;
 }
+
+.__padding-0 {
+    padding: 0 !important;
+}
