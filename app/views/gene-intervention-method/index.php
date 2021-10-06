@@ -25,7 +25,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name_ru',
             'name_en',
-            'gene_intervention_way_id',
+            'geneInterventionWay.name_en',
+            [
+                'attribute' => 'gene_intervention_way_id',
+                'label' => 'Способ воздействия',
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\GeneInterventionMethod */
+                    return $model->geneInterventionWay ? "{$model->geneInterventionWay->name_ru} ({$model->geneInterventionWay->name_en})" : '-';
+                },
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',

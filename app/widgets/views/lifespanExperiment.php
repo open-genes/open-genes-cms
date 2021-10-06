@@ -169,6 +169,46 @@
                 ]);
                 ?>
             </div>
+            <div class="col-xs-6 col-md-2">
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_dose', ['class' => 'form-control age_unit', 'placeholder' => 'Дневная доза']) ?>
+            </div>
+            <div class="col-xs-6 col-md-2">
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_doses_number', ['class' => 'form-control age_unit', 'placeholder' => 'Кол-во доз в день']) ?>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']active_substance_dosage_unit_id',
+                    'data' => \app\models\ActiveSubstanceDosageUnit::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Ед.изм. дозировки',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                        'allowClear' => false,
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $lifespanExperiment,
+                    'attribute' => '[' . $lifespanExperiment->id . ']active_substance_delivery_way_id',
+                    'data' => \app\models\ActiveSubstanceDeliveryWay::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Способ доставки вещества',
+                        'multiple' => false,
+                    ],
+                    'pluginOptions' => [
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                        'allowClear' => false,
+                    ],
+                ]);
+                ?>
+            </div>
         </div>
         <div class="row form-row">
             <div class="col-xs-6 col-md-2">

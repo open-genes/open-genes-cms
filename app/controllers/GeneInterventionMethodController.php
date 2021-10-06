@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\GeneInterventionWay;
 use Yii;
 use app\models\GeneInterventionMethod;
 use yii\data\ActiveDataProvider;
@@ -74,8 +75,10 @@ class GeneInterventionMethodController extends Controller
             return $this->redirect(['index']);
         }
 
+        $interventionWays = GeneInterventionWay::getAllNamesAsArray();
         return $this->render('create', [
             'model' => $model,
+            'interventionWays' => $interventionWays,
         ]);
     }
 
@@ -94,8 +97,10 @@ class GeneInterventionMethodController extends Controller
             return $this->redirect(['index']);
         }
 
+        $interventionWays = GeneInterventionWay::getAllNamesAsArray();
         return $this->render('update', [
             'model' => $model,
+            'interventionWays' => $interventionWays,
         ]);
     }
 
