@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ModelOrganism */
 
-$this->title = 'Добавить объект (модельный организм)';
+$this->title = Yii::t('common', 'Add model organism');
 $this->params['breadcrumbs'][] = ['label' => 'Model Organisms', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

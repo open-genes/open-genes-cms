@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel \app\models\Sample */
 
-$this->title = 'Образцы';
+$this->title = Yii::t('common', 'Sample');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="sample-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить образец', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('common', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 

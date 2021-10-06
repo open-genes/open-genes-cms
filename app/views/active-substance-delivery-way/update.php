@@ -5,10 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ActiveSubstanceDeliveryWay */
 
-$this->title = Yii::t('app', 'Update Active Substance Delivery Way: {name}', [
-    'name' => $model->id,
-]);
-$this->title = Yii::t('app', 'Active Substance Delivery Way') . ' "' . $model->name_en . '" - ' . Yii::t('app', 'update');
+$this->title = Yii::t('common', 'Edit active substance delivery way') . ' "' . $model->name_en . '"';
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Active Substance Delivery Ways'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

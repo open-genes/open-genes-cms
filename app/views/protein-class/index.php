@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel \app\models\ProteinClass */
 
-$this->title = 'Классы белков';
+$this->title = Yii::t('common', 'Protein class');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="protein-class-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h2><?= Html::encode($this->title) ?></h2>
 
     <p>
-        <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('common', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 

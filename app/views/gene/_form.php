@@ -23,7 +23,7 @@ $this->registerCssFile('/assets/css/gene.css');
     <?php if(Yii::$app->user->can('editor')): ?>
     <?= $form->field($model, 'isHidden')->checkbox() ?>
     <?php endif; ?>
-    Источник: <?=$model->source ?? 'нет' ?>
+    <?=Yii::t('common', 'Source') . ': '?><?=$model->source ?? Yii::t('common', 'no') ?>
 
     <?php if(Yii::$app->user->can('admin')): // todo add more operations to auth manager ?>
     <div class="row form-row">
@@ -180,7 +180,7 @@ $this->registerCssFile('/assets/css/gene.css');
 
     <div class="submit-panel">
         <div class="container">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-success']) ?>
         </div>
     </div>
 

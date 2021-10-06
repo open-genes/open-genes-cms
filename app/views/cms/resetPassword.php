@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Сброс пароля';
+$this->title = Yii::t('common', 'Reset password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page gene-page">
@@ -16,13 +16,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <h2><?= Html::encode($this->title) ?></h2>
             <?=Yii::$app->session->getFlash('request_pass', null, true); ?>
 
-            <p>Пожалуйста, введите Ваш новый пароль:</p>
+            <p><?=Yii::t('common', 'Please, input new password')?></p>
             <?php $form = ActiveForm::begin(['id' => 'reset-password-form']); ?>
 
             <?= $form->field($model, 'password')->passwordInput(['autofocus' => true]) ?>
 
             <div class="form-group">
-                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-primary']) ?>
             </div>
             <?php ActiveForm::end(); ?>
         </section>

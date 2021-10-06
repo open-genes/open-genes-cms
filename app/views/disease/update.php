@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\common\Disease */
 
-$this->title = 'Редактировать заболевание ' . $model->name_en;
+$this->title = Yii::t('common', 'Edit disease') . ' ' . $model->name_en;
 $this->params['breadcrumbs'][] = ['label' => 'Diseases', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\CommentCause */
 
-$this->title = 'Редактировать причину отбора ' . $model->id;
+$this->title = Yii::t('common', 'Edit comment cause') . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Comment Causes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

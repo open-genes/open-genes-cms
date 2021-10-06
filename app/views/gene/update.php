@@ -10,13 +10,13 @@ use yii\helpers\Html;
 /* @var $allProteinClasses [] */
 /* @var $allAges [] */
 
-$this->title = 'Редактировать ген ' . $model->symbol;
+$this->title = Yii::t('common', 'Edit gene') . ' ' . $model->symbol;
 $this->params['breadcrumbs'][] = ['label' => 'Genes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->symbol, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
 <div class="gene-update">
-    <a href="<?=\yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id])?>" target="_blank" class="gene-link">Исследования гена <span class="glyphicon glyphicon-pencil"></span></a>
+    <a href="<?=\yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id])?>" target="_blank" class="gene-link"><?=Yii::t('common', 'Gene research')?> <span class="glyphicon glyphicon-pencil"></span></a>
     <h2><?= Html::encode($this->title) ?></h2>
     <?= $this->render('_form', [
         'model' => $model,

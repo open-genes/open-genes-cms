@@ -5,10 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ActiveSubstance */
 
-$this->title = Yii::t('app', 'Update Active Substance: {name}', [
-    'name' => $model->id,
-]);
-$this->title = Yii::t('app', 'Active Substance') . ' "' . $model->name_en . '" - ' . Yii::t('app', 'update');
+$this->title = Yii::t('common', 'Edit active substance') . ' - "' . $model->name_en . '"';
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Active Substances'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

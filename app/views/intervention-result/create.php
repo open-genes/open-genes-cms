@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\InterventionResultForLongevity */
 
-$this->title = 'Добавить результат вмешательства';
+$this->title = Yii::t('common', 'Add intervention result for longevity');
 $this->params['breadcrumbs'][] = ['label' => 'Intervention Results', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

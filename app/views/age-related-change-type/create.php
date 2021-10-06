@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\AgeRelatedChangeType */
 
-$this->title = 'Добавить вид возрастных изменений гена/белка';
+$this->title = Yii::t('common', 'Add age related change type');
 $this->params['breadcrumbs'][] = ['label' => 'Age Related Change Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

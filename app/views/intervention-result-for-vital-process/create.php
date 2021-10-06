@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\InterventionResultForVitalProcess */
 
-$this->title = 'Добавить результат вмешательства для процесса';
+$this->title = Yii::t('common', 'Add intervention result for vital process');
 $this->params['breadcrumbs'][] = ['label' => 'Intervention Result For Vital Processes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

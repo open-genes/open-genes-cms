@@ -6,7 +6,7 @@
 /* @var $exception Exception */
 
 
-$this->title = 'Произошла ошибка :(';
+$this->title = Yii::t('common', 'Error :(');
 ?>
 <div class="page gene-page">
     <div class="page__inner">
@@ -14,7 +14,7 @@ $this->title = 'Произошла ошибка :(';
             <h3><?= \yii\helpers\Html::encode($this->title) ?></h3>
 
             <p><?= $exception->getMessage() ?></p>
-            <p>Пожалуйста, обратитесь к администратору, если Вам нужна помощь.</p>
+            <p><?=Yii::t('common', 'Please, contact the administrator if you need help')?></p>
 
         </section>
     </div>

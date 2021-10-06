@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use Yii;
 use yii\base\Model;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
@@ -30,15 +31,15 @@ class Disease extends \app\models\common\Disease
         return [
             'id' => 'ID',
             'omim_id' => 'Omim ID',
-            'name_ru' => 'Название Ru',
-            'name_en' => 'Название En',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'icd_code' => 'Код МКБ',
-            'parent_icd_code' => 'Родительский код МКБ',
-            'icd_name_en' => 'Название в МКБ En',
-            'icd_name_ru' => 'Название в МКБ Ru',
-            'icd_code_visible' => 'Видимая категория МКБ',
+            'name_ru' => Yii::t('common', 'Name Ru'),
+            'name_en' => Yii::t('common', 'Name En'),
+            'created_at' => Yii::t('common', 'Created At'),
+            'updated_at' => Yii::t('common', 'Updated At'),
+            'icd_code' => Yii::t('common', 'ICD code'),
+            'parent_icd_code' => Yii::t('common', 'Parent ICD code'),
+            'icd_name_en' => Yii::t('common', 'Name in ICD code En'),
+            'icd_name_ru' => Yii::t('common', 'Name in ICD code Ru'),
+            'icd_code_visible' => Yii::t('common', 'ICD code visible'),
         ];
     }
 

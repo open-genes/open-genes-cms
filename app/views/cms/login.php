@@ -11,17 +11,17 @@ use yii\widgets\ActiveForm;
 
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Логин'])->label(false) ?>
+            <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => Yii::t('common', 'Login')])->label(false) ?>
 
-            <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Пароль'])->label(false) ?>
+            <?= $form->field($model, 'password')->passwordInput(['placeholder' => Yii::t('common', 'Password')])->label(false) ?>
 
             <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
             <div class="form-group">
-                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton(Yii::t('common', 'LogIn'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
             </div>
 
-            <?= Html::a('Восстановить пароль', 'request-password-reset'); ?>
+            <?= Html::a(Yii::t('common', 'Restore password'), 'request-password-reset'); ?>
             <?php ActiveForm::end(); ?>
         </section>
     </div>

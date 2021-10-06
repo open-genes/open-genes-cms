@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Пользователи';
+$this->title = Yii::t('common', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('common', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -27,13 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'email',
             [
                 'attribute' => 'status',
-                'label' => 'Статус',
+                'label' => Yii::t('common', 'Status'),
                 'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\User */
                     return $model->getStatusName();
                 },
             ],
             [
-                'label' => 'Роль',
+                'label' => Yii::t('common', 'Role'),
                 'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\User */
                     return implode(', ', $model->getRolesArray()) ;
                 },

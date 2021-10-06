@@ -52,14 +52,14 @@ class Disease extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'omim_id' => 'Omim ID',
-            'name_ru' => 'Name Ru',
-            'name_en' => 'Name En',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'icd_code' => 'Icd Code',
-            'parent_icd_code' => 'Parent Icd Code',
-            'icd_name_en' => 'Icd Name En',
-            'icd_name_ru' => 'Icd Name Ru',
+            'name_ru' => Yii::t('common', 'Name Ru'),
+            'name_en' => Yii::t('common', 'Name En'),
+            'created_at' => Yii::t('common', 'Created At'),
+            'updated_at' => Yii::t('common', 'Updated At'),
+            'icd_code' => Yii::t('common', 'ICD code'),
+            'parent_icd_code' => Yii::t('common', 'Parent ICD code'),
+            'icd_name_en' => Yii::t('common', 'Name in ICD code En'),
+            'icd_name_ru' => Yii::t('common', 'Name in ICD code Ru'),
         ];
     }
 

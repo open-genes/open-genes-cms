@@ -23,13 +23,13 @@ $model->roles = $model->getRolesArray();
     <?= $form->field($model, 'email')->textInput() ?>
     <?= $form->field($model, 'username')->textInput() ?>
     <?= $form->field($model, 'newPassword')->textInput() ?>
-    <label>Роль</label>
+    <label><?=Yii::t('common', 'Role')?></label>
     <?= \kartik\select2\Select2::widget([
         'model' => $model,
         'attribute' => 'roles',
         'data' => \app\models\User::getAllRolesArray(),
         'options' => [
-            'placeholder' => 'Роли',
+            'placeholder' => Yii::t('common', 'Roles'),
             'multiple' => true
         ],
         'pluginOptions' => [
@@ -41,7 +41,7 @@ $model->roles = $model->getRolesArray();
     ?>
     <br>
     <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

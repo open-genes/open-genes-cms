@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ExperimentMainEffect */
 
-$this->title = Yii::t('app', 'Experiment Main Effect') . ' - ' . Yii::t('app', 'create new');
+$this->title = Yii::t('common', 'Add experiment main effects');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Experiment Main Effects'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -7,7 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Восстановление пароля';
+$this->title = Yii::t('common', 'Restore password');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="page gene-page">
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
 
             <div class="form-group">
-                <?= Html::submitButton('Отправить', ['class' => 'btn btn-primary']) ?>
+                <?= Html::submitButton(Yii::t('common', 'Send'), ['class' => 'btn btn-primary']) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

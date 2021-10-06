@@ -5,10 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\GeneInterventionWay */
 
-$this->title = Yii::t('app', 'Update Gene Intervention Way: {name}', [
-    'name' => $model->id,
-]);
-$this->title = Yii::t('app', 'Gene Intervention Way') . ' "' . $model->name_en . '" - ' . Yii::t('app', 'update');
+$this->title = Yii::t('common', 'Edit gene intervention way') . ' "' . $model->name_en . '"';
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gene Intervention Ways'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

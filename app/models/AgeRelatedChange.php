@@ -6,6 +6,7 @@ use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
+use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
@@ -47,18 +48,18 @@ class AgeRelatedChange extends common\AgeRelatedChange
     {
         return ArrayHelper::merge(
             parent::attributeLabels(), [
-            'delete' => 'Удалить',
-            'age_related_change_type_id' => 'Вид изменений',
-            'sample_id' => 'Образец',
-            'reference' => 'Ссылка',
-            'model_organism_id' => 'Объект',
-            'organism_line_id' => 'Линия',
-            'age_from' => 'Возраст - от',
-            'age_to' => 'Возраст - до',
-            'change_value_male' => 'Изменение муж.',
-            'change_value_female' => 'Изменение жен.',
-            'change_value_common' => 'Изменение общее',
-            'age_unit' => 'Ед. измерения возраста',
+            'delete' => Yii::t('common', 'Delete'),
+            'age_related_change_type_id' => Yii::t('common', 'Age related change type id'),
+            'sample_id' => Yii::t('common', 'Sample'),
+            'reference' => Yii::t('common', 'Reference'),
+            'model_organism_id' => Yii::t('common', 'Model organism'),
+            'organism_line_id' => Yii::t('common', 'Organism line'),
+            'age_from' => Yii::t('common', 'Возраст - от'),
+            'age_to' => Yii::t('common', 'Возраст - до'),
+            'change_value_male' => Yii::t('common', 'Сhange value male'),
+            'change_value_female' => Yii::t('common', 'Сhange value female'),
+            'change_value_common' => Yii::t('common', 'Сhange value common'),
+            'age_unit' => Yii::t('common', 'Age unit'),
         ]);
     }
 

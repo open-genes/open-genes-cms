@@ -7,8 +7,9 @@ $params = require __DIR__ . '/params.php';
 $config = [
     'id' => 'genes',
     'name' => 'Open Longevity Genes',
-    'language' => 'ru-RU',
-    'sourceLanguage' => 'en-GB', // todo костыль на то, что у нас переводы не в yii-формате ['english phrase' => 'русская фраза'], переделаем?
+    'language' => 'en',
+//    'sourceLanguage' => 'en-GB', // todo костыль на то, что у нас переводы не в yii-формате ['english phrase' => 'русская фраза'], переделаем?
+    'sourceLanguage' => 'en-EN',
     'basePath' => dirname(__DIR__),
     'homeUrl' => '/',
     'controllerNamespace' => 'app\controllers',
@@ -22,14 +23,14 @@ $config = [
         ],
         'i18n' => [
             'translations' => [
-                'main' => [
+                'common' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@app/assets/translations',
-                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
                         'app' => 'app.php',
                         'app' => 'ar.php',
                     ],
+//                    'sourceLanguage' => 'en-US',
                 ],
             ],
         ],

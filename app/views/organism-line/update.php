@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\OrganismLine */
 /* @var $organismList array */
 
-$this->title = 'Редактировать линию организмов ' . $model->id;
+$this->title = Yii::t('common', 'Edit organism line') . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Organism Lines', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

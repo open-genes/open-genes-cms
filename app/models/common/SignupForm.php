@@ -17,8 +17,8 @@ class SignupForm extends Model
     public function attributeLabels()
     {
         return [
-            'username' => 'Логин',
-            'password' => 'Пароль',
+            'username' => Yii::t('common', 'Login'),
+            'password' => Yii::t('common', 'Password'),
             'email' => 'Email',
         ];
     }
@@ -31,15 +31,15 @@ class SignupForm extends Model
         return [
             ['username', 'trim'],
             ['username', 'required'],
-            ['username', 'match', 'pattern' => '/^[a-z][\w-]*$/i', 'message' => 'Логин может содержать только латинские буквы и тире'],
-            ['username', 'unique', 'targetClass' => '\app\models\common\User', 'message' => 'Это имя уже занято'],
+            ['username', 'match', 'pattern' => '/^[a-z][\w-]*$/i', 'message' => Yii::t('common', 'Login can contain only latin letters and dashes')],
+            ['username', 'unique', 'targetClass' => '\app\models\common\User', 'message' => Yii::t('common', 'This name is already taken')],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\app\models\common\User', 'message' => 'Эта почта уже занята'],
+            ['email', 'unique', 'targetClass' => '\app\models\common\User', 'message' => Yii::t('common', 'This email is already taken')],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],

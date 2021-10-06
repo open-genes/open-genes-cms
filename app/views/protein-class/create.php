@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProteinClass */
 
-$this->title = 'Create Protein Class';
+$this->title = Yii::t('common', 'Add protein class');
 $this->params['breadcrumbs'][] = ['label' => 'Protein Classes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

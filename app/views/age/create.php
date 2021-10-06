@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Phylum */
 
-$this->title = 'Добавить филум';
+$this->title = Yii::t('common', 'Add phyla');
 $this->params['breadcrumbs'][] = ['label' => 'Ages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

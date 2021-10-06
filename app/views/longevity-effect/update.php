@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\LongevityEffect */
 
-$this->title = 'Редактировать эффект продолжительности жизни ' . $model->id;
+$this->title = Yii::t('common', 'Edit longevity effect') . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Longevity Effects', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

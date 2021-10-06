@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ActiveSubstanceDosageUnit */
 
-$this->title = Yii::t('app', 'Active Substance Dosage Unit') . ' - ' . Yii::t('app', 'create new');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Active Substance Dosage Units'), 'url' => ['index']];
+$this->title = Yii::t('common', 'Add active substance delivery way');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('common', 'Add active substance delivery way'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="active-substance-dosage-unit-create">

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\GeneRegulationType */
 
-$this->title = 'Редактировать вид регуляции ' . $model->id;
+$this->title = Yii::t('common', 'Edit gene regulation type') . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Gene Regulation Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

@@ -150,7 +150,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_id',
                     'data' => \app\models\ActiveSubstance::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Вещество',
+                        'placeholder' => Yii::t('common', 'Active substance'),
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -167,7 +167,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',
                     'data' => \app\models\ExperimentTreatmentPeriod::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Периодичность',
+                        'placeholder' => Yii::t('common', 'Treatment period'),
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -198,7 +198,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_dosage_unit_id',
                     'data' => \app\models\ActiveSubstanceDosageUnit::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Ед.изм. дозировки',
+                        'placeholder' => Yii::t('common', 'Active substance dosage unit'),
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -215,7 +215,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_delivery_way_id',
                     'data' => \app\models\ActiveSubstanceDeliveryWay::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Способ доставки вещества',
+                        'placeholder' => Yii::t('common', 'Active substance delivery way'),
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -229,7 +229,7 @@
         </div>
         <div class="row form-row">
             <div class="col-xs-6 col-md-2">
-                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']treatment_start', ['class' => 'form-control age_unit', 'placeholder' => 'Начало']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']treatment_start', ['class' => 'form-control age_unit', 'placeholder' => Yii::t('common', 'Start')]) ?>
             </div>
             <div class="col-xs-6 col-md-2">
                 <?= \kartik\select2\Select2::widget([

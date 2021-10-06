@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\Disease */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Заболевания';
+$this->title = Yii::t('common', 'Disease');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="disease-index">
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Disease', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('common', 'Add'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

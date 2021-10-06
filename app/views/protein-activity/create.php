@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ProteinActivity */
 
-$this->title = 'Create Protein Activity';
+$this->title = Yii::t('common', 'Add protein activity');
 $this->params['breadcrumbs'][] = ['label' => 'Protein Activities', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

@@ -40,12 +40,12 @@ $this->registerCssFile('/assets/css/main.css');
 
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Войти', 'url' => ['/cms/login']];
+        $menuItems[] = ['label' => Yii::t('common', 'LogIn'), 'url' => ['/cms/login']];
     } else {
         $menuItems[] = '<li>'
             . Html::beginForm(['/cms/logout'], 'post')
             . Html::submitButton(
-                'Выйти (' . Yii::$app->user->identity->username . ')',
+                Yii::t('common', 'LogOut') . ' (' . Yii::$app->user->identity->username . ')',
                 ['class' => 'btn btn-link logout']
             )
             . Html::endForm()
@@ -54,49 +54,48 @@ $this->registerCssFile('/assets/css/main.css');
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => [
-            ['label' => 'Гены', 'url' => ['/gene']],
-            ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible'=>Yii::$app->user->can('editor')],
-            ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
-            ['label' => 'Филумы', 'url' => ['/age']],
-            ['label' => 'Классы белков', 'url' => ['/protein-class']],
+            ['label' => Yii::t('common', 'Gene'), 'url' => ['/gene']],
+            ['label' => Yii::t('common', 'Comment cause'), 'url' => ['/comment-cause'], 'visible'=>Yii::$app->user->can('editor')],
+            ['label' => Yii::t('common', 'Functional cluster'), 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
+            ['label' => Yii::t('common', 'Phylum'), 'url' => ['/age']],
+            ['label' => Yii::t('common', 'Protein class'), 'url' => ['/protein-class']],
             [
-                'label' => 'Исследования',
+                'label' => Yii::t('common', 'Research'),
                 'items' => [
-                    ['label' => 'Способы воздействия', 'url' => '/gene-intervention-way'],
+                    ['label' => Yii::t('common', 'Gene intervention way'), 'url' => '/gene-intervention-way'],
                     '<li class="divider"></li>',
-                    ['label' => 'Методы вмешательства', 'url' => '/gene-intervention-method'],
+                    ['label' => Yii::t('common', 'Gene intervention method'), 'url' => '/gene-intervention-method'],
                     '<li class="divider"></li>',
-                    ['label' => 'Результаты вмешательства (для продолжительности жизни)', 'url' => '/intervention-result'],
+                    ['label' => Yii::t('common', 'Intervention result for longevity'), 'url' => '/intervention-result'],
                     '<li class="divider"></li>',
-                    ['label' => 'Объекты исследований (модельные организмы)', 'url' => '/model-organism'],
+                    ['label' => Yii::t('common', 'Model organism'), 'url' => '/model-organism'],
                     '<li class="divider"></li>',
-                    ['label' => 'Линии организмов', 'url' => '/organism-line'],
+                    ['label' => Yii::t('common', 'Organism line'), 'url' => '/organism-line'],
                     '<li class="divider"></li>',
-                    ['label' => 'Пол организмов', 'url' => '/organism-sex'],
+                    ['label' => Yii::t('common', 'Organism sex'), 'url' => '/organism-sex'],
                     '<li class="divider"></li>',
-                    ['label' => 'Образцы тканей', 'url' => '/sample'],
+                    ['label' => Yii::t('common', 'Sample'), 'url' => '/sample'],
                     '<li class="divider"></li>',
-                    ['label' => 'Виды возрастных изменений гена/белка', 'url' => '/age-related-change-type'],
+                    ['label' => Yii::t('common', 'Age related change type'), 'url' => '/age-related-change-type'],
                     '<li class="divider"></li>',
-                    ['label' => 'Процессы', 'url' => '/vital-process'],
+                    ['label' => Yii::t('common', 'Vital process'), 'url' => '/vital-process'],
                     '<li class="divider"></li>',
-                    ['label' => 'Результаты вмешательства (для процессов)', 'url' => '/intervention-result-for-vital-process'],
+                    ['label' => Yii::t('common', 'Intervention result for vital process'), 'url' => '/intervention-result-for-vital-process'],
                     '<li class="divider"></li>',
-                    ['label' => 'Прогерические синдромы', 'url' => '/progeria-syndrome'],
+                    ['label' => Yii::t('common', 'Progeria syndrome'), 'url' => '/progeria-syndrome'],
                     '<li class="divider"></li>',
-                    ['label' => 'Аллельные полиморфизмы', 'url' => '/genotype'],
+                    ['label' => Yii::t('common', 'Genotype'), 'url' => '/genotype'],
                     '<li class="divider"></li>',
-                    ['label' => 'Виды активности белка', 'url' => '/protein-activity'],
+                    ['label' => Yii::t('common', 'Protein activity'), 'url' => '/protein-activity'],
                     '<li class="divider"></li>',
-                    ['label' => 'Виды регуляции гена', 'url' => '/gene-regulation-type'],
+                    ['label' => Yii::t('common', 'Gene regulation type'), 'url' => '/gene-regulation-type'],
                     '<li class="divider"></li>',
-                    ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
+                    ['label' => Yii::t('common', 'Longevity effect'), 'url' => '/longevity-effect'],
                     '<li class="divider"></li>',
-                    '<li class="divider"></li>',
-                    ['label' => 'Заболевания', 'url' => '/disease', 'visible'=>Yii::$app->user->can('editor')],
+                    ['label' => Yii::t('common', 'Disease'), 'url' => '/disease', 'visible'=>Yii::$app->user->can('editor')],
                 ],
             ],
-            ['label' => 'Пользователи', 'url' => '/user', 'visible'=>Yii::$app->user->can('controlUsers')],
+            ['label' => Yii::t('common', 'Users'), 'url' => '/user', 'visible'=>Yii::$app->user->can('controlUsers')],
             ],
     ]);
     echo Nav::widget([

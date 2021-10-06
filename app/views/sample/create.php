@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Sample */
 
-$this->title = 'Добавить образец';
+$this->title = Yii::t('common', 'Add sample');
 $this->params['breadcrumbs'][] = ['label' => 'Samples', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

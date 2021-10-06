@@ -8,17 +8,17 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 /* @var $searchModel Gene */
 
-$this->title = 'Гены';
+$this->title = Yii::t('common', 'Gene');
 $this->params['breadcrumbs'][] = $this->title;
 
 $experimentsNames = [
-    'lifespan_experiment' => '<span style="background-color: #cbcbef">Влияние модуляции на прод. ж.</span>',
-    'age_related_change' => '<span style="background-color: #c8e5fd">Возр. изменения экспрессии/активности</span>',
-    'gene_intervention_to_vital_process' => '<span style="background-color: #c1e2aa">Влияние модуляции акт. на возр. пр.</span>',
-    'protein_to_gene' => '<span style="background-color: #fbea95">Уч. в регуляции др. генов</span>',
-    'gene_to_progeria' => '<span style="background-color: #ffd8a9">Ассоциация гена с уск. стар.</span>',
-    'gene_to_longevity_effect' => '<span style="background-color: #f5c3c2">Геномные, транскриптомные, протеомные ассоц.</span>',
-    'gene_to_additional_evidence' => '<span style="background-color: #cacaca">Другие</span>',
+    'lifespan_experiment' => '<span style="background-color: #cbcbef"><?=Yii::t("common", "Lifespan experiment")?></span>',
+    'age_related_change' => '<span style="background-color: #c8e5fd"><?=Yii::t("common", "Age related change")?></span>',
+    'gene_intervention_to_vital_process' => '<span style="background-color: #c1e2aa"><?=Yii::t("common", "Gene intervention to vital process")?></span>',
+    'protein_to_gene' => '<span style="background-color: #fbea95"><?=Yii::t("common", "Protein to gene")?></span>',
+    'gene_to_progeria' => '<span style="background-color: #ffd8a9"><?=Yii::t("common", "Gene to progeria")?></span>',
+    'gene_to_longevity_effect' => '<span style="background-color: #f5c3c2"><?=Yii::t("common", "Gene to longevity effect")?></span>',
+    'gene_to_additional_evidence' => '<span style="background-color: #cacaca"><?=Yii::t("common", "Other")?></span>',
 ]
 ?>
 <div class="gene-index container-fluid">
@@ -26,7 +26,7 @@ $experimentsNames = [
         <h2 class="col-xs-12"><?= Html::encode($this->title) ?></h2>
         <p class="col-xs-12">
             <?php if(Yii::$app->user->can('editor')): ?>
-                <?= Html::a('Добавить гены', ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('common', 'Add gene'), ['create'], ['class' => 'btn btn-success']) ?>
                 <?=Yii::$app->session->getFlash('add_genes') ?>
             <?endif; ?>
         </p>
@@ -43,14 +43,14 @@ $experimentsNames = [
             'name',
             [
                 'attribute' => 'phylum',
-                'label' => 'Происхождение',
+                'label' => Yii::t('common', 'Phylum'),
                 'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
                     return $model->phylum ? "{$model->phylum->name_phylo} ({$model->phylum->name_mya})" : '-';
                 },
             ],
             [
                 'attribute' => 'familyPhylum',
-                'label' => 'Происхождение семейства',
+                'label' => Yii::t('common', 'Family Phylum'),
                 'value' => function($model, $index, $dataColumn) { /** @var $model Gene */
                     return $model->familyPhylum ? "{$model->familyPhylum->name_phylo} ({$model->familyPhylum->name_mya})" : '-';
                 },
@@ -61,7 +61,7 @@ $experimentsNames = [
                 'filter'=> Html::dropDownList('Gene[source]', $searchModel->source, ['abdb' => 'abdb', 'horvath' => 'horvath'],['prompt'=>' ','class' => 'form-control']),
             ],
             [
-                'label' => 'Исследования',
+                'label' => Yii::t('common', 'Research'),
                 'value' => function($model, $index, $dataColumn) use ($experimentsNames) { /** @var $model Gene */
                     $url = \yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id]);
                     $experimentCounts = $model->getAllExperimentsCounts();
@@ -69,7 +69,7 @@ $experimentsNames = [
                     foreach ($experimentCounts as $name => $count) {
                         $text .= $experimentsNames[$name] . ' - ' . $count . '<br>';
                     }
-                    $text = $text ?: 'Добавить';
+                    $text = $text ?: Yii::t('common', 'Add');
                     return "<a href='{$url}' target='_blank' style='font-size: 11px; color: black'>{$text}</a>";
                 },
                 'format' => 'raw',

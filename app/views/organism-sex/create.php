@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\OrganismSex */
 
-$this->title = Yii::t('app', 'Organism Sex') . ' - ' . Yii::t('app', 'create new');
+$this->title = Yii::t('common', 'Add organism sex');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Organism Sexes'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

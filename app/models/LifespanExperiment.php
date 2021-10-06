@@ -8,6 +8,7 @@ use app\models\common\LifespanExperimentQuery;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -80,14 +81,14 @@ class LifespanExperiment extends common\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::attributeLabels(), [
-            'delete' => 'Удалить',
-            'gene_intervention_id' => 'Вмешательство',
-            'intervention_result_id' => 'Результат вмешательства',
-            'model_organism_id' => 'Объект',
-            'tissue_specificity' => 'Тканеспецифичность',
-            'age' => 'Возраст',
-            'reference' => 'Ссылка',
-            'age_unit' => 'Ед. измерения возраста',
+            'delete' => Yii::t('common', 'Delete'),
+            'gene_intervention_id' => Yii::t('common', 'Intervention'),
+            'intervention_result_id' => Yii::t('common', 'Результаты вмешательства'),
+            'model_organism_id' => Yii::t('common', 'Tissue specificity'),
+            'tissue_specificity' => Yii::t('common', 'Organism'),
+            'age' => Yii::t('common', 'Age'),
+            'reference' => Yii::t('common', 'Reference'),
+            'age_unit' => Yii::t('common', 'Age unit'),
         ]);
     }
 

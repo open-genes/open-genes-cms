@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\traits\RuEnActiveRecordTrait;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\helpers\ArrayHelper;
 
@@ -46,8 +47,8 @@ class User extends common\User
     {
         return ArrayHelper::merge(parent::attributeLabels(), [
             'id' => 'ID',
-            'username' => 'Логин',
-            'newPassword' => 'Новый пароль',
+            'username' => Yii::t('common', 'Login'),
+            'newPassword' => Yii::t('common', 'New password'),
         ]);
     }
 

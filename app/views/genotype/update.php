@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Genotype */
 
-$this->title = 'Редактировать аллельныей полиморфизм ' . $model->id;
+$this->title = Yii::t('common', 'Edit genotype') . ' ' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Genotypes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

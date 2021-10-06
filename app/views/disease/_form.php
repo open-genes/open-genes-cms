@@ -27,13 +27,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'icd_name_ru')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group field-disease-icd_code_visible">
-        <label class="control-label" for="disease-icd_code_visible">Видимый код МКБ (для группировки и API)</label>
+        <label class="control-label" for="disease-icd_code_visible"><?=Yii::t('common', 'ICD code visible')?></label>
         <?= \kartik\select2\Select2::widget([
             'model' => $model,
             'attribute' => 'icd_code_visible',
             'data' => $model->getIcdParentCategories(),
             'options' => [
-                'placeholder' => 'Видимый код МКБ (для группировки и API)',
+                'placeholder' => Yii::t('common', 'ICD code visible'),
                 'multiple' => false
             ],
             'pluginOptions' => [
@@ -44,7 +44,7 @@ use yii\widgets\ActiveForm;
         <div class="help-block"></div>
     </div>
     <br>
-    Категории МКБ:
+    <?=Yii::t('common', 'ICD category') . ':'?>
     <ul>
         <?php
         foreach ($model->getIcdParentCategories() as $categoryName) {
@@ -54,7 +54,7 @@ use yii\widgets\ActiveForm;
     </ul>
 
     <div class="form-group">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

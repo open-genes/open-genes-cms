@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\VitalProcess */
 
-$this->title = 'Добавить процесс';
+$this->title = Yii::t('common', 'Add vital process');
 $this->params['breadcrumbs'][] = ['label' => 'Vital Processes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

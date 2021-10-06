@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\GeneInterventionWay */
 
-$this->title = Yii::t('app', 'Gene Intervention Way') . ' - ' . Yii::t('app', 'create new');
+$this->title = Yii::t('common', 'Add gene intervention way');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gene Intervention Ways'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
