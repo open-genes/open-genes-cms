@@ -24,10 +24,11 @@ $config = [
             'translations' => [
                 'main' => [
                     'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => __DIR__ . '/assets/translations',
-//                    'sourceLanguage' => 'en-US',
+                    'basePath' => '@app/assets/translations',
+                    'sourceLanguage' => 'en-US',
                     'fileMap' => [
-                        'main' => 'main.php',
+                        'app' => 'app.php',
+                        'app' => 'ar.php',
                     ],
                 ],
             ],

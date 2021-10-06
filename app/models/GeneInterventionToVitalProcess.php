@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -16,6 +17,7 @@ use yii\helpers\ArrayHelper;
 class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProcess
 {
     use ValidatorsTrait;
+    use ExperimentsActiveRecordTrait;
 
     public $delete = false;
 
@@ -108,8 +110,11 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
                 $modelAR->vital_process_id = $arVitalProcess->id;
             }
             if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
-                $arOrganismLine = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+                $arOrganismLine = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
                 $modelAR->organism_line_id = $arOrganismLine->id;
+            }
+            else {
+                OrganismLine::fixLine($modelAR, $modelArray);
             }
             if (!empty($modelArray['intervention_result_for_vital_process_id']) && !is_numeric($modelArray['intervention_result_for_vital_process_id'])) {
                 $arOrganismLine = InterventionResultForVitalProcess::createFromNameString($modelArray['intervention_result_for_vital_process_id']);

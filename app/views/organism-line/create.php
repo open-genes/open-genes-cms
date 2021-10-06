@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\OrganismLine */
+/* @var $organismList array */
 
 $this->title = 'Добавить линию организмов';
 $this->params['breadcrumbs'][] = ['label' => 'Organism Lines', 'url' => ['index']];
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'organismList' => $organismList,
     ]) ?>
 
 </div>

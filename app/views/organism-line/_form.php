@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\OrganismLine */
+/* @var $organismList array */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -15,6 +16,15 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'name_ru')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'name_en')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'model_organism_id')->widget(\kartik\select2\Select2::class, [
+        'data' => $organismList,
+        'options' => ['multiple' => false],
+        'pluginOptions' => [
+            'allowClear' => false
+        ],
+    ]); ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

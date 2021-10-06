@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -17,6 +18,7 @@ use yii\helpers\ArrayHelper;
 class ProteinToGene extends common\ProteinToGene
 {
     use ValidatorsTrait;
+    use ExperimentsActiveRecordTrait;
 
     public $delete = false;
 
@@ -71,14 +73,10 @@ class ProteinToGene extends common\ProteinToGene
                 continue;
             }
             $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['protein_activity_id']) && !is_numeric($modelArray['protein_activity_id'])) {
-                $arProteinActivity = ProteinActivity::createFromNameString($modelArray['protein_activity_id']);
-                $modelAR->protein_activity_id = $arProteinActivity->id;
-            }
-            if (!empty($modelArray['regulation_type_id']) && !is_numeric($modelArray['regulation_type_id'])) {
-                $arProteinActivity = GeneRegulationType::createFromNameString($modelArray['regulation_type_id']);
-                $modelAR->regulation_type_id = $arProteinActivity->id;
-            }
+
+            self::setAttributeFromNewAR($modelArray, 'protein_activity_id', 'ProteinActivity', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'regulation_type_id', 'GeneRegulationType', $modelAR);
+
             $modelAR->gene_id = $geneId;
             if (!$modelAR->validate() || !$modelAR->save()) {
                 throw new UpdateExperimentsException($id, $modelAR);

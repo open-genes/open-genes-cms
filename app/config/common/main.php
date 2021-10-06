@@ -36,6 +36,18 @@ $config = [
                 'about' => 'site/about'
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'app' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/assets/translations',
+                    'sourceLanguage' => 'en-US',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                    ],
+                ],
+            ],
+        ],
     ],
 ];
 
@@ -51,7 +63,22 @@ if (getenv('DEBUG')) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         'allowedIPs' => ['*'],
+            'generators' => [
+            'cms_model' => [
+                'class' => \app\generators\model\Generator::class,
+                'templates' => [
+                    'cms_model' => '@app/generator/model/default',
+                ]
+            ],
+            'cms_crud' => [
+                'class' => \app\generators\crud\Generator::class,
+                'templates' => [
+                    'cms_crud' => '@app/generator/crud/default',
+                ]
+            ]
+        ],
     ];
 }
 
 return $config;
+
