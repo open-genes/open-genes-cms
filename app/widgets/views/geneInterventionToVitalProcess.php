@@ -10,7 +10,7 @@ use app\models\InterventionResultForVitalProcess;
             <div class="col-xs-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
-                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_id',
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_method_id',
                     'data' => \app\models\GeneIntervention::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Метод',
