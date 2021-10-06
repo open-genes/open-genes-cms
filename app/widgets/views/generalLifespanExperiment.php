@@ -62,9 +62,7 @@
                 ?>
             </div>
             <div class="col-xs-6 col-md-3">
-                <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment,
-                    '[' . $generalLifespanExperiment->id . ']control_number',
-                    ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_number', ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
             </div>
         </div>
 
@@ -88,9 +86,7 @@
         </h2>
         <div class="row form-row">
             <div class="col-xs-6 col-md-2">
-                <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment,
-                    '[' . $generalLifespanExperiment->id . ']experiment_number',
-                    ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']experiment_number', ['class' => 'form-control age_unit', 'placeholder' => 'N (количество)']) ?>
             </div>
         </div>
         <div class="row form-row">
@@ -118,6 +114,21 @@
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment,
                     '[' . $generalLifespanExperiment->id . ']expression_change',
                     ['class' => 'form-control age_unit', 'placeholder' => '% изменения экспрессии']) ?>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $generalLifespanExperiment,
+                    'attribute' => '[' . $generalLifespanExperiment->id . ']measurement_type',
+                    'data' => [1 => 'мРНК', 2 => 'белок', 3 => 'количество клеток, экспрессирующих ген'],
+                    'options' => [
+                        'placeholder' => 'Метод измерения',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ],
+                ]);
+                ?>
             </div>
             <div class="col-xs-6 col-md-4">
                 <?= \kartik\select2\Select2::widget([

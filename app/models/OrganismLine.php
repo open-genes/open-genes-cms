@@ -39,7 +39,8 @@ class OrganismLine extends common\OrganismLine
         ));
     }
 
-    public static function createDuplicateLine($modelOrganismId, $organismLineId) {
+    public static function createDuplicateLine($modelOrganismId, $organismLineId)
+    {
         $model = self::getById($organismLineId);
         $dataToInsert = $model->attributes;
         unset($dataToInsert['id']);
@@ -57,13 +58,13 @@ class OrganismLine extends common\OrganismLine
         return self::find()->where(['id' => $id])->one();
     }
 
-    public static function fixLine($modelARC, $modelForm) {
+    public static function fixLine($modelARC, $modelForm)
+    {
         if (!empty($modelForm['model_organism_id']) && !is_numeric($modelForm['model_organism_id'])) {
             $modelARC->organism_line_id = OrganismLine::createDuplicateLine($modelARC->model_organism_id, $modelForm['organism_line_id']);
-        }
-        else {
+        } else {
             $currentOrganismLine = OrganismLine::getById($modelARC->organism_line_id);
-            if($currentOrganismLine->model_organism_id != $modelARC->model_organism_id) {
+            if ($currentOrganismLine->model_organism_id != $modelARC->model_organism_id) {
                 $modelARC->organism_line_id = self::getRightLineID($currentOrganismLine, $modelARC);
             }
         }
@@ -82,17 +83,19 @@ class OrganismLine extends common\OrganismLine
     public static function getAllNamesByOrganisms()
     {
         $names = self::find()
-            ->select(['model_organism.name_ru organism_ru', 'model_organism.name_en organism_en', 'organism_line.id', 'organism_line.name_ru', 'organism_line.name_en'])
+            ->select(['model_organism.name_ru organism_ru', 'model_organism.name_en organism_en', 'model_organism.id organism_id', 'organism_line.id', 'organism_line.name_ru', 'organism_line.name_en'])
             ->asArray()
             ->leftJoin('model_organism', 'organism_line.model_organism_id=model_organism.id')
             ->all();
         $result = [];
         foreach ($names as $name) {
-            if(!$name['organism_en']) {
+            if (!$name['organism_en']) {
                 $name['organism_en'] = 'other';
                 $name['organism_ru'] = 'другой';
             }
-            $result["{$name['organism_ru']} ({$name['organism_en']})"][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
+            if ($name['organism_id'] !== 7) { // todo временный костыль для скрытия клеточных культур
+                $result["{$name['organism_ru']} ({$name['organism_en']})"][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
+            }
         }
         return $result;
     }
