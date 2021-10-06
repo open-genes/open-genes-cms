@@ -6,7 +6,6 @@ use app\models\behaviors\ChangelogBehavior;
 use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "age".
@@ -28,7 +27,7 @@ class ProteinActivity extends common\ProteinActivity
 
     public function getLinkedGenesIds()
     {
-        return $this->getGeneToProteinActivities()
+        return $this->getProteinToGenes()
             ->select('gene_id')->distinct()->column();
     }
 
