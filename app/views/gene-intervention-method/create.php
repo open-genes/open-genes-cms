@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\GeneInterventionMethod */
+/* @var $interventionWays [] */
 
 $this->title = Yii::t('app', 'Gene Intervention Method') . ' - ' . Yii::t('app', 'create new');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Gene Intervention Methods'), 'url' => ['index']];
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'interventionWays' => $interventionWays,
     ]) ?>
 
 </div>

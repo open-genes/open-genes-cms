@@ -62,13 +62,17 @@ $this->registerCssFile('/assets/css/main.css');
             [
                 'label' => 'Исследования',
                 'items' => [
-                    ['label' => 'Методы вмешательства', 'url' => '/gene-intervention'],
+                    ['label' => 'Способы воздействия', 'url' => '/gene-intervention-way'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Методы вмешательства', 'url' => '/gene-intervention-method'],
                     '<li class="divider"></li>',
                     ['label' => 'Результаты вмешательства (для продолжительности жизни)', 'url' => '/intervention-result'],
                     '<li class="divider"></li>',
                     ['label' => 'Объекты исследований (модельные организмы)', 'url' => '/model-organism'],
                     '<li class="divider"></li>',
                     ['label' => 'Линии организмов', 'url' => '/organism-line'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Пол организмов', 'url' => '/organism-sex'],
                     '<li class="divider"></li>',
                     ['label' => 'Образцы тканей', 'url' => '/sample'],
                     '<li class="divider"></li>',
