@@ -112,7 +112,7 @@
 
         <div class="row form-row">
             <div class="col-xs-6 col-md-3 checkbox-wrapper">
-                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, 'tissue_specificity') ?>
+                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specificity') ?>
             </div>
 
             <div class="col-xs-6 col-md-9">
