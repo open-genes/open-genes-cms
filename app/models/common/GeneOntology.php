@@ -10,7 +10,7 @@ use yii\behaviors\TimestampBehavior;
  * This is the model class for table "gene_ontology".
  *
  * @property int $id
- * @property int $ontology_identifier
+ * @property string $ontology_identifier
  * @property string $category
  * @property string $name_en
  * @property string $name_ru
@@ -42,8 +42,8 @@ class GeneOntology extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ontology_identifier', 'created_at', 'updated_at'], 'integer'],
-            [['category', 'name_en', 'name_ru'], 'string', 'max' => 255],
+            [['created_at', 'updated_at'], 'integer'],
+            [['ontology_identifier', 'category', 'name_en', 'name_ru'], 'string', 'max' => 255],
         ];
     }
 
