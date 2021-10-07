@@ -33,7 +33,7 @@
                         ],
                         'pluginOptions' => [
                             'allowClear' => false,
-//                        'tags' => Yii::$app->user->can('admin'),
+//                        'tags' => true,
                             'tokenSeparators' => ['##'],
                         ],
                     ]);
@@ -53,7 +53,7 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
                 ]);
@@ -70,7 +70,7 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
                 ]);
@@ -87,7 +87,7 @@
                     ],
                     'pluginOptions' => [
                         'allowClear' => false,
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
                 ]);
@@ -146,7 +146,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -163,7 +163,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -186,7 +186,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -203,7 +203,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -225,7 +225,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -242,7 +242,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -262,7 +262,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -279,7 +279,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],

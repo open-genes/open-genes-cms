@@ -140,7 +140,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -157,7 +157,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
@@ -178,7 +178,7 @@
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
-                        'tags' => Yii::$app->user->can('admin'),
+                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'allowClear' => false,
                     ],
