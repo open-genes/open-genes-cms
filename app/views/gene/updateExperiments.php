@@ -33,12 +33,15 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <div class="form-group">
         <h4>Влияние модуляции активности гена на продолжительность жизни</h4>
-        <div class="js-lifespan-experiments">
+        <div class="js-general-lifespan-experiments">
             <?php foreach ($model->lifespanExperiments as $lifespanExperiment): ?>
-                <?= LifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
+                <?= \app\widgets\GeneralLifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
             <?php endforeach; ?>
         </div>
-        <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity js-add-lifespan-experiment']) ?>
+        <?= Html::button('Добавить', [
+                'class' => 'btn btn-add add-protein-activity js-add-general-lifespan-experiment',
+                'geneId' => $model->id,
+        ]) ?>
     </div>
 
     <div class="form-group">

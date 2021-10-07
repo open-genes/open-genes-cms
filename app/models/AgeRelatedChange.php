@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -15,6 +16,7 @@ use yii\helpers\ArrayHelper;
 class AgeRelatedChange extends common\AgeRelatedChange
 {
     use ValidatorsTrait;
+    use ExperimentsActiveRecordTrait;
 
     public $delete = false;
 
@@ -114,9 +116,13 @@ class AgeRelatedChange extends common\AgeRelatedChange
                 $modelAR->model_organism_id = $arProcessLocalization->id;
             }
             if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
-                $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+                $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
                 $modelAR->organism_line_id = $arProteinActivity->id;
             }
+            else {
+                OrganismLine::fixLine($modelAR, $modelArray);
+            }
+
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }

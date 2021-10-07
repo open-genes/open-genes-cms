@@ -12,7 +12,7 @@ class m210802_104020_comment_fields_to_text extends Migration
      */
     public function safeUp()
     {
-        $this->alterColumn('gene', 'commentEvolution', $this->text());
+        $this->alterColumn('gene', 'commentEvolution', $this->text()); 
         $this->alterColumn('gene', 'commentFunction', $this->text());
         $this->alterColumn('gene', 'commentCause', $this->text());
         $this->alterColumn('gene', 'commentAging', $this->text());

@@ -1,9 +1,38 @@
 let newGeneLinkBlocksCount = 0;
 
-$('.js-add-lifespan-experiment').click(function () {
+$(document).on('click', '.js-add-lifespan-experiment-control', function() {
     newGeneLinkBlocksCount++;
-    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'+newGeneLinkBlocksCount, function (data) {
-        $('.js-lifespan-experiments').append(data);
+    let block = $(this);
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
+        +newGeneLinkBlocksCount
+        +'&modelParams[general_lifespan_experiment_id]='+$(this).attr('generalLifespanExperimentId')
+        +'&params[currentGeneId]='+$(this).attr('currentGeneId')
+        +'&modelParams[type]=control', function (data) {
+        $(block).closest('.js-lifespan-experiment-block').find('.js-lifespan-experiments-control').append(data);
+    });
+});
+
+$(document).on('click', '.js-add-lifespan-experiment-gene', function() {
+    newGeneLinkBlocksCount++;
+    let block = $(this);
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=LifespanExperimentWidget&id=new'
+        +newGeneLinkBlocksCount
+        +'&modelParams[general_lifespan_experiment_id]='+$(this).attr('generalLifespanExperimentId')
+        +'&params[currentGeneId]='+$(this).attr('currentGeneId')
+        +'&modelParams[type]=experiment', function (data) {
+        
+        $(block).closest('.js-lifespan-experiment-block').find('.js-lifespan-experiments-gene').append(data);
+    });
+});
+
+$('.js-add-general-lifespan-experiment').click(function () {
+    newGeneLinkBlocksCount++;
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=GeneralLifespanExperimentWidget&id=new'
+        +newGeneLinkBlocksCount
+        +'&modelParams[gene_id]='+$(this).attr('geneId')
+        +'&modelParams[type]=experiment'
+        +'&geneId='+$(this).attr('geneId'), function (data) {
+        $('.js-general-lifespan-experiments').append(data);
     });
 });
 

@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $name_ru
  * @property string|null $name_en
+ * @property int|null $model_organism_id
  * @property int|null $created_at
  * @property int|null $updated_at
  *
@@ -33,7 +34,7 @@ class OrganismLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'integer'],
+            [['created_at', 'updated_at', 'model_organism_id'], 'integer'],
             [['name_ru', 'name_en'], 'string', 'max' => 255],
         ];
     }
@@ -45,6 +46,7 @@ class OrganismLine extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'model_organism_id' => 'Organism',
             'name_ru' => 'Name Ru',
             'name_en' => 'Name En',
             'created_at' => 'Created At',
@@ -59,7 +61,7 @@ class OrganismLine extends \yii\db\ActiveRecord
      */
     public function getAgeRelatedChanges()
     {
-        return $this->hasMany(AgeRelatedChange::className(), ['organism_line_id' => 'id']);
+        return $this->hasMany(AgeRelatedChange::class, ['organism_line_id' => 'id']);
     }
 
     /**
@@ -69,7 +71,7 @@ class OrganismLine extends \yii\db\ActiveRecord
      */
     public function getGeneInterventionToVitalProcesses()
     {
-        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['organism_line_id' => 'id']);
+        return $this->hasMany(GeneInterventionToVitalProcess::class, ['organism_line_id' => 'id']);
     }
 
     /**
@@ -79,7 +81,17 @@ class OrganismLine extends \yii\db\ActiveRecord
      */
     public function getLifespanExperiments()
     {
-        return $this->hasMany(LifespanExperiment::className(), ['organism_line_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['organism_line_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[ModelOrganism]].
+     *
+     * @return \yii\db\ActiveQuery|ModelOrganismQuery
+     */
+    public function getModelOrganism()
+    {
+        return $this->hasOne(ModelOrganism::class, ['id' => 'model_organism_id']);
     }
 
     /**

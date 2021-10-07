@@ -4,6 +4,7 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\exceptions\UpdateExperimentsException;
+use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -16,6 +17,7 @@ use yii\helpers\ArrayHelper;
 class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProcess
 {
     use ValidatorsTrait;
+    use ExperimentsActiveRecordTrait;
 
     public $delete = false;
 
@@ -33,7 +35,7 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_id', 'model_organism_id', 'vital_process_id'], 'required'],
+            [['gene_id', 'gene_intervention_method_id', 'model_organism_id', 'vital_process_id'], 'required'],
             [['age'], 'number', 'min'=>0],
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->age);
@@ -95,25 +97,17 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
                 continue;
             }
             $modelAR->setAttributes($modelArray);
-            if (!empty($modelArray['gene_intervention_id']) && !is_numeric($modelArray['gene_intervention_id'])) {
-                $arProteinActivityObject = GeneIntervention::createFromNameString($modelArray['gene_intervention_id']);
-                $modelAR->gene_intervention_id = $arProteinActivityObject->id;
-            }
-            if (!empty($modelArray['model_organism_id']) && !is_numeric($modelArray['model_organism_id'])) {
-                $arProcessLocalization = ModelOrganism::createFromNameString($modelArray['model_organism_id']);
-                $modelAR->model_organism_id = $arProcessLocalization->id;
-            }
-            if (!empty($modelArray['vital_process_id']) && !is_numeric($modelArray['vital_process_id'])) {
-                $arVitalProcess = VitalProcess::createFromNameString($modelArray['vital_process_id']);
-                $modelAR->vital_process_id = $arVitalProcess->id;
-            }
+            self::setAttributeFromNewAR($modelArray, 'gene_intervention_method_id', 'GeneInterventionMethod', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'vital_process_id', 'VitalProcess', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'intervention_result_for_vital_process_id', 'InterventionResultForVitalProcess', $modelAR);
+
             if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
-                $arOrganismLine = OrganismLine::createFromNameString($modelArray['organism_line_id']);
+                $arOrganismLine = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
                 $modelAR->organism_line_id = $arOrganismLine->id;
             }
-            if (!empty($modelArray['intervention_result_for_vital_process_id']) && !is_numeric($modelArray['intervention_result_for_vital_process_id'])) {
-                $arOrganismLine = InterventionResultForVitalProcess::createFromNameString($modelArray['intervention_result_for_vital_process_id']);
-                $modelAR->intervention_result_for_vital_process_id = $arOrganismLine->id;
+            else {
+                OrganismLine::fixLine($modelAR, $modelArray);
             }
             $modelAR->gene_id = $geneId;
             if ($modelAR->organism_line_id === '') {
