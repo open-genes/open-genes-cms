@@ -142,7 +142,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_id',
                     'data' => \app\models\ActiveSubstance::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Вещество',
+                        'placeholder' => 'Препарат',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
