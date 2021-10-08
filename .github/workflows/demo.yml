@@ -1,0 +1,28 @@
+name: demo-CI
+
+on: workflow_dispatch
+
+jobs:
+  deploy-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: test.yml
+          workflow_conclusion: success
+          name: project
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DROPLET_KEY }}
+          known_hosts: ${{ secrets.DROPLET_HOST }}
+      - name: Deploy with rsync
+        run: |
+          echo $DROPLET_ENV | base64 -d > .env
+          rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' . $SSH_USER@$SSH_HOST:$PROJECT_PATH
+        env:
+          SSH_USER: ${{ secrets.DROPLET_USER }}
+          SSH_HOST: ${{ secrets.DROPLET_HOST }}
+          PROJECT_PATH: ${{ secrets.DROPLET_CMS_DEMO_PATH }}
+          DROPLET_ENV: ${{ secrets.DROPLET_CMS_DEMO_DOTENV_BASE64 }}
