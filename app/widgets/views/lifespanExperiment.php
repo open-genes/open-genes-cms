@@ -5,9 +5,9 @@
 /** @var $type string */
 ?>
 <div class="gene-modulation js-lifespan-experiment js-gene-link-section
-<?=($lifespanExperiment->gene_id != $currentGeneId) ? '__padding-0' : ''?>">
+<?= ($lifespanExperiment->gene_id != $currentGeneId) ? '__padding-0' : '' ?>">
     <div class="js-lifespan-experiment-block js-gene-link-block experiment-block
-        <?=($lifespanExperiment->gene_id != $currentGeneId) ? 'experiment-block--extra-experiment' : ''?>">
+        <?= ($lifespanExperiment->gene_id != $currentGeneId) ? 'experiment-block--extra-experiment' : '' ?>">
         <? if ($lifespanExperiment->gene_id != $currentGeneId): ?>
             <div class="experiment-block__title">Воздействие на другой ген</div>
         <? endif; ?>
@@ -19,14 +19,18 @@
             </div>
         <? } ?>
 
-        <div class="row form-row">
-            <?php //var_dump($lifespanExperiment->gene_id, $currentGeneId); ?>
-            <?php if ($lifespanExperiment->gene_id != $currentGeneId): ?>
+
+        <?php //var_dump($lifespanExperiment->gene_id, $currentGeneId); ?>
+        <?php if ($lifespanExperiment->gene_id != $currentGeneId): ?>
+            <div class="row form-row">
                 <div class="col-xs-6 col-md-3">
-                    <?= \kartik\select2\Select2::widget([
+                    <?php 
+                    $genes = \app\models\Gene::getAllNamesAsArray();
+                    unset($genes[$currentGeneId]);
+                    echo \kartik\select2\Select2::widget([
                         'model' => $lifespanExperiment,
                         'attribute' => '[' . $lifespanExperiment->id . ']gene_id',
-                        'data' => \app\models\Gene::getAllNamesAsArray(),
+                        'data' => $genes,
                         'options' => [
                             'placeholder' => 'Ген',
                             'multiple' => false
@@ -39,7 +43,11 @@
                     ]);
                     ?>
                 </div>
-            <?php endif; ?>
+            </div>
+        <?php else: ?>
+            <?= \yii\helpers\Html::hiddenInput('LifespanExperiment[' . $lifespanExperiment->id . '][gene_id]', $lifespanExperiment->gene_id) ?>
+        <?php endif; ?>
+        <div class="row form-row">
             <?= \yii\helpers\Html::hiddenInput('LifespanExperiment[' . $lifespanExperiment->id . '][type]', $lifespanExperiment->type) ?>
             <?= \yii\helpers\Html::hiddenInput('LifespanExperiment[' . $lifespanExperiment->id . '][general_lifespan_experiment_id]', $lifespanExperiment->general_lifespan_experiment_id) ?>
             <div class="col-xs-6 col-md-3">
@@ -170,10 +178,18 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_dose', ['class' => 'form-control age_unit', 'placeholder' => 'Дневная доза']) ?>
             </div>
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6 col-md-2">
+                <div class="col-xs-6 col-md-3" style="padding: 6px 0px 0px 9px;">
+                    x 10^
+                </div>
+                <div class="col-xs-3 col-md-9">
+                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']daily_dose_sci_not_degree', ['class' => 'form-control age_unit', 'placeholder' => 'Степень']) ?>
+                </div>
+            </div>
+            <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_doses_number', ['class' => 'form-control age_unit', 'placeholder' => 'Кол-во доз в день']) ?>
             </div>
             <div class="col-xs-6 col-md-3">

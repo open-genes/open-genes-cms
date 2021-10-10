@@ -25,10 +25,10 @@ use Yii;
  * @property int|null $genotype
  * @property string|null $pmid
  * @property int|null $tissue_specificity Тканеспецифичность
- * @property int|null $active_substance_daily_dose Дневная доза
+ * @property float|null $active_substance_daily_dose Дневная доза
  * @property int|null $active_substance_daily_doses_number Количество воздействий в день
- * @property int|null $treatment_start Начало периода воздействия
- * @property int|null $treatment_end Конец периода воздействия
+ * @property float|null $treatment_start Начало периода воздействия
+ * @property float|null $treatment_end Конец периода воздействия
  * @property int|null $active_substance_id
  * @property int|null $active_substance_delivery_way_id
  * @property int|null $active_substance_dosage_unit_id
@@ -41,6 +41,7 @@ use Yii;
  * @property int|null $treatment_end_time_unit_id
  * @property int|null $general_lifespan_experiment_id
  * @property string|null $type
+ * @property float|null $daily_dose_sci_not_degree Дневная доза - порядок в научной нотации
  *
  * @property ActiveSubstance $activeSubstance
  * @property ActiveSubstanceDeliveryWay $activeSubstanceDeliveryWay
@@ -77,8 +78,8 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'sex', 'organism_line_id', 'age_unit', 'genotype', 'tissue_specificity', 'active_substance_daily_dose', 'active_substance_daily_doses_number', 'treatment_start', 'treatment_end', 'active_substance_id', 'active_substance_delivery_way_id', 'active_substance_dosage_unit_id', 'treatment_period_id', 'gene_intervention_method_id', 'experiment_main_effect_id', 'treatment_start_stage_of_development_id', 'treatment_end_stage_of_development_id', 'treatment_start_time_unit_id', 'treatment_end_time_unit_id', 'general_lifespan_experiment_id'], 'integer'],
-            [['age', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common'], 'number'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'sex', 'organism_line_id', 'age_unit', 'genotype', 'tissue_specificity', 'active_substance_daily_doses_number', 'active_substance_id', 'active_substance_delivery_way_id', 'active_substance_dosage_unit_id', 'treatment_period_id', 'gene_intervention_method_id', 'experiment_main_effect_id', 'treatment_start_stage_of_development_id', 'treatment_end_stage_of_development_id', 'treatment_start_time_unit_id', 'treatment_end_time_unit_id', 'general_lifespan_experiment_id'], 'integer'],
+            [['age', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common', 'active_substance_daily_dose', 'treatment_start', 'treatment_end', 'daily_dose_sci_not_degree'], 'number'],
             [['comment_en', 'comment_ru', 'type'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
             [['active_substance_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActiveSubstance::class, 'targetAttribute' => ['active_substance_id' => 'id']],
@@ -140,6 +141,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'treatment_end_time_unit_id' => Yii::t('app', 'Treatment End Time Unit ID'),
             'general_lifespan_experiment_id' => Yii::t('app', 'General Lifespan Experiment ID'),
             'type' => Yii::t('app', 'Type'),
+            'daily_dose_sci_not_degree' => Yii::t('app', 'Daily Dose Sci Not Degree'),
         ];
     }
 

@@ -229,18 +229,86 @@
             </div>
             <div class="col-xs-12 col-md-9">
                 <div class="row form-row">
-                    <div class="col-xs-6 col-md-4 hidden-xs hidden-sm">&nbsp;</div>
-                    <div class="col-xs-6 col-md-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_lifespan_min', ['class' => 'form-control age_unit', 'placeholder' => 'Минимум']) ?>
+<!--                    <div class="col-xs-6 col-md-1 hidden-xs hidden-sm">&nbsp;</div>-->
+                    <div class="col-xs-6 col-md-1" style="padding-right: 0;">
+                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_min_change', ['class' => 'form-control age_unit', 'placeholder' => 'Мин.']) ?>
                     </div>
-                    <div class="col-xs-6 col-md-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_lifespan_mean', ['class' => 'form-control age_unit', 'placeholder' => 'Среднее']) ?>
+                    <div class="col-xs-6 col-md-2" style="padding-left: 0;">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $generalLifespanExperiment,
+                            'attribute' => '[' . $generalLifespanExperiment->id . ']lifespan_min_change_stat_sign_id',
+                            'data' => \app\models\StatisticalSignificance::getAllNamesAsArray(),
+                            'options' => [
+                                'placeholder' => 'Стат. значимость',
+                                'multiple' => false,
+                            ],
+                            'pluginOptions' => [
+                                'tags' => true,
+                                'tokenSeparators' => ['##'],
+                                'allowClear' => false,
+                            ],
+                        ]);
+                        ?>
                     </div>
-                    <div class="col-xs-6 col-md-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_lifespan_median', ['class' => 'form-control age_unit', 'placeholder' => 'Медиана']) ?>
+                    <div class="col-xs-6 col-md-1" style="padding-right: 0;">
+                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_mean_change', ['class' => 'form-control age_unit', 'placeholder' => 'Средн.']) ?>
                     </div>
-                    <div class="col-xs-6 col-md-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_lifespan_max', ['class' => 'form-control age_unit', 'placeholder' => 'Максимум']) ?>
+                    <div class="col-xs-6 col-md-2" style="padding-left: 0;">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $generalLifespanExperiment,
+                            'attribute' => '[' . $generalLifespanExperiment->id . ']lifespan_mean_change_stat_sign_id',
+                            'data' => \app\models\StatisticalSignificance::getAllNamesAsArray(),
+                            'options' => [
+                                'placeholder' => 'Стат. значимость',
+                                'multiple' => false,
+                            ],
+                            'pluginOptions' => [
+                                'tags' => true,
+                                'tokenSeparators' => ['##'],
+                                'allowClear' => false,
+                            ],
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-6 col-md-1" style="padding-right: 0;">
+                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_median_change', ['class' => 'form-control age_unit', 'placeholder' => 'Мед.']) ?>
+                    </div>
+                    <div class="col-xs-6 col-md-2" style="padding-left: 0;">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $generalLifespanExperiment,
+                            'attribute' => '[' . $generalLifespanExperiment->id . ']lifespan_median_change_stat_sign_id',
+                            'data' => \app\models\StatisticalSignificance::getAllNamesAsArray(),
+                            'options' => [
+                                'placeholder' => 'Стат. значимость',
+                                'multiple' => false,
+                            ],
+                            'pluginOptions' => [
+                                'tags' => true,
+                                'tokenSeparators' => ['##'],
+                                'allowClear' => false,
+                            ],
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-xs-6 col-md-1" style="padding-right: 0;">
+                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_max_change', ['class' => 'form-control age_unit', 'placeholder' => 'Макс.']) ?>
+                    </div>
+                    <div class="col-xs-6 col-md-2" style="padding-left: 0;">
+                        <?= \kartik\select2\Select2::widget([
+                            'model' => $generalLifespanExperiment,
+                            'attribute' => '[' . $generalLifespanExperiment->id . ']lifespan_max_change_stat_sign_id',
+                            'data' => \app\models\StatisticalSignificance::getAllNamesAsArray(),
+                            'options' => [
+                                'placeholder' => 'Стат. значимость',
+                                'multiple' => false,
+                            ],
+                            'pluginOptions' => [
+                                'tags' => true,
+                                'tokenSeparators' => ['##'],
+                                'allowClear' => false,
+                            ],
+                        ]);
+                        ?>
                     </div>
                 </div>
             </div>

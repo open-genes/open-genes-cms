@@ -9,21 +9,21 @@ use Yii;
  *
  * @property int $id
  * @property string|null $name
- * @property int|null $control_lifespan_min Мин. прод-ть жизни контроля
- * @property int|null $control_lifespan_mean Средняя прод-ть жизни контроля
- * @property int|null $control_lifespan_median Медиана прод-ти жизни контроля
- * @property int|null $control_lifespan_max Макс. прод-ть жизни контроля
- * @property int|null $experiment_lifespan_min Мин. прод-ть жизни эксперимента
- * @property int|null $experiment_lifespan_mean Средняя прод-ть жизни эксперимента
- * @property int|null $experiment_lifespan_median Медиана прод-ти жизни эксперимента
- * @property int|null $experiment_lifespan_max Макс. прод-ть жизни эксперимента
- * @property int|null $lifespan_min_change Мин. прод-ть жизни % изменения
- * @property int|null $lifespan_mean_change Сред. прод-ть жизни % изменения
- * @property int|null $lifespan_median_change Медиана прод-ти жизни % изменения
- * @property int|null $lifespan_max_change Макс. прод-ть жизни % изменения
+ * @property float|null $control_lifespan_min Мин. прод-ть жизни контроля
+ * @property float|null $control_lifespan_mean Сред. прод-ть жизни контроля
+ * @property float|null $control_lifespan_median Мед. прод-ть жизни контроля
+ * @property float|null $control_lifespan_max Макс. прод-ть жизни контроля
+ * @property float|null $experiment_lifespan_min Мин. прод-ть жизни эксперимента
+ * @property float|null $experiment_lifespan_mean Сред. прод-ть жизни эксперимента
+ * @property float|null $experiment_lifespan_median Мед. прод-ть жизни эксперимента
+ * @property float|null $experiment_lifespan_max Макс. прод-ть жизни эксперимента
+ * @property float|null $lifespan_min_change Мин. прод-ть жизни % изменения
+ * @property float|null $lifespan_mean_change Сред. прод-ть жизни % изменения
+ * @property float|null $lifespan_median_change Мед. прод-ть жизни % изменения
+ * @property float|null $lifespan_max_change Макс. прод-ть жизни % изменения
  * @property int|null $control_number Количество организмов в контроле
  * @property int|null $experiment_number Количество организмов в эксперименте
- * @property int|null $expression_change Степень изменения экспрессии гена %
+ * @property float|null $expression_change Степень изменения экспрессии гена %
  * @property int|null $changed_expression_tissue_id Ткань/клетки
  * @property int|null $lifespan_change_time_unit_id
  * @property int|null $age
@@ -43,6 +43,7 @@ use Yii;
  * @property string|null $pmid
  * @property string|null $comment_en
  * @property string|null $comment_ru
+ * @property int|null $measurement_type
  *
  * @property Sample $changedExpressionTissue
  * @property TreatmentTimeUnit $lifespanChangeTimeUnit
@@ -70,7 +71,8 @@ class GeneralLifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['control_lifespan_min', 'control_lifespan_mean', 'control_lifespan_median', 'control_lifespan_max', 'experiment_lifespan_min', 'experiment_lifespan_mean', 'experiment_lifespan_median', 'experiment_lifespan_max', 'lifespan_min_change', 'lifespan_mean_change', 'lifespan_median_change', 'lifespan_max_change', 'control_number', 'experiment_number', 'expression_change', 'changed_expression_tissue_id', 'lifespan_change_time_unit_id', 'age', 'age_unit', 'intervention_result_id', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common', 'lifespan_min_change_stat_sign_id', 'lifespan_mean_change_stat_sign_id', 'lifespan_median_change_stat_sign_id', 'lifespan_max_change_stat_sign_id', 'model_organism_id', 'organism_line_id', 'organism_sex_id', 'measurement_type'], 'integer'],
+            [['control_lifespan_min', 'control_lifespan_mean', 'control_lifespan_median', 'control_lifespan_max', 'experiment_lifespan_min', 'experiment_lifespan_mean', 'experiment_lifespan_median', 'experiment_lifespan_max', 'lifespan_min_change', 'lifespan_mean_change', 'lifespan_median_change', 'lifespan_max_change', 'expression_change'], 'number'],
+            [['control_number', 'experiment_number', 'changed_expression_tissue_id', 'lifespan_change_time_unit_id', 'age', 'age_unit', 'intervention_result_id', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common', 'lifespan_min_change_stat_sign_id', 'lifespan_mean_change_stat_sign_id', 'lifespan_median_change_stat_sign_id', 'lifespan_max_change_stat_sign_id', 'model_organism_id', 'organism_line_id', 'organism_sex_id', 'measurement_type'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['name', 'reference', 'pmid'], 'string', 'max' => 255],
             [['changed_expression_tissue_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sample::class, 'targetAttribute' => ['changed_expression_tissue_id' => 'id']],
@@ -125,6 +127,7 @@ class GeneralLifespanExperiment extends \yii\db\ActiveRecord
             'pmid' => Yii::t('app', 'Pmid'),
             'comment_en' => Yii::t('app', 'Comment En'),
             'comment_ru' => Yii::t('app', 'Comment Ru'),
+            'measurement_type' => Yii::t('app', 'Measurement Type'),
         ];
     }
 

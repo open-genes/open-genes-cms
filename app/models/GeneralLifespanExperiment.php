@@ -135,6 +135,22 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         ];
     }
 
+    /**
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function beforeValidate()
+    {
+        foreach ($this->getTableSchema()->columns as $column) {
+            if ($column->type == 'float') {
+                $attr = $column->name;
+                $this->$attr = trim(str_replace(',', '.', $this->$attr));
+            }
+        }
+        $this->reference = trim($this->reference);
+
+        return parent::beforeValidate();
+    }
 
     /**
      * Gets query for [[ChangedExpressionTissue]].

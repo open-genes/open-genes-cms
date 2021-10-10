@@ -100,11 +100,18 @@ class LifespanExperiment extends common\LifespanExperiment
         return new LifespanExperimentQuery(get_called_class());
     }
 
+    /**
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
     public function beforeValidate()
     {
-        $this->lifespan_change_percent_male = str_replace(',', '.', $this->lifespan_change_percent_male);
-        $this->lifespan_change_percent_female = str_replace(',', '.', $this->lifespan_change_percent_female);
-        $this->lifespan_change_percent_common = str_replace(',', '.', $this->lifespan_change_percent_common);
+        foreach ($this->getTableSchema()->columns as $column) {
+            if ($column->type == 'float') {
+                $attr = $column->name;
+                $this->$attr = trim(str_replace(',', '.', $this->$attr));
+            }
+        }
         $this->age = str_replace(',', '.', $this->age);
         $this->reference = trim($this->reference);
 
@@ -150,7 +157,7 @@ class LifespanExperiment extends common\LifespanExperiment
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public static function saveMultipleForGene(array $modelArrays, int $geneId)
+    public static function saveMultipleForGene(array $modelArrays)
     {
         foreach ($modelArrays as $id => $modelArray) {
             if (is_numeric($id)) {
@@ -176,10 +183,7 @@ class LifespanExperiment extends common\LifespanExperiment
             self::setAttributeFromNewAR($modelArray, 'treatment_end_time_unit_id', 'TreatmentTimeUnit', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_start_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_end_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
-
-            if (!$modelAR->gene_id) {
-                $modelAR->gene_id = $geneId;
-            }
+            
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }
@@ -203,6 +207,10 @@ class LifespanExperiment extends common\LifespanExperiment
                 $tissuesIdsToAdd = array_diff($tissuesIdsArray, $currentTissuesIdsArray);
 
                 foreach ($tissuesIdsToAdd as $tissueIdToAdd) {
+                    if (!is_numeric($tissueIdToAdd)) {
+                        $tissueToAdd = Sample::createFromNameString($tissueIdToAdd);
+                        $tissueIdToAdd = $tissueToAdd->id;
+                    }
                     $lifespanExperimentToTissue = new LifespanExperimentToTissue();
                     $lifespanExperimentToTissue->lifespan_experiment_id = $this->id;
                     $lifespanExperimentToTissue->tissue_id = $tissueIdToAdd;

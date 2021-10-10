@@ -18,7 +18,7 @@ trait ExperimentsActiveRecordTrait
      */
     private static function setAttributeFromNewAR($modelArray, $attrName, $ARName, &$currentAR)
     {
-        if (isset($modelArray[$attrName]) && $modelArray[$attrName] !== '' && $modelArray[$attrName] !== null) {
+        if (isset($modelArray[$attrName]) && $modelArray[$attrName] !== '') {
             if (!is_numeric($modelArray[$attrName])) {
                 $ar = "\app\models\\{$ARName}";
                 if (!class_exists($ar)) {
