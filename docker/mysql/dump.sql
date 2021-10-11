@@ -4,6 +4,10 @@
 -- ------------------------------------------------------
 -- Server version	5.7.34-0ubuntu0.18.04.1
 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secret';
+UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='root';
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
