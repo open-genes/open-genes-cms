@@ -303,6 +303,17 @@ class Gene extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Sources]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGeneToSource()
+    {
+        return $this->hasMany(Source::class, ['id' => 'source_id'])
+            ->viaTable('gene_to_source', ['gene_id' => 'id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return GeneQuery the active query used by this AR class.
      */
