@@ -4,7 +4,7 @@
 -- ------------------------------------------------------
 -- Server version	5.7.34-0ubuntu0.18.04.1
 
-SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+-- SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'secret';
 UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='root';
 
