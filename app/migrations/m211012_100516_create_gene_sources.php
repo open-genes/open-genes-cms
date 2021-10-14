@@ -59,8 +59,8 @@ class m211012_100516_create_gene_sources extends Migration
             return;
         }
         $match = [];
-        foreach ($rows as $key => $value) {
-            $match[] = [$value['id'], 3];
+        foreach ($rows as $row) {
+            $match[] = [$row['id'], 3];
         }
         $this->batchInsert('gene_to_source', ['gene_id', 'source_id'], $match);
     }
