@@ -32,15 +32,14 @@ services:
     environment:
       XDEBUG_CONFIG: client_host=${CLIENT_HOST} client_port=9003
     image: open_genes_cms
+    #   --sql_mode="STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" 
     command: bash -c "XDEBUG_CONFIG= composer install && php /var/www/console/yii.php migrate --interactive=0 && php-fpm"
     networks:
       - db_net
       - default
   mysql:
     image: mysql:8.0
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password 
-#    --sql_mode="STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION" 
-    --init-file /docker-entrypoint-initdb.d/init.sql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --init-file /docker-entrypoint-initdb.d/init.sql    
     restart: always
     ports:
       - "3307:3306"
