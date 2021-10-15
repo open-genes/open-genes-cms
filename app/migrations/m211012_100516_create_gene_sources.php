@@ -24,7 +24,9 @@ class m211012_100516_create_gene_sources extends Migration
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
 
         $this->createIndex('gene_id', 'gene_to_source', ['gene_id']);
-        $this->createIndex('source_id', 'gene_to_source', ['gene_id']);
+        $this->createIndex('source_id', 'gene_to_source', ['source_id']);
+
+        $this->addPrimaryKey('gene_source', 'gene_to_source', ['gene_id', 'source_id']);
 
         $this->addForeignKey('gene_to_source', 'gene_to_source', 'gene_id', 'gene', 'id');
         $this->addForeignKey('source_to_gene', 'gene_to_source', 'source_id', 'source', 'id');
@@ -45,8 +47,8 @@ class m211012_100516_create_gene_sources extends Migration
      */
     public function safeDown()
     {
-        $this->dropForeignKey('gene_to_source', 'gene');
-        $this->dropForeignKey('source_to_gene', 'source');
+        $this->dropForeignKey('gene_to_source', 'gene_to_source');
+        $this->dropForeignKey('source_to_gene', 'gene_to_source');
         $this->dropTable('source');
         $this->dropTable('gene_to_source');
         $this->addColumn('gene', 'source', Schema::TYPE_TEXT);

@@ -17,8 +17,8 @@ use app\models\GeneInterventionToVitalProcess;
 use app\models\LifespanExperiment;
 use app\models\ProteinClass;
 use app\models\ProteinToGene;
+use app\models\Source;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -117,12 +117,14 @@ class GeneController extends Controller
         $allDiseases = Disease::findAllAsArray();
         $allAges = Phylum::findAllAsArray();
         $allProteinClasses = ProteinClass::findAllAsArray();
+        $allSources = Source::findAllAsArray();
         return $this->render('update', [
             'model' => $model,
             'allFunctionalClusters' => $allFunctionalClusters,
             'allDiseases' => $allDiseases,
             'allCommentCauses' => $allCommentCauses,
             'allProteinClasses' => $allProteinClasses,
+            'allSources' => $allSources,
             'allAges' => $allAges,
         ]);
     }

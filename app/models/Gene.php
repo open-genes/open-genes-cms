@@ -4,14 +4,13 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\common\GeneToDisease;
+use app\models\common\GeneToSource;
 use app\models\traits\ConditionActiveRecordTrait;
-use app\models\traits\RuEnActiveRecordTrait;
 use app\models\common\GeneToProteinClass;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
-use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -32,6 +31,7 @@ class Gene extends common\Gene
     protected $diseasesIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
+    protected $sourcesIdsArray;
 
     public function behaviors()
     {
@@ -49,7 +49,7 @@ class Gene extends common\Gene
         return ArrayHelper::merge(
             parent::rules(), [
             [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray',
-                'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments'], 'safe'],
+                'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments', 'sourcesIdsArray'], 'safe'],
             ['ncbi_id', 'unique'],
         ]);
     }
@@ -93,6 +93,7 @@ class Gene extends common\Gene
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
             'proteinClassesIdsArray' => 'Классы белков',
+            'sourcesIdsArray' => 'Источники',
             'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
@@ -194,6 +195,15 @@ class Gene extends common\Gene
             ->column();
     }
 
+    public function getSourcesIdsArray()
+    {
+        return GeneToSource::find()
+            ->select('source_id')
+            ->where(['gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
     public function setFunctionalClustersIdsArray(array $ids)
     {
         $this->functionalClustersIdsArray = $ids;
@@ -212,6 +222,11 @@ class Gene extends common\Gene
     public function setProteinClassesIdsArray(array $ids)
     {
         $this->proteinClassesIdsArray = $ids;
+    }
+
+    public function setSourcesIdsArray(array $ids)
+    {
+        $this->sourcesIdsArray = $ids;
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -311,6 +326,30 @@ class Gene extends common\Gene
                 $arToDelete->delete();
             }
         }
+
+        $currentSourcesIdsArray = $this->getSourcesIdsArray();
+        if ($currentSourcesIdsArray !== $this->sourcesIdsArray) {
+            if ($this->sourcesIdsArray) {
+                $sourcesIdsArrayToDelete = array_diff($currentSourcesIdsArray, $this->sourcesIdsArray);
+                $sourcesIdsArrayToAdd = array_diff($this->sourcesIdsArray, $currentSourcesIdsArray);
+                foreach ($sourcesIdsArrayToAdd as $sourcesIdArrayToAdd) {
+                    $geneToSource = new GeneToSource();
+                    $geneToSource->gene_id = $this->id;
+                    $geneToSource->source_id = $sourcesIdArrayToAdd;
+                    $geneToSource->save();
+                }
+            } else {
+                $sourcesIdsArrayToDelete = $currentSourcesIdsArray;
+            }
+            $arsToDelete = GeneToSource::find()->where(
+                ['and', ['gene_id' => $this->id],
+                    ['in', 'source_id', $sourcesIdsArrayToDelete]]
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
+        }
+
 
         parent::afterSave($insert, $changedAttributes);
     }
