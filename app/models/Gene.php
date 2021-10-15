@@ -96,7 +96,6 @@ class Gene extends common\Gene
             'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
-            'source' => 'Источник',
             'ncbi_summary_ru' => 'Описание гена (NCBI) Ru',
             'ncbi_summary_en' => 'Описание гена (NCBI) En',
             'og_summary_en' => 'Описание белка Open Genes (En)',
@@ -126,7 +125,6 @@ class Gene extends common\Gene
         $this->addCondition($query, 'aliases', true);
         $this->addCondition($query, 'name', true);
         $this->addCondition($query, 'ncbi_id');
-        $this->addCondition($query, 'source');
         $this->addExperimentsCondition($query);
 
         $dataProvider = new ActiveDataProvider([

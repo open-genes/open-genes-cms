@@ -86,7 +86,7 @@ class Gene extends \yii\db\ActiveRecord
             [['commentEvolution', 'uniprot_summary_ru', 'commentCause', 'commentAging', 'commentEvolutionEN', 'uniprot_summary_en', 'commentAgingEN', 'commentsReferenceLinks', 'protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
             [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
-            [['ensembl', 'source'], 'string', 'max' => 255],
+            [['ensembl'], 'string', 'max' => 255],
             [['phylum_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['phylum_id' => 'id']],
             [['family_phylum_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['family_phylum_id' => 'id']],
         ];
@@ -136,7 +136,6 @@ class Gene extends \yii\db\ActiveRecord
             'human_protein_atlas' => 'Human Protein Atlas',
             'ncbi_summary_ru' => 'Ncbi Summary Ru',
             'ncbi_summary_en' => 'Ncbi Summary En',
-            'source' => 'Source',
             'og_summary_en' => 'Og Summary En',
             'og_summary_ru' => 'Og Summary Ru',
         ];

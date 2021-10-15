@@ -57,10 +57,6 @@ $experimentsNames = [
             ],
             'aliases',
             [
-                'attribute' => 'source',
-                'filter'=> Html::dropDownList('Gene[source]', $searchModel->source, ['abdb' => 'abdb', 'horvath' => 'horvath'],['prompt'=>' ','class' => 'form-control']),
-            ],
-            [
                 'label' => 'Исследования',
                 'value' => function($model, $index, $dataColumn) use ($experimentsNames) { /** @var $model Gene */
                     $url = \yii\helpers\Url::toRoute(['update-experiments', 'id' => $model->id]);
