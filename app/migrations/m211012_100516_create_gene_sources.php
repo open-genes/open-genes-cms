@@ -19,14 +19,10 @@ class m211012_100516_create_gene_sources extends Migration
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
 
         $this->createTable('gene_to_source', [
+            'id' => Schema::TYPE_PK,
             'gene_id' => Schema::TYPE_INTEGER,
             'source_id' => Schema::TYPE_INTEGER,
         ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
-
-        $this->createIndex('gene_id', 'gene_to_source', ['gene_id']);
-        $this->createIndex('source_id', 'gene_to_source', ['source_id']);
-
-        $this->addPrimaryKey('gene_source', 'gene_to_source', ['gene_id', 'source_id']);
 
         $this->addForeignKey('gene_to_source', 'gene_to_source', 'gene_id', 'gene', 'id');
         $this->addForeignKey('source_to_gene', 'gene_to_source', 'source_id', 'source', 'id');
