@@ -234,122 +234,11 @@ class Gene extends common\Gene
         if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
             return parent::afterSave($insert, $changedAttributes);
         }
-        // todo move to relational active records
-        $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
-        if ($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
-            if ($this->functionalClustersIdsArray) {
-                $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
-                $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
-                foreach ($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
-                    $geneToFunctionalCluster = new GeneToFunctionalCluster();
-                    $geneToFunctionalCluster->gene_id = $this->id;
-                    $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
-                    $geneToFunctionalCluster->save();
-                }
-            } else {
-                $functionalClustersIdsToDelete = $currentFunctionalClustersIds;
-            }
-            $arsToDelete = GeneToFunctionalCluster::find()->where(
-                ['and', ['gene_id' => $this->id],
-                ['in', 'functional_cluster_id', $functionalClustersIdsToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentCommentCauseIds = $this->getCommentCauseIdsArray();
-        if ($currentCommentCauseIds !== $this->commentCauseIdsArray) {
-            if ($this->commentCauseIdsArray) {
-                $commentCausesIdsToDelete = array_diff($currentCommentCauseIds, $this->commentCauseIdsArray);
-                $commentCausesIdsToAdd = array_diff($this->commentCauseIdsArray, $currentCommentCauseIds);
-                foreach ($commentCausesIdsToAdd as $commentCauseIdToAdd) {
-                    $geneToCommentCause = new GeneToCommentCause();
-                    $geneToCommentCause->gene_id = $this->id;
-                    $geneToCommentCause->comment_cause_id = $commentCauseIdToAdd;
-                    $geneToCommentCause->save();
-                }
-            } else {
-                $commentCausesIdsToDelete = $currentCommentCauseIds;
-            }
-            $arsToDelete = GeneToCommentCause::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'comment_cause_id', $commentCausesIdsToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentProteinClassesIdsArray = $this->getProteinClassesIdsArray();
-        if ($currentProteinClassesIdsArray !== $this->proteinClassesIdsArray) {
-            if ($this->proteinClassesIdsArray) {
-                $proteinClassesIdsToDelete = array_diff($currentProteinClassesIdsArray, $this->proteinClassesIdsArray);
-                $proteinClassesIdsToAdd = array_diff($this->proteinClassesIdsArray, $currentProteinClassesIdsArray);
-                foreach ($proteinClassesIdsToAdd as $proteinClassesIdToAdd) {
-                    $geneToProteinClass = new GeneToProteinClass();
-                    $geneToProteinClass->gene_id = $this->id;
-                    $geneToProteinClass->protein_class_id = $proteinClassesIdToAdd;
-                    $geneToProteinClass->save();
-                }
-            } else {
-                $proteinClassesIdsToDelete = $currentProteinClassesIdsArray;
-            }
-            $arsToDelete = GeneToProteinClass::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'protein_class_id', $proteinClassesIdsToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentDiseasesIdsArray = $this->getDiseasesIdsArray();
-        if ($currentDiseasesIdsArray !== $this->diseasesIdsArray) {
-            if ($this->diseasesIdsArray) {
-                $diseasesIdsArrayToDelete = array_diff($currentDiseasesIdsArray, $this->diseasesIdsArray);
-                $diseasesIdsIdsToAdd = array_diff($this->diseasesIdsArray, $currentDiseasesIdsArray);
-                foreach ($diseasesIdsIdsToAdd as $diseasesIdToAdd) {
-                    $geneToDisease = new GeneToDisease();
-                    $geneToDisease->gene_id = $this->id;
-                    $geneToDisease->disease_id = $diseasesIdToAdd;
-                    $geneToDisease->save();
-                }
-            } else {
-                $diseasesIdsArrayToDelete = $currentDiseasesIdsArray;
-            }
-            $arsToDelete = GeneToDisease::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'disease_id', $diseasesIdsArrayToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentSourcesIdsArray = $this->getSourcesIdsArray();
-        if ($currentSourcesIdsArray !== $this->sourcesIdsArray) {
-            if ($this->sourcesIdsArray) {
-                $sourcesIdsArrayToDelete = array_diff($currentSourcesIdsArray, $this->sourcesIdsArray);
-                $sourcesIdsArrayToAdd = array_diff($this->sourcesIdsArray, $currentSourcesIdsArray);
-                foreach ($sourcesIdsArrayToAdd as $sourcesIdArrayToAdd) {
-                    $geneToSource = new GeneToSource();
-                    $geneToSource->gene_id = $this->id;
-                    $geneToSource->source_id = $sourcesIdArrayToAdd;
-                    $geneToSource->save();
-                }
-            } else {
-                $sourcesIdsArrayToDelete = $currentSourcesIdsArray;
-            }
-            $arsToDelete = GeneToSource::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'source_id', $sourcesIdsArrayToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
+        $this->updateRelations($this->getFunctionalClustersIdsArray(),'functionalClustersIdsArray', GeneToFunctionalCluster::class, 'functional_cluster_id');
+        $this->updateRelations($this->getCommentCauseIdsArray(),'commentCauseIdsArray', GeneToCommentCause::class, 'comment_cause_id');
+        $this->updateRelations($this->getProteinClassesIdsArray(),'proteinClassesIdsArray', GeneToProteinClass::class, 'protein_class_id');
+        $this->updateRelations($this->getDiseasesIdsArray(),'diseasesIdsArray', GeneToDisease::class, 'disease_id');
+        $this->updateRelations($this->getSourcesIdsArray(),'sourcesIdsArray', GeneToSource::class, 'source_id');
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -459,5 +348,29 @@ class Gene extends common\Gene
     {
         $this->aliases = str_replace(',', '', $this->aliases);
         return parent::beforeSave($insert);
+    }
+
+    private function updateRelations($currentIdsArray, $geneProp, $relationClassName, $relationProp) {
+        if ($currentIdsArray !== $this->$geneProp) {
+            if ($this->$geneProp) {
+                $relationIdsArrayToDelete = array_diff($currentIdsArray, $this->$geneProp);
+                $relationIdsArrayToAdd = array_diff($this->$geneProp, $currentIdsArray);
+                foreach ($relationIdsArrayToAdd as $relationIdArrayToAdd) {
+                    $geneToRelation = new $relationClassName;
+                    $geneToRelation->gene_id = $this->id;
+                    $geneToRelation->$relationProp = $relationIdArrayToAdd;
+                    $geneToRelation->save();
+                }
+            } else {
+                $relationIdsArrayToDelete = $currentIdsArray;
+            }
+            $arsToDelete = $relationClassName::find()->where(
+                ['and', ['gene_id' => $this->id],
+                    ['in', $relationProp, $relationIdsArrayToDelete]]
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
+        }
     }
 }
