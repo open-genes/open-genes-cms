@@ -86,7 +86,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['model_organism_id', 'intervention_result_id'], 'required', 'on' => 'saveFromForm'],
+//            [['model_organism_id', 'intervention_result_id'], 'required', 'on' => 'saveFromForm'], // todo OG-410
             [['delete', 'currentGeneId'], 'safe'],
         ]);
     }

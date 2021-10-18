@@ -66,7 +66,7 @@ class LifespanExperiment extends common\LifespanExperiment
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'gene_intervention_method_id'], 'required'],
+            [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
             [['tissuesIds', 'geneInterventionWay', 'intervention_result_id'], 'safe'],
             [['age'], 'number', 'min' => 0],
             [['age_unit'], 'required', 'when' => function ($model) {
