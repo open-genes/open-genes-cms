@@ -312,41 +312,42 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12">
-                <div class="row form-row">
-                    <div class="col-xs-6 col-sm-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']age', ['class' => 'form-control form_age', 'placeholder' => 'Возраст']) ?>
-                    </div>
-                    <div class="col-xs-6 col-sm-4">
-                        <?= \kartik\select2\Select2::widget([
-                            'model' => $generalLifespanExperiment,
-                            'attribute' => '[' . $generalLifespanExperiment->id . ']age_unit',
-                            'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
-                            'options' => [
-                                'placeholder' => 'Ед. изм. возраста',
-                                'multiple' => false
-                            ],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                                'containerCssClass' => 'form_age_unit',
-                            ],
-                        ]);
-                        ?>
-                    </div>
-                    <div class="col-sm-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_male', ['class' => 'form-control', 'placeholder' => 'Изменение (%) муж']) ?>
-                    </div>
-                    <div class="col-sm-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
-                    </div>
-                    <div class="col-sm-2">
-                        <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
+
+            <?php if(Yii::$app->user->can('admin')): ?>
+                <div class="col-xs-12">
+                    <div class="row form-row">
+                        <div class="col-xs-6 col-sm-2">
+                            <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']age', ['class' => 'form-control form_age', 'placeholder' => 'Возраст']) ?>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <?= \kartik\select2\Select2::widget([
+                                'model' => $generalLifespanExperiment,
+                                'attribute' => '[' . $generalLifespanExperiment->id . ']age_unit',
+                                'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                                'options' => [
+                                    'placeholder' => 'Ед. изм. возраста',
+                                    'multiple' => false
+                                ],
+                                'pluginOptions' => [
+                                    'allowClear' => true,
+                                    'containerCssClass' => 'form_age_unit',
+                                ],
+                            ]);
+                            ?>
+                        </div>
+                        <div class="col-sm-2">
+                            <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_male', ['class' => 'form-control', 'placeholder' => 'Изменение (%) муж']) ?>
+                        </div>
+                        <div class="col-sm-2">
+                            <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
+                        </div>
+                        <div class="col-sm-2">
+                            <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']lifespan_change_percent_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-
+        <?php endif; ?>
 
         <div class="row form-row meta-section">
             <div class="col-xs-12 col-sm-6">
