@@ -4,6 +4,7 @@ namespace app\console\controllers;
 
 use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
+use app\models\common\GeneToSource;
 use app\models\Disease;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
@@ -12,6 +13,7 @@ use app\models\common\GeneExpressionInSample;
 use app\models\GeneToCommentCause;
 use app\models\GeneToFunctionalCluster;
 use app\models\Sample;
+use Yii;
 use yii\console\Controller;
 
 class MigrateDataController extends Controller
@@ -79,7 +81,12 @@ class MigrateDataController extends Controller
                     if (!$arFunctionalCluster) {
                         $arFunctionalCluster = new FunctionalCluster();
                         $arFunctionalCluster->name_ru = $functionalClusterRu;
-                        $arFunctionalCluster->name_en = \Yii::t('main', str_replace([' ', '/'], '_', $functionalClusterRu), [], 'en-US');
+                        $arFunctionalCluster->name_en = \Yii::t(
+                            'main',
+                            str_replace([' ', '/'], '_', $functionalClusterRu),
+                            [],
+                            'en-US'
+                        );
                         $arFunctionalCluster->save();
                         $arFunctionalCluster->refresh();
                     }
@@ -225,4 +232,74 @@ class MigrateDataController extends Controller
             echo PHP_EOL;
         }
     }
+
+    public function actionFillSourceAbdb($absolutePathToFile)
+    {
+        if (!file_exists($absolutePathToFile)) {
+            return 'Cannot find data file';
+        }
+        $json = file_get_contents($absolutePathToFile);
+        $array = json_decode($json, true);
+
+        if (empty($array['data']) || !is_array($array['data'])) {
+            return 'Data file is empty';
+        }
+
+        $query = Yii::$app->db->createCommand('SELECT id, symbol FROM gene WHERE symbol IS NOT NULL ')->queryAll();
+        $geneList = [];
+        foreach ($query as $row) {
+            if (!empty($row['symbol'])) {
+                $geneList[trim($row['symbol'])] = $row['id'];
+            }
+        }
+        try {
+            foreach ($array['data'] as $gene) {
+                $symbol = strtoupper(trim($gene[1]));
+                if (in_array($symbol, array_keys($geneList))) {
+                    $geneToSource = new GeneToSource();
+                    $geneToSource->gene_id = $geneList[$symbol];
+                    $geneToSource->source_id = 2;
+                    $geneToSource->save();
+                }
+            }
+            return 'Source Abdb was successfully filled';
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    public function actionFillSourceGeneAge($absolutePathToFile)
+    {
+        if (!file_exists($absolutePathToFile)) {
+            return 'Cannot find data file';
+        }
+        $f = fopen($absolutePathToFile, 'r');
+        if (fgetcsv($f) == false) {
+            return 'Data file is empty';
+        }
+
+        $query = Yii::$app->db->createCommand('SELECT id, symbol FROM gene WHERE symbol IS NOT NULL ')->queryAll();
+        $geneList = [];
+        foreach ($query as $row) {
+            if (!empty($row['symbol'])) {
+                $geneList[trim($row['symbol'])] = $row['id'];
+            }
+        }
+
+        try {
+            while (($data = fgetcsv($f)) !== false) {
+                $symbol = strtoupper(trim($data[1]));
+                if (in_array($symbol, array_keys($geneList))) {
+                    $geneToSource = new GeneToSource();
+                    $geneToSource->gene_id = $geneList[$symbol];
+                    $geneToSource->source_id = 1;
+                    $geneToSource->save();
+                }
+            }
+            return 'Source GenAge was successfully filled';
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
 }

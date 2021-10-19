@@ -4,14 +4,13 @@ namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
 use app\models\common\GeneToDisease;
+use app\models\common\GeneToSource;
 use app\models\traits\ConditionActiveRecordTrait;
-use app\models\traits\RuEnActiveRecordTrait;
 use app\models\common\GeneToProteinClass;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
 use yii\db\ActiveQuery;
-use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -32,6 +31,7 @@ class Gene extends common\Gene
     protected $diseasesIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
+    protected $sourcesIdsArray;
 
     public function behaviors()
     {
@@ -49,7 +49,7 @@ class Gene extends common\Gene
         return ArrayHelper::merge(
             parent::rules(), [
             [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray',
-                'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments'], 'safe'],
+                'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments', 'sourcesIdsArray'], 'safe'],
             ['ncbi_id', 'unique'],
         ]);
     }
@@ -93,10 +93,10 @@ class Gene extends common\Gene
             'userEdited' => 'User Edited',
             'isHidden' => 'Скрыт',
             'proteinClassesIdsArray' => 'Классы белков',
+            'sourcesIdsArray' => 'Источники',
             'expressionChange' => 'Изменение экспрессии',
             'protein_complex_ru' => 'Белковый комплекс Ru',
             'protein_complex_en' => 'Белковый комплекс En',
-            'source' => 'Источник',
             'ncbi_summary_ru' => 'Описание гена (NCBI) Ru',
             'ncbi_summary_en' => 'Описание гена (NCBI) En',
             'og_summary_en' => 'Описание белка Open Genes (En)',
@@ -126,7 +126,6 @@ class Gene extends common\Gene
         $this->addCondition($query, 'aliases', true);
         $this->addCondition($query, 'name', true);
         $this->addCondition($query, 'ncbi_id');
-        $this->addCondition($query, 'source');
         $this->addExperimentsCondition($query);
 
         $dataProvider = new ActiveDataProvider([
@@ -196,6 +195,15 @@ class Gene extends common\Gene
             ->column();
     }
 
+    public function getSourcesIdsArray()
+    {
+        return GeneToSource::find()
+            ->select('source_id')
+            ->where(['gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
     public function setFunctionalClustersIdsArray(array $ids)
     {
         $this->functionalClustersIdsArray = $ids;
@@ -216,103 +224,21 @@ class Gene extends common\Gene
         $this->proteinClassesIdsArray = $ids;
     }
 
+    public function setSourcesIdsArray(array $ids)
+    {
+        $this->sourcesIdsArray = $ids;
+    }
+
     public function afterSave($insert, $changedAttributes)
     {
         if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
             return parent::afterSave($insert, $changedAttributes);
         }
-        // todo move to relational active records
-        $currentFunctionalClustersIds = $this->getFunctionalClustersIdsArray();
-        if ($currentFunctionalClustersIds !== $this->functionalClustersIdsArray) {
-            if ($this->functionalClustersIdsArray) {
-                $functionalClustersIdsToDelete = array_diff($currentFunctionalClustersIds, $this->functionalClustersIdsArray);
-                $functionalClustersIdsToAdd = array_diff($this->functionalClustersIdsArray, $currentFunctionalClustersIds);
-                foreach ($functionalClustersIdsToAdd as $functionalClusterIdToAdd) {
-                    $geneToFunctionalCluster = new GeneToFunctionalCluster();
-                    $geneToFunctionalCluster->gene_id = $this->id;
-                    $geneToFunctionalCluster->functional_cluster_id = $functionalClusterIdToAdd;
-                    $geneToFunctionalCluster->save();
-                }
-            } else {
-                $functionalClustersIdsToDelete = $currentFunctionalClustersIds;
-            }
-            $arsToDelete = GeneToFunctionalCluster::find()->where(
-                ['and', ['gene_id' => $this->id],
-                ['in', 'functional_cluster_id', $functionalClustersIdsToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentCommentCauseIds = $this->getCommentCauseIdsArray();
-        if ($currentCommentCauseIds !== $this->commentCauseIdsArray) {
-            if ($this->commentCauseIdsArray) {
-                $commentCausesIdsToDelete = array_diff($currentCommentCauseIds, $this->commentCauseIdsArray);
-                $commentCausesIdsToAdd = array_diff($this->commentCauseIdsArray, $currentCommentCauseIds);
-                foreach ($commentCausesIdsToAdd as $commentCauseIdToAdd) {
-                    $geneToCommentCause = new GeneToCommentCause();
-                    $geneToCommentCause->gene_id = $this->id;
-                    $geneToCommentCause->comment_cause_id = $commentCauseIdToAdd;
-                    $geneToCommentCause->save();
-                }
-            } else {
-                $commentCausesIdsToDelete = $currentCommentCauseIds;
-            }
-            $arsToDelete = GeneToCommentCause::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'comment_cause_id', $commentCausesIdsToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentProteinClassesIdsArray = $this->getProteinClassesIdsArray();
-        if ($currentProteinClassesIdsArray !== $this->proteinClassesIdsArray) {
-            if ($this->proteinClassesIdsArray) {
-                $proteinClassesIdsToDelete = array_diff($currentProteinClassesIdsArray, $this->proteinClassesIdsArray);
-                $proteinClassesIdsToAdd = array_diff($this->proteinClassesIdsArray, $currentProteinClassesIdsArray);
-                foreach ($proteinClassesIdsToAdd as $proteinClassesIdToAdd) {
-                    $geneToProteinClass = new GeneToProteinClass();
-                    $geneToProteinClass->gene_id = $this->id;
-                    $geneToProteinClass->protein_class_id = $proteinClassesIdToAdd;
-                    $geneToProteinClass->save();
-                }
-            } else {
-                $proteinClassesIdsToDelete = $currentProteinClassesIdsArray;
-            }
-            $arsToDelete = GeneToProteinClass::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'protein_class_id', $proteinClassesIdsToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
-
-        $currentDiseasesIdsArray = $this->getDiseasesIdsArray();
-        if ($currentDiseasesIdsArray !== $this->diseasesIdsArray) {
-            if ($this->diseasesIdsArray) {
-                $diseasesIdsArrayToDelete = array_diff($currentDiseasesIdsArray, $this->diseasesIdsArray);
-                $diseasesIdsIdsToAdd = array_diff($this->diseasesIdsArray, $currentDiseasesIdsArray);
-                foreach ($diseasesIdsIdsToAdd as $diseasesIdToAdd) {
-                    $geneToDisease = new GeneToDisease();
-                    $geneToDisease->gene_id = $this->id;
-                    $geneToDisease->disease_id = $diseasesIdToAdd;
-                    $geneToDisease->save();
-                }
-            } else {
-                $diseasesIdsArrayToDelete = $currentDiseasesIdsArray;
-            }
-            $arsToDelete = GeneToDisease::find()->where(
-                ['and', ['gene_id' => $this->id],
-                    ['in', 'disease_id', $diseasesIdsArrayToDelete]]
-            )->all();
-            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
-                $arToDelete->delete();
-            }
-        }
+        $this->updateRelations($this->getFunctionalClustersIdsArray(),'functionalClustersIdsArray', GeneToFunctionalCluster::class, 'functional_cluster_id');
+        $this->updateRelations($this->getCommentCauseIdsArray(),'commentCauseIdsArray', GeneToCommentCause::class, 'comment_cause_id');
+        $this->updateRelations($this->getProteinClassesIdsArray(),'proteinClassesIdsArray', GeneToProteinClass::class, 'protein_class_id');
+        $this->updateRelations($this->getDiseasesIdsArray(),'diseasesIdsArray', GeneToDisease::class, 'disease_id');
+        $this->updateRelations($this->getSourcesIdsArray(),'sourcesIdsArray', GeneToSource::class, 'source_id');
 
         parent::afterSave($insert, $changedAttributes);
     }
@@ -422,5 +348,29 @@ class Gene extends common\Gene
     {
         $this->aliases = str_replace(',', '', $this->aliases);
         return parent::beforeSave($insert);
+    }
+
+    private function updateRelations($currentIdsArray, $geneProp, $relationClassName, $relationProp) {
+        if ($currentIdsArray !== $this->$geneProp) {
+            if ($this->$geneProp) {
+                $relationIdsArrayToDelete = array_diff($currentIdsArray, $this->$geneProp);
+                $relationIdsArrayToAdd = array_diff($this->$geneProp, $currentIdsArray);
+                foreach ($relationIdsArrayToAdd as $relationIdArrayToAdd) {
+                    $geneToRelation = new $relationClassName;
+                    $geneToRelation->gene_id = $this->id;
+                    $geneToRelation->$relationProp = $relationIdArrayToAdd;
+                    $geneToRelation->save();
+                }
+            } else {
+                $relationIdsArrayToDelete = $currentIdsArray;
+            }
+            $arsToDelete = $relationClassName::find()->where(
+                ['and', ['gene_id' => $this->id],
+                    ['in', $relationProp, $relationIdsArrayToDelete]]
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
+        }
     }
 }

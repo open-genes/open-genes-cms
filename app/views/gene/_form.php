@@ -10,6 +10,7 @@ use yii\widgets\ActiveForm;
 /* @var $allDiseases [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
+/* @var $allSources [] */
 /* @var $allAges[] */
 /* @var $form yii\widgets\ActiveForm */
 
@@ -171,6 +172,21 @@ $this->registerCssFile('/assets/css/gene.css');
         </div>
     </div>
     <?php endif; ?>
+<!--this!!-->
+    <?php if(Yii::$app->user->can('editor')): ?>
+        <div class="row form-row">
+            <div class="col-xs-12">
+                <?= $form->field($model, 'sourcesIdsArray')->widget(\kartik\select2\Select2::class, [
+                    'data' => $allSources,
+                    'options' => ['multiple' => true],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]); ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    <!--this!!-->
 
     <div class="row form-row">
         <div class="col-xs-12">

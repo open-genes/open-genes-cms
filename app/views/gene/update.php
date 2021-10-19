@@ -8,6 +8,7 @@ use yii\helpers\Html;
 /* @var $allDiseases [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
+/* @var $allSources [] */
 /* @var $allAges [] */
 
 $this->title = 'Редактировать ген ' . $model->symbol;
@@ -24,6 +25,7 @@ $this->params['breadcrumbs'][] = 'Update';
         'allDiseases' => $allDiseases,
         'allCommentCauses' => $allCommentCauses,
         'allProteinClasses' => $allProteinClasses,
+        'allSources' => $allSources,
         'allAges' => $allAges,
     ]) ?>
 
