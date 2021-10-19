@@ -171,6 +171,8 @@ class GeneController extends Controller
                 }
             } catch (UpdateExperimentsException $e) {
                 $transaction->rollBack();
+                $error = ['subject' => $e->getInfoArray(), 'message' => 'Experiments Validation Failure', 'trace' => $e->getTraceAsString()];
+                Yii::warning($error, 'experiments');
                 return json_encode(['error' => $e->getInfoArray(), 'trace' => $e->getTraceAsString()], JSON_UNESCAPED_UNICODE);
             } catch (\Exception $e) {
                 $transaction->rollBack();
