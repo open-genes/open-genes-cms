@@ -5,6 +5,7 @@ on: workflow_dispatch
 jobs:
   deploy-prod:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
@@ -21,7 +22,6 @@ jobs:
           known_hosts: ${{ secrets.DROPLET_HOST }}
       - name: Deploy with rsync
         run: |
-          echo $DROPLET_ENV | base64 -d > app/.env
           rsync -zhrl -e 'ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' app/ $SSH_USER@$SSH_HOST:$PROJECT_PATH/app/
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $SSH_USER@$SSH_HOST "php $PROJECT_PATH/app/console/yii.php migrate --interactive=0 --migrationPath=@yii/rbac/migrations,@app/migrations"
         env:

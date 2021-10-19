@@ -67,7 +67,20 @@ $config = [
                 'port' => '587',
                 'encryption' => 'tls',
             ],
-        ]
+        ],
+        'log' => [
+            'traceLevel' => getenv('DEBUG') ? 3 : 0,
+            'targets' => [
+                [
+                    'class' => notamedia\sentry\SentryTarget::class,
+                    'dsn' => getenv('SENTRY_DSN'),
+                    'levels' => ['error', 'warning'],
+                    'context' => true,
+                    // Additional options for `Sentry\init`:
+//                    'clientOptions' => ['release' => 'my-project-name@2.3.12']
+                ],
+            ],
+        ],
     ],
     'defaultRoute' => 'cms/index',
     'params' => $params,
