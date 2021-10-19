@@ -171,10 +171,12 @@ class GeneController extends Controller
                 }
             } catch (UpdateExperimentsException $e) {
                 $transaction->rollBack();
-                return json_encode(['error' => $e->getInfoArray(), JSON_UNESCAPED_UNICODE]);
+                return json_encode(['error' => $e->getInfoArray(), 'trace' => $e->getTraceAsString()], JSON_UNESCAPED_UNICODE);
             } catch (\Exception $e) {
                 $transaction->rollBack();
-                return json_encode(['error' => $e->getMessage(), JSON_UNESCAPED_UNICODE]);
+                $error = ['error' => $e->getMessage(), 'message' => 'Experiments Error', 'trace' => $e->getTraceAsString()];
+                Yii::error($error, 'experiments');
+                return json_encode($error, JSON_UNESCAPED_UNICODE);
             }
             $transaction->commit();
             return json_encode(['success']);

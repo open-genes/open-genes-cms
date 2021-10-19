@@ -105,9 +105,15 @@ $('#experiments-form').on('submit', function(e){
                 let model_name = response.error.model
                 let model_fields = response.error.fields
 
-                submitBtn.addClass('has-error')
+                submitBtn.addClass('has-error');
+                let errorMessage = 'Форма не прошла валидацию. Пожалуйста, проверьте поля'
+                if (!model_name) {
+                    errorMessage = response.error
+                }
                 if (!submitBtn.next('.help-block').length) {
-                    $('<div class="help-block">Форма не прошла валидацию. Пожалуйста, проверьте поля</div>').insertAfter(submitBtn);
+                    $('<div class="help-block">'+errorMessage+'</div>').insertAfter(submitBtn)
+                } else {
+                    submitBtn.next('.help-block').html(errorMessage);
                 }
 
                 $.each(model_fields, function (field, error) {
