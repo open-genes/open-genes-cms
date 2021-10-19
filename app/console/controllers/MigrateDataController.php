@@ -233,13 +233,12 @@ class MigrateDataController extends Controller
         }
     }
 
-    public function actionFillSourceAbdb()
+    public function actionFillSourceAbdb($absolutePathToFile)
     {
-        $pathToFile = __DIR__ . '/../../abdb.json';
-        if (!file_exists($pathToFile)) {
+        if (!file_exists($absolutePathToFile)) {
             return 'Cannot find data file';
         }
-        $json = file_get_contents($pathToFile);
+        $json = file_get_contents($absolutePathToFile);
         $array = json_decode($json, true);
 
         if (empty($array['data']) || !is_array($array['data'])) {
@@ -269,13 +268,12 @@ class MigrateDataController extends Controller
         }
     }
 
-    public function actionFillSourceGeneAge()
+    public function actionFillSourceGeneAge($absolutePathToFile)
     {
-        $pathToFile = __DIR__ . '/../../genage_human.csv';
-        if (!file_exists($pathToFile)) {
+        if (!file_exists($absolutePathToFile)) {
             return 'Cannot find data file';
         }
-        $f = fopen($pathToFile, 'r');
+        $f = fopen($absolutePathToFile, 'r');
         if (fgetcsv($f) == false) {
             return 'Data file is empty';
         }
