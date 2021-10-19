@@ -285,7 +285,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         } catch (Exception $e) {
             throw new UpdateExperimentsException($id, $modelAR);
         }
-        $modelAR->setScenario('saveFromForm');
+//        $modelAR->setScenario('saveFromForm');
         $modelAR->setAttributes($modelArray);
         self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'intervention_result_id', 'InterventionResultForLongevity', $modelAR);
