@@ -36,7 +36,7 @@
                             'multiple' => false
                         ],
                         'pluginOptions' => [
-                            'allowClear' => false,
+                            'allowClear' => true,
 //                        'tags' => true,
                             'tokenSeparators' => ['##'],
                         ],
@@ -60,7 +60,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false,
+                        'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
@@ -77,7 +77,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false,
+                        'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
@@ -94,7 +94,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false,
+                        'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
@@ -136,7 +136,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -156,7 +156,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -173,7 +173,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -204,7 +204,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -221,7 +221,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -243,7 +243,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -260,7 +260,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -280,7 +280,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -297,7 +297,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
