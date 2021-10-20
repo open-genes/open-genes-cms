@@ -106,7 +106,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']genotype',
-                    'data' => [0 => '', 1 => '+/-', 2 => '-/-'],
+                    'data' => [0 => '', 1 => '+/-', 2 => '-/-', 3 => '+/++', 4 => '++/++'],
                     'options' => [
                         'placeholder' => 'Генотип',
                         'multiple' => false
