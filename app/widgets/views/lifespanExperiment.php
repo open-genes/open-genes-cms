@@ -150,7 +150,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_id',
                     'data' => \app\models\ActiveSubstance::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Вещество',
+                        'placeholder' => 'Препарат',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -215,7 +215,7 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_delivery_way_id',
                     'data' => \app\models\ActiveSubstanceDeliveryWay::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Способ доставки вещества',
+                        'placeholder' => 'Способ доставки препарата',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
