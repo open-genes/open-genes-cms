@@ -87,19 +87,19 @@ class GeneOntologyService implements GeneOntologyServiceInterface
             }
             
             if (!empty($gene['object']['id'])) {
-                $go = explode(':', $gene['object']['id']);
-                if (empty($go[1])) {
+                $go = $gene['object']['id'];
+                if (!($go)) {
                     throw new Exception('GO id is out of format: ' . $gene['object']['id']);
                 }
             }
 
             $geneOntology = GeneOntology::find()
-                ->where(['ontology_identifier' => $go[1]])->one();
+                ->where(['ontology_identifier' => $go])->one();
             
             if(!$geneOntology) {
                 $geneOntology = new GeneOntology();
 
-                $geneOntology->ontology_identifier = $go[1];
+                $geneOntology->ontology_identifier = $go;
                 if (!empty($gene['object']['category'])) {
                     //CATEGORIES  //biological_process //cellular_component //molecular_activity
                     $geneOntology->category = $gene['object']['category'][0];
