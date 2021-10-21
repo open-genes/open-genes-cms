@@ -120,11 +120,11 @@
         </div>
 
         <div class="row form-row">
-            <div class="col-xs-6 col-md-3 checkbox-wrapper">
+            <div class="col-xs-6 col-md-4 checkbox-wrapper">
                 <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specificity') ?>
             </div>
 
-            <div class="col-xs-6 col-md-9">
+            <div class="col-xs-6 col-md-8">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']tissuesIdsArray',
@@ -142,9 +142,11 @@
                 ?>
             </div>
         </div>
-
         <div class="row form-row">
-            <div class="col-xs-6">
+            <div class="col-xs-6 col-md-4 checkbox-wrapper">
+                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']mutation_induction') ?>
+            </div>
+            <div class="col-xs-6 col-md-8">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_id',
@@ -161,7 +163,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-6 col-md-8" style="float: right;">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',
@@ -178,6 +180,8 @@
                 ]);
                 ?>
             </div>
+        </div>
+        <div class="row form-row">
             <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_dose', ['class' => 'form-control age_unit', 'placeholder' => 'Дневная доза']) ?>
             </div>
