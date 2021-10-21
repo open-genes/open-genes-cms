@@ -85,6 +85,7 @@ class LifespanExperiment extends common\LifespanExperiment
             'intervention_result_id' => 'Результат вмешательства',
             'model_organism_id' => 'Объект',
             'tissue_specificity' => 'Тканеспецифичность',
+            'mutation_induction' => 'Индукция мутации отменой препарата',
             'age' => 'Возраст',
             'reference' => 'Ссылка',
             'age_unit' => 'Ед. измерения возраста',

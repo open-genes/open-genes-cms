@@ -36,7 +36,7 @@
                             'multiple' => false
                         ],
                         'pluginOptions' => [
-                            'allowClear' => false,
+                            'allowClear' => true,
 //                        'tags' => true,
                             'tokenSeparators' => ['##'],
                         ],
@@ -60,7 +60,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false,
+                        'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
@@ -77,7 +77,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false,
+                        'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
@@ -94,7 +94,7 @@
                         'multiple' => false
                     ],
                     'pluginOptions' => [
-                        'allowClear' => false,
+                        'allowClear' => true,
                         'tags' => true,
                         'tokenSeparators' => ['##'],
                     ],
@@ -106,7 +106,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']genotype',
-                    'data' => [0 => '', 1 => '+/-', 2 => '-/-'],
+                    'data' => [0 => '', 1 => '+/-', 2 => '-/-', 3 => '+/++', 4 => '++/++'],
                     'options' => [
                         'placeholder' => 'Генотип',
                         'multiple' => false
@@ -120,11 +120,11 @@
         </div>
 
         <div class="row form-row">
-            <div class="col-xs-6 col-md-3 checkbox-wrapper">
+            <div class="col-xs-6 col-md-4 checkbox-wrapper">
                 <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specificity') ?>
             </div>
 
-            <div class="col-xs-6 col-md-9">
+            <div class="col-xs-6 col-md-8">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']tissuesIdsArray',
@@ -136,32 +136,34 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
             </div>
         </div>
-
         <div class="row form-row">
-            <div class="col-xs-6">
+            <div class="col-xs-6 col-md-4 checkbox-wrapper">
+                <?= \yii\bootstrap\Html::activeCheckbox($lifespanExperiment, '[' . $lifespanExperiment->id . ']mutation_induction') ?>
+            </div>
+            <div class="col-xs-6 col-md-8">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_id',
                     'data' => \app\models\ActiveSubstance::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Вещество',
+                        'placeholder' => 'Препарат',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6">
+            <div class="col-xs-6 col-md-8" style="float: right;">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',
@@ -173,11 +175,13 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
             </div>
+        </div>
+        <div class="row form-row">
             <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_dose', ['class' => 'form-control age_unit', 'placeholder' => 'Дневная доза']) ?>
             </div>
@@ -204,7 +208,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -215,13 +219,13 @@
                     'attribute' => '[' . $lifespanExperiment->id . ']active_substance_delivery_way_id',
                     'data' => \app\models\ActiveSubstanceDeliveryWay::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Способ доставки вещества',
+                        'placeholder' => 'Способ доставки препарата',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -243,7 +247,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -260,7 +264,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -280,7 +284,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
@@ -297,7 +301,7 @@
                     'pluginOptions' => [
                         'tags' => true,
                         'tokenSeparators' => ['##'],
-                        'allowClear' => false,
+                        'allowClear' => true,
                     ],
                 ]);
                 ?>
