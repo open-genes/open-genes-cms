@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use app\assets\CmsAsset;
@@ -55,18 +56,45 @@ $this->registerCssFile('/assets/css/main.css');
         'options' => ['class' => 'navbar-nav navbar-left'],
         'items' => [
             ['label' => 'Гены', 'url' => ['/gene']],
-            ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible'=>Yii::$app->user->can('editor')],
-            ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster'], 'visible'=>Yii::$app->user->can('editor')],
-            ['label' => 'Филумы', 'url' => ['/age']],
-            ['label' => 'Классы белков', 'url' => ['/protein-class']],
+            ['label' => 'Сущности в генах',
+                'items' => [
+                    ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible' => Yii::$app->user->can('editor')],
+                    ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster'], 'visible' => Yii::$app->user->can('editor')],
+                    ['label' => 'Филумы', 'url' => ['/age']],
+                    ['label' => 'Заболевания', 'url' => '/disease', 'visible' => Yii::$app->user->can('editor')],
+                ],
+            ],
+
             [
-                'label' => 'Исследования',
+                'label' => 'Исследования - прод.жизни',
                 'items' => [
                     ['label' => 'Способы воздействия', 'url' => '/gene-intervention-way'],
                     '<li class="divider"></li>',
                     ['label' => 'Методы вмешательства', 'url' => '/gene-intervention-method'],
                     '<li class="divider"></li>',
                     ['label' => 'Результаты вмешательства (для продолжительности жизни)', 'url' => '/intervention-result'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Препараты', 'url' => '/active-substance', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Пол', 'url' => '/organism-sex', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Способы доставки препарата', 'url' => '/active-substance-delivery-way', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Дозировки препарата', 'url' => '/active-substance-dosage-unit', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Основной эффект', 'url' => '/experiment-main-effect', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Статистическая значимость', 'url' => '/statistical-significance', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Стадия развития в начале эксперимента', 'url' => '/treatment-stage-of-development', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Единицы измерения времени', 'url' => '/treatment-time-unit', 'visible' => Yii::$app->user->can('editor')],
+                ],
+            ],
+            [
+                'label' => 'Исследования - другое',
+                'items' => [
+                    ['label' => 'Классы белков', 'url' => ['/protein-class']],
                     '<li class="divider"></li>',
                     ['label' => 'Объекты исследований (модельные организмы)', 'url' => '/model-organism'],
                     '<li class="divider"></li>',
@@ -92,12 +120,11 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
                     '<li class="divider"></li>',
-                    '<li class="divider"></li>',
-                    ['label' => 'Заболевания', 'url' => '/disease', 'visible'=>Yii::$app->user->can('editor')],
+
                 ],
             ],
-            ['label' => 'Пользователи', 'url' => '/user', 'visible'=>Yii::$app->user->can('controlUsers')],
-            ],
+            ['label' => 'Пользователи', 'url' => '/user', 'visible' => Yii::$app->user->can('controlUsers')],
+        ],
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
