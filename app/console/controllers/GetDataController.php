@@ -9,7 +9,13 @@ use app\console\service\ParseICDServiceInterface;
 use app\console\service\ParseMyGeneServiceInterface;
 use app\console\service\ParseNCBIServiceInterface;
 use app\console\service\ParseProteinAtlasServiceInterface;
+use app\models\AgingMechanism;
+use app\models\AgingMechanismToGeneOntology;
+use app\models\common\GeneOntology;
+use app\models\common\GeneToOntology;
 use app\models\Disease;
+use app\models\GeneOntologyRelation;
+use app\models\GeneOntologyToAgingMechanismVisible;
 use app\service\GeneOntologyServiceInterface;
 use yii\console\Controller;
 use yii\helpers\Html;
@@ -186,6 +192,139 @@ class GetDataController extends Controller
             echo PHP_EOL;
             usleep(100000);
         }
+    }
+    
+    public function actionGetGoTree($onlyNew = 'true')
+    {
+        $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
+        $httpClient = new Client();
+        $termsWithAgingMechanisms = GeneOntology::find()
+            ->select(['gene_ontology.id', 'gene_ontology.ontology_identifier', 'category'])
+            ->innerJoin('aging_mechanism_to_gene_ontology', 'gene_ontology.id=aging_mechanism_to_gene_ontology.gene_ontology_id')
+            ->distinct()
+            ->asArray()
+            ->all();
+        
+        $counter = 1;
+        $total = count($termsWithAgingMechanisms);
+        foreach ($termsWithAgingMechanisms as $goTerm) {
+            $this->getGoChildren($httpClient, $goTerm, $goTerm['ontology_identifier'], $counter, $total, $onlyNew);
+            $counter++;
+        }
+    }
+    
+    private function getGoChildren($httpClient, array $goTerm, $rootTermIdentifier, $rootTermCounter, $totalRootCount, $onlyNew)
+    {
+        echo "for root {$rootTermIdentifier} ({$rootTermCounter} by {$totalRootCount}) search children for {$goTerm['ontology_identifier']}" . PHP_EOL;
+        $termChildrenFromAPI = $httpClient->createRequest()
+            ->setUrl("https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/{$goTerm['ontology_identifier']}/children")
+            ->send();
+
+        $termChildren = json_decode($termChildrenFromAPI->content, true);
+        if (isset($termChildren['results'][0]['children'])) {
+            $goChildren = $termChildren['results'][0]['children'];
+
+            foreach ($goChildren as $goChild) {
+                if ($goChild['relation'] == 'is_a') {
+                    echo 'found ' . $goChild['id'] . PHP_EOL;
+                    $goTermChild = GeneOntology::find()
+                        ->where(['ontology_identifier' => $goChild['id']])
+                        ->one();
+                    if (!$goTermChild) {
+                        $goTermChild = new GeneOntology();
+                        $goTermChild->ontology_identifier = $goChild['id'];
+                        $goTermChild->name_en = $goChild['name'];
+                        $goTermChild->category = $goTerm['category'];  // todo category??
+                        $goTermChild->save();
+                        $goTermChild->refresh();
+                    }
+
+                    $termsRelation = GeneOntologyRelation::find()
+                        ->where([
+                            'gene_ontology_id' => $goTermChild->id,
+                            'gene_ontology_parent_id' => $goTerm['id']
+                        ])
+                        ->one();
+                    if($termsRelation && $onlyNew) {
+                        continue;
+                    }
+                    if (!$termsRelation) {
+                        $termsRelation = new GeneOntologyRelation();
+                        $termsRelation->gene_ontology_id = $goTermChild->id;
+                        $termsRelation->gene_ontology_parent_id = $goTerm['id'];
+                        $termsRelation->save();
+                    }
+                    if($goChild['hasChildren']) {
+                        $goTermChild = $goTermChild->toArray();
+                        $this->getGoChildren($httpClient, $goTermChild, $rootTermIdentifier, $rootTermCounter, $totalRootCount, $onlyNew);
+                    }
+                }
+            }
+        }
+    }
+    
+    public function actionUpdateGoToAgingMechanisms()
+    {
+        $activeGoTermsIdsWithGenes = GeneToOntology::find()
+            ->select('gene_ontology_id')
+            ->distinct()
+            ->column();
+
+        foreach ($activeGoTermsIdsWithGenes as $goTermId) {
+            echo "search parents for {$goTermId} ";
+            $goTermParentsIds = $this->getGoParents($goTermId);
+            if($goTermParentsIds) {
+                echo ' - found ' . count($goTermParentsIds); 
+            }
+            echo PHP_EOL;
+            
+            $goTermsIds = array_merge([$goTermId], $goTermParentsIds);
+            echo 'search aging mechanisms for ' . implode($goTermsIds, ', ');
+            $agingMechanismsIds = AgingMechanismToGeneOntology::find()
+                ->select('aging_mechanism_id')
+                ->distinct()
+                ->where(['gene_ontology_id' => $goTermsIds])
+                ->column();
+            echo ' found ' . count($agingMechanismsIds) . PHP_EOL;
+            /** @var GeneOntologyToAgingMechanismVisible[] $currentVisibleAgingMechanisms */
+            $currentVisibleAgingMechanisms = GeneOntologyToAgingMechanismVisible::find()
+                ->where(['gene_ontology_id' => $goTermId])
+                ->all();
+            $currentVisibleAgingMechanismsIds = [];
+            $deleted = 0;
+            $added = 0;
+            foreach ($currentVisibleAgingMechanisms as $visibleAgingMechanism) {
+                $currentVisibleAgingMechanismsIds[] = $visibleAgingMechanism->aging_mechanism_id;
+                if (!in_array( $visibleAgingMechanism->aging_mechanism_id, $agingMechanismsIds)) {
+                    $visibleAgingMechanism->delete();
+                    $deleted++;
+                } 
+            }
+            $toAdd = array_diff($agingMechanismsIds, $currentVisibleAgingMechanismsIds);
+            foreach ($toAdd as $id) {
+                $newVisibleMechanism = new GeneOntologyToAgingMechanismVisible();
+                $newVisibleMechanism->gene_ontology_id = $goTermId;
+                $newVisibleMechanism->aging_mechanism_id = $id;
+                $newVisibleMechanism->save();
+                $added++;
+            }
+            echo " {$deleted} deleted, {$added} added" . PHP_EOL;
+        }
+    }
+    
+    private function getGoParents($goTermId, $parents = [])
+    {
+        $foundParentsIds = GeneOntologyRelation::find()
+            ->select('gene_ontology_parent_id')
+            ->where(['gene_ontology_id' => $goTermId])
+            ->column();
+        $parents = array_merge($parents, $foundParentsIds);
+        if ($foundParentsIds) {
+            foreach ($foundParentsIds as $foundParentId) {
+                $parents = array_unique(array_merge($parents, $this->getGoParents($foundParentId, $parents)));
+            }
+        }
+        return $parents;
     }
 
 }
