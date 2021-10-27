@@ -55,7 +55,8 @@ class InterventionResultForVitalProcess extends \yii\db\ActiveRecord
      */
     public function getGeneInterventionToVitalProcesses()
     {
-        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['intervention_result_for_vital_process_id' => 'id']);
+        return $this->hasMany(GeneInterventionToVitalProcess::class, ['gene_id' => 'gene_id'])
+            ->viaTable('gene_intervention_result_to_vital_process', ['intervention_result_for_vital_process_id' => 'id']);
     }
 
     /**

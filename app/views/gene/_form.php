@@ -172,7 +172,6 @@ $this->registerCssFile('/assets/css/gene.css');
         </div>
     </div>
     <?php endif; ?>
-<!--this!!-->
     <?php if(Yii::$app->user->can('editor')): ?>
         <div class="row form-row">
             <div class="col-xs-12">
@@ -186,7 +185,6 @@ $this->registerCssFile('/assets/css/gene.css');
             </div>
         </div>
     <?php endif; ?>
-    <!--this!!-->
 
     <div class="row form-row">
         <div class="col-xs-12">

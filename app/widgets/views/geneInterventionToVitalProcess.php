@@ -7,7 +7,7 @@ use app\models\InterventionResultForVitalProcess;
 <div class="protein-activity green js-intervention-to-vital-process js-gene-link-section">
     <div class="js-intervention-to-vital-process-block js-gene-link-block">
         <div class="row form-row">
-            <div class="col-xs-3">
+            <div class="col-xs-6">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']gene_intervention_method_id',
@@ -26,45 +26,7 @@ use app\models\InterventionResultForVitalProcess;
                 ]);
                 ?>
             </div>
-            <div class="col-xs-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneInterventionToVitalProcess,
-                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']intervention_result_for_vital_process_id',
-                    'data' => InterventionResultForVitalProcess::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Результат',
-                        'multiple' => false
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tags' => Yii::$app->user->can('admin'),
-                        'tokenSeparators' => ['##'],
-                        'containerCssClass' => 'green',
-                        'dropdownCssClass' => 'green',
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="col-xs-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneInterventionToVitalProcess,
-                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']vital_process_id',
-                    'data' => \app\models\VitalProcess::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Процесс',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tags' => Yii::$app->user->can('admin'),
-                        'tokenSeparators' => ['##'],
-                        'containerCssClass' => 'green',
-                        'dropdownCssClass' => 'green',
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="col-xs-3">
+            <div class="col-xs-6">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneInterventionToVitalProcess,
                     'attribute' => '[' . $geneInterventionToVitalProcess->id . ']model_organism_id',
@@ -83,6 +45,47 @@ use app\models\InterventionResultForVitalProcess;
                 ]);
                 ?>
             </div>
+        </div>
+        <div class="row form-row">
+            <div class="col-xs-6">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneInterventionToVitalProcess,
+                    'attribute' => '[' . $geneInterventionToVitalProcess->id . ']improveVitalProcessIds',
+                    'data' => \app\models\VitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Улучшает',
+                        'multiple' => true,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                        'containerCssClass' => 'green',
+                        'dropdownCssClass' => 'green',
+                    ],
+                ]);
+                ?>
+            </div>
+
+        <div class="col-xs-6">
+            <?= \kartik\select2\Select2::widget([
+                'model' => $geneInterventionToVitalProcess,
+                'attribute' => '[' . $geneInterventionToVitalProcess->id . ']deteriorVitalProcessIds',
+                'data' => \app\models\VitalProcess::getAllNamesAsArray(),
+                'options' => [
+                    'placeholder' => 'Ухудшает',
+                    'multiple' => true,
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                    'tags' => Yii::$app->user->can('admin'),
+                    'tokenSeparators' => ['##'],
+                    'containerCssClass' => 'green',
+                    'dropdownCssClass' => 'green',
+                ],
+            ]);
+            ?>
+        </div>
         </div>
         <div class="row form-row">
             <div class="col-xs-3 col-sm-4">
