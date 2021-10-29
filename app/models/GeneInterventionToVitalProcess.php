@@ -116,40 +116,8 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
             self::setAttributeFromNewAR($modelArray, 'gene_intervention_method_id', 'GeneInterventionMethod', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
 
-            if (!empty($modelArray['improveVitalProcessIds'])) {
-                foreach ($modelArray['improveVitalProcessIds'] as $improveVitalProcess) {
-                    if (is_numeric($improveVitalProcess)) {
-                        continue;
-                    }
-                    $vitalProcess = VitalProcess::createFromNameString($improveVitalProcess);
-                    GeneInterventionResultToVitalProcess::create([
-                        'gene_id' => $modelAR->gene_id,
-                        'vital_process_id' => $vitalProcess->id,
-                        'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::IMPROVEMENT_ID
-                    ]);
-                }
-            }
-            if (!empty($modelArray['deteriorVitalProcessIds'])) {
-                foreach ($modelArray['deteriorVitalProcessIds'] as $deteriorVitalProcess) {
-                    if (is_numeric($deteriorVitalProcess)) {
-                        continue;
-                    }
-                    $vitalProcess = VitalProcess::createFromNameString($deteriorVitalProcess);
-                    $improvementRelation = GeneInterventionResultToVitalProcess::find()->where([
-                        'gene_id' => $modelAR->gene_id,
-                        'vital_process_id' => $vitalProcess->id,
-                        'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::IMPROVEMENT_ID
-                    ]);
-                    if ($improvementRelation) {
-                        continue;
-                    }
-                    GeneInterventionResultToVitalProcess::create([
-                        'gene_id' => $modelAR->gene_id,
-                        'vital_process_id' => $vitalProcess->id,
-                        'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::DETERIORATION_ID
-                    ]);
-                }
-            }
+            self::createNewVitalProcess($modelArray['improveVitalProcessIds']);
+            self::createNewVitalProcess($modelArray['deteriorVitalProcessIds']);
 
             if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
                 $arOrganismLine = OrganismLine::createFromNameString(
@@ -178,6 +146,9 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
         if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
             return parent::afterSave($insert, $changedAttributes);
         }
+        $this->improveVitalProcessIds = $this->getVitalProcessIdsByNames($this->improveVitalProcessIds);
+        $this->deteriorVitalProcessIds = $this->getVitalProcessIdsByNames($this->deteriorVitalProcessIds);
+
         $this->updateRelations(
             $this->getImproveVitalProcessIds(),
             $this->improveVitalProcessIds,
@@ -196,7 +167,7 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
     {
         return GeneInterventionResultToVitalProcess::find()
             ->select('vital_process_id')
-            ->where(['gene_id' => $this->gene_id, 'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::IMPROVEMENT_ID])
+            ->where(['gene_intervention_to_vital_process_id' => $this->id, 'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::IMPROVEMENT_ID])
             ->asArray()
             ->column();
     }
@@ -205,7 +176,7 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
     {
         return GeneInterventionResultToVitalProcess::find()
             ->select('vital_process_id')
-            ->where(['gene_id' => $this->gene_id, 'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::DETERIORATION_ID])
+            ->where(['gene_intervention_to_vital_process_id' => $this->id, 'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::DETERIORATION_ID])
             ->asArray()
             ->column();
     }
@@ -226,17 +197,17 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
         $this->improveVitalProcessIds = $ids;
     }
 
-    private function updateRelations($currentIdsArray, $modelProp, $interventionResultForVitalProcessId)
+    private function updateRelations($currentIdsArray, $processIdsProp, $interventionResultForVitalProcessId)
     {
-        if ($currentIdsArray === $modelProp) {
+        if ($currentIdsArray === $processIdsProp) {
             return;
         }
-        if ($modelProp) {
-            $relationIdsArrayToDelete = array_diff($currentIdsArray, $modelProp);
-            $relationIdsArrayToAdd = array_diff($modelProp, $currentIdsArray);
+        if ($processIdsProp) {
+            $relationIdsArrayToDelete = array_diff($currentIdsArray, $processIdsProp);
+            $relationIdsArrayToAdd = array_diff($processIdsProp, $currentIdsArray);
             foreach ($relationIdsArrayToAdd as $relationIdArrayToAdd) {
                 $geneToRelation = new GeneInterventionResultToVitalProcess();
-                $geneToRelation->gene_id = $this->gene_id;
+                $geneToRelation->gene_intervention_to_vital_process_id = $this->id;
                 $geneToRelation->vital_process_id = $relationIdArrayToAdd;
                 $geneToRelation->intervention_result_for_vital_process_id = $interventionResultForVitalProcessId;
                 $geneToRelation->save();
@@ -247,7 +218,8 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
         $arsToDelete = GeneInterventionResultToVitalProcess::find()->where(
             [
                 'and',
-                ['gene_id' => $this->gene_id],
+                ['gene_intervention_to_vital_process_id' => $this->id],
+                ['intervention_result_for_vital_process_id' => $interventionResultForVitalProcessId],
                 ['in', 'vital_process_id', $relationIdsArrayToDelete]
             ]
         )->all();
@@ -256,4 +228,24 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
         }
     }
 
+    private function getVitalProcessIdsByNames(array $arProcess) {
+        foreach ($arProcess as &$process) {
+            if(is_numeric($process)) {
+                continue;
+            }
+            $process = (string)VitalProcess::getIdByName($process)->id;
+        }
+        return $arProcess;
+    }
+
+    private static function createNewVitalProcess($processIds) {
+        if (!empty($processIds) && is_array($processIds)) {
+            foreach ($processIds as $processId) {
+                if (is_numeric($processId)) {
+                    continue;
+                }
+                VitalProcess::createFromNameString($processId);
+            }
+        }
+    }
 }

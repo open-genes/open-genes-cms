@@ -110,7 +110,7 @@ class GeneInterventionToVitalProcess extends \yii\db\ActiveRecord
     public function getInterventionResultForVitalProcess()
     {
         return $this->hasMany(InterventionResultForVitalProcess::class, ['id' => 'intervention_result_for_vital_process_id'])
-            ->viaTable('gene_intervention_result_to_vital_process', ['gene_id' => 'gene_id']);
+            ->viaTable('gene_intervention_result_to_vital_process', ['gene_intervention_to_vital_process_id' => 'id']);
     }
 
     /**

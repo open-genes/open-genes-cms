@@ -32,10 +32,10 @@ class GeneInterventionResultToVitalProcess extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'intervention_result_for_vital_process_id', 'vital_process_id'], 'integer'],
+            [['gene_intervention_to_vital_process_id', 'intervention_result_for_vital_process_id', 'vital_process_id'], 'integer'],
             [['vital_process_id'], 'exist', 'skipOnError' => true, 'targetClass' => VitalProcess::class, 'targetAttribute' => ['vital_process_id' => 'id']],
             [['intervention_result_for_vital_process_id'], 'exist', 'skipOnError' => true, 'targetClass' => InterventionResultForVitalProcess::class, 'targetAttribute' => ['intervention_result_for_vital_process_id' => 'id']],
-            [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneInterventionToVitalProcess::class, 'targetAttribute' => ['gene_id' => 'gene_id']],
+            [['gene_intervention_to_vital_process_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneInterventionToVitalProcess::class, 'targetAttribute' => ['gene_intervention_to_vital_process_id' => 'id']],
         ];
     }
 
@@ -46,7 +46,7 @@ class GeneInterventionResultToVitalProcess extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'gene_id' => 'Gene ID',
+            'gene_intervention_to_vital_process_id' => 'Gene Intervention To Vital Process ID',
             'intervention_result_for_vital_process_id' => 'Intervention Result For Vital Process ID',
             'vital_process_id' => 'Vital Process ID',
         ];

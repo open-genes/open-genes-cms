@@ -29,4 +29,16 @@ class VitalProcess extends common\VitalProcess
         return $this->getGeneInterventionToVitalProcesses()
             ->select('gene_id')->distinct()->column();
     }
+
+    public static function getIdByName($name)
+    {
+        return self::find()->select('id')->where(
+            [
+                'or',
+                ['name_ru' => $name],
+                ['name_en' => $name],
+            ]
+        )->one();
+
+    }
 }
