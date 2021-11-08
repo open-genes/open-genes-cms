@@ -6,6 +6,8 @@ use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
 use app\models\common\GeneToSource;
 use app\models\Disease;
+use app\models\GeneInterventionResultToVitalProcess;
+use app\models\GeneInterventionToVitalProcess;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
 use app\models\Gene;
@@ -15,6 +17,7 @@ use app\models\GeneToFunctionalCluster;
 use app\models\Sample;
 use Yii;
 use yii\console\Controller;
+use yii\helpers\Console;
 
 class MigrateDataController extends Controller
 {
@@ -302,4 +305,87 @@ class MigrateDataController extends Controller
         }
     }
 
+    public function actionMergeGreenForm()
+    {
+        /* @var $model GeneInterventionToVitalProcess */
+        /* @var $modelToUpdate GeneInterventionToVitalProcess */
+
+        $theSameModels = $this->searchTheSameModels(GeneInterventionToVitalProcess::find()->all());
+
+        foreach ($theSameModels as $group) {
+            $modelToUpdate = array_shift($group);
+            foreach ($group as $model) {
+                $modelToUpdate->comment_ru = $modelToUpdate->comment_ru . ' ' . $model->comment_ru;
+                $modelToUpdate->comment_en = $modelToUpdate->comment_en . ' ' . $model->comment_en;
+                $relationList = GeneInterventionResultToVitalProcess::find()
+                    ->where(['gene_intervention_to_vital_process_id' => $model->id])->all();
+                foreach ($relationList as $relation) {
+                    $this->updateRelations($modelToUpdate->id, $relation);
+                }
+                if ($model->delete()) {
+                    Console::output('Green form id ' . $model->id . ' was deleted from table gene_intervention_to_vital_process');
+                }
+            }
+
+            if ($modelToUpdate->save(false)) {
+                Console::output('Green form id ' . $modelToUpdate->id . ' was updated');
+            }
+            else {
+                Console::output('Attention! Green form id ' . $modelToUpdate->id . ' was not updated!');
+            }
+        }
+        return Console::output('Successfully merged');
+    }
+
+    private function getModelHash($model)
+    {
+        return md5($model->reference .
+            $model->gene_intervention_method_id .
+            $model->model_organism_id .
+            $model->organism_line_id .
+            $model->genotype .
+            $model->sex_of_organism .
+            $model->gene_id);
+    }
+
+    private function searchTheSameModels ($models) {
+        /* @var $model GeneInterventionToVitalProcess */
+        /* @var $searchModel GeneInterventionToVitalProcess */
+        $theSameModels = [];
+        foreach ($models as $model) {
+            foreach ($models as $searchModel) {
+                if ($model->id == $searchModel->id) {
+                    continue;
+                }
+                $modelHash = $this->getModelHash($model);
+                $searchModelHash = $this->getModelHash($searchModel);
+                if ($modelHash == $searchModelHash) {
+                    if (!isset($theSameModels[$modelHash])) {
+                        $theSameModels[$modelHash] = [$model->id => $model];
+                    }
+                    $theSameModels[$modelHash][$searchModel->id] = $searchModel;
+                }
+            }
+        }
+        return $theSameModels;
+    }
+
+    private function updateRelations ($modelId, $relation) {
+        /* @var $relation GeneInterventionResultToVitalProcess */
+
+        $theSameRelations = GeneInterventionResultToVitalProcess::find()
+            ->where(['gene_intervention_to_vital_process_id' => $modelId,
+                'intervention_result_for_vital_process_id' => $relation->intervention_result_for_vital_process_id,
+                'vital_process_id' => $relation->vital_process_id
+            ])->one();
+        if ($theSameRelations !== null) {
+            $relation->delete();
+            return;
+        }
+        $relation->gene_intervention_to_vital_process_id = $modelId;
+        if ($relation->save()) {
+            Console::output('Relation id ' . $relation->id . ' was updated (table gene_intervention_result_to_vital_process)');
+        }
+    }
 }
+

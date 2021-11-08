@@ -24,7 +24,7 @@ class m211025_093949_gene_intervention_result_to_vital_process extends Migration
         $this->addForeignKey('interv_result_for_vital_pr_id_to_result', 'gene_intervention_result_to_vital_process', 'intervention_result_for_vital_process_id', 'intervention_result_for_vital_process', 'id');
         $this->addForeignKey('interv_result_for_vital_pr_id_to_process', 'gene_intervention_result_to_vital_process', 'vital_process_id', 'vital_process', 'id');
 
-        $data = Yii::$app->db->createCommand('SELECT id, intervention_result_for_vital_process_id, vital_process_id from gene_intervention_to_vital_process')->queryAll();
+        $data = Yii::$app->db->createCommand('SELECT id, IFNULL(intervention_result_for_vital_process_id, 1), vital_process_id from gene_intervention_to_vital_process')->queryAll();
         $dataToInsert = [];
         foreach ($data as $row) {
             $dataToInsert[] = array_values($row);
@@ -47,6 +47,7 @@ class m211025_093949_gene_intervention_result_to_vital_process extends Migration
 
         $this->dropColumn('gene_intervention_to_vital_process', 'intervention_result_for_vital_process_id');
         $this->dropColumn('gene_intervention_to_vital_process', 'vital_process_id');
+
     }
 
     /**
