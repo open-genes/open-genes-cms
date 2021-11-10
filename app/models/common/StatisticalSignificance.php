@@ -32,7 +32,7 @@ class StatisticalSignificance extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_ru', 'name_en'], 'integer'],
+            [['name_ru', 'name_en'], 'safe'],
         ];
     }
 
