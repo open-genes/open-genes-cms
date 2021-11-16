@@ -8,6 +8,8 @@ use app\models\common\GeneToSource;
 use app\models\Disease;
 use app\models\GeneInterventionResultToVitalProcess;
 use app\models\GeneInterventionToVitalProcess;
+use app\models\GeneralLifespanExperiment;
+use app\models\LifespanExperiment;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
 use app\models\Gene;
@@ -17,6 +19,8 @@ use app\models\GeneToFunctionalCluster;
 use app\models\Sample;
 use Yii;
 use yii\console\Controller;
+use yii\db\ActiveQuery;
+use yii\db\Query;
 use yii\helpers\Console;
 
 class MigrateDataController extends Controller
@@ -323,18 +327,125 @@ class MigrateDataController extends Controller
                     $this->updateRelations($modelToUpdate->id, $relation);
                 }
                 if ($model->delete()) {
-                    Console::output('Green form id ' . $model->id . ' was deleted from table gene_intervention_to_vital_process');
+                    Console::output('Green form id ' . $model->id . ' successfully deleted from table gene_intervention_to_vital_process');
                 }
             }
 
             if ($modelToUpdate->save(false)) {
-                Console::output('Green form id ' . $modelToUpdate->id . ' was updated');
+                Console::output('Green form id ' . $modelToUpdate->id . ' successfully updated');
             }
             else {
-                Console::output('Attention! Green form id ' . $modelToUpdate->id . ' was not updated!');
+                Console::output('Attention! Green form id ' . $modelToUpdate->id . ' has not been updated!');
             }
         }
         return Console::output('Successfully merged');
+    }
+
+    public function actionPurpleFormSplitSex()
+    {
+        $this->split(GeneralLifespanExperiment::find());
+        $this->split(LifespanExperiment::find());
+
+        $this->fillSex(GeneralLifespanExperiment::find(), 'organism_sex_id');
+        $this->fillSex(LifespanExperiment::find(), 'sex');
+
+    }
+
+    private function fillSex(ActiveQuery $query, $sexProp) {
+        $models = $query->all();
+
+        foreach ($models as $model) {
+            if ($model->lifespan_change_percent_male !== null) {
+                $model->$sexProp = 1;
+            }
+            elseif ($model->lifespan_change_percent_female !== null) {
+                $model->$sexProp = 0;
+            }
+            elseif ($model->lifespan_change_percent_common !== null) {
+                $model->$sexProp = 3;
+            }
+            $model->save();
+        }
+    }
+
+    private function split(ActiveQuery $query)
+    {
+        $maleFemale = $query
+            ->where(['not', ['lifespan_change_percent_male' => null]])
+            ->andWhere(['not', ['lifespan_change_percent_female' => null]])
+            ->andWhere(['lifespan_change_percent_common' => null])
+            ->all();
+        $this->splitTwoSex($maleFemale, 'lifespan_change_percent_male', 'lifespan_change_percent_female');
+
+        $maleCommon = $query
+            ->where(['not', ['lifespan_change_percent_male' => null]])
+            ->andWhere(['not', ['lifespan_change_percent_common' => null]])
+            ->andWhere(['lifespan_change_percent_female' => null])
+            ->all();
+        $this->splitTwoSex($maleCommon, 'lifespan_change_percent_male', 'lifespan_change_percent_common');
+
+        $femaleCommon = $query
+            ->where(['not', ['lifespan_change_percent_female' => null]])
+            ->andWhere(['not', ['lifespan_change_percent_common' => null]])
+            ->andWhere(['lifespan_change_percent_male' => null])
+            ->all();
+        $this->splitTwoSex($femaleCommon, 'lifespan_change_percent_female', 'lifespan_change_percent_common');
+
+        $maleFemaleCommon = $query
+            ->where(['not', ['lifespan_change_percent_female' => null]])
+            ->andWhere(['not', ['lifespan_change_percent_common' => null]])
+            ->andWhere(['not', ['lifespan_change_percent_male' => null]])
+            ->all();
+        $this->splitThreeSex($maleFemaleCommon);
+
+    }
+
+    private function splitTwoSex($parentModels, $attributeToReset, $attributeToInsert)
+    {
+        foreach ($parentModels as $parentModel) {
+            $model = new GeneralLifespanExperiment();
+            $model->attributes = $parentModel->attributes;
+            $model->$attributeToReset = null;
+            if ($model->save()) {
+                Console::output('New purple form id ' . $model->id . ' successfully created');
+            }
+
+            $parentModel->$attributeToInsert = null;
+            if ($parentModel->save()) {
+                Console::output('Purple form id ' . $parentModel->id . ' successfully updated');
+            }
+        }
+    }
+
+    private function splitThreeSex ($models) {
+        foreach ($models as $model) {
+
+            $this->createNewPurpleForm('female', $model);
+            $this->createNewPurpleForm('male', $model);
+
+            $model->lifespan_change_percent_male = null;
+            $model->lifespan_change_percent_female = null;
+
+            if ($model->save()) {
+                Console::output('Purple form id ' . $model->id . ' successfully updated');
+            }
+        }
+    }
+
+    private function createNewPurpleForm ($sex, $parentModel) {
+        if($sex == 'female') {
+            $attrToReset = 'lifespan_change_percent_male';
+        }
+        else {
+            $attrToReset = 'lifespan_change_percent_female';
+        }
+        $model = new GeneralLifespanExperiment();
+        $model->attributes = $parentModel->attributes;
+        $model->$attrToReset = null;
+        $model->lifespan_change_percent_common = null;
+        if ($model->save()) {
+            Console::output('New purple form id ' . $model->id . ' successfully created');
+        }
     }
 
     private function getModelHash($model)
