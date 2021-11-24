@@ -13,6 +13,7 @@ class m211112_141243_replace_sex_green_form extends Migration
     public function safeUp()
     {
         $this->update('gene_intervention_to_vital_process', ['sex_of_organism' => 3], ['sex_of_organism' => 2]);
+        $this->update('gene_intervention_to_vital_process', ['sex_of_organism' => 2], ['sex_of_organism' => null]);
 
     }
 
@@ -22,6 +23,7 @@ class m211112_141243_replace_sex_green_form extends Migration
     public function safeDown()
     {
         $this->update('gene_intervention_to_vital_process', ['sex_of_organism' => 2], ['sex_of_organism' => 3]);
+        $this->update('gene_intervention_to_vital_process', ['sex_of_organism' => null], ['sex_of_organism' => 2]);
     }
 
     /*

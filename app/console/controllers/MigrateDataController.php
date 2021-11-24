@@ -9,6 +9,7 @@ use app\models\Disease;
 use app\models\GeneInterventionResultToVitalProcess;
 use app\models\GeneInterventionToVitalProcess;
 use app\models\GeneralLifespanExperiment;
+use app\models\GeneralLifespanExperimentToVitalProcess;
 use app\models\LifespanExperiment;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
@@ -22,6 +23,7 @@ use yii\console\Controller;
 use yii\db\ActiveQuery;
 use yii\db\Query;
 use yii\helpers\Console;
+use yii\helpers\VarDumper;
 
 class MigrateDataController extends Controller
 {
@@ -324,7 +326,7 @@ class MigrateDataController extends Controller
                 $relationList = GeneInterventionResultToVitalProcess::find()
                     ->where(['gene_intervention_to_vital_process_id' => $model->id])->all();
                 foreach ($relationList as $relation) {
-                    $this->updateRelations($modelToUpdate->id, $relation);
+                    $this->updateRelationsGreenToProcess($modelToUpdate->id, $relation);
                 }
                 if ($model->delete()) {
                     Console::output('Green form id ' . $model->id . ' successfully deleted from table gene_intervention_to_vital_process');
@@ -343,55 +345,110 @@ class MigrateDataController extends Controller
 
     public function actionPurpleFormSplitSex()
     {
-        $this->split(GeneralLifespanExperiment::find());
-        $this->split(LifespanExperiment::find());
-
-        $this->fillSex(GeneralLifespanExperiment::find(), 'organism_sex_id');
-        $this->fillSex(LifespanExperiment::find(), 'sex');
-
+        $this->splitPurpleBySex();
+        $this->fillSexPurple();
     }
 
-    private function fillSex(ActiveQuery $query, $sexProp) {
-        $models = $query->all();
+    public function actionMergePurpleForm()
+    {
+        $purpleToProcess = GeneralLifespanExperimentToVitalProcess::find()->all();
+        if (!empty($purpleToProcess)) {
+            Console::output('general_lifespan_experiment_to_vital_process already filled!');
+            return;
+        }
+        $greenList = GeneInterventionToVitalProcess::find()->all();
+        $purpleList = GeneralLifespanExperiment::find()->joinWith('lifespanExperiments')->all();
 
-        foreach ($models as $model) {
-            if ($model->lifespan_change_percent_male !== null) {
-                $model->$sexProp = 1;
+        $greenToPurple = [];
+        foreach ($greenList as $green) {
+            foreach ($purpleList as $purple) {
+                $leList = $purple->relatedRecords['lifespanExperiments'];
+                foreach ($leList as $le) {
+                     $this->makeMatchesGreenToPurple($le, $green, $purple, $greenToPurple);
+                }
+
             }
-            elseif ($model->lifespan_change_percent_female !== null) {
-                $model->$sexProp = 0;
+        }
+        $duplicatePurple = [];
+        foreach ($greenToPurple as $greenId => $purple) {
+            if (count($purple) > 1) {
+                //если у зеленой формы несколько фиолетовых, их мержить не надо, только отдать список генетикам
+                $this->searchDuplicatePurple($purple, $duplicatePurple);
             }
-            elseif ($model->lifespan_change_percent_common !== null) {
-                $model->$sexProp = 3;
+            else {
+                $this->createRelationsPurpleToProcess($purple, $greenId);
             }
-            $model->save();
+
+        }
+        VarDumper::dump($duplicatePurple);
+    }
+
+    private function createRelationsPurpleToProcess($purple, $greenId)
+    {
+        $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(['gene_intervention_to_vital_process_id' => $greenId])->all();
+        foreach ($greenToProcess as $process) {
+            $purpleToProcess = new GeneralLifespanExperimentToVitalProcess();
+            $purpleToProcess->attributes = $process->attributes;
+            $purpleToProcess->general_lifespan_experiment_id = $purple[0]->id;
+            if ($purpleToProcess->save()) {
+                Console::output(
+                    'Relation purple form -> to process for form id ' . $purpleToProcess->general_lifespan_experiment_id . ', process id ' . $purpleToProcess->vital_process_id . ' successfully created'
+                );
+            }
+        }
+    }
+    private function searchDuplicatePurple (array $purple, array &$duplicatePurple) {
+        $geneId = $purple[0]->relatedRecords['lifespanExperiments'][0]->gene_id;
+        $doi = $purple[0]->reference;
+        if (!isset($duplicatePurple[$geneId])) {
+            $duplicatePurple[$geneId] = '';
+        }
+        $duplicatePurple[$geneId] = $doi;
+    }
+
+    private function makeMatchesGreenToPurple(LifespanExperiment $experiment, GeneInterventionToVitalProcess $green, GeneralLifespanExperiment $purple, &$greenToPurple) {
+
+        //если стоит в зеленой "+/-, -/-" или ничего не стоит, то смержить со всеми фиолетовыми, где совпадает все остальное (без генотипа)
+        if ($green->genotype != 3 && $green->genotype != null) {
+            $purpleHash = $this->getPurpleHash($purple, $experiment);
+            $greenHash = $this->getGreenHash($green);
+        }
+        else {
+            $purpleHash = $this->getPurpleHash($purple, $experiment, false);
+            $greenHash = $this->getGreenHash($green, false);
+        }
+        if($purpleHash == $greenHash) {
+            if(!isset($greenToPurple[$green->id])) {
+                $greenToPurple[$green->id] = [];
+            }
+            $greenToPurple[$green->id][] = $purple;
         }
     }
 
-    private function split(ActiveQuery $query)
+    private function splitPurpleBySex()
     {
-        $maleFemale = $query
+        $maleFemale = GeneralLifespanExperiment::find()
             ->where(['not', ['lifespan_change_percent_male' => null]])
             ->andWhere(['not', ['lifespan_change_percent_female' => null]])
             ->andWhere(['lifespan_change_percent_common' => null])
             ->all();
         $this->splitTwoSex($maleFemale, 'lifespan_change_percent_male', 'lifespan_change_percent_female');
 
-        $maleCommon = $query
+        $maleCommon = GeneralLifespanExperiment::find()
             ->where(['not', ['lifespan_change_percent_male' => null]])
             ->andWhere(['not', ['lifespan_change_percent_common' => null]])
             ->andWhere(['lifespan_change_percent_female' => null])
             ->all();
         $this->splitTwoSex($maleCommon, 'lifespan_change_percent_male', 'lifespan_change_percent_common');
 
-        $femaleCommon = $query
+        $femaleCommon = GeneralLifespanExperiment::find()
             ->where(['not', ['lifespan_change_percent_female' => null]])
             ->andWhere(['not', ['lifespan_change_percent_common' => null]])
             ->andWhere(['lifespan_change_percent_male' => null])
             ->all();
         $this->splitTwoSex($femaleCommon, 'lifespan_change_percent_female', 'lifespan_change_percent_common');
 
-        $maleFemaleCommon = $query
+        $maleFemaleCommon = GeneralLifespanExperiment::find()
             ->where(['not', ['lifespan_change_percent_female' => null]])
             ->andWhere(['not', ['lifespan_change_percent_common' => null]])
             ->andWhere(['not', ['lifespan_change_percent_male' => null]])
@@ -400,14 +457,34 @@ class MigrateDataController extends Controller
 
     }
 
+    private function fillSexPurple() {
+        $models = GeneralLifespanExperiment::find()->all();
+
+        foreach ($models as $model) {
+            if ($model->lifespan_change_percent_male !== null) {
+                $model->organism_sex_id = 1;
+            }
+            elseif ($model->lifespan_change_percent_female !== null) {
+                $model->organism_sex_id = 0;
+            }
+            elseif ($model->lifespan_change_percent_common !== null) {
+                $model->organism_sex_id = 3;
+            }
+            if ($model->save()) {
+                Console::output('Purple form id ' . $model->id . ' successfully updated');
+            }
+        }
+    }
+
     private function splitTwoSex($parentModels, $attributeToReset, $attributeToInsert)
     {
         foreach ($parentModels as $parentModel) {
-            $model = new GeneralLifespanExperiment();
-            $model->attributes = $parentModel->attributes;
-            $model->$attributeToReset = null;
-            if ($model->save()) {
-                Console::output('New purple form id ' . $model->id . ' successfully created');
+            $newGeneralModel = new GeneralLifespanExperiment();
+            $newGeneralModel->attributes = $parentModel->attributes;
+            $newGeneralModel->$attributeToReset = null;
+            if ($newGeneralModel->save()) {
+                Console::output('New purple form id ' . $newGeneralModel->id . ' successfully created');
+                $this->createNewLifespanExperiment($parentModel->id, $newGeneralModel->id);
             }
 
             $parentModel->$attributeToInsert = null;
@@ -445,21 +522,58 @@ class MigrateDataController extends Controller
         $model->lifespan_change_percent_common = null;
         if ($model->save()) {
             Console::output('New purple form id ' . $model->id . ' successfully created');
+            $this->createNewLifespanExperiment($parentModel->id, $model->id);
         }
     }
 
-    private function getModelHash($model)
+    private function createNewLifespanExperiment($parentModelId, $currentModelId) {
+        $models = LifespanExperiment::find()->where([
+            'general_lifespan_experiment_id' => $parentModelId
+        ])->all();
+
+        foreach ($models as $model) {
+            $newModel = new LifespanExperiment();
+            $newModel->attributes = $model->attributes;
+            $newModel->general_lifespan_experiment_id = $currentModelId;
+            if($newModel->save()) {
+                Console::output('Experiment ' . $newModel->id . ' to form id ' . $newModel->general_lifespan_experiment_id . ' successfully created');
+            }
+        }
+    }
+
+    private function getGreenHash(GeneInterventionToVitalProcess $model, $genotype = true): string
     {
-        return md5($model->reference .
+        $prepareString =
+            $model->reference .
             $model->gene_intervention_method_id .
             $model->model_organism_id .
             $model->organism_line_id .
-            $model->genotype .
             $model->sex_of_organism .
-            $model->gene_id);
+            $model->gene_id;
+
+        if ($genotype) {
+            $prepareString = $prepareString . $model->genotype;
+        }
+        return md5($prepareString);
     }
 
-    private function searchTheSameModels ($models) {
+    private function getPurpleHash(GeneralLifespanExperiment $general, LifespanExperiment $experiment, $genotype = true): string
+    {
+        $prepareString =
+            $general->reference .
+            $experiment->gene_intervention_method_id .
+            $general->model_organism_id .
+            $general->organism_line_id .
+            $general->organism_sex_id .
+            $experiment->gene_id;
+
+        if ($genotype) {
+            $prepareString = $prepareString . $experiment->genotype;
+        }
+        return md5($prepareString);
+    }
+
+    private function searchTheSameModels ($models): array {
         /* @var $model GeneInterventionToVitalProcess */
         /* @var $searchModel GeneInterventionToVitalProcess */
         $theSameModels = [];
@@ -468,8 +582,8 @@ class MigrateDataController extends Controller
                 if ($model->id == $searchModel->id) {
                     continue;
                 }
-                $modelHash = $this->getModelHash($model);
-                $searchModelHash = $this->getModelHash($searchModel);
+                $modelHash = $this->getGreenHash($model);
+                $searchModelHash = $this->getGreenHash($searchModel);
                 if ($modelHash == $searchModelHash) {
                     if (!isset($theSameModels[$modelHash])) {
                         $theSameModels[$modelHash] = [$model->id => $model];
@@ -481,9 +595,7 @@ class MigrateDataController extends Controller
         return $theSameModels;
     }
 
-    private function updateRelations ($modelId, $relation) {
-        /* @var $relation GeneInterventionResultToVitalProcess */
-
+    private function updateRelationsGreenToProcess (int $modelId, GeneInterventionResultToVitalProcess $relation) {
         $theSameRelations = GeneInterventionResultToVitalProcess::find()
             ->where(['gene_intervention_to_vital_process_id' => $modelId,
                 'intervention_result_for_vital_process_id' => $relation->intervention_result_for_vital_process_id,
