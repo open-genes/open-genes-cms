@@ -41,4 +41,16 @@ class VitalProcess extends common\VitalProcess
         )->one();
 
     }
+
+    public static function createNewByIds($processIds)
+    {
+        if (!empty($processIds) && is_array($processIds)) {
+            foreach ($processIds as $processId) {
+                if (is_numeric($processId)) {
+                    continue;
+                }
+                VitalProcess::createFromNameString($processId);
+            }
+        }
+    }
 }

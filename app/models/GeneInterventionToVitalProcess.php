@@ -116,8 +116,8 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
             self::setAttributeFromNewAR($modelArray, 'gene_intervention_method_id', 'GeneInterventionMethod', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
 
-            self::createNewVitalProcess($modelArray['improveVitalProcessIds']);
-            self::createNewVitalProcess($modelArray['deteriorVitalProcessIds']);
+            VitalProcess::createNewByIds($modelArray['improveVitalProcessIds']);
+            VitalProcess::createNewByIds($modelArray['deteriorVitalProcessIds']);
 
             if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
                 $arOrganismLine = OrganismLine::createFromNameString(
@@ -236,16 +236,5 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
             $process = (string)VitalProcess::getIdByName($process)->id;
         }
         return $arProcess;
-    }
-
-    private static function createNewVitalProcess($processIds) {
-        if (!empty($processIds) && is_array($processIds)) {
-            foreach ($processIds as $processId) {
-                if (is_numeric($processId)) {
-                    continue;
-                }
-                VitalProcess::createFromNameString($processId);
-            }
-        }
     }
 }
