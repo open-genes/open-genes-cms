@@ -383,6 +383,55 @@ class MigrateDataController extends Controller
         VarDumper::dump($duplicatePurple);
     }
 
+    public function actionDoiToMerge()
+    {
+        $greenList = GeneInterventionToVitalProcess::find()->all();
+        $purpleList = GeneralLifespanExperiment::find()->joinWith('lifespanExperiments')->all();
+
+        $greenToPurpleHard = [];
+        foreach ($greenList as $green) {
+            foreach ($purpleList as $purple) {
+                $leList = $purple->relatedRecords['lifespanExperiments'];
+                foreach ($leList as $le) {
+                    $this->makeMatchesGreenToPurple($le, $green, $purple, $greenToPurpleHard);
+                }
+
+            }
+        }
+
+        $greenToPurpleSoft = [];
+        foreach ($greenList as $green) {
+            foreach ($purpleList as $purple) {
+                $leList = $purple->relatedRecords['lifespanExperiments'];
+                foreach ($leList as $le) {
+                    $purpleHash = md5(
+                        $purple->reference .
+                        $le->gene_id);
+                    $greenHash = md5(
+                        $green->reference .
+                        $green->gene_id);
+
+                    if ($purpleHash == $greenHash) {
+                        if (!isset($greenToPurpleSoft[$green->id])) {
+                            $greenToPurpleSoft[$green->id] = [];
+                        }
+                        $greenToPurpleSoft[$green->id][] = $purple;
+                    }
+                }
+
+            }
+        }
+        $unmergedDoi = [];
+        $unmergedArrayKeys = array_diff(array_keys($greenToPurpleSoft), array_keys($greenToPurpleHard));
+        foreach ($unmergedArrayKeys as $key) {
+            $doi = $greenToPurpleSoft[$key][0]->reference;
+            $gene_id = $greenToPurpleSoft[$key][0]->relatedRecords['lifespanExperiments'][0]->gene_id;
+            if(!isset($unmergedDoi[$doi])) {
+                $unmergedDoi[$gene_id] = $doi;
+            }
+        }
+        VarDumper::dump($unmergedDoi);
+    }
     private function createRelationsPurpleToProcess($purple, $greenId)
     {
         $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(['gene_intervention_to_vital_process_id' => $greenId])->all();
