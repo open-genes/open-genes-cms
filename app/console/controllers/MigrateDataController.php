@@ -425,10 +425,8 @@ class MigrateDataController extends Controller
         $unmergedArrayKeys = array_diff(array_keys($greenToPurpleSoft), array_keys($greenToPurpleHard));
         foreach ($unmergedArrayKeys as $key) {
             $doi = $greenToPurpleSoft[$key][0]->reference;
-            $gene_id = $greenToPurpleSoft[$key][0]->relatedRecords['lifespanExperiments'][0]->gene_id;
-            if(!isset($unmergedDoi[$doi])) {
-                $unmergedDoi[$gene_id] = $doi;
-            }
+            $geneId = $greenToPurpleSoft[$key][0]->relatedRecords['lifespanExperiments'][0]->gene_id;
+            $unmergedDoi[] = $geneId . ' -> ' . $doi;
         }
         VarDumper::dump($unmergedDoi);
     }
@@ -449,10 +447,7 @@ class MigrateDataController extends Controller
     private function searchDuplicatePurple (array $purple, array &$duplicatePurple) {
         $geneId = $purple[0]->relatedRecords['lifespanExperiments'][0]->gene_id;
         $doi = $purple[0]->reference;
-        if (!isset($duplicatePurple[$geneId])) {
-            $duplicatePurple[$geneId] = '';
-        }
-        $duplicatePurple[$geneId] = $doi;
+        $duplicatePurple[] = $geneId . ' -> ' . $doi;
     }
 
     private function makeMatchesGreenToPurple(LifespanExperiment $experiment, GeneInterventionToVitalProcess $green, GeneralLifespanExperiment $purple, &$greenToPurple) {
