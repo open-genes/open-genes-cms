@@ -86,6 +86,7 @@ class LifespanExperiment extends common\LifespanExperiment
             'model_organism_id' => 'Объект',
             'tissue_specificity' => 'Тканеспецифичность',
             'mutation_induction' => 'Индукция мутации отменой препарата',
+            'tissue_specific_promoter' => 'Тканеспецифичный промотер',
             'age' => 'Возраст',
             'reference' => 'Ссылка',
             'age_unit' => 'Ед. измерения возраста',

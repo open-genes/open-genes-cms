@@ -163,7 +163,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-8" style="float: right;">
+            <div class="col-xs-6 col-md-4">
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specific_promoter', ['class' => 'form-control tissue_specific_promoter', 'placeholder' => 'Тканеспецифичный промотер']) ?>
+            </div>
+            <div class="col-xs-6 col-md-8">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',
