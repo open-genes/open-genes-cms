@@ -15,6 +15,8 @@ class InterventionResultForVitalProcess extends common\InterventionResultForVita
     use RuEnActiveRecordTrait;
 
     public $name;
+    public const IMPROVEMENT_ID = 1;
+    public const DETERIORATION_ID = 2;
 
     public function behaviors()
     {

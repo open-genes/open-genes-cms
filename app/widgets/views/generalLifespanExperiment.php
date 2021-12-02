@@ -350,6 +350,40 @@
         <?php endif; ?>
 
         <div class="row form-row meta-section">
+            <div class="col-xs-6">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $generalLifespanExperiment,
+                    'attribute' => '[' . $generalLifespanExperiment->id . ']improveVitalProcessIds',
+                    'data' => \app\models\VitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Улучшает',
+                        'multiple' => true,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $generalLifespanExperiment,
+                    'attribute' => '[' . $generalLifespanExperiment->id . ']deteriorVitalProcessIds',
+                    'data' => \app\models\VitalProcess::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Ухудшает',
+                        'multiple' => true,
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => Yii::$app->user->can('admin'),
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div>
             <div class="col-xs-12 col-sm-6">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']reference', ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)']) ?>
             </div>

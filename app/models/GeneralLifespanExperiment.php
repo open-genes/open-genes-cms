@@ -68,6 +68,8 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     public $name;
     public $delete;
     public $currentGeneId;
+    private $improveVitalProcessIds = [];
+    private $deteriorVitalProcessIds = [];
 
     /**
      * {@inheritdoc}
@@ -88,6 +90,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
             parent::rules(), [
 //            [['model_organism_id', 'intervention_result_id'], 'required', 'on' => 'saveFromForm'], // todo OG-410
             [['delete', 'currentGeneId'], 'safe'],
+            [['improveVitalProcessIds', 'deteriorVitalProcessIds'], 'safe'],
         ]);
     }
     /**
@@ -149,6 +152,10 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         }
         $this->reference = trim($this->reference);
 
+        $ar = array_intersect($this->improveVitalProcessIds, $this->deteriorVitalProcessIds);
+        if ($ar) {
+            $this->addError('improveVitalProcessIds', 'Вмешательство не может улучшать и ухудшать один и тот же процесс. Пожалуйста, исправьте введенные данные');
+        }
         return parent::beforeValidate();
     }
 
@@ -293,7 +300,10 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         self::setAttributeFromNewAR($modelArray, 'changed_expression_tissue_id', 'Sample', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
-        
+
+        VitalProcess::createNewByIds($modelArray['improveVitalProcessIds']);
+        VitalProcess::createNewByIds($modelArray['deteriorVitalProcessIds']);
+
         if(!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
             $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
             $modelAR->organism_line_id = $arProteinActivity->id;
@@ -304,5 +314,102 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         if (!$modelAR->validate() || !$modelAR->save()) {
             throw new UpdateExperimentsException($id, $modelAR);
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
+            return parent::afterSave($insert, $changedAttributes);
+        }
+        $this->improveVitalProcessIds = $this->getVitalProcessIdsByNames($this->improveVitalProcessIds);
+        $this->deteriorVitalProcessIds = $this->getVitalProcessIdsByNames($this->deteriorVitalProcessIds);
+
+        $this->updateRelations(
+            $this->getImproveVitalProcessIds(),
+            $this->improveVitalProcessIds,
+            InterventionResultForVitalProcess::IMPROVEMENT_ID
+        );
+        $this->updateRelations(
+            $this->getDeteriorVitalProcessIds(),
+            $this->deteriorVitalProcessIds,
+            InterventionResultForVitalProcess::DETERIORATION_ID
+        );
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function getImproveVitalProcessIds()
+    {
+        return GeneralLifespanExperimentToVitalProcess::find()
+            ->select('vital_process_id')
+            ->where(['general_lifespan_experiment_id' => $this->id, 'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::IMPROVEMENT_ID])
+            ->asArray()
+            ->column();
+    }
+
+    public function getDeteriorVitalProcessIds()
+    {
+        return GeneralLifespanExperimentToVitalProcess::find()
+            ->select('vital_process_id')
+            ->where(['general_lifespan_experiment_id' => $this->id, 'intervention_result_for_vital_process_id' => InterventionResultForVitalProcess::DETERIORATION_ID])
+            ->asArray()
+            ->column();
+    }
+
+    public function setDeteriorVitalProcessIds($ids)
+    {
+        if (!$ids) {
+            $ids = [];
+        }
+        $this->deteriorVitalProcessIds = $ids;
+    }
+
+    public function setImproveVitalProcessIds($ids)
+    {
+        if (!$ids) {
+            $ids = [];
+        }
+        $this->improveVitalProcessIds = $ids;
+    }
+
+    private function updateRelations($currentIdsArray, $processIdsProp, $interventionResultForVitalProcessId)
+    {
+        if ($currentIdsArray === $processIdsProp) {
+            return;
+        }
+        if ($processIdsProp) {
+            $relationIdsArrayToDelete = array_diff($currentIdsArray, $processIdsProp);
+            $relationIdsArrayToAdd = array_diff($processIdsProp, $currentIdsArray);
+            foreach ($relationIdsArrayToAdd as $relationIdArrayToAdd) {
+                $geneToRelation = new GeneralLifespanExperimentToVitalProcess();
+                $geneToRelation->general_lifespan_experiment_id = $this->id;
+                $geneToRelation->vital_process_id = $relationIdArrayToAdd;
+                $geneToRelation->intervention_result_for_vital_process_id = $interventionResultForVitalProcessId;
+                $geneToRelation->save();
+            }
+        } else {
+            $relationIdsArrayToDelete = $currentIdsArray;
+        }
+        $arsToDelete = GeneralLifespanExperimentToVitalProcess::find()->where(
+            [
+                'and',
+                ['general_lifespan_experiment_id' => $this->id],
+                ['intervention_result_for_vital_process_id' => $interventionResultForVitalProcessId],
+                ['in', 'vital_process_id', $relationIdsArrayToDelete]
+            ]
+        )->all();
+        foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+            $arToDelete->delete();
+        }
+    }
+
+    private function getVitalProcessIdsByNames(array $arProcess) {
+        foreach ($arProcess as &$process) {
+            if(is_numeric($process)) {
+                continue;
+            }
+            $process = (string)VitalProcess::getIdByName($process)->id;
+        }
+        return $arProcess;
     }
 }
