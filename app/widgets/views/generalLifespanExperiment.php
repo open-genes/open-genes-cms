@@ -63,14 +63,20 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']control_number', ['class' => 'form-control', 'placeholder' => 'N контроля']) ?>
             </div>
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']experiment_number', ['class' => 'form-control', 'placeholder' => 'N эксперимента']) ?>
             </div>
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']organism_number_in_cage', ['class' => 'form-control', 'placeholder' => 'N животных в клетке/чашке']) ?>
+            </div>
+            <div class="col-xs-6 col-md-2">
+                <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']temperature_from', ['class' => 'form-control', 'placeholder' => 'Температура ℃ - от']) ?>
+            </div>
+            <div class="col-xs-6 col-md-2">
+                <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']temperature_to', ['class' => 'form-control', 'placeholder' => 'Температура ℃ - до']) ?>
             </div>
         </div>
 

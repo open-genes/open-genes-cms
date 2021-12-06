@@ -135,6 +135,8 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
             'pmid' => Yii::t('app', 'Pmid'),
             'comment_en' => Yii::t('app', 'Comment En'),
             'comment_ru' => Yii::t('app', 'Comment Ru'),
+            'temperature_from' => Yii::t('app', 'Температура ℃ - от'),
+            'temperature_to' => Yii::t('app', 'Температура ℃ - до'),
         ];
     }
 
