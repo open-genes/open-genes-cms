@@ -78,6 +78,23 @@
             <div class="col-xs-6 col-md-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment, '[' . $generalLifespanExperiment->id . ']temperature_to', ['class' => 'form-control', 'placeholder' => 'Температура ℃ - до']) ?>
             </div>
+            <div class="col-xs-6 col-md-2">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $generalLifespanExperiment,
+                    'attribute' => '[' . $generalLifespanExperiment->id . ']diet_id',
+                    'data' => \app\models\Diet::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Диета',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => true,
+                        'tokenSeparators' => ['##'],
+                    ],
+                ]);
+                ?>
+            </div>
         </div>
 
         <div class="row form-row no-margins">

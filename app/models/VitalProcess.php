@@ -7,7 +7,7 @@ use app\models\traits\RuEnActiveRecordTrait;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "age".
+ * This is the model class for table "vital_process".
  *
  */
 class VitalProcess extends common\VitalProcess

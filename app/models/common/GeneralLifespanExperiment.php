@@ -74,7 +74,7 @@ class GeneralLifespanExperiment extends \yii\db\ActiveRecord
     {
         return [
             [['control_lifespan_min', 'control_lifespan_mean', 'control_lifespan_median', 'control_lifespan_max', 'experiment_lifespan_min', 'experiment_lifespan_mean', 'experiment_lifespan_median', 'experiment_lifespan_max', 'lifespan_min_change', 'lifespan_mean_change', 'lifespan_median_change', 'lifespan_max_change', 'expression_change', 'temperature_from', 'temperature_to'], 'number'],
-            [['control_number', 'experiment_number', 'organism_number_in_cage', 'changed_expression_tissue_id', 'lifespan_change_time_unit_id', 'age_unit', 'intervention_result_id', 'lifespan_min_change_stat_sign_id', 'lifespan_mean_change_stat_sign_id', 'lifespan_median_change_stat_sign_id', 'lifespan_max_change_stat_sign_id', 'model_organism_id', 'organism_line_id', 'organism_sex_id', 'measurement_type'], 'integer'],
+            [['control_number', 'experiment_number', 'organism_number_in_cage', 'changed_expression_tissue_id', 'lifespan_change_time_unit_id', 'age_unit', 'intervention_result_id', 'lifespan_min_change_stat_sign_id', 'lifespan_mean_change_stat_sign_id', 'lifespan_median_change_stat_sign_id', 'lifespan_max_change_stat_sign_id', 'model_organism_id', 'organism_line_id', 'organism_sex_id', 'measurement_type', 'diet_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['age', 'lifespan_change_percent_male', 'lifespan_change_percent_female', 'lifespan_change_percent_common'], 'safe'], // todo 410
             [['name', 'reference', 'pmid'], 'string', 'max' => 255],
@@ -134,6 +134,7 @@ class GeneralLifespanExperiment extends \yii\db\ActiveRecord
             'measurement_type' => Yii::t('app', 'Measurement Type'),
             'temperature_from' => Yii::t('app', 'Temperature from'),
             'temperature_to' => Yii::t('app', 'Temperature to'),
+            'diet_id' => Yii::t('app', 'Диета'),
         ];
     }
 
