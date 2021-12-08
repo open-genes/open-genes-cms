@@ -88,7 +88,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']gene_intervention_method_id',
-                    'data' => \app\models\GeneInterventionMethod::getAllNamesByWays(),
+                    'data' => \app\models\GeneInterventionMethod::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Метод',
                         'multiple' => false
