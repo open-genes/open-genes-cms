@@ -22,7 +22,6 @@ class LifespanExperiment extends common\LifespanExperiment
     use ExperimentsActiveRecordTrait;
 
     public $delete = false;
-    public $geneInterventionWay;
     public $tissuesIds;
     private $tissuesIdsArray;
 
@@ -31,14 +30,6 @@ class LifespanExperiment extends common\LifespanExperiment
         return [
             ChangelogBehavior::class
         ];
-    }
-    
-    public function afterFind()
-    {
-        if($this->geneInterventionMethod) {
-            $this->geneInterventionWay = $this->geneInterventionMethod->gene_intervention_way_id;
-        }
-        parent::afterFind();
     }
 
     public static function createByParams($params = [])
@@ -67,7 +58,7 @@ class LifespanExperiment extends common\LifespanExperiment
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
-            [['tissuesIds', 'geneInterventionWay', 'intervention_result_id'], 'safe'],
+            [['tissuesIds', 'intervention_result_id'], 'safe'],
             [['age'], 'number', 'min' => 0],
             [['age_unit'], 'required', 'when' => function ($model) {
                 return !empty($model->age);

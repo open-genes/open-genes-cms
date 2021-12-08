@@ -70,7 +70,7 @@
             <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']geneInterventionWay',
+                    'attribute' => '[' . $lifespanExperiment->id . ']gene_intervention_way_id',
                     'data' => \app\models\GeneInterventionWay::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Способ воздействия',
