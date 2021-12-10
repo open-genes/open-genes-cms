@@ -176,7 +176,8 @@ class LifespanExperiment extends common\LifespanExperiment
             self::setAttributeFromNewAR($modelArray, 'treatment_end_time_unit_id', 'TreatmentTimeUnit', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_start_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_end_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
-            
+            self::setAttributeFromNewAR($modelArray, 'genotype', 'Genotype', $modelAR);
+
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }

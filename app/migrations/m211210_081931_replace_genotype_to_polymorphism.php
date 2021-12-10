@@ -16,18 +16,19 @@ class m211210_081931_replace_genotype_to_polymorphism extends Migration
         $this->execute('RENAME TABLE genotype TO polymorphism');
         $this->createTable('genotype', [
                 'id' => Schema::TYPE_PK,
-                'name' => Schema::TYPE_STRING,
+                'name_ru' => Schema::TYPE_STRING,
+                'name_en' => Schema::TYPE_STRING,
         ]
         );
 
         $this->batchInsert(
             'genotype',
-            ['id', 'name'],
+            ['id', 'name_ru', 'name_en'],
             [
-                [1, '+/-'],
-                [2, '-/-'],
-                [3, '+/++'],
-                [4, '++/++']
+                [1, '+/-', '+/-'],
+                [2, '-/-', '-/-'],
+                [3, '+/++', '+/++'],
+                [4, '++/++', '++/++']
             ]
         );
 

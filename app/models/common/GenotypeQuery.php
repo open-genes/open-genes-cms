@@ -3,9 +3,9 @@
 namespace app\models\common;
 
 /**
- * This is the ActiveQuery class for [[Genotype]].
+ * This is the ActiveQuery class for [[\app\models\Genotype]].
  *
- * @see Genotype
+ * @see \app\models\Genotype
  */
 class GenotypeQuery extends \yii\db\ActiveQuery
 {
@@ -16,7 +16,7 @@ class GenotypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Genotype[]|array
+     * @return \app\models\Genotype[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class GenotypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return Genotype|array|null
+     * @return \app\models\Genotype|array|null
      */
     public function one($db = null)
     {

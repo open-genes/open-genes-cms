@@ -44,7 +44,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
-                    'data' => \app\models\Genotype::getAllNamesAsArray(),
+                    'data' => \app\models\Polymorphism::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Аллельный полиморфизм',
                         'multiple' => false,
