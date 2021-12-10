@@ -4,8 +4,6 @@ namespace app\controllers;
 
 use app\models\Polymorphism;
 use Yii;
-use app\models\Genotype;
-use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -47,7 +45,7 @@ class PolymorphismController extends Controller
     }
 
     /**
-     * Lists all Genotype models.
+     * Lists all Polymorphism models.
      * @return mixed
      */
     public function actionIndex()
@@ -80,7 +78,7 @@ class PolymorphismController extends Controller
     }
 
     /**
-     * Updates an existing Genotype model.
+     * Updates an existing Polymorphism model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed

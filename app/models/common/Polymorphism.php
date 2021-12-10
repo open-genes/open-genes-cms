@@ -57,7 +57,7 @@ class Polymorphism extends \yii\db\ActiveRecord
      */
     public function getGeneToLongevityEffects()
     {
-        return $this->hasMany(GeneToLongevityEffect::class, ['genotype_id' => 'id']);
+        return $this->hasMany(GeneToLongevityEffect::class, ['polymorphism_id' => 'id']);
     }
 
     /**
