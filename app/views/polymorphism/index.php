@@ -5,7 +5,7 @@ use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $searchModel \app\models\Genotype */
+/* @var $searchModel \app\models\Polymorphism */
 
 $this->title = 'Аллельные полиморфизмы';
 $this->params['breadcrumbs'][] = $this->title;
@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить аллельныей полиморфизм', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить аллельный полиморфизм', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name_ru',
             [
                 'label' => '🔗 genes',
-                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\Genotype */
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\Polymorphism */
                     $geneIds = $model->getLinkedGenesIds();
                     $geneIdsString = implode(',', $geneIds);
                     $count = count($geneIds);

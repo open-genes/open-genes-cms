@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Genotype */
+/* @var $model app\models\Polymorphism */
 
-$this->title = 'Добавить аллельныей полиморфизм';
-$this->params['breadcrumbs'][] = ['label' => 'Genotypes', 'url' => ['index']];
+$this->title = 'Добавить аллельный полиморфизм';
+$this->params['breadcrumbs'][] = ['label' => 'Polymorphism', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="genotype-create">

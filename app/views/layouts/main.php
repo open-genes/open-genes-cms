@@ -112,7 +112,7 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Прогерические синдромы', 'url' => '/progeria-syndrome'],
                     '<li class="divider"></li>',
-                    ['label' => 'Аллельные полиморфизмы', 'url' => '/genotype'],
+                    ['label' => 'Аллельные полиморфизмы', 'url' => '/polymorphism'],
                     '<li class="divider"></li>',
                     ['label' => 'Виды активности белка', 'url' => '/protein-activity'],
                     '<li class="divider"></li>',
