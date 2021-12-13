@@ -130,6 +130,8 @@ class AgeRelatedChange extends common\AgeRelatedChange
             if (!$modelAR->validate() || !$modelAR->save()) {
                 throw new UpdateExperimentsException($id, $modelAR);
             }
+            $message = ['subject' => ['data_for_save' => $modelArray, 'saved_ar' => $modelAR->attributes], 'message' => 'Debug Experiments Blue Form'];
+            \Yii::warning($message, 'experiments');
         }
     }
 

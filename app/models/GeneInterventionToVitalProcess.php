@@ -138,6 +138,8 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
             if (!$modelAR->validate() || !$modelAR->save()) {
                 throw new UpdateExperimentsException($id, $modelAR);
             }
+            $message = ['subject' => ['data_for_save' => $modelArray, 'saved_ar' => $modelAR->attributes], 'message' => 'Debug Experiments Green Form'];
+            \Yii::warning($message, 'experiments');
         }
     }
 
