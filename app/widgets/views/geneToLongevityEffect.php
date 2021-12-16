@@ -43,8 +43,8 @@
             <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
-                    'attribute' => '[' . $geneToLongevityEffect->id . ']genotype_id',
-                    'data' => \app\models\Genotype::getAllNamesAsArray(),
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']polymorphism_id',
+                    'data' => \app\models\Polymorphism::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Аллельный полиморфизм',
                         'multiple' => false,

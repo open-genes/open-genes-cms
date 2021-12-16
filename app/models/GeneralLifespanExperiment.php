@@ -50,6 +50,7 @@ use yii\helpers\ArrayHelper;
  * @property string|null $pmid
  * @property string|null $comment_en
  * @property string|null $comment_ru
+ * @property int|null $diet_id
  *
  * @property Sample $changedExpressionTissue
  * @property TreatmentTimeUnit $lifespanChangeTimeUnit
@@ -135,6 +136,9 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
             'pmid' => Yii::t('app', 'Pmid'),
             'comment_en' => Yii::t('app', 'Comment En'),
             'comment_ru' => Yii::t('app', 'Comment Ru'),
+            'temperature_from' => Yii::t('app', 'Температура ℃ - от'),
+            'temperature_to' => Yii::t('app', 'Температура ℃ - до'),
+            'diet_id' => Yii::t('app', 'Диета'),
         ];
     }
 
@@ -254,6 +258,16 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id']);
     }
 
+    /**
+     * Gets query for [[Diet]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\DietQuery
+     */
+    public function getDiet()
+    {
+        return $this->hasOne(Diet::class, ['id' => 'diet_id']);
+    }
+
     public function getLinkedGenesIds()
     {
         return []; // todo implement for column with related genes
@@ -299,7 +313,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         self::setAttributeFromNewAR($modelArray, 'organism_sex_id', 'OrganismSex', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'changed_expression_tissue_id', 'Sample', $modelAR);
         self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
-        self::setAttributeFromNewAR($modelArray, 'lifespan_change_time_unit_id', 'TreatmentTimeUnit', $modelAR);
+        self::setAttributeFromNewAR($modelArray, 'diet_id', 'Diet', $modelAR);
 
         VitalProcess::createNewByIds($modelArray['improveVitalProcessIds']);
         VitalProcess::createNewByIds($modelArray['deteriorVitalProcessIds']);
@@ -337,6 +351,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
 
         parent::afterSave($insert, $changedAttributes);
     }
+
 
     public function getImproveVitalProcessIds()
     {
@@ -403,7 +418,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         }
     }
 
-    private function getVitalProcessIdsByNames(array $arProcess) {
+    private function getVitalProcessIdsByNames(array $arProcess): array {
         foreach ($arProcess as &$process) {
             if(is_numeric($process)) {
                 continue;

@@ -53,7 +53,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             parent::attributeLabels(), [
             'delete' => 'Удалить',
             'longevity_effect_id' => 'Эффект',
-            'genotype_id' => 'Аллельный полиморфизм',
+            'polymorphism_id' => 'Аллельный полиморфизм',
             'sex_of_organism' => 'Пол',
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
@@ -83,7 +83,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             }
             $modelAR->setAttributes($modelArray);
             self::setAttributeFromNewAR($modelArray, 'longevity_effect_id', 'LongevityEffect', $modelAR);
-            self::setAttributeFromNewAR($modelArray, 'genotype_id', 'Genotype', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'polymorphism_id', 'Genotype', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'age_related_change_type_id', 'AgeRelatedChangeType', $modelAR);
 

@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property int|null $gene_id
  * @property int|null $longevity_effect_id
- * @property int|null $genotype_id
+ * @property int|null $polymorphism_id
  * @property int|null $sex_of_organism
  * @property string|null $reference
  * @property string|null $comment_en
@@ -42,12 +42,12 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'longevity_effect_id', 'genotype_id', 'sex_of_organism', 'model_organism_id', 'data_type', 'age_related_change_type_id'], 'integer'],
+            [['gene_id', 'longevity_effect_id', 'polymorphism_id', 'sex_of_organism', 'model_organism_id', 'data_type', 'age_related_change_type_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'allele_variant', 'pmid'], 'string', 'max' => 255],
             [['age_related_change_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AgeRelatedChangeType::className(), 'targetAttribute' => ['age_related_change_type_id' => 'id']],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
-            [['genotype_id'], 'exist', 'skipOnError' => true, 'targetClass' => Genotype::className(), 'targetAttribute' => ['genotype_id' => 'id']],
+            [['polymorphism_id'], 'exist', 'skipOnError' => true, 'targetClass' => Polymorphism::class, 'targetAttribute' => ['polymorphism_id' => 'id']],
             [['longevity_effect_id'], 'exist', 'skipOnError' => true, 'targetClass' => LongevityEffect::className(), 'targetAttribute' => ['longevity_effect_id' => 'id']],
         ];
     }
@@ -61,7 +61,7 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
             'id' => 'ID',
             'gene_id' => 'Gene ID',
             'longevity_effect_id' => 'Longevity Effect ID',
-            'genotype_id' => 'Genotype ID',
+            'polymorphism_id' => 'Polymorphism ID',
             'sex_of_organism' => 'Sex Of Organism',
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
@@ -101,7 +101,7 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
      */
     public function getGenotype()
     {
-        return $this->hasOne(Genotype::className(), ['id' => 'genotype_id']);
+        return $this->hasOne(Polymorphism::class, ['id' => 'polymorphism_id']);
     }
 
     /**
