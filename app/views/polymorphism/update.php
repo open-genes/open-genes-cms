@@ -3,10 +3,10 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Genotype */
+/* @var $model app\models\Polymorphism */
 
-$this->title = 'Редактировать аллельныей полиморфизм ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Genotypes', 'url' => ['index']];
+$this->title = 'Редактировать аллельный полиморфизм ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Polymorphism', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

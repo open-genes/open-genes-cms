@@ -22,7 +22,6 @@ class LifespanExperiment extends common\LifespanExperiment
     use ExperimentsActiveRecordTrait;
 
     public $delete = false;
-    public $geneInterventionWay;
     public $tissuesIds;
     private $tissuesIdsArray;
 
@@ -31,14 +30,6 @@ class LifespanExperiment extends common\LifespanExperiment
         return [
             ChangelogBehavior::class
         ];
-    }
-    
-    public function afterFind()
-    {
-        if($this->geneInterventionMethod) {
-            $this->geneInterventionWay = $this->geneInterventionMethod->gene_intervention_way_id;
-        }
-        parent::afterFind();
     }
 
     public static function createByParams($params = [])
@@ -67,7 +58,7 @@ class LifespanExperiment extends common\LifespanExperiment
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
-            [['tissuesIds', 'geneInterventionWay', 'intervention_result_id'], 'safe'],
+            [['tissuesIds', 'intervention_result_id'], 'safe'],
             [['age'], 'number', 'min' => 0],
             [['age_unit'], 'required', 'when' => function ($model) {
                 return !empty($model->age);
@@ -86,6 +77,7 @@ class LifespanExperiment extends common\LifespanExperiment
             'model_organism_id' => 'Объект',
             'tissue_specificity' => 'Тканеспецифичность',
             'mutation_induction' => 'Индукция мутации отменой препарата',
+            'tissue_specific_promoter' => 'Тканеспецифичный промотер',
             'age' => 'Возраст',
             'reference' => 'Ссылка',
             'age_unit' => 'Ед. измерения возраста',
@@ -184,7 +176,8 @@ class LifespanExperiment extends common\LifespanExperiment
             self::setAttributeFromNewAR($modelArray, 'treatment_end_time_unit_id', 'TreatmentTimeUnit', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_start_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_end_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
-            
+            self::setAttributeFromNewAR($modelArray, 'genotype', 'Genotype', $modelAR);
+
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }

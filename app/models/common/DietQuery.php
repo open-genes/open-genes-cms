@@ -3,11 +3,11 @@
 namespace app\models\common;
 
 /**
- * This is the ActiveQuery class for [[\app\models\Genotype]].
+ * This is the ActiveQuery class for [[\app\models\Diet]].
  *
- * @see \app\models\Genotype
+ * @see \app\models\Diet
  */
-class GenotypeQuery extends \yii\db\ActiveQuery
+class DietQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class GenotypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\Genotype[]|array
+     * @return \app\models\Diet[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class GenotypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\Genotype|array|null
+     * @return \app\models\Diet|array|null
      */
     public function one($db = null)
     {

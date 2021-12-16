@@ -3,11 +3,11 @@
 namespace app\models\common;
 
 /**
- * This is the ActiveQuery class for [[\app\models\Genotype]].
+ * This is the ActiveQuery class for [[\app\models\Polymorphism]].
  *
- * @see \app\models\Genotype
+ * @see \app\models\Polymorphism
  */
-class GenotypeQuery extends \yii\db\ActiveQuery
+class PolymorphismQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class GenotypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\Genotype[]|array
+     * @return \app\models\Polymorphism[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class GenotypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\Genotype|array|null
+     * @return \app\models\Polymorphism|array|null
      */
     public function one($db = null)
     {

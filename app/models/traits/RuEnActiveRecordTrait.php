@@ -51,4 +51,17 @@ trait RuEnActiveRecordTrait
         }
         return $model;
     }
+
+    public static function createNewByIds($ids)
+    {
+        if (!empty($ids) && is_array($ids)) {
+            foreach ($ids as $id) {
+                if (is_numeric($id)) {
+                    continue;
+                }
+                self::createFromNameString($id);
+            }
+        }
+    }
+
 }

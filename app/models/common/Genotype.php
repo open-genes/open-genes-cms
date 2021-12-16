@@ -8,12 +8,9 @@ use Yii;
  * This is the model class for table "genotype".
  *
  * @property int $id
- * @property string $name_ru
- * @property string $name_en
- * @property int $created_at
- * @property int $updated_at
+ * @property string|null $name
  *
- * @property GeneToLongevityEffect[] $geneToLongevityEffects
+ * @property LifespanExperiment[] $lifespanExperiments
  */
 class Genotype extends \yii\db\ActiveRecord
 {
@@ -31,8 +28,7 @@ class Genotype extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_at', 'updated_at'], 'integer'],
-            [['name_ru', 'name_en'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -43,19 +39,18 @@ class Genotype extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name_ru' => 'Name Ru',
-            'name_en' => 'Name En',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => 'Name',
         ];
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Gets query for [[LifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|LifespanExperimentQuery
      */
-    public function getGeneToLongevityEffects()
+    public function getLifespanExperiments()
     {
-        return $this->hasMany(GeneToLongevityEffect::className(), ['genotype_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['genotype' => 'id']);
     }
 
     /**

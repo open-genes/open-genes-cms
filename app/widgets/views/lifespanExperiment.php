@@ -70,7 +70,7 @@
             <div class="col-xs-6 col-md-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']geneInterventionWay',
+                    'attribute' => '[' . $lifespanExperiment->id . ']gene_intervention_way_id',
                     'data' => \app\models\GeneInterventionWay::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Способ воздействия',
@@ -88,7 +88,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']gene_intervention_method_id',
-                    'data' => \app\models\GeneInterventionMethod::getAllNamesByWays(),
+                    'data' => \app\models\GeneInterventionMethod::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Метод',
                         'multiple' => false
@@ -106,13 +106,14 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']genotype',
-                    'data' => [0 => '', 1 => '+/-', 2 => '-/-', 3 => '+/++', 4 => '++/++'],
+                    'data' => \app\models\Genotype::getAllNames(),
                     'options' => [
                         'placeholder' => 'Генотип',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
                         'allowClear' => true,
+                        'tags' => true,
                     ],
                 ]);
                 ?>
@@ -163,7 +164,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-8" style="float: right;">
+            <div class="col-xs-6 col-md-4">
+                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specific_promoter', ['class' => 'form-control tissue_specific_promoter', 'placeholder' => 'Тканеспецифичный промотер']) ?>
+            </div>
+            <div class="col-xs-6 col-md-8">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',
