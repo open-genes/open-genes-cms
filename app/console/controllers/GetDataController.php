@@ -14,10 +14,15 @@ use app\models\AgingMechanismToGeneOntology;
 use app\models\common\GeneOntology;
 use app\models\common\GeneToOntology;
 use app\models\Disease;
+use app\models\Gene;
 use app\models\GeneOntologyRelation;
 use app\models\GeneOntologyToAgingMechanismVisible;
+use app\models\GeneToOrthologs;
+use app\models\ModelOrganism;
+use app\models\Orthologs;
 use app\service\GeneOntologyServiceInterface;
 use yii\console\Controller;
+use yii\helpers\Console;
 use yii\helpers\Html;
 use yii\httpclient\Client;
 
@@ -91,6 +96,15 @@ class GetDataController extends Controller
         $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
         $ncbiService->parseExpression($onlyNew, $geneNcbiIdsArray);
     }
+    /**
+     */
+    public function actionGetOrthologs()
+    {
+        /** @var  ParseNCBIServiceInterface $ncbiService */
+        $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
+        $ncbiService->parseOrthologs();
+
+    }
 
     /**
      * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3
@@ -122,7 +136,7 @@ class GetDataController extends Controller
         $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         /** @var GeneOntologyServiceInterface $geneOntologyService */
         $geneOntologyService = \Yii::$container->get(GeneOntologyServiceInterface::class);
-        $arGenesQuery = \app\models\Gene::find()->where('gene.ncbi_id > 0');
+        $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
         if ($onlyNew) {
             $arGenesQuery->leftJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
                 ->andWhere('gene_to_ontology.gene_id is null');
