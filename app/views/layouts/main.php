@@ -89,6 +89,8 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Стадия развития в начале эксперимента', 'url' => '/treatment-stage-of-development', 'visible' => Yii::$app->user->can('editor')],
                     '<li class="divider"></li>',
                     ['label' => 'Единицы измерения времени', 'url' => '/treatment-time-unit', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Генотип', 'url' => '/genotype', 'visible' => Yii::$app->user->can('editor')],
                 ],
             ],
             [

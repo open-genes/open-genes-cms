@@ -37,7 +37,8 @@ class Genotype extends common\Genotype
     {
         return [
                     'id' => 'ID',
-                    'name' => 'Name',
+                    'name_ru' => 'Name Ru',
+                    'name_en' => 'Name En',
                 ];
     }
 
