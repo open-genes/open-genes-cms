@@ -28,7 +28,8 @@ class Genotype extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'string', 'max' => 255],
+            [['name_ru'], 'string', 'max' => 255],
+            [['name_en'], 'string', 'max' => 255],
         ];
     }
 
@@ -39,7 +40,8 @@ class Genotype extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name_ru' => 'Name Ru',
+            'name_en' => 'Name En',
         ];
     }
 
