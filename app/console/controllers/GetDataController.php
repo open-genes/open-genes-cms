@@ -98,11 +98,11 @@ class GetDataController extends Controller
     }
     /**
      */
-    public function actionGetOrthologs()
+    public function actionGetOrthologs($geneId = 0)
     {
         /** @var  ParseNCBIServiceInterface $ncbiService */
         $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
-        $ncbiService->parseOrthologs();
+        $ncbiService->parseOrthologs($geneId);
 
     }
 

@@ -10,13 +10,16 @@ use app\models\GeneToOrthologs;
 use app\models\ModelOrganism;
 use app\models\Orthologs;
 use app\models\Sample;
+use Yii;
 use yii\helpers\Console;
 use yii\helpers\VarDumper;
 use yii\httpclient\Client;
+use yii\httpclient\Response;
 
 class ParseNCBIService implements ParseNCBIServiceInterface
 {
     private $apiUrl;
+    private const API_KEY = '75dc1a57e62b6ec836138c808c26f9944808';
 
     public function __construct($apiUrl)
     {
@@ -86,91 +89,112 @@ class ParseNCBIService implements ParseNCBIServiceInterface
         }
     }
 
-    public function parseOrthologs()
+    public function parseOrthologs($geneId)
     {
-        $orthologs = Orthologs::find()->all();
-        if (!empty($orthologs)) {
-            Console::output('table orthologs already filled!');
-            return;
-        }
+        $genes = Gene::find()->orderBy('id')->where(['>=', 'id', $geneId])->all();
 
-        $geneToOrtholog = GeneToOrthologs::find()->all();
-        if (!empty($geneToOrtholog)) {
-            Console::output('table gene_to_orthologs already filled!');
-            return;
-        }
+        //птицы и клеточные культуры не нужны
+        $organisms = ModelOrganism::find()->where(
+            ['not', ['name_en' => 'birds']]
+        )->andWhere(['not', ['name_en' => 'cell culture']])->all();
 
-        $genes = Gene::find()->orderBy('id')->all();
-        $organisms = ModelOrganism::find()->all();
-        $httpClient = new Client();
-
+        $organismQuery = '';
+        $organismsNamed = [];
         foreach ($organisms as $organism) {
-            $organismNames[] = $organism->name_lat;
+            $organismQuery .= '&taxon_filter=' . rawurlencode($organism->name_lat);
+            $organismsNamed[$organism->name_lat] = $organism;
         }
 
         $count = 0;
+        $httpClient = new Client([
+            'transport' => 'yii\httpclient\CurlTransport'
+        ]);
+
+        $requests = [];
+        $genesNamed = [];
         foreach ($genes as $gene) {
             try {
-                foreach ($organisms as $organism) {
-                    //птицы не нужны
-                    if ($organism->name_en == 'birds') {
-                        continue;
+                $mem = memory_get_usage();
+                $genesNamed[$gene->ncbi_id] = $gene;
+                $url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id/{$gene->ncbi_id}/orthologs?api_key=". self::API_KEY . "&returned_content=COMPLETE" . $organismQuery;
+                $requests[$gene->ncbi_id] = $httpClient->get($url);
+                if (count($requests) > 9 || $count == count($genes) - 1) {
+                    $responses = $httpClient->batchSend($requests);
+                    foreach ($responses as $ncbi_id => $response) {
+                        $this->parseGeneForOrthologs($genesNamed[$ncbi_id], $response, $organismsNamed);
                     }
-                    $organismQuery = '&taxon_filter=' . rawurlencode($organism->name_lat);
-                    $url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id/{$gene->ncbi_id}/orthologs?returned_content=COMPLETE" . $organismQuery;
-                    $response = $httpClient->createRequest()
-                        ->setUrl($url)
-                        ->send();
-                    $parsedResult = json_decode($response->content, true);
-                    if (!empty($parsedResult['message'])) {
-                        continue;
-                    }
-                    if (!empty($parsedResult['genes']['messages'])) {
-                        continue;
-                    }
-                    $genesApi = $parsedResult['genes']['genes'];
-                    if (!is_array($genesApi)) {
-                        continue;
-                    }
-                    foreach ($genesApi as $geneApi) {
-                        //если у нас такого организма еще нет, добавим его
-                        if (!in_array($geneApi['gene']['taxname'], $organismNames)) {
-                            $newOrganism = new ModelOrganism();
-                            $newOrganism->name_lat = $geneApi['gene']['taxname'];
-                            if ($newOrganism->save()) {
-                                Console::output('Add new organism ' . $geneApi['gene']['taxname']);
-                                $organismNames[] = $newOrganism->name_lat;
-                            }
-                            $organism = $newOrganism;
-                        }
-                        $ortholog = new Orthologs();
-                        $ortholog->symbol = $geneApi['gene']['symbol'];
-                        $ortholog->model_organism_id = $organism->id;
-                        if ($ortholog->save()) {
-                            Console::output(
-                                'New ortholog for organism ' . $organism->name_lat . ' successfully added, id ' . $ortholog->id
-                            );
-                        }
-
-                        $geneToOrtholog = new GeneToOrthologs();
-                        $geneToOrtholog->gene_id = $gene->id;
-                        $geneToOrtholog->ortholog_id = $ortholog->id;
-                        if ($geneToOrtholog->save()) {
-                            Console::output(
-                                'Relation gene to ortholog successfully created, ' . $gene->symbol . '->' . $geneApi['gene']['symbol']
-                            );
-                        }
-                    }
+                    $requests = [];
+                    $genesNamed = [];
+                    $conv = function ($size)
+                    {
+                        $unit=array('b','kb','mb','gb','tb','pb');
+                        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
+                    };
+                    gc_collect_cycles();
+                    $memUsage = memory_get_usage();
+                    Console::output('Processed genes: ' . ($count + 1) . '/' . count($genes) . ', Memory: ' . $conv($memUsage). ', last gene id ' . $gene->id);
                 }
-                sleep(1);
 
             } catch (\Exception $e) {
                 Console::output($e->getMessage());
             }
             $count++;
-            Console::output('Processed genes: ' . $count . ', last gene id ' . $gene->id);
+        }
+        Console::output('Done! Total:' . count($genes));
+    }
+
+    /**
+     * @param $gene Gene
+     * @param string $organismQuery
+     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\httpclient\Exception
+     */
+    private function parseGeneForOrthologs(Gene $gene, Response $response, array &$organismsNamed)
+    {
+        $parsedResult = json_decode($response->content, true);
+        if (!empty($parsedResult['message'])) {
+            return;
+        }
+        if (!empty($parsedResult['genes']['messages'])) {
+            return;
+        }
+        $genesApi = $parsedResult['genes']['genes'];
+        if (!is_array($genesApi)) {
+            return;
+        }
+        foreach ($genesApi as $geneApi) {
+            $organism = $organismsNamed[$geneApi['gene']['taxname']] ?? null;
+            if ($organism == null) {
+                $organism = $this->createNewOrganism($geneApi['gene']['taxname']);
+                $organismsNamed[$geneApi['gene']['taxname']] = $organism;
+            }
+
+            $ortholog = new Orthologs();
+            $ortholog->symbol = $geneApi['gene']['symbol'];
+            $ortholog->model_organism_id = $organism->id;
+            if ($ortholog->save()) {
+                Yii::info('New ortholog for organism ' . $organism->name_lat . ' successfully added, id ' . $ortholog->id);
+            }
+
+            $geneToOrtholog = new GeneToOrthologs();
+            $geneToOrtholog->gene_id = $gene->id;
+            $geneToOrtholog->ortholog_id = $ortholog->id;
+            if ($geneToOrtholog->save()) {
+                Yii::info('Relation gene to ortholog successfully created, ' . $gene->symbol . '->' . $geneApi['gene']['symbol']);
+            }
+
         }
     }
+
+    private function createNewOrganism(string $taxname): ModelOrganism {
+        $newOrganism = new ModelOrganism();
+        $newOrganism->name_lat = $taxname;
+        if ($newOrganism->save()) {
+            Yii::info('Add new organism ' . $taxname);
+        }
+        return $newOrganism;
+    }
+
     /**
      * @param string $geneInfoPage
      * @return array
