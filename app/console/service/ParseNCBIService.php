@@ -89,23 +89,29 @@ class ParseNCBIService implements ParseNCBIServiceInterface
         }
     }
 
-    public function parseOrthologs($geneId)
+    public function parseOrthologs($geneId, $limit)
     {
-        $genes = Gene::find()->orderBy('id')->where(['>=', 'id', $geneId])->all();
+        $genes = Gene::find()->orderBy('id')->where(['>', 'id', $geneId])->limit($limit)->all();
+        if (count($genes) == 0) {
+            return 0;
+        }
 
         //птицы и клеточные культуры не нужны
         $organisms = ModelOrganism::find()->where(
-            ['not', ['name_en' => 'birds']]
-        )->andWhere(['not', ['name_en' => 'cell culture']])->all();
+            ['not', ['name_lat' => 'Aves']]
+        )->andWhere(['not', ['name_lat' => 'Cellula']])
+            ->select('name_lat, id')
+            ->asArray()
+            ->all();
 
         $organismQuery = '';
         $organismsNamed = [];
         foreach ($organisms as $organism) {
-            $organismQuery .= '&taxon_filter=' . rawurlencode($organism->name_lat);
-            $organismsNamed[$organism->name_lat] = $organism;
+            $organismQuery .= '&taxon_filter=' . rawurlencode($organism['name_lat']);
+            $organismsNamed[$organism['name_lat']] = (int)$organism['id'];
         }
+        unset($organisms);
 
-        $count = 0;
         $httpClient = new Client([
             'transport' => 'yii\httpclient\CurlTransport'
         ]);
@@ -113,34 +119,22 @@ class ParseNCBIService implements ParseNCBIServiceInterface
         $requests = [];
         $genesNamed = [];
         foreach ($genes as $gene) {
-            try {
-                $mem = memory_get_usage();
-                $genesNamed[$gene->ncbi_id] = $gene;
-                $url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id/{$gene->ncbi_id}/orthologs?api_key=". self::API_KEY . "&returned_content=COMPLETE" . $organismQuery;
-                $requests[$gene->ncbi_id] = $httpClient->get($url);
-                if (count($requests) > 9 || $count == count($genes) - 1) {
-                    $responses = $httpClient->batchSend($requests);
-                    foreach ($responses as $ncbi_id => $response) {
-                        $this->parseGeneForOrthologs($genesNamed[$ncbi_id], $response, $organismsNamed);
-                    }
-                    $requests = [];
-                    $genesNamed = [];
-                    $conv = function ($size)
-                    {
-                        $unit=array('b','kb','mb','gb','tb','pb');
-                        return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];
-                    };
-                    gc_collect_cycles();
-                    $memUsage = memory_get_usage();
-                    Console::output('Processed genes: ' . ($count + 1) . '/' . count($genes) . ', Memory: ' . $conv($memUsage). ', last gene id ' . $gene->id);
-                }
-
-            } catch (\Exception $e) {
-                Console::output($e->getMessage());
-            }
-            $count++;
+            $genesNamed[$gene->ncbi_id] = $gene;
+            $url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id/{$gene->ncbi_id}/orthologs?api_key=". self::API_KEY . "&returned_content=COMPLETE" . $organismQuery;
+            $requests[$gene->ncbi_id] = $httpClient->get($url);
         }
-        Console::output('Done! Total:' . count($genes));
+
+        try {
+            $responses = $httpClient->batchSend($requests);
+            foreach ($responses as $ncbi_id => $response) {
+                $this->parseGeneForOrthologs($genesNamed[$ncbi_id], $response, $organismsNamed);
+            }
+        } catch (\Exception $e) {
+            Console::output($e->getMessage());
+        }
+
+
+        return $gene->id;
     }
 
     /**
@@ -166,14 +160,15 @@ class ParseNCBIService implements ParseNCBIServiceInterface
             $organism = $organismsNamed[$geneApi['gene']['taxname']] ?? null;
             if ($organism == null) {
                 $organism = $this->createNewOrganism($geneApi['gene']['taxname']);
-                $organismsNamed[$geneApi['gene']['taxname']] = $organism;
+                $organismsNamed[$geneApi['gene']['taxname']] = $organism->id;
+                $organism = $organism->id;
             }
 
             $ortholog = new Orthologs();
             $ortholog->symbol = $geneApi['gene']['symbol'];
-            $ortholog->model_organism_id = $organism->id;
+            $ortholog->model_organism_id = $organism;
             if ($ortholog->save()) {
-                Yii::info('New ortholog for organism ' . $organism->name_lat . ' successfully added, id ' . $ortholog->id);
+                Yii::info('New ortholog for organism ' . $organism . ' successfully added, id ' . $ortholog->id);
             }
 
             $geneToOrtholog = new GeneToOrthologs();
