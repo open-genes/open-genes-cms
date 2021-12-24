@@ -16,7 +16,6 @@ class m211214_102012_name_lat_to_model_organism extends Migration
         $this->addColumn('model_organism', 'name_lat', Schema::TYPE_STRING . ' AFTER name_en');
         $this->update('model_organism', ['name_ru' => 'термит Reticulitermes speratus'], ['name_en' => 'термит Reticulitermes speratus']);
         $this->update('model_organism', ['name_en' => 'termite Reticulitermes speratus'], ['name_en' => 'термит Reticulitermes speratus']);
-        $this->delete('model_organism', ['name_en' => 'ducks']);
         $this->insert('model_organism', ['name_ru' => null, 'name_en' => 'Cairina moschata', 'name_lat' => 'Cairina moschata']);
         $names = [
             'mice' => 'Mus musculus',
