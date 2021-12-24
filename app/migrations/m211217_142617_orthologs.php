@@ -25,9 +25,9 @@ class m211217_142617_orthologs extends Migration
             'ortholog_id' => Schema::TYPE_INTEGER,
         ]);
 
-        $this->addForeignKey('ortholog_to_organism', 'orthologs', 'model_organism_id', 'model_organism', 'id');
-        $this->addForeignKey('gene_to_orthologs_to_gene', 'gene_to_orthologs', 'gene_id', 'gene', 'id');
-        $this->addForeignKey('gene_to_orthologs_to_ortholog', 'gene_to_orthologs', 'ortholog_id', 'orthologs', 'id');
+        $this->addForeignKey('ortholog_to_organism', 'orthologs', 'model_organism_id', 'model_organism', 'id', 'CASCADE');
+        $this->addForeignKey('gene_to_orthologs_to_gene', 'gene_to_orthologs', 'gene_id', 'gene', 'id', 'CASCADE');
+        $this->addForeignKey('gene_to_orthologs_to_ortholog', 'gene_to_orthologs', 'ortholog_id', 'orthologs', 'id', 'CASCADE');
 
     }
 
