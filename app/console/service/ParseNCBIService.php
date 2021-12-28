@@ -19,11 +19,12 @@ use yii\httpclient\Response;
 class ParseNCBIService implements ParseNCBIServiceInterface
 {
     private $apiUrl;
-    private const API_KEY = '75dc1a57e62b6ec836138c808c26f9944808';
+    private $apiKey;
 
-    public function __construct($apiUrl)
+    public function __construct($apiUrl, $apiKey)
     {
         $this->apiUrl = $apiUrl;
+        $this->apiKey = $apiKey;
     }
 
     public function parseExpression(bool $onlyNew=true, array $geneNcbiIdsArray=[])
@@ -89,9 +90,9 @@ class ParseNCBIService implements ParseNCBIServiceInterface
         }
     }
 
-    public function parseOrthologs($geneId, $limit)
+    public function parseOrthologs($geneIdsAfter, $limit)
     {
-        $genes = Gene::find()->orderBy('id')->where(['>', 'id', $geneId])->limit($limit)->all();
+        $genes = Gene::find()->orderBy('id')->where(['>', 'id', $geneIdsAfter])->limit($limit)->all();
         if (count($genes) == 0) {
             return 0;
         }
@@ -120,7 +121,7 @@ class ParseNCBIService implements ParseNCBIServiceInterface
         $genesNamed = [];
         foreach ($genes as $gene) {
             $genesNamed[$gene->ncbi_id] = $gene;
-            $url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id/{$gene->ncbi_id}/orthologs?api_key=". self::API_KEY . "&returned_content=COMPLETE" . $organismQuery;
+            $url = "https://api.ncbi.nlm.nih.gov/datasets/v1/gene/id/{$gene->ncbi_id}/orthologs?api_key={$this->apiKey}&returned_content=COMPLETE{$organismQuery}";
             $requests[$gene->ncbi_id] = $httpClient->get($url);
         }
 
@@ -132,8 +133,7 @@ class ParseNCBIService implements ParseNCBIServiceInterface
         } catch (\Exception $e) {
             Console::output($e->getMessage());
         }
-
-
+        
         return $gene->id;
     }
 
@@ -157,18 +157,18 @@ class ParseNCBIService implements ParseNCBIServiceInterface
             return;
         }
         foreach ($genesApi as $geneApi) {
-            $organism = $organismsNamed[$geneApi['gene']['taxname']] ?? null;
-            if ($organism == null) {
-                $organism = $this->createNewOrganism($geneApi['gene']['taxname']);
-                $organismsNamed[$geneApi['gene']['taxname']] = $organism->id;
-                $organism = $organism->id;
+            $organismId = $organismsNamed[$geneApi['gene']['taxname']] ?? null;
+            if ($organismId == null) {
+                $organismId = $this->createNewOrganism($geneApi['gene']['taxname']);
+                $organismsNamed[$geneApi['gene']['taxname']] = $organismId->id;
+                $organismId = $organismId->id;
             }
 
             $ortholog = new Orthologs();
             $ortholog->symbol = $geneApi['gene']['symbol'];
-            $ortholog->model_organism_id = $organism;
+            $ortholog->model_organism_id = $organismId;
             if ($ortholog->save()) {
-                Yii::info('New ortholog for organism ' . $organism . ' successfully added, id ' . $ortholog->id);
+                Yii::info('New ortholog for organism ' . $organismId . ' successfully added, id ' . $ortholog->id);
             }
 
             $geneToOrtholog = new GeneToOrthologs();
