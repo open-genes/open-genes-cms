@@ -30,6 +30,7 @@ class GetDataController extends Controller
 {
     private const MAX_GENE = 100;
     private const NCBI_LIMIT = 10;
+
     /**
      * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3 $geneSearchName = ''
      * @param string $onlyNew
@@ -98,43 +99,45 @@ class GetDataController extends Controller
         $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
         $ncbiService->parseExpression($onlyNew, $geneNcbiIdsArray);
     }
+
     /**
      */
-    public function actionGetOrthologs($geneId = 0)
+    public function actionGetOrthologs($geneIdsAfter = 0)
     {
-        $geneCount = Gene::find()->orderBy('id')->where(['>', 'id', $geneId])->count();
+        $genesCount = Gene::find()->orderBy('id')->where(['>', 'id', $geneIdsAfter])->count();
         $count = 0;
         do {
-            $handle = popen('php ./console/yii.php get-data/get-orthologs-inner ' . $geneId, 'r');
+            $consoleDir = \Yii::getAlias('@app/console');
+            $handle = popen("php {$consoleDir}/yii.php get-data/get-orthologs-inner {$geneIdsAfter}", 'r');
             while ($output = fgets($handle)) {
                 echo $output;
-                if (preg_match('~Processed genes: (\d+)~', $output, $match)){
+                if (preg_match('~Processed genes: (\d+)~', $output, $match)) {
                     $count += $match[1];
                 }
 
-                if (!preg_match('~last gene id (\d+)~', $output, $match)){
+                if (!preg_match('~last gene id (\d+)~', $output, $match)) {
                     continue;
                 }
-                $geneId = $match[1];
+                $geneIdsAfter = $match[1];
             }
-            Console::output('Total processed genes: ' . ($count) . '/' . $geneCount . ', last gene id ' . $geneId);
+            Console::output('Total processed genes: ' . ($count) . '/' . $genesCount . ', last gene id ' . $geneIdsAfter);
 
-        } while ($geneId);
+        } while ($geneIdsAfter);
 
     }
 
-    public function actionGetOrthologsInner($geneId = 0)
+    public function actionGetOrthologsInner($geneIdsAfter = 0)
     {
         /** @var  ParseNCBIServiceInterface $ncbiService */
         $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
         $count = 0;
         try {
             do {
-                $geneId = $ncbiService->parseOrthologs($geneId, self::NCBI_LIMIT);
+                $geneIdsAfter = $ncbiService->parseOrthologs($geneIdsAfter, self::NCBI_LIMIT);
                 $count += self::NCBI_LIMIT;
-                Console::output('INNER Processed genes: ' . self::NCBI_LIMIT . '(' . $count . '/' . self::MAX_GENE . '), last gene id ' . $geneId);
+                Console::output('INNER Processed genes: ' . self::NCBI_LIMIT . '(' . $count . '/' . self::MAX_GENE . '), last gene id ' . $geneIdsAfter);
 
-            } while ($geneId && $count < self::MAX_GENE);
+            } while ($geneIdsAfter && $count < self::MAX_GENE);
         } catch (\Exception $e) {
             Console::output($e->getMessage());
         }
