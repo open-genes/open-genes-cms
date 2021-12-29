@@ -67,6 +67,7 @@ docker exec -it (container_hash) bash
   php yii.php get-data/get-go-terms                     [onlyNew default=true] true [geneNcbiIds default null] 1,2,3 [countRows default 2000] 2000
   php yii.php get-data/get-protein-atlas                [onlyNew default=true] true [geneNcbiIds default null] 1,2,3 [geneSearchName default null] BLM
   php yii.php get-data/get-protein-classes              [onlyNew default=true] true [geneNcbiIds default null] 1,2,3 [geneSearchName default null] BLM
+  php yii.php get-data/get-orthologs                    [geneIdsAfter default=0]
   ...
     ```
 * apply db migrations:
@@ -126,6 +127,9 @@ php yii.php get-data/get-protein-atlas                [onlyNew default=true] tru
 
 # parse protein classes from https://www.proteinatlas.org/search/
 php yii.php get-data/get-protein-classes              [onlyNew default=true] true [geneNcbiIds default null] 1,2,3 [geneSearchName default null] BLM
+
+# parse orthologs from https://api.ncbi.nlm.nih.gov/
+php yii.php get-data/get-orthologs                    [geneIdsAfter default=0]
 
 # examples:
 # php yii.php  get-data/get-diseases-from-biocomp - get diseases only for the new genes
