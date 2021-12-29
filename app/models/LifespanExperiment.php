@@ -165,7 +165,6 @@ class LifespanExperiment extends common\LifespanExperiment
             $modelAR->setAttributes($modelArray);
             self::setAttributeFromNewAR($modelArray, 'gene_intervention_method_id', 'GeneInterventionMethod', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'active_substance_id', 'ActiveSubstance', $modelAR);
-            self::setAttributeFromNewAR($modelArray, 'active_substance_dosage_unit_id', 'ActiveSubstanceDosageUnit', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'active_substance_delivery_way_id', 'ActiveSubstanceDeliveryWay', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_period_id', 'TreatmentPeriod', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_period_id', 'TreatmentPeriod', $modelAR);

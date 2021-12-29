@@ -23,13 +23,10 @@ use Yii;
  * @property int|null $tissue_specificity Тканеспецифичность
  * @property string|null $tissue_specific_promoter Тканеспецифичный промотер
  * @property int|null $mutation_induction Индукция мутации отменой препарата
- * @property float|null $active_substance_daily_dose Дневная доза
- * @property int|null $active_substance_daily_doses_number Количество воздействий в день
  * @property float|null $treatment_start Начало периода воздействия
  * @property float|null $treatment_end Конец периода воздействия
  * @property int|null $active_substance_id
  * @property int|null $active_substance_delivery_way_id
- * @property int|null $active_substance_dosage_unit_id
  * @property int|null $treatment_period_id
  * @property int|null $gene_intervention_method_id
  * @property int|null $experiment_main_effect_id
@@ -38,12 +35,12 @@ use Yii;
  * @property int|null $treatment_start_time_unit_id
  * @property int|null $treatment_end_time_unit_id
  * @property int|null $general_lifespan_experiment_id
+ * @property string|null $description_of_therapy_ru
+ * @property string|null $description_of_therapy_en
  * @property string|null $type
- * @property float|null $daily_dose_sci_not_degree Дневная доза - порядок в научной нотации
  *
  * @property ActiveSubstance $activeSubstance
  * @property ActiveSubstanceDeliveryWay $activeSubstanceDeliveryWay
- * @property ActiveSubstanceDosageUnit $activeSubstanceDosageUnit
  * @property GeneralLifespanExperiment $generalLifespanExperiment
  * @property TimeUnit $treatmentEndTimeUnit
  * @property ExperimentMainEffect $experimentMainEffect
@@ -76,13 +73,12 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'genotype', 'tissue_specificity', 'mutation_induction', 'active_substance_daily_doses_number', 'active_substance_id', 'active_substance_delivery_way_id', 'active_substance_dosage_unit_id', 'treatment_period_id', 'gene_intervention_method_id', 'experiment_main_effect_id', 'treatment_start_stage_of_development_id', 'treatment_end_stage_of_development_id', 'treatment_start_time_unit_id', 'treatment_end_time_unit_id', 'general_lifespan_experiment_id', 'gene_intervention_way_id'], 'integer'],
-            [['age', 'active_substance_daily_dose', 'treatment_start', 'treatment_end', 'daily_dose_sci_not_degree'], 'number'],
-            [['comment_en', 'comment_ru', 'type', 'tissue_specific_promoter' ], 'string'],
+            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'genotype', 'tissue_specificity', 'mutation_induction', 'active_substance_id', 'active_substance_delivery_way_id', 'treatment_period_id', 'gene_intervention_method_id', 'experiment_main_effect_id', 'treatment_start_stage_of_development_id', 'treatment_end_stage_of_development_id', 'treatment_start_time_unit_id', 'treatment_end_time_unit_id', 'general_lifespan_experiment_id', 'gene_intervention_way_id'], 'integer'],
+            [['age', 'treatment_start', 'treatment_end'], 'number'],
+            [['comment_en', 'comment_ru', 'type', 'tissue_specific_promoter', 'description_of_therapy_ru', 'description_of_therapy_en'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
             [['active_substance_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActiveSubstance::class, 'targetAttribute' => ['active_substance_id' => 'id']],
             [['active_substance_delivery_way_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActiveSubstanceDeliveryWay::class, 'targetAttribute' => ['active_substance_delivery_way_id' => 'id']],
-            [['active_substance_dosage_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActiveSubstanceDosageUnit::class, 'targetAttribute' => ['active_substance_dosage_unit_id' => 'id']],
             [['general_lifespan_experiment_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneralLifespanExperiment::class, 'targetAttribute' => ['general_lifespan_experiment_id' => 'id']],
             [['treatment_end_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TimeUnit::class, 'targetAttribute' => ['treatment_end_time_unit_id' => 'id']],
             [['experiment_main_effect_id'], 'exist', 'skipOnError' => true, 'targetClass' => ExperimentMainEffect::class, 'targetAttribute' => ['experiment_main_effect_id' => 'id']],
@@ -124,13 +120,10 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'tissue_specificity' => Yii::t('app', 'Tissue Specificity'),
             'tissue_specific_promoter' => Yii::t('app', 'Tissue Specific Promoter'),
             'mutation_induction' => Yii::t('app', 'Mutation induction by drug withdrawal'),
-            'active_substance_daily_dose' => Yii::t('app', 'Active Substance Daily Dose'),
-            'active_substance_daily_doses_number' => Yii::t('app', 'Active Substance Daily Doses Number'),
             'treatment_start' => Yii::t('app', 'Treatment Start'),
             'treatment_end' => Yii::t('app', 'Treatment End'),
             'active_substance_id' => Yii::t('app', 'Active Substance ID'),
             'active_substance_delivery_way_id' => Yii::t('app', 'Active Substance Delivery Way ID'),
-            'active_substance_dosage_unit_id' => Yii::t('app', 'Active Substance Dosage Unit ID'),
             'treatment_period_id' => Yii::t('app', 'Treatment Period ID'),
             'gene_intervention_method_id' => Yii::t('app', 'Gene Intervention Method ID'),
             'experiment_main_effect_id' => Yii::t('app', 'Experiment Main Effect ID'),
@@ -140,7 +133,8 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'treatment_end_time_unit_id' => Yii::t('app', 'Treatment End Time Unit ID'),
             'general_lifespan_experiment_id' => Yii::t('app', 'General Lifespan Experiment ID'),
             'type' => Yii::t('app', 'Type'),
-            'daily_dose_sci_not_degree' => Yii::t('app', 'Daily Dose Sci Not Degree'),
+            'description_of_therapy_ru' => Yii::t('app', 'Description of therapy'),
+            'description_of_therapy_en' => Yii::t('app', 'Description of therapy EN'),
         ];
     }
 
@@ -162,16 +156,6 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function getActiveSubstanceDeliveryWay()
     {
         return $this->hasOne(ActiveSubstanceDeliveryWay::class, ['id' => 'active_substance_delivery_way_id']);
-    }
-
-    /**
-     * Gets query for [[ActiveSubstanceDosageUnit]].
-     *
-     * @return \yii\db\ActiveQuery|ActiveSubstanceDosageUnitQuery
-     */
-    public function getActiveSubstanceDosageUnit()
-    {
-        return $this->hasOne(ActiveSubstanceDosageUnit::class, ['id' => 'active_substance_dosage_unit_id']);
     }
 
     /**
