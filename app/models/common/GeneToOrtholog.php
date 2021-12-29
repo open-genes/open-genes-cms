@@ -5,23 +5,23 @@ namespace app\models\common;
 use Yii;
 
 /**
- * This is the model class for table "gene_to_orthologs".
+ * This is the model class for table "gene_to_ortholog".
  *
  * @property int $id
  * @property int|null $gene_id
  * @property int|null $ortholog_id
  *
  * @property Gene $gene
- * @property Orthologs $ortholog
+ * @property Ortholog $ortholog
  */
-class GeneToOrthologs extends \yii\db\ActiveRecord
+class GeneToOrtholog extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'gene_to_orthologs';
+        return 'gene_to_ortholog';
     }
 
     /**
@@ -32,7 +32,7 @@ class GeneToOrthologs extends \yii\db\ActiveRecord
         return [
             [['gene_id', 'ortholog_id'], 'integer'],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
-            [['ortholog_id'], 'exist', 'skipOnError' => true, 'targetClass' => Orthologs::class, 'targetAttribute' => ['ortholog_id' => 'id']],
+            [['ortholog_id'], 'exist', 'skipOnError' => true, 'targetClass' => Ortholog::class, 'targetAttribute' => ['ortholog_id' => 'id']],
         ];
     }
 
@@ -61,19 +61,19 @@ class GeneToOrthologs extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Ortholog]].
      *
-     * @return \yii\db\ActiveQuery|OrthologsQuery
+     * @return \yii\db\ActiveQuery|OrthologQuery
      */
     public function getOrtholog()
     {
-        return $this->hasOne(Orthologs::class, ['id' => 'ortholog_id']);
+        return $this->hasOne(Ortholog::class, ['id' => 'ortholog_id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return GeneToOrthologsQuery the active query used by this AR class.
+     * @return GeneToOrthologQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new GeneToOrthologsQuery(get_called_class());
+        return new GeneToOrthologQuery(get_called_class());
     }
 }

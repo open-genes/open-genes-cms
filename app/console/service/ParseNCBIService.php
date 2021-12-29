@@ -6,9 +6,9 @@ namespace app\console\service;
 
 use app\models\common\GeneExpressionInSample;
 use app\models\Gene;
-use app\models\GeneToOrthologs;
+use app\models\GeneToOrtholog;
 use app\models\ModelOrganism;
-use app\models\Orthologs;
+use app\models\Ortholog;
 use app\models\Sample;
 use Yii;
 use yii\helpers\Console;
@@ -164,14 +164,14 @@ class ParseNCBIService implements ParseNCBIServiceInterface
                 $organismId = $organismId->id;
             }
 
-            $ortholog = new Orthologs();
+            $ortholog = new Ortholog();
             $ortholog->symbol = $geneApi['gene']['symbol'];
             $ortholog->model_organism_id = $organismId;
             if ($ortholog->save()) {
                 Yii::info('New ortholog for organism ' . $organismId . ' successfully added, id ' . $ortholog->id);
             }
 
-            $geneToOrtholog = new GeneToOrthologs();
+            $geneToOrtholog = new GeneToOrtholog();
             $geneToOrtholog->gene_id = $gene->id;
             $geneToOrtholog->ortholog_id = $ortholog->id;
             if ($geneToOrtholog->save()) {

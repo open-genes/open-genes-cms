@@ -7,16 +7,16 @@ use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 
 /**
- * This is the model class for table "gene_to_orthologs".
+ * This is the model class for table "gene_to_ortholog".
  *
  * @property int $id
  * @property int|null $gene_id
  * @property int|null $ortholog_id
  *
  * @property Gene $gene
- * @property Orthologs $ortholog
+ * @property Ortholog $ortholog
  */
-class GeneToOrthologs extends \app\models\common\GeneToOrthologs
+class GeneToOrtholog extends \app\models\common\GeneToOrtholog
 {
     use RuEnActiveRecordTrait;
 
@@ -58,11 +58,11 @@ class GeneToOrthologs extends \app\models\common\GeneToOrthologs
     /**
     * Gets query for [[Ortholog]].
     *
-    * @return \yii\db\ActiveQuery|\app\models\common\OrthologsQuery
+    * @return \yii\db\ActiveQuery|\app\models\common\OrthologQuery
     */
     public function getOrtholog()
     {
-    return $this->hasOne(Orthologs::class, ['id' => 'ortholog_id']);
+    return $this->hasOne(Ortholog::class, ['id' => 'ortholog_id']);
     }
 
     public function getLinkedGenesIds()

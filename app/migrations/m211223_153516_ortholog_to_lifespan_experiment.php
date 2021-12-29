@@ -14,7 +14,7 @@ class m211223_153516_ortholog_to_lifespan_experiment extends Migration
     public function safeUp()
     {
         $this->addColumn('lifespan_experiment', 'ortholog_id', Schema::TYPE_INTEGER . ' AFTER id');
-        $this->addForeignKey('lifespan_experiment_to_ortholog', 'lifespan_experiment', 'ortholog_id', 'orthologs', 'id', 'CASCADE');
+        $this->addForeignKey('lifespan_experiment_to_ortholog', 'lifespan_experiment', 'ortholog_id', 'ortholog', 'id', 'CASCADE');
     }
 
     /**

@@ -8,7 +8,7 @@ use app\models\GeneToAdditionalEvidence;
 use app\models\GeneToLongevityEffect;
 use app\models\GeneToProgeria;
 use app\models\LifespanExperiment;
-use app\models\Orthologs;
+use app\models\Ortholog;
 use app\models\ProteinToGene;
 use Yii;
 
@@ -311,8 +311,8 @@ class Gene extends \yii\db\ActiveRecord
      */
     public function getOrthologs()
     {
-        return $this->hasMany(Orthologs::class, ['id' => 'ortholog_id'])
-            ->viaTable('gene_to_orthologs', ['gene_id' => 'id']);
+        return $this->hasMany(Ortholog::class, ['id' => 'ortholog_id'])
+            ->viaTable('gene_to_ortholog', ['gene_id' => 'id']);
     }
 
     /**
