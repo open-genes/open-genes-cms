@@ -3,11 +3,11 @@
 namespace app\models\common;
 
 /**
- * This is the ActiveQuery class for [[\app\models\Orthologs]].
+ * This is the ActiveQuery class for [[\app\models\GeneToOrtholog]].
  *
- * @see \app\models\Orthologs
+ * @see \app\models\GeneToOrtholog
  */
-class OrthologsQuery extends \yii\db\ActiveQuery
+class GeneToOrthologQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class OrthologsQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\Orthologs[]|array
+     * @return \app\models\GeneToOrtholog[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class OrthologsQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\Orthologs|array|null
+     * @return \app\models\GeneToOrtholog|array|null
      */
     public function one($db = null)
     {

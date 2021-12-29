@@ -5,23 +5,23 @@ namespace app\models\common;
 use Yii;
 
 /**
- * This is the model class for table "orthologs".
+ * This is the model class for table "ortholog".
  *
  * @property int $id
  * @property string|null $symbol
  * @property int|null $model_organism_id
  *
- * @property GeneToOrthologs[] $geneToOrthologs
+ * @property GeneToOrtholog[] $geneToOrtholog
  * @property ModelOrganism $organism
  */
-class Orthologs extends \yii\db\ActiveRecord
+class Ortholog extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'orthologs';
+        return 'ortholog';
     }
 
     /**
@@ -49,13 +49,13 @@ class Orthologs extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[GeneToOrthologs]].
+     * Gets query for [[GeneToOrtholog]].
      *
-     * @return \yii\db\ActiveQuery|GeneToOrthologsQuery
+     * @return \yii\db\ActiveQuery|GeneToOrthologQuery
      */
-    public function getGeneToOrthologs()
+    public function getGeneToOrtholog()
     {
-        return $this->hasMany(GeneToOrthologs::class, ['ortholog_id' => 'id']);
+        return $this->hasMany(GeneToOrtholog::class, ['ortholog_id' => 'id']);
     }
 
     /**
@@ -70,10 +70,10 @@ class Orthologs extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return OrthologsQuery the active query used by this AR class.
+     * @return OrthologQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new OrthologsQuery(get_called_class());
+        return new OrthologQuery(get_called_class());
     }
 }
