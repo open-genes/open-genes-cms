@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\TreatmentTimeUnit;
+use app\models\TimeUnit;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -53,7 +53,7 @@ class TreatmentTimeUnitController extends Controller
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => TreatmentTimeUnit::find(),
+            'query' => TimeUnit::find(),
         ]);
 
         return $this->render('index', [
@@ -68,7 +68,7 @@ class TreatmentTimeUnitController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TreatmentTimeUnit();
+        $model = new TimeUnit();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -117,12 +117,12 @@ class TreatmentTimeUnitController extends Controller
      * Finds the TreatmentTimeUnit model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return TreatmentTimeUnit the loaded model
+     * @return TimeUnit the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = TreatmentTimeUnit::findOne($id)) !== null) {
+        if (($model = TimeUnit::findOne($id)) !== null) {
             return $model;
         }
 

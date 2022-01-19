@@ -7,7 +7,7 @@ use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 
 /**
- * This is the model class for table "treatment_time_unit".
+ * This is the model class for table "time_unit".
  *
  * @property int $id
  * @property string|null $name_ru
@@ -16,7 +16,7 @@ use Yii;
  * @property LifespanExperiment[] $lifespanExperiments
  * @property LifespanExperiment[] $lifespanExperiments0
  */
-class TreatmentTimeUnit extends \app\models\common\TreatmentTimeUnit
+class TimeUnit extends \app\models\common\TimeUnit
 {
     use RuEnActiveRecordTrait;
 

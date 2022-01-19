@@ -5,7 +5,7 @@ namespace app\models\common;
 use Yii;
 
 /**
- * This is the model class for table "treatment_time_unit".
+ * This is the model class for table "time_unit".
  *
  * @property int $id
  * @property string|null $name_ru
@@ -14,14 +14,14 @@ use Yii;
  * @property LifespanExperiment[] $lifespanExperiments
  * @property LifespanExperiment[] $lifespanExperiments0
  */
-class TreatmentTimeUnit extends \yii\db\ActiveRecord
+class TimeUnit extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'treatment_time_unit';
+        return 'time_unit';
     }
 
     /**

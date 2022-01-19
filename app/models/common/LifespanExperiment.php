@@ -45,7 +45,7 @@ use Yii;
  * @property ActiveSubstanceDeliveryWay $activeSubstanceDeliveryWay
  * @property ActiveSubstanceDosageUnit $activeSubstanceDosageUnit
  * @property GeneralLifespanExperiment $generalLifespanExperiment
- * @property TreatmentTimeUnit $treatmentEndTimeUnit
+ * @property TimeUnit $treatmentEndTimeUnit
  * @property ExperimentMainEffect $experimentMainEffect
  * @property ExperimentTreatmentPeriod $treatmentPeriod
  * @property Gene $gene
@@ -54,7 +54,7 @@ use Yii;
  * @property InterventionResultForLongevity $interventionResult
  * @property ModelOrganism $modelOrganism
  * @property OrganismLine $organismLine
- * @property TreatmentTimeUnit $treatmentStartTimeUnit
+ * @property TimeUnit $treatmentStartTimeUnit
  * @property TreatmentStageOfDevelopment $treatmentEndStageOfDevelopment
  * @property TreatmentStageOfDevelopment $treatmentStartStageOfDevelopment
  * @property LifespanExperimentToInterventionWay[] $lifespanExperimentToInterventionWays
@@ -84,7 +84,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             [['active_substance_delivery_way_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActiveSubstanceDeliveryWay::class, 'targetAttribute' => ['active_substance_delivery_way_id' => 'id']],
             [['active_substance_dosage_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActiveSubstanceDosageUnit::class, 'targetAttribute' => ['active_substance_dosage_unit_id' => 'id']],
             [['general_lifespan_experiment_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneralLifespanExperiment::class, 'targetAttribute' => ['general_lifespan_experiment_id' => 'id']],
-            [['treatment_end_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentTimeUnit::class, 'targetAttribute' => ['treatment_end_time_unit_id' => 'id']],
+            [['treatment_end_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TimeUnit::class, 'targetAttribute' => ['treatment_end_time_unit_id' => 'id']],
             [['experiment_main_effect_id'], 'exist', 'skipOnError' => true, 'targetClass' => ExperimentMainEffect::class, 'targetAttribute' => ['experiment_main_effect_id' => 'id']],
             [['treatment_period_id'], 'exist', 'skipOnError' => true, 'targetClass' => ExperimentTreatmentPeriod::class, 'targetAttribute' => ['treatment_period_id' => 'id']],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
@@ -93,7 +93,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             [['intervention_result_id'], 'exist', 'skipOnError' => true, 'targetClass' => InterventionResultForLongevity::class, 'targetAttribute' => ['intervention_result_id' => 'id']],
             [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::class, 'targetAttribute' => ['model_organism_id' => 'id']],
             [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::class, 'targetAttribute' => ['organism_line_id' => 'id']],
-            [['treatment_start_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentTimeUnit::class, 'targetAttribute' => ['treatment_start_time_unit_id' => 'id']],
+            [['treatment_start_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TimeUnit::class, 'targetAttribute' => ['treatment_start_time_unit_id' => 'id']],
             [['treatment_end_stage_of_development_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentStageOfDevelopment::class, 'targetAttribute' => ['treatment_end_stage_of_development_id' => 'id']],
             [['treatment_start_stage_of_development_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentStageOfDevelopment::class, 'targetAttribute' => ['treatment_start_stage_of_development_id' => 'id']],
         ];
@@ -191,7 +191,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
      */
     public function getTreatmentEndTimeUnit()
     {
-        return $this->hasOne(TreatmentTimeUnit::class, ['id' => 'treatment_end_time_unit_id']);
+        return $this->hasOne(TimeUnit::class, ['id' => 'treatment_end_time_unit_id']);
     }
 
     /**
@@ -281,7 +281,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
      */
     public function getTreatmentStartTimeUnit()
     {
-        return $this->hasOne(TreatmentTimeUnit::class, ['id' => 'treatment_start_time_unit_id']);
+        return $this->hasOne(TimeUnit::class, ['id' => 'treatment_start_time_unit_id']);
     }
 
     /**

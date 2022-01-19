@@ -53,7 +53,7 @@ use yii\helpers\ArrayHelper;
  * @property int|null $diet_id
  *
  * @property Sample $changedExpressionTissue
- * @property TreatmentTimeUnit $lifespanChangeTimeUnit
+ * @property TimeUnit $lifespanChangeTimeUnit
  * @property StatisticalSignificance $lifespanMaxChangeStatSign
  * @property StatisticalSignificance $lifespanMeanChangeStatSign
  * @property StatisticalSignificance $lifespanMedianChangeStatSign
@@ -120,7 +120,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
             'changed_expression_tissue_id' => Yii::t('app', 'Ткань/клетки'),
             'lifespan_change_time_unit_id' => Yii::t('app', 'Lifespan Change Time Unit ID'),
             'age' => Yii::t('app', 'Age'),
-            'age_unit' => Yii::t('app', 'Age Unit'),
+            'age_unit_id' => Yii::t('app', 'Age Unit'),
             'intervention_result_id' => Yii::t('app', 'Intervention Result ID'),
             'lifespan_change_percent_male' => Yii::t('app', 'Lifespan Change Percent Male'),
             'lifespan_change_percent_female' => Yii::t('app', 'Lifespan Change Percent Female'),
@@ -180,7 +180,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
      */
     public function getLifespanChangeTimeUnit()
     {
-        return $this->hasOne(TreatmentTimeUnit::class, ['id' => 'lifespan_change_time_unit_id']);
+        return $this->hasOne(TimeUnit::class, ['id' => 'lifespan_change_time_unit_id']);
     }
 
     /**

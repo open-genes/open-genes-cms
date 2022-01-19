@@ -60,9 +60,6 @@ class LifespanExperiment extends common\LifespanExperiment
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
             [['tissuesIds', 'intervention_result_id'], 'safe'],
             [['age'], 'number', 'min' => 0],
-            [['age_unit'], 'required', 'when' => function ($model) {
-                return !empty($model->age);
-            }],
             [['reference'], 'validateDOI']
         ]);
     }

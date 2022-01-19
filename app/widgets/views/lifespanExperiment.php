@@ -243,7 +243,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_start_time_unit_id',
-                    'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед.изм. времени',
                         'multiple' => false,
@@ -280,7 +280,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_end_time_unit_id',
-                    'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед.изм. времени',
                         'multiple' => false,
