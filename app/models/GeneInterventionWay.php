@@ -43,17 +43,6 @@ class GeneInterventionWay extends \app\models\common\GeneInterventionWay
                 ];
     }
 
-
-    /**
-    * Gets query for [[GeneInterventionMethods]].
-    *
-    * @return \yii\db\ActiveQuery|\app\models\common\GeneInterventionMethodQuery
-    */
-    public function getGeneInterventionMethods()
-    {
-    return $this->hasMany(GeneInterventionMethod::class, ['gene_intervention_way_id' => 'id']);
-    }
-
     public function getLinkedGenesIds()
     {
         return []; // todo implement for column with related genes
