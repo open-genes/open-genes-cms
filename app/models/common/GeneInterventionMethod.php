@@ -29,6 +29,7 @@ class GeneInterventionMethod extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['id'], 'integer'],
             [['name_ru', 'name_en'], 'string', 'max' => 255],
         ];
     }
