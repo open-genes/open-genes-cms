@@ -46,16 +46,6 @@ class GeneInterventionWay extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[GeneInterventionMethods]].
-     *
-     * @return \yii\db\ActiveQuery|GeneInterventionMethodQuery
-     */
-    public function getGeneInterventionMethods()
-    {
-        return $this->hasMany(GeneInterventionMethod::class, ['gene_intervention_way_id' => 'id']);
-    }
-
-    /**
      * {@inheritdoc}
      * @return GeneInterventionWayQuery the active query used by this AR class.
      */

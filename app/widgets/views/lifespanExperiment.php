@@ -164,10 +164,10 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-md-4">
+            <div class="col-xs-6 col-md-6">
                 <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']tissue_specific_promoter', ['class' => 'form-control tissue_specific_promoter', 'placeholder' => 'Тканеспецифичный промотер']) ?>
             </div>
-            <div class="col-xs-6 col-md-8">
+            <div class="col-xs-6 col-md-6">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_period_id',
@@ -186,54 +186,12 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-md-2">
-                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_dose', ['class' => 'form-control age_unit', 'placeholder' => 'Дневная доза']) ?>
-            </div>
-            <div class="col-xs-6 col-md-2">
-                <div class="col-xs-6 col-md-3" style="padding: 6px 0px 0px 9px;">
-                    x 10^
+                <div class="col-xs-12 col-sm-6">
+                    <?= \yii\bootstrap\Html::activeTextarea($lifespanExperiment, '[' . $lifespanExperiment->id . ']description_of_therapy_ru', ['class' => 'form-control', 'placeholder' => 'Описание курса терапии']) ?>
                 </div>
-                <div class="col-xs-3 col-md-9">
-                    <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']daily_dose_sci_not_degree', ['class' => 'form-control age_unit', 'placeholder' => 'Степень']) ?>
+                <div class="col-xs-12 col-sm-6">
+                    <?= \yii\bootstrap\Html::activeTextarea($lifespanExperiment, '[' . $lifespanExperiment->id . ']description_of_therapy_en', ['class' => 'form-control', 'placeholder' => 'Описание курса терапии EN']) ?>
                 </div>
-            </div>
-            <div class="col-xs-6 col-md-2">
-                <?= \yii\bootstrap\Html::activeInput('text', $lifespanExperiment, '[' . $lifespanExperiment->id . ']active_substance_daily_doses_number', ['class' => 'form-control age_unit', 'placeholder' => 'Кол-во доз в день']) ?>
-            </div>
-            <div class="col-xs-6 col-md-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']active_substance_dosage_unit_id',
-                    'data' => \app\models\ActiveSubstanceDosageUnit::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Ед.изм. дозировки',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'tags' => true,
-                        'tokenSeparators' => ['##'],
-                        'allowClear' => true,
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="col-xs-6 col-md-3">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $lifespanExperiment,
-                    'attribute' => '[' . $lifespanExperiment->id . ']active_substance_delivery_way_id',
-                    'data' => \app\models\ActiveSubstanceDeliveryWay::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Способ доставки препарата',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'tags' => true,
-                        'tokenSeparators' => ['##'],
-                        'allowClear' => true,
-                    ],
-                ]);
-                ?>
-            </div>
         </div>
         <div class="row form-row">
             <div class="col-xs-6 col-md-2">
@@ -243,7 +201,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_start_time_unit_id',
-                    'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед.изм. времени',
                         'multiple' => false,
@@ -280,7 +238,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $lifespanExperiment,
                     'attribute' => '[' . $lifespanExperiment->id . ']treatment_end_time_unit_id',
-                    'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед.изм. времени',
                         'multiple' => false,

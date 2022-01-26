@@ -12,9 +12,7 @@ use Yii;
  * @property int $id
  * @property string|null $name_ru
  * @property string|null $name_en
- * @property int|null $gene_intervention_way_id
  *
- * @property GeneInterventionWay $geneInterventionWay
  * @property LifespanExperiment[] $lifespanExperiments
  */
 class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
@@ -42,37 +40,7 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
             'id' => Yii::t('app', 'ID'),
             'name_ru' => Yii::t('app', 'Name Ru'),
             'name_en' => Yii::t('app', 'Name En'),
-            'gene_intervention_way_id' => Yii::t('app', 'Gene Intervention Way ID'),
         ];
-    }
-    
-    public static function getAllNamesByWays()
-    {
-        $names = self::find()
-            ->select(['gene_intervention_way.name_ru way_ru', 'gene_intervention_way.name_en way_en', 'gene_intervention_method.id', 'gene_intervention_method.name_ru', 'gene_intervention_method.name_en'])
-            ->asArray()
-            ->leftJoin('gene_intervention_way', 'gene_intervention_method.gene_intervention_way_id=gene_intervention_way.id')
-            ->all();
-        $result = [];
-        foreach ($names as $name) {
-            if(!$name['way_en']) {
-                $name['way_en'] = 'other';
-                $name['way_ru'] = 'другое';
-            }
-            $result["{$name['way_ru']} ({$name['way_en']})"][$name['id']] = "{$name['name_ru']} ({$name['name_en']})";
-        }
-        return $result;
-    }
-
-
-    /**
-     * Gets query for [[GeneInterventionWay]].
-     *
-     * @return \yii\db\ActiveQuery|\app\models\common\GeneInterventionWayQuery
-     */
-    public function getGeneInterventionWay()
-    {
-        return $this->hasOne(GeneInterventionWay::class, ['id' => 'gene_intervention_way_id']);
     }
 
     /**

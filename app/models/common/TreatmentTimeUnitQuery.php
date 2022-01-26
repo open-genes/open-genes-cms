@@ -5,7 +5,7 @@ namespace app\models\common;
 /**
  * This is the ActiveQuery class for [[\app\models\TreatmentTimeUnit]].
  *
- * @see \app\models\TreatmentTimeUnit
+ * @see \app\models\TimeUnit
  */
 class TreatmentTimeUnitQuery extends \yii\db\ActiveQuery
 {
@@ -16,7 +16,7 @@ class TreatmentTimeUnitQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\TreatmentTimeUnit[]|array
+     * @return \app\models\TimeUnit[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class TreatmentTimeUnitQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\TreatmentTimeUnit|array|null
+     * @return \app\models\TimeUnit|array|null
      */
     public function one($db = null)
     {

@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\TreatmentTimeUnit */
+/* @var $model app\models\TimeUnit */
 
 $this->title = Yii::t('app', 'Treatment Time Unit') . ' - ' . Yii::t('app', 'create new');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Treatment Time Units'), 'url' => ['index']];

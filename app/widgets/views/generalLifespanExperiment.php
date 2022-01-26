@@ -141,15 +141,15 @@
             <div class="col-xs-6 col-md-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $generalLifespanExperiment,
                     '[' . $generalLifespanExperiment->id . ']expression_change',
-                    ['class' => 'form-control age_unit', 'placeholder' => '% изменения экспрессии']) ?>
+                    ['class' => 'form-control age_unit', 'placeholder' => '% изменения активности гена']) ?>
             </div>
             <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
                     'attribute' => '[' . $generalLifespanExperiment->id . ']measurement_type',
-                    'data' => [1 => 'мРНК', 2 => 'белок', 3 => 'количество клеток, экспрессирующих ген'],
+                    'data' => [1 => 'уровень мРНК', 2 => 'уровень белка', 3 => 'количество клеток, экспрессирующих ген', 4 => 'активность белка'],
                     'options' => [
-                        'placeholder' => 'Метод измерения',
+                        'placeholder' => 'Вид изменения',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
@@ -200,7 +200,7 @@
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
                     'attribute' => '[' . $generalLifespanExperiment->id . ']lifespan_change_time_unit_id',
-                    'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед.изм. времени',
                         'multiple' => false,
@@ -350,8 +350,8 @@
                         <div class="col-xs-6 col-sm-4">
                             <?= \kartik\select2\Select2::widget([
                                 'model' => $generalLifespanExperiment,
-                                'attribute' => '[' . $generalLifespanExperiment->id . ']age_unit',
-                                'data' => \app\models\TreatmentTimeUnit::getAllNamesAsArray(),
+                                'attribute' => '[' . $generalLifespanExperiment->id . ']age_unit_id',
+                                'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                                 'options' => [
                                     'placeholder' => 'Ед. изм. возраста',
                                     'multiple' => false

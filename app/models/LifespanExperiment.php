@@ -60,9 +60,6 @@ class LifespanExperiment extends common\LifespanExperiment
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
             [['tissuesIds', 'intervention_result_id'], 'safe'],
             [['age'], 'number', 'min' => 0],
-            [['age_unit'], 'required', 'when' => function ($model) {
-                return !empty($model->age);
-            }],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -168,7 +165,6 @@ class LifespanExperiment extends common\LifespanExperiment
             $modelAR->setAttributes($modelArray);
             self::setAttributeFromNewAR($modelArray, 'gene_intervention_method_id', 'GeneInterventionMethod', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'active_substance_id', 'ActiveSubstance', $modelAR);
-            self::setAttributeFromNewAR($modelArray, 'active_substance_dosage_unit_id', 'ActiveSubstanceDosageUnit', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'active_substance_delivery_way_id', 'ActiveSubstanceDeliveryWay', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_period_id', 'TreatmentPeriod', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'treatment_period_id', 'TreatmentPeriod', $modelAR);

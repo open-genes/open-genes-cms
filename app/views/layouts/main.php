@@ -80,8 +80,6 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Способы доставки препарата', 'url' => '/active-substance-delivery-way', 'visible' => Yii::$app->user->can('editor')],
                     '<li class="divider"></li>',
-                    ['label' => 'Дозировки препарата', 'url' => '/active-substance-dosage-unit', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
                     ['label' => 'Основной эффект', 'url' => '/experiment-main-effect', 'visible' => Yii::$app->user->can('editor')],
                     '<li class="divider"></li>',
                     ['label' => 'Статистическая значимость', 'url' => '/statistical-significance', 'visible' => Yii::$app->user->can('editor')],

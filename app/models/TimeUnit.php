@@ -7,15 +7,16 @@ use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 
 /**
- * This is the model class for table "active_substance_dosage_unit".
+ * This is the model class for table "time_unit".
  *
  * @property int $id
  * @property string|null $name_ru
  * @property string|null $name_en
  *
  * @property LifespanExperiment[] $lifespanExperiments
+ * @property LifespanExperiment[] $lifespanExperiments0
  */
-class ActiveSubstanceDosageUnit extends \app\models\common\ActiveSubstanceDosageUnit
+class TimeUnit extends \app\models\common\TimeUnit
 {
     use RuEnActiveRecordTrait;
 
@@ -51,7 +52,17 @@ class ActiveSubstanceDosageUnit extends \app\models\common\ActiveSubstanceDosage
     */
     public function getLifespanExperiments()
     {
-    return $this->hasMany(LifespanExperiment::class, ['active_substance_dosage_unit_id' => 'id']);
+    return $this->hasMany(LifespanExperiment::class, ['treatment_end_time_unit_id' => 'id']);
+    }
+
+    /**
+    * Gets query for [[LifespanExperiments0]].
+    *
+    * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
+    */
+    public function getLifespanExperiments0()
+    {
+    return $this->hasMany(LifespanExperiment::class, ['treatment_start_time_unit_id' => 'id']);
     }
 
     public function getLinkedGenesIds()
