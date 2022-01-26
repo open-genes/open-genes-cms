@@ -10,9 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $name_ru
  * @property string|null $name_en
- * @property int|null $gene_intervention_way_id
  *
- * @property GeneInterventionWay $geneInterventionWay
  * @property LifespanExperiment[] $lifespanExperiments
  */
 class GeneInterventionMethod extends \yii\db\ActiveRecord
@@ -31,9 +29,7 @@ class GeneInterventionMethod extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_intervention_way_id'], 'integer'],
             [['name_ru', 'name_en'], 'string', 'max' => 255],
-            [['gene_intervention_way_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneInterventionWay::class, 'targetAttribute' => ['gene_intervention_way_id' => 'id']],
         ];
     }
 
@@ -46,18 +42,7 @@ class GeneInterventionMethod extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'name_ru' => Yii::t('app', 'Name Ru'),
             'name_en' => Yii::t('app', 'Name En'),
-            'gene_intervention_way_id' => Yii::t('app', 'Gene Intervention Way ID'),
         ];
-    }
-
-    /**
-     * Gets query for [[GeneInterventionWay]].
-     *
-     * @return \yii\db\ActiveQuery|GeneInterventionWayQuery
-     */
-    public function getGeneInterventionWay()
-    {
-        return $this->hasOne(GeneInterventionWay::class, ['id' => 'gene_intervention_way_id']);
     }
 
     /**
