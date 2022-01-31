@@ -10,7 +10,10 @@ use app\models\GeneInterventionResultToVitalProcess;
 use app\models\GeneInterventionToVitalProcess;
 use app\models\GeneralLifespanExperiment;
 use app\models\GeneralLifespanExperimentToVitalProcess;
+use app\models\GeneToOrtholog;
 use app\models\LifespanExperiment;
+use app\models\ModelOrganism;
+use app\models\Ortholog;
 use app\models\Phylum;
 use app\models\FunctionalCluster;
 use app\models\Gene;
@@ -441,6 +444,94 @@ class MigrateDataController extends Controller
         Yii::$app->db->createCommand($sql)->execute();
 
     }
+
+    public function actionGetFlybaseId($absolutePathToFile)
+    {
+        if (!file_exists($absolutePathToFile)) {
+            return 'Cannot find data file';
+        }
+        $f = fopen($absolutePathToFile, 'r');
+        $fly = ModelOrganism::find()->where(['name_lat' => 'Drosophila melanogaster'])->one();
+
+        $genes = Gene::find()->select(['id', 'symbol'])
+            ->where(['not', ['symbol' => null]])
+            ->andWhere(['not', ['symbol' => '']])
+            ->asArray()->all();
+        $geneSymbolToId = [];
+        foreach ($genes as $gene) {
+            $geneSymbolToId[$gene['symbol']] = $gene['id'];
+        }
+
+        $orthologs = Ortholog::find()
+            ->select(['id', 'symbol'])
+            ->where(['model_organism_id' => $fly->id])
+            ->all();
+        $orthologBySymbol = [];
+        foreach ($orthologs as $ortholog) {
+            $orthologBySymbol[$ortholog->symbol] = $ortholog;
+        }
+
+        $geneToOrthologs = GeneToOrtholog::find()->each();
+        try {
+            while (($data = fgetcsv($f, 0, "\t")) !== false) {
+                //TODO:убрать костыль
+                if($data[0] == '##Dmel_gene_ID') {
+                    continue;
+                }
+                if (!in_array($data[4], array_keys($geneSymbolToId))) {
+                    continue;
+                }
+                if (!in_array($data[1], array_keys($orthologBySymbol))) {
+                    $ortholog = $this->createNewOrtholog($data, $fly->id, $orthologBySymbol);
+                }
+                else {
+                    $ortholog = $orthologBySymbol[$data[1]];
+                }
+
+                if ($this->existRelationGeneToOrtholog($geneToOrthologs, $ortholog->id, $geneSymbolToId[$data[4]])) {
+                    continue;
+                }
+                $this->createRelationGeneToOrtholog($geneSymbolToId[$data[4]], $ortholog);
+
+            }
+            return 'New orthologs successfully added';
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+    }
+
+    private function existRelationGeneToOrtholog($geneToOrthologs, $currentOrthologId, $currentGeneId) {
+        foreach ($geneToOrthologs as $geneToOrtholog) {
+            if ($geneToOrtholog->ortholog_id == $currentOrthologId && $geneToOrtholog->gene_id == $currentGeneId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function createRelationGeneToOrtholog($geneId, Ortholog $ortholog) {
+        $geneToOrtholog = new GeneToOrtholog();
+        $geneToOrtholog->gene_id = $geneId;
+        $geneToOrtholog->ortholog_id = $ortholog->id;
+        if($geneToOrtholog->save()) {
+            Console::output('New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created');
+        }
+    }
+
+    private function createNewOrtholog($data, $flyId, &$orthologSymbolToId): Ortholog {
+        $ortholog = new Ortholog();
+        $ortholog->symbol = $data[1];
+        $ortholog->model_organism_id = $flyId;
+        $ortholog->external_base_id = $data[0];
+        $ortholog->external_base_name = 'flybase';
+        if($ortholog->save()) {
+            Console::output('New ortholog ' . $ortholog->id . ' successfully created');
+            $orthologSymbolToId[$ortholog->symbol] = $ortholog->id;
+        }
+        return $ortholog;
+    }
+
     private function createRelationsPurpleToProcess($purple, $greenId)
     {
         $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(['gene_intervention_to_vital_process_id' => $greenId])->all();
