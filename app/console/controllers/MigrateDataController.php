@@ -445,11 +445,12 @@ class MigrateDataController extends Controller
 
     }
 
-    public function actionGetFlybaseId($absolutePathToFile)
+    public function actionImportOrthologsFromFlybase($absolutePathToFile)
     {
         if (!file_exists($absolutePathToFile)) {
             return 'Cannot find data file';
         }
+        $consoleDir = \Yii::getAlias('@app/console');
         $f = fopen($absolutePathToFile, 'r');
         $fly = ModelOrganism::find()->where(['name_lat' => 'Drosophila melanogaster'])->one();
 
@@ -462,37 +463,17 @@ class MigrateDataController extends Controller
             $geneSymbolToId[$gene['symbol']] = $gene['id'];
         }
 
-        $orthologs = Ortholog::find()
-            ->select(['id', 'symbol'])
-            ->where(['model_organism_id' => $fly->id])
-            ->all();
-        $orthologBySymbol = [];
-        foreach ($orthologs as $ortholog) {
-            $orthologBySymbol[$ortholog->symbol] = $ortholog;
-        }
-
-        $geneToOrthologs = GeneToOrtholog::find()->each();
+        $count = 0;
         try {
             while (($data = fgetcsv($f, 0, "\t")) !== false) {
-                //TODO:убрать костыль
-                if($data[0] == '##Dmel_gene_ID') {
+                $count++;
+                Console::output('Table rows processed: ' . $count);
+                if (!isset($geneSymbolToId[$data[4]])) {
                     continue;
                 }
-                if (!in_array($data[4], array_keys($geneSymbolToId))) {
-                    continue;
-                }
-                if (!in_array($data[1], array_keys($orthologBySymbol))) {
-                    $ortholog = $this->createNewOrtholog($data, $fly->id, $orthologBySymbol);
-                }
-                else {
-                    $ortholog = $orthologBySymbol[$data[1]];
-                }
-
-                if ($this->existRelationGeneToOrtholog($geneToOrthologs, $ortholog->id, $geneSymbolToId[$data[4]])) {
-                    continue;
-                }
-                $this->createRelationGeneToOrtholog($geneSymbolToId[$data[4]], $ortholog);
-
+                $geneId = $geneSymbolToId[$data[4]];
+                $params = escapeshellarg(serialize([$geneId, $data, $fly->id]));
+                exec("php {$consoleDir}/yii.php migrate-data/import-orthologs-from-flybase-inner {$params}");
             }
             return 'New orthologs successfully added';
         } catch (\Exception $e) {
@@ -501,35 +482,58 @@ class MigrateDataController extends Controller
 
     }
 
-    private function existRelationGeneToOrtholog($geneToOrthologs, $currentOrthologId, $currentGeneId) {
-        foreach ($geneToOrthologs as $geneToOrtholog) {
-            if ($geneToOrtholog->ortholog_id == $currentOrthologId && $geneToOrtholog->gene_id == $currentGeneId) {
-                return true;
-            }
+    public function actionImportOrthologsFromFlybaseInner($params)
+    {
+        $params = unserialize($params);
+        list($geneId, $data, $flyId) = $params;
+        $ortholog = Ortholog::find()
+            ->select(['id'])
+            ->where(['model_organism_id' => $flyId])
+            ->andWhere(['symbol' => $data[1]])
+            ->one();
+
+        if ($ortholog == null) {
+            $orthologId = $this->createNewOrtholog($data, $flyId);
+        }
+        else {
+            $orthologId = $ortholog->id;
+        }
+        if ($this->existRelationGeneToOrtholog($orthologId, $geneId)) {
+            return;
+        }
+        $this->createRelationGeneToOrtholog($geneId, $orthologId);
+    }
+
+    private function existRelationGeneToOrtholog($currentOrthologId, $currentGeneId): bool {
+        $geneToOrtholog = GeneToOrtholog::find()
+            ->where(['gene_id' => $currentGeneId])
+            ->andWhere(['ortholog_id' => $currentOrthologId])
+            ->one();
+        if ($geneToOrtholog) {
+            return true;
         }
         return false;
     }
 
-    private function createRelationGeneToOrtholog($geneId, Ortholog $ortholog) {
+    private function createRelationGeneToOrtholog(int $geneId, int $orthologId) {
         $geneToOrtholog = new GeneToOrtholog();
         $geneToOrtholog->gene_id = $geneId;
-        $geneToOrtholog->ortholog_id = $ortholog->id;
+        $geneToOrtholog->ortholog_id = $orthologId;
         if($geneToOrtholog->save()) {
-            Console::output('New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created');
+            Yii::info('New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created');
         }
     }
 
-    private function createNewOrtholog($data, $flyId, &$orthologSymbolToId): Ortholog {
+    private function createNewOrtholog($data, $flyId): int {
         $ortholog = new Ortholog();
         $ortholog->symbol = $data[1];
         $ortholog->model_organism_id = $flyId;
         $ortholog->external_base_id = $data[0];
         $ortholog->external_base_name = 'flybase';
         if($ortholog->save()) {
-            Console::output('New ortholog ' . $ortholog->id . ' successfully created');
-            $orthologSymbolToId[$ortholog->symbol] = $ortholog->id;
+            Yii::info('New ortholog ' . $ortholog->id . ' successfully created');
         }
-        return $ortholog;
+        return $ortholog->id;
     }
 
     private function createRelationsPurpleToProcess($purple, $greenId)

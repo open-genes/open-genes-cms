@@ -12,6 +12,8 @@ use Yii;
  * @property int $id
  * @property string|null $symbol
  * @property int|null $model_organism_id
+ * @property string|null $external_base_name
+ * @property string|null $external_base_id
  *
  * @property GeneToOrtholog[] $geneToOrtholog
  * @property ModelOrganism $organism
@@ -41,6 +43,8 @@ class Ortholog extends common\Ortholog
                     'id' => 'ID',
                     'symbol' => 'Symbol',
                     'model_organism_id' => 'Organism ID',
+                    'external_base_name' => 'External base name',
+                    'external_base_id' => 'External base id',
                 ];
     }
 
