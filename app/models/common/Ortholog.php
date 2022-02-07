@@ -32,6 +32,8 @@ class Ortholog extends \yii\db\ActiveRecord
         return [
             [['model_organism_id'], 'integer'],
             [['symbol'], 'string', 'max' => 255],
+            [['external_base_name'], 'string', 'max' => 255],
+            [['external_base_id'], 'string', 'max' => 255],
             [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::class, 'targetAttribute' => ['model_organism_id' => 'id']],
         ];
     }
