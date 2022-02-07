@@ -430,6 +430,17 @@ class MigrateDataController extends Controller
         }
         VarDumper::dump($unmergedDoi);
     }
+
+    public function actionOrthologToLifespan()
+    {
+        $sql = 'UPDATE lifespan_experiment le
+                JOIN gene_to_orthologs gto ON le.gene_id = gto.gene_id
+                JOIN orthologs o ON gto.ortholog_id = o.id
+                SET le.ortholog_id = o.id
+                WHERE le.model_organism_id = o.model_organism_id';
+        Yii::$app->db->createCommand($sql)->execute();
+
+    }
     private function createRelationsPurpleToProcess($purple, $greenId)
     {
         $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(['gene_intervention_to_vital_process_id' => $greenId])->all();

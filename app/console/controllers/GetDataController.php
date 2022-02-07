@@ -14,15 +14,23 @@ use app\models\AgingMechanismToGeneOntology;
 use app\models\common\GeneOntology;
 use app\models\common\GeneToOntology;
 use app\models\Disease;
+use app\models\Gene;
 use app\models\GeneOntologyRelation;
 use app\models\GeneOntologyToAgingMechanismVisible;
+use app\models\GeneToOrtholog;
+use app\models\ModelOrganism;
+use app\models\Ortholog;
 use app\service\GeneOntologyServiceInterface;
 use yii\console\Controller;
+use yii\helpers\Console;
 use yii\helpers\Html;
 use yii\httpclient\Client;
 
 class GetDataController extends Controller
 {
+    private const MAX_GENE = 100;
+    private const NCBI_LIMIT = 10;
+
     /**
      * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3 $geneSearchName = ''
      * @param string $onlyNew
@@ -93,6 +101,50 @@ class GetDataController extends Controller
     }
 
     /**
+     */
+    public function actionGetOrthologs($geneIdsAfter = 0)
+    {
+        $genesCount = Gene::find()->orderBy('id')->where(['>', 'id', $geneIdsAfter])->count();
+        $count = 0;
+        do {
+            $consoleDir = \Yii::getAlias('@app/console');
+            $handle = popen("php {$consoleDir}/yii.php get-data/get-orthologs-inner {$geneIdsAfter}", 'r');
+            while ($output = fgets($handle)) {
+                echo $output;
+                if (preg_match('~Processed genes: (\d+)~', $output, $match)) {
+                    $count += $match[1];
+                }
+
+                if (!preg_match('~last gene id (\d+)~', $output, $match)) {
+                    continue;
+                }
+                $geneIdsAfter = $match[1];
+            }
+            Console::output('Total processed genes: ' . ($count) . '/' . $genesCount . ', last gene id ' . $geneIdsAfter);
+
+        } while ($geneIdsAfter);
+
+    }
+
+    public function actionGetOrthologsInner($geneIdsAfter = 0)
+    {
+        /** @var  ParseNCBIServiceInterface $ncbiService */
+        $ncbiService = \Yii::$container->get(ParseNCBIServiceInterface::class);
+        $count = 0;
+        try {
+            do {
+                $geneIdsAfter = $ncbiService->parseOrthologs($geneIdsAfter, self::NCBI_LIMIT);
+                $count += self::NCBI_LIMIT;
+                Console::output('INNER Processed genes: ' . self::NCBI_LIMIT . '(' . $count . '/' . self::MAX_GENE . '), last gene id ' . $geneIdsAfter);
+
+            } while ($geneIdsAfter && $count < self::MAX_GENE);
+        } catch (\Exception $e) {
+            Console::output($e->getMessage());
+        }
+
+    }
+
+    /**
      * params: $onlyNew = 'true' $geneNcbiIds = 1,2,3
      * @param string $onlyNew
      * @param string|null $geneNcbiIds
@@ -122,7 +174,7 @@ class GetDataController extends Controller
         $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         /** @var GeneOntologyServiceInterface $geneOntologyService */
         $geneOntologyService = \Yii::$container->get(GeneOntologyServiceInterface::class);
-        $arGenesQuery = \app\models\Gene::find()->where('gene.ncbi_id > 0');
+        $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
         if ($onlyNew) {
             $arGenesQuery->leftJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
                 ->andWhere('gene_to_ontology.gene_id is null');

@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property string|null $name_ru
  * @property string|null $name_en
+ * @property string|null $name_lat
  * @property int|null $created_at
  * @property int|null $updated_at
  *
@@ -34,7 +35,7 @@ class ModelOrganism extends \yii\db\ActiveRecord
     {
         return [
             [['created_at', 'updated_at'], 'integer'],
-            [['name_ru', 'name_en'], 'string', 'max' => 255],
+            [['name_ru', 'name_en', 'name_lat'], 'string', 'max' => 255],
         ];
     }
 
@@ -47,6 +48,7 @@ class ModelOrganism extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name_ru' => 'Name Ru',
             'name_en' => 'Name En',
+            'name_lat' => 'Name Lat',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
