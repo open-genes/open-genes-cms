@@ -48,7 +48,7 @@ $config = [
             \app\service\GeneOntologyServiceInterface::class => \app\service\GeneOntologyService::class,
             \app\console\service\ParseProteinAtlasServiceInterface::class => new \app\console\service\ParseProteinAtlasService('https://www.proteinatlas.org/search/'),
             \app\console\service\ParseDiseasesServiceInterface::class => new \app\console\service\ParseDiseasesService('http://edgar.biocomp.unibo.it/gene_disease_db/csv_files/'),
-            \app\console\service\ParseNCBIServiceInterface::class => new \app\console\service\ParseNCBIService('https://www.ncbi.nlm.nih.gov/'),
+            \app\console\service\ParseNCBIServiceInterface::class => new \app\console\service\ParseNCBIService('https://www.ncbi.nlm.nih.gov/', getenv('NCBI_API_KEY')),
             \app\console\service\ParseMyGeneServiceInterface::class => new \app\console\service\ParseMyGeneService('https://mygene.info/v3/'),
             \app\console\service\ParseICDServiceInterface::class => new \app\console\service\ParseICDService(
                 'https://id.who.int/icd',

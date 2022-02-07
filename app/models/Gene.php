@@ -276,62 +276,6 @@ class Gene extends common\Gene
         return $result;
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLifespanExperiments()
-    {
-        return $this->hasMany(LifespanExperiment::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProteinToGenes()
-    {
-        return $this->hasMany(ProteinToGene::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAgeRelatedChanges()
-    {
-        return $this->hasMany(AgeRelatedChange::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToAdditionalEvidences()
-    {
-        return $this->hasMany(GeneToAdditionalEvidence::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToLongevityEffects()
-    {
-        return $this->hasMany(GeneToLongevityEffect::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneInterventionToVitalProcesses()
-    {
-        return $this->hasMany(GeneInterventionToVitalProcess::class, ['gene_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getGeneToProgerias()
-    {
-        return $this->hasMany(GeneToProgeria::class, ['gene_id' => 'id']);
-    }
-
     public function getAllExperimentsCounts()
     {
         $counts = [];

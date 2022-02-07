@@ -2,6 +2,14 @@
 
 namespace app\models\common;
 
+use app\models\AgeRelatedChange;
+use app\models\GeneInterventionToVitalProcess;
+use app\models\GeneToAdditionalEvidence;
+use app\models\GeneToLongevityEffect;
+use app\models\GeneToProgeria;
+use app\models\LifespanExperiment;
+use app\models\Ortholog;
+use app\models\ProteinToGene;
 use Yii;
 
 /**
@@ -142,13 +150,11 @@ class Gene extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[AgeRelatedChanges]].
-     *
-     * @return \yii\db\ActiveQuery|AgeRelatedChangeQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getAgeRelatedChanges()
     {
-        return $this->hasMany(AgeRelatedChange::className(), ['gene_id' => 'id']);
+        return $this->hasMany(AgeRelatedChange::class, ['gene_id' => 'id']);
     }
 
     /**
@@ -182,23 +188,19 @@ class Gene extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[GeneInterventionToVitalProcesses]].
-     *
-     * @return \yii\db\ActiveQuery|GeneInterventionToVitalProcessQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getGeneInterventionToVitalProcesses()
     {
-        return $this->hasMany(GeneInterventionToVitalProcess::className(), ['gene_id' => 'id']);
+        return $this->hasMany(GeneInterventionToVitalProcess::class, ['gene_id' => 'id']);
     }
 
     /**
-     * Gets query for [[GeneToAdditionalEvidences]].
-     *
-     * @return \yii\db\ActiveQuery|GeneToAdditionalEvidenceQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getGeneToAdditionalEvidences()
     {
-        return $this->hasMany(GeneToAdditionalEvidence::className(), ['gene_id' => 'id']);
+        return $this->hasMany(GeneToAdditionalEvidence::class, ['gene_id' => 'id']);
     }
 
     /**
@@ -232,13 +234,11 @@ class Gene extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[GeneToLongevityEffects]].
-     *
-     * @return \yii\db\ActiveQuery|GeneToLongevityEffectQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getGeneToLongevityEffects()
     {
-        return $this->hasMany(GeneToLongevityEffect::className(), ['gene_id' => 'id']);
+        return $this->hasMany(GeneToLongevityEffect::class, ['gene_id' => 'id']);
     }
 
     /**
@@ -252,13 +252,11 @@ class Gene extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[GeneToProgerias]].
-     *
-     * @return \yii\db\ActiveQuery|GeneToProgeriaQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getGeneToProgerias()
     {
-        return $this->hasMany(GeneToProgeria::className(), ['gene_id' => 'id']);
+        return $this->hasMany(GeneToProgeria::class, ['gene_id' => 'id']);
     }
 
     /**
@@ -272,23 +270,19 @@ class Gene extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[LifespanExperiments]].
-     *
-     * @return \yii\db\ActiveQuery|LifespanExperimentQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getLifespanExperiments()
     {
-        return $this->hasMany(LifespanExperiment::className(), ['gene_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['gene_id' => 'id']);
     }
 
     /**
-     * Gets query for [[ProteinToGenes]].
-     *
-     * @return \yii\db\ActiveQuery|ProteinToGeneQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getProteinToGenes()
     {
-        return $this->hasMany(ProteinToGene::className(), ['gene_id' => 'id']);
+        return $this->hasMany(ProteinToGene::class, ['gene_id' => 'id']);
     }
 
     /**
@@ -306,10 +300,19 @@ class Gene extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getGeneToSource()
+    public function getSource()
     {
         return $this->hasMany(Source::class, ['id' => 'source_id'])
             ->viaTable('gene_to_source', ['gene_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrthologs()
+    {
+        return $this->hasMany(Ortholog::class, ['id' => 'ortholog_id'])
+            ->viaTable('gene_to_ortholog', ['gene_id' => 'id']);
     }
 
     /**
