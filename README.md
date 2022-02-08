@@ -1,4 +1,4 @@
-# Open Longevity Genes CMS system for biologists
+# Open Genes CMS system for biologists
 
 ## Dev environment
 
