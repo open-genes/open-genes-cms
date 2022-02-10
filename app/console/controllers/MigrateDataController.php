@@ -21,6 +21,7 @@ use app\models\common\GeneExpressionInSample;
 use app\models\GeneToCommentCause;
 use app\models\GeneToFunctionalCluster;
 use app\models\Sample;
+use app\models\Source;
 use Yii;
 use yii\console\Controller;
 use yii\db\ActiveQuery;
@@ -193,19 +194,7 @@ class MigrateDataController extends Controller
         foreach ($array['data'] as $gene) {
             try {
                 echo $counter . ' from ' . $count . ': ';
-                $symbol = strtoupper(trim($gene[1]));
-                $arGene = Gene::find()->where(['symbol' => $symbol])->one();
-                if ($arGene) {
-                    echo 'gene found' . PHP_EOL;
-                } else {
-                    /** @var ParseMyGeneServiceInterface $myGeneService */
-                    $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
-                    $arGene = $myGeneService->parseBySymbol($symbol);
-                    $arGene->isHidden = 1;
-                    $arGene->source = 'abdb';
-                    $arGene->save();
-                    echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;
-                }
+                $this->saveGene($gene[1], Source::ABDB);
             } catch (\Exception $e) {
                 echo 'ERROR ' . $e->getMessage() . PHP_EOL;
             }
@@ -434,106 +423,25 @@ class MigrateDataController extends Controller
         VarDumper::dump($unmergedDoi);
     }
 
-    public function actionOrthologToLifespan()
-    {
-        $sql = 'UPDATE lifespan_experiment le
-                JOIN gene_to_orthologs gto ON le.gene_id = gto.gene_id
-                JOIN orthologs o ON gto.ortholog_id = o.id
-                SET le.ortholog_id = o.id
-                WHERE le.model_organism_id = o.model_organism_id';
-        Yii::$app->db->createCommand($sql)->execute();
+    public function saveGene($symbol, $source) {
+        $symbol = strtoupper(trim($symbol));
+        $arGene = Gene::find()->where(['symbol' => $symbol])->one();
+        if ($arGene) {
+            echo 'gene found' . PHP_EOL;
+        } else {
+            /** @var ParseMyGeneServiceInterface $myGeneService */
+            $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
+            $arGene = $myGeneService->parseBySymbol($symbol);
+            $arGene->isHidden = 1;
+            $arGene->save();
 
-    }
+            $geneToSource = new GeneToSource();
+            $geneToSource->gene_id = $arGene->id;
+            $geneToSource->source_id = $source;
 
-    public function actionImportOrthologsFromFlybase($absolutePathToFile)
-    {
-        if (!file_exists($absolutePathToFile)) {
-            return 'Cannot find data file';
+            echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;
         }
-        $consoleDir = \Yii::getAlias('@app/console');
-        $f = fopen($absolutePathToFile, 'r');
-        $fly = ModelOrganism::find()->where(['name_lat' => 'Drosophila melanogaster'])->one();
-
-        $genes = Gene::find()->select(['id', 'symbol'])
-            ->where(['not', ['symbol' => null]])
-            ->andWhere(['not', ['symbol' => '']])
-            ->asArray()->all();
-        $geneSymbolToId = [];
-        foreach ($genes as $gene) {
-            $geneSymbolToId[$gene['symbol']] = $gene['id'];
-        }
-
-        $count = 0;
-        try {
-            while (($data = fgetcsv($f, 0, "\t")) !== false) {
-                $count++;
-                Console::output('Table rows processed: ' . $count);
-                if (!isset($geneSymbolToId[$data[4]])) {
-                    continue;
-                }
-                $geneId = $geneSymbolToId[$data[4]];
-                $params = escapeshellarg(serialize([$geneId, $data, $fly->id]));
-                exec("php {$consoleDir}/yii.php migrate-data/import-orthologs-from-flybase-inner {$params}");
-            }
-            return 'New orthologs successfully added';
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-    }
-
-    public function actionImportOrthologsFromFlybaseInner($params)
-    {
-        $params = unserialize($params);
-        list($geneId, $data, $flyId) = $params;
-        $ortholog = Ortholog::find()
-            ->select(['id'])
-            ->where(['model_organism_id' => $flyId])
-            ->andWhere(['symbol' => $data[1]])
-            ->one();
-
-        if ($ortholog == null) {
-            $orthologId = $this->createNewOrtholog($data, $flyId);
-        }
-        else {
-            $orthologId = $ortholog->id;
-        }
-        if ($this->existRelationGeneToOrtholog($orthologId, $geneId)) {
-            return;
-        }
-        $this->createRelationGeneToOrtholog($geneId, $orthologId);
-    }
-
-    private function existRelationGeneToOrtholog($currentOrthologId, $currentGeneId): bool {
-        $geneToOrtholog = GeneToOrtholog::find()
-            ->where(['gene_id' => $currentGeneId])
-            ->andWhere(['ortholog_id' => $currentOrthologId])
-            ->one();
-        if ($geneToOrtholog) {
-            return true;
-        }
-        return false;
-    }
-
-    private function createRelationGeneToOrtholog(int $geneId, int $orthologId) {
-        $geneToOrtholog = new GeneToOrtholog();
-        $geneToOrtholog->gene_id = $geneId;
-        $geneToOrtholog->ortholog_id = $orthologId;
-        if($geneToOrtholog->save()) {
-            Yii::info('New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created');
-        }
-    }
-
-    private function createNewOrtholog($data, $flyId): int {
-        $ortholog = new Ortholog();
-        $ortholog->symbol = $data[1];
-        $ortholog->model_organism_id = $flyId;
-        $ortholog->external_base_id = $data[0];
-        $ortholog->external_base_name = 'flybase';
-        if($ortholog->save()) {
-            Yii::info('New ortholog ' . $ortholog->id . ' successfully created');
-        }
-        return $ortholog->id;
+        return $arGene->id;
     }
 
     private function createRelationsPurpleToProcess($purple, $greenId)
@@ -550,6 +458,7 @@ class MigrateDataController extends Controller
             }
         }
     }
+
     private function searchDuplicatePurple (array $purple, array &$duplicatePurple) {
         $geneId = $purple[0]->relatedRecords['lifespanExperiments'][0]->gene_id;
         $doi = $purple[0]->reference;
@@ -760,5 +669,16 @@ class MigrateDataController extends Controller
             Console::output('Relation id ' . $relation->id . ' was updated (table gene_intervention_result_to_vital_process)');
         }
     }
+
+
+
+
+
+
+
+
+
+
+
 }
 

@@ -91,7 +91,8 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         }
         $parsedResponse = json_decode($response->content, true);
         foreach ($parsedResponse['hits'] as $gene) {
-            if ($gene['symbol'] === strtoupper($symbol)) {
+            $aliases = $this->getAliases($gene);
+            if (in_array(strtoupper($symbol), $aliases)) {
                 $arGene = new Gene();
                 $arGene->symbol = $gene['symbol'];
                 $arGene->ncbi_id = $gene['entrezgene'];
@@ -111,5 +112,20 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
             }
         }
         throw new \Exception(' not found ' . $url);
+    }
+
+    private function getAliases(array $geneData): array {
+        $result = [$geneData['symbol']];
+        if(!isset($geneData['alias'])) {
+            return $result;
+        }
+        if (is_string($geneData['alias'])) {
+            $result[] = $geneData['alias'];
+            return $result;
+        }
+        foreach ($geneData['alias'] as $alias) {
+            $result[] = $alias;
+        }
+        return $result;
     }
 }

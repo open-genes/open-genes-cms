@@ -53,7 +53,6 @@ use Yii;
  * @property string|null $human_protein_atlas
  * @property string|null $ncbi_summary_ru
  * @property string|null $ncbi_summary_en
- * @property string|null $source
  * @property string|null $og_summary_en
  * @property string|null $og_summary_ru
  *
