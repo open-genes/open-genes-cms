@@ -2,6 +2,7 @@
 
 namespace app\console\controllers;
 
+use app\console\service\GeneHelper;
 use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
 use app\models\common\GeneToSource;
@@ -194,7 +195,7 @@ class MigrateDataController extends Controller
         foreach ($array['data'] as $gene) {
             try {
                 echo $counter . ' from ' . $count . ': ';
-                $this->saveGene($gene[1], Source::ABDB);
+                GeneHelper::saveGeneBySymbol($gene[1], Source::ABDB);
             } catch (\Exception $e) {
                 echo 'ERROR ' . $e->getMessage() . PHP_EOL;
             }
@@ -421,27 +422,6 @@ class MigrateDataController extends Controller
             $unmergedDoi[] = $geneId . ' -> ' . $doi;
         }
         VarDumper::dump($unmergedDoi);
-    }
-
-    public function saveGene($symbol, $source) {
-        $symbol = strtoupper(trim($symbol));
-        $arGene = Gene::find()->where(['symbol' => $symbol])->one();
-        if ($arGene) {
-            echo 'gene found' . PHP_EOL;
-        } else {
-            /** @var ParseMyGeneServiceInterface $myGeneService */
-            $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
-            $arGene = $myGeneService->parseBySymbol($symbol);
-            $arGene->isHidden = 1;
-            $arGene->save();
-
-            $geneToSource = new GeneToSource();
-            $geneToSource->gene_id = $arGene->id;
-            $geneToSource->source_id = $source;
-
-            echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;
-        }
-        return $arGene->id;
     }
 
     private function createRelationsPurpleToProcess($purple, $greenId)
