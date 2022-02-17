@@ -23,7 +23,8 @@ class OrthologDataController extends Controller
         Yii::$app->db->createCommand($sql)->execute();
     }
 
-    public function actionHumanGeneFromGeneageFlies($geneAgeData, $fybaseData) {
+    public function actionHumanGeneFromGeneageFlies($geneAgeData, $fybaseData)
+    {
         if (!file_exists($geneAgeData)) {
             return 'Cannot find geneage data file';
         }
@@ -35,7 +36,8 @@ class OrthologDataController extends Controller
         return $orthologService->parseHumanGeneFromGeneageFlies($geneAgeData, $fybaseData);
     }
 
-    public function actionHumanGeneFromGeneageMice($geneAgeData) {
+    public function actionHumanGeneFromGeneageMice($geneAgeData)
+    {
         if (!file_exists($geneAgeData)) {
             return 'Cannot find geneage data file';
         }

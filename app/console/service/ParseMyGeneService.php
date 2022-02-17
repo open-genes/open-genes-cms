@@ -25,7 +25,9 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
     {
         $arGenesQuery = Gene::find()->where('gene.ncbi_id > 0');
         if ($onlyNew) {
-            $arGenesQuery->andWhere('gene.ncbi_summary_en is null or gene.ncbi_summary_en = "" or gene.ncbi_summary_en = " "');
+            $arGenesQuery->andWhere(
+                'gene.ncbi_summary_en is null or gene.ncbi_summary_en = "" or gene.ncbi_summary_en = " "'
+            );
         }
         if ($geneNcbiIdsArray) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', $geneNcbiIdsArray]);
@@ -36,7 +38,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         echo $count;
         foreach ($arGenes as $arGene) {
             try {
-                if (strtoupper($arGene->symbol)  !== $arGene->symbol) {
+                if (strtoupper($arGene->symbol) !== $arGene->symbol) {
                     echo 'not human gene ' . $arGene->symbol . PHP_EOL;
                     continue;
                 }
@@ -57,7 +59,9 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                     $arGene->name = $parsedResponse['name'];
                 }
                 if (isset($parsedResponse['alias'])) {
-                    $aliases = is_array($parsedResponse['alias']) ? $parsedResponse['alias'] : [$parsedResponse['alias']];
+                    $aliases = is_array(
+                        $parsedResponse['alias']
+                    ) ? $parsedResponse['alias'] : [$parsedResponse['alias']];
                     array_walk($aliases, function (&$value, &$key) {
                         $value = str_replace(' ', '+', $value);
                     });
@@ -114,9 +118,10 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         throw new \Exception(' not found ' . $url);
     }
 
-    private function getAliases(array $geneData): array {
+    private function getAliases(array $geneData): array
+    {
         $result = [$geneData['symbol']];
-        if(!isset($geneData['alias'])) {
+        if (!isset($geneData['alias'])) {
             return $result;
         }
         if (is_string($geneData['alias'])) {

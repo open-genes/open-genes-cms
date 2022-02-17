@@ -12,15 +12,17 @@ use yii\helpers\Console;
 
 class ParseOrthologService implements ParseOrthologServiceInterface
 {
-    public function parseHumanGeneFromGeneageFlies(string $geneAgeData, string $fybaseData) {
+    public function parseHumanGeneFromGeneageFlies(string $geneAgeData, string $fybaseData)
+    {
         $flybaseSymbols = $this->parseFlybaseSymbols($geneAgeData);
-        if(!is_array($flybaseSymbols)) {
+        if (!is_array($flybaseSymbols)) {
             return $flybaseSymbols;
         }
         return $this->parseGeneByFlyOrthologs($fybaseData, $flybaseSymbols);
     }
 
-    public function parseHumanGeneFromGeneageMice(string $geneAgeData) {
+    public function parseHumanGeneFromGeneageMice(string $geneAgeData)
+    {
         $modelOrganism = ModelOrganism::find()->where(['name_lat' => 'Mus musculus'])->one();
         $f = fopen($geneAgeData, 'r');
         $count = 0;
@@ -45,7 +47,8 @@ class ParseOrthologService implements ParseOrthologServiceInterface
         }
     }
 
-    public function parseOrthologsFromFlybase(string $absolutePathToFile) {
+    public function parseOrthologsFromFlybase(string $absolutePathToFile)
+    {
         $consoleDir = \Yii::getAlias('@app/console');
         $f = fopen($absolutePathToFile, 'r');
         $fly = ModelOrganism::find()->where(['name_lat' => 'Drosophila melanogaster'])->one();
@@ -77,7 +80,8 @@ class ParseOrthologService implements ParseOrthologServiceInterface
         }
     }
 
-    public function parseOrthologsFromFlybaseInner(string $params) {
+    public function parseOrthologsFromFlybaseInner(string $params)
+    {
         $params = unserialize($params);
         list($geneId, $data, $flyId) = $params;
         $ortholog = Ortholog::find()
@@ -88,8 +92,7 @@ class ParseOrthologService implements ParseOrthologServiceInterface
 
         if ($ortholog == null) {
             $orthologId = $this->createNewOrthologFly($data, $flyId);
-        }
-        else {
+        } else {
             $orthologId = $ortholog->id;
         }
         if ($this->existRelationToGene($orthologId, $geneId)) {
@@ -98,7 +101,8 @@ class ParseOrthologService implements ParseOrthologServiceInterface
         $this->createRelationToGene($geneId, $orthologId);
     }
 
-    private function parseGeneByFlyOrthologs(string $flybaseData, array $flybaseSymbols) {
+    private function parseGeneByFlyOrthologs(string $flybaseData, array $flybaseSymbols)
+    {
         $f = fopen($flybaseData, 'r');
         $count = 0;
         try {
@@ -106,7 +110,7 @@ class ParseOrthologService implements ParseOrthologServiceInterface
                 $count++;
                 Console::output('Flybase table rows processed: ' . $count);
                 $flybaseSymbol = $data[1];
-                if(!in_array($flybaseSymbol, $flybaseSymbols)) {
+                if (!in_array($flybaseSymbol, $flybaseSymbols)) {
                     continue;
                 }
                 GeneHelper::saveGeneBySymbol($data[4], Source::GENEAGE);
@@ -117,7 +121,9 @@ class ParseOrthologService implements ParseOrthologServiceInterface
             return $e->getMessage();
         }
     }
-    private function parseFlybaseSymbols(string $geneAgeData) {
+
+    private function parseFlybaseSymbols(string $geneAgeData)
+    {
         $f = fopen($geneAgeData, 'r');
         $count = 0;
         $flybaseSymbols = [];
@@ -136,14 +142,16 @@ class ParseOrthologService implements ParseOrthologServiceInterface
             return $e->getMessage();
         }
     }
-    private function getHumanSymbol(string $mouseSymbol): array {
+
+    private function getHumanSymbol(string $mouseSymbol): array
+    {
         switch ($mouseSymbol) {
             case 'Trp53bp1':
                 return ['TP53BP1'];
             case 'Trp53':
                 return ['TP53'];
             case 'Siglece':
-                return  ['SIGLEC12', 'SIGLEC8', 'SIGLEC9', 'SIGLEC7'];
+                return ['SIGLEC12', 'SIGLEC8', 'SIGLEC9', 'SIGLEC7'];
             case 'Trp63':
                 return ['TP63'];
             case 'Txn1':
@@ -156,7 +164,9 @@ class ParseOrthologService implements ParseOrthologServiceInterface
                 return [strtoupper(trim($mouseSymbol))];
         }
     }
-    private function saveOrtholog(string $symbol, int $modelOrganismId): int {
+
+    private function saveOrtholog(string $symbol, int $modelOrganismId): int
+    {
         $ortholog = Ortholog::find()->where(['symbol' => $symbol, 'model_organism_id' => $modelOrganismId])->one();
         if ($ortholog) {
             echo 'ortholog found' . PHP_EOL;
@@ -169,7 +179,9 @@ class ParseOrthologService implements ParseOrthologServiceInterface
         }
         return $ortholog->id;
     }
-    private function saveGeneByOrtholog(string $humanSymbol, int $orthologId) {
+
+    private function saveGeneByOrtholog(string $humanSymbol, int $orthologId)
+    {
         $humanGeneId = GeneHelper::saveGeneBySymbol($humanSymbol, Source::GENEAGE);
         if ($humanGeneId == null) {
             Console::output('Relation for ortholog ' . $orthologId . ' was not added! Please, do it by hand');
@@ -180,18 +192,22 @@ class ParseOrthologService implements ParseOrthologServiceInterface
         }
         $this->createRelationToGene($humanGeneId, $orthologId);
     }
-    private function createNewOrthologFly(array $data, int $flyId): int {
+
+    private function createNewOrthologFly(array $data, int $flyId): int
+    {
         $ortholog = new Ortholog();
         $ortholog->symbol = $data[1];
         $ortholog->model_organism_id = $flyId;
         $ortholog->external_base_id = $data[0];
         $ortholog->external_base_name = 'flybase';
-        if($ortholog->save()) {
+        if ($ortholog->save()) {
             Yii::info('New ortholog ' . $ortholog->id . ' successfully created');
         }
         return $ortholog->id;
     }
-    private function existRelationToGene(int $currentOrthologId, int $currentGeneId): bool {
+
+    private function existRelationToGene(int $currentOrthologId, int $currentGeneId): bool
+    {
         $geneToOrtholog = GeneToOrtholog::find()
             ->where(['gene_id' => $currentGeneId])
             ->andWhere(['ortholog_id' => $currentOrthologId])
@@ -201,12 +217,16 @@ class ParseOrthologService implements ParseOrthologServiceInterface
         }
         return false;
     }
-    private function createRelationToGene(int $geneId, int $orthologId) {
+
+    private function createRelationToGene(int $geneId, int $orthologId)
+    {
         $geneToOrtholog = new GeneToOrtholog();
         $geneToOrtholog->gene_id = $geneId;
         $geneToOrtholog->ortholog_id = $orthologId;
-        if($geneToOrtholog->save()) {
-            Yii::info('New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created');
+        if ($geneToOrtholog->save()) {
+            Yii::info(
+                'New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created'
+            );
         }
     }
 }
