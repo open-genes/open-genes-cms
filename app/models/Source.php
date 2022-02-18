@@ -12,6 +12,9 @@ use yii\data\ActiveDataProvider;
 class Source extends common\Source
 {
     use ConditionActiveRecordTrait;
+    public const GENEAGE = 1;
+    public const ABDB = 2;
+    public const HORVATH = 3;
 
     public function behaviors()
     {
