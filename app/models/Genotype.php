@@ -55,7 +55,8 @@ class Genotype extends common\Genotype
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
     public static function getAllNames()

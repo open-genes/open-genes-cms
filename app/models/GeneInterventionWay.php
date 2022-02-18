@@ -43,9 +43,20 @@ class GeneInterventionWay extends \app\models\common\GeneInterventionWay
                 ];
     }
 
+    /**
+     * Gets query for [[LifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
+     */
+    public function getLifespanExperiments()
+    {
+        return $this->hasMany(LifespanExperiment::class, ['gene_intervention_way_id' => 'id']);
+    }
+
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
 }

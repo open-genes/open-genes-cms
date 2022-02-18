@@ -45,18 +45,30 @@ class OrganismSex extends \app\models\common\OrganismSex
 
 
     /**
-    * Gets query for [[LifespanExperiments]].
+    * Gets query for [[GeneralLifespanExperiments]].
     *
-    * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
+    * @return \yii\db\ActiveQuery|\app\models\common\GeneralLifespanExperimentQuery
     */
+    public function getGeneralLifespanExperiments()
+    {
+    return $this->hasMany(GeneralLifespanExperiment::class, ['organism_sex_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[LifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
+     */
     public function getLifespanExperiments()
     {
-    return $this->hasMany(LifespanExperiment::class, ['organism_sex_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id'])
+            ->viaTable('general_lifespan_experiment', ['organism_sex_id' => 'id']);
     }
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
 }
