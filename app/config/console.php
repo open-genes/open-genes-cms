@@ -1,5 +1,6 @@
 <?php
 
+use app\console\service\ParseOrthologServiceInterface;
 use app\console\service\ParseProteinAtlasServiceInterface;
 
 $params = array_merge(
@@ -63,7 +64,8 @@ $config = [
                 'https://id.who.int/icd',
                 getenv('ICD_CLIENT_ID'),
                 getenv('ICD_CLIENT_SECRET')
-            )
+            ),
+            \app\console\service\ParseOrthologServiceInterface::class => new \app\console\service\ParseOrthologService()
         ]
     ],
     'params' => $params,

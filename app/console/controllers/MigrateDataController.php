@@ -2,6 +2,7 @@
 
 namespace app\console\controllers;
 
+use app\console\service\GeneHelper;
 use app\console\service\ParseMyGeneServiceInterface;
 use app\models\CommentCause;
 use app\models\common\GeneToSource;
@@ -21,6 +22,7 @@ use app\models\common\GeneExpressionInSample;
 use app\models\GeneToCommentCause;
 use app\models\GeneToFunctionalCluster;
 use app\models\Sample;
+use app\models\Source;
 use Yii;
 use yii\console\Controller;
 use yii\db\ActiveQuery;
@@ -193,19 +195,7 @@ class MigrateDataController extends Controller
         foreach ($array['data'] as $gene) {
             try {
                 echo $counter . ' from ' . $count . ': ';
-                $symbol = strtoupper(trim($gene[1]));
-                $arGene = Gene::find()->where(['symbol' => $symbol])->one();
-                if ($arGene) {
-                    echo 'gene found' . PHP_EOL;
-                } else {
-                    /** @var ParseMyGeneServiceInterface $myGeneService */
-                    $myGeneService = \Yii::$container->get(ParseMyGeneServiceInterface::class);
-                    $arGene = $myGeneService->parseBySymbol($symbol);
-                    $arGene->isHidden = 1;
-                    $arGene->source = 'abdb';
-                    $arGene->save();
-                    echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;
-                }
+                GeneHelper::saveGeneBySymbol($gene[1], Source::ABDB);
             } catch (\Exception $e) {
                 echo 'ERROR ' . $e->getMessage() . PHP_EOL;
             }
@@ -332,14 +322,15 @@ class MigrateDataController extends Controller
                     $this->updateRelationsGreenToProcess($modelToUpdate->id, $relation);
                 }
                 if ($model->delete()) {
-                    Console::output('Green form id ' . $model->id . ' successfully deleted from table gene_intervention_to_vital_process');
+                    Console::output(
+                        'Green form id ' . $model->id . ' successfully deleted from table gene_intervention_to_vital_process'
+                    );
                 }
             }
 
             if ($modelToUpdate->save(false)) {
                 Console::output('Green form id ' . $modelToUpdate->id . ' successfully updated');
-            }
-            else {
+            } else {
                 Console::output('Attention! Green form id ' . $modelToUpdate->id . ' has not been updated!');
             }
         }
@@ -367,9 +358,8 @@ class MigrateDataController extends Controller
             foreach ($purpleList as $purple) {
                 $leList = $purple->relatedRecords['lifespanExperiments'];
                 foreach ($leList as $le) {
-                     $this->makeMatchesGreenToPurple($le, $green, $purple, $greenToPurple);
+                    $this->makeMatchesGreenToPurple($le, $green, $purple, $greenToPurple);
                 }
-
             }
         }
         $duplicatePurple = [];
@@ -377,11 +367,9 @@ class MigrateDataController extends Controller
             if (count($purple) > 1) {
                 //если у зеленой формы несколько фиолетовых, их мержить не надо, только отдать список генетикам
                 $this->searchDuplicatePurple($purple, $duplicatePurple);
-            }
-            else {
+            } else {
                 $this->createRelationsPurpleToProcess($purple, $greenId);
             }
-
         }
         VarDumper::dump($duplicatePurple);
     }
@@ -398,7 +386,6 @@ class MigrateDataController extends Controller
                 foreach ($leList as $le) {
                     $this->makeMatchesGreenToPurple($le, $green, $purple, $greenToPurpleHard);
                 }
-
             }
         }
 
@@ -409,10 +396,12 @@ class MigrateDataController extends Controller
                 foreach ($leList as $le) {
                     $purpleHash = md5(
                         $purple->reference .
-                        $le->gene_id);
+                        $le->gene_id
+                    );
                     $greenHash = md5(
                         $green->reference .
-                        $green->gene_id);
+                        $green->gene_id
+                    );
 
                     if ($purpleHash == $greenHash) {
                         if (!isset($greenToPurpleSoft[$green->id])) {
@@ -421,7 +410,6 @@ class MigrateDataController extends Controller
                         $greenToPurpleSoft[$green->id][] = $purple;
                     }
                 }
-
             }
         }
         $unmergedDoi = [];
@@ -434,111 +422,11 @@ class MigrateDataController extends Controller
         VarDumper::dump($unmergedDoi);
     }
 
-    public function actionOrthologToLifespan()
-    {
-        $sql = 'UPDATE lifespan_experiment le
-                JOIN gene_to_orthologs gto ON le.gene_id = gto.gene_id
-                JOIN orthologs o ON gto.ortholog_id = o.id
-                SET le.ortholog_id = o.id
-                WHERE le.model_organism_id = o.model_organism_id';
-        Yii::$app->db->createCommand($sql)->execute();
-
-    }
-
-    public function actionImportOrthologsFromFlybase($absolutePathToFile)
-    {
-        if (!file_exists($absolutePathToFile)) {
-            return 'Cannot find data file';
-        }
-        $consoleDir = \Yii::getAlias('@app/console');
-        $f = fopen($absolutePathToFile, 'r');
-        $fly = ModelOrganism::find()->where(['name_lat' => 'Drosophila melanogaster'])->one();
-
-        $genes = Gene::find()->select(['id', 'symbol'])
-            ->where(['not', ['symbol' => null]])
-            ->andWhere(['not', ['symbol' => '']])
-            ->asArray()->all();
-        $geneSymbolToId = [];
-        foreach ($genes as $gene) {
-            $geneSymbolToId[$gene['symbol']] = $gene['id'];
-        }
-
-        $count = 0;
-        try {
-            while (($data = fgetcsv($f, 0, "\t")) !== false) {
-                $count++;
-                Console::output('Table rows processed: ' . $count);
-                if (!isset($geneSymbolToId[$data[4]])) {
-                    continue;
-                }
-                $geneId = $geneSymbolToId[$data[4]];
-                $params = escapeshellarg(serialize([$geneId, $data, $fly->id]));
-                exec("php {$consoleDir}/yii.php migrate-data/import-orthologs-from-flybase-inner {$params}");
-            }
-            return 'New orthologs successfully added';
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        }
-
-    }
-
-    public function actionImportOrthologsFromFlybaseInner($params)
-    {
-        $params = unserialize($params);
-        list($geneId, $data, $flyId) = $params;
-        $ortholog = Ortholog::find()
-            ->select(['id'])
-            ->where(['model_organism_id' => $flyId])
-            ->andWhere(['symbol' => $data[1]])
-            ->one();
-
-        if ($ortholog == null) {
-            $orthologId = $this->createNewOrtholog($data, $flyId);
-        }
-        else {
-            $orthologId = $ortholog->id;
-        }
-        if ($this->existRelationGeneToOrtholog($orthologId, $geneId)) {
-            return;
-        }
-        $this->createRelationGeneToOrtholog($geneId, $orthologId);
-    }
-
-    private function existRelationGeneToOrtholog($currentOrthologId, $currentGeneId): bool {
-        $geneToOrtholog = GeneToOrtholog::find()
-            ->where(['gene_id' => $currentGeneId])
-            ->andWhere(['ortholog_id' => $currentOrthologId])
-            ->one();
-        if ($geneToOrtholog) {
-            return true;
-        }
-        return false;
-    }
-
-    private function createRelationGeneToOrtholog(int $geneId, int $orthologId) {
-        $geneToOrtholog = new GeneToOrtholog();
-        $geneToOrtholog->gene_id = $geneId;
-        $geneToOrtholog->ortholog_id = $orthologId;
-        if($geneToOrtholog->save()) {
-            Yii::info('New relations for ortholog => gene ' . $geneToOrtholog->ortholog_id . ' => ' . $geneToOrtholog->gene_id . ' successfully created');
-        }
-    }
-
-    private function createNewOrtholog($data, $flyId): int {
-        $ortholog = new Ortholog();
-        $ortholog->symbol = $data[1];
-        $ortholog->model_organism_id = $flyId;
-        $ortholog->external_base_id = $data[0];
-        $ortholog->external_base_name = 'flybase';
-        if($ortholog->save()) {
-            Yii::info('New ortholog ' . $ortholog->id . ' successfully created');
-        }
-        return $ortholog->id;
-    }
-
     private function createRelationsPurpleToProcess($purple, $greenId)
     {
-        $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(['gene_intervention_to_vital_process_id' => $greenId])->all();
+        $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(
+            ['gene_intervention_to_vital_process_id' => $greenId]
+        )->all();
         foreach ($greenToProcess as $process) {
             $purpleToProcess = new GeneralLifespanExperimentToVitalProcess();
             $purpleToProcess->attributes = $process->attributes;
@@ -550,25 +438,30 @@ class MigrateDataController extends Controller
             }
         }
     }
-    private function searchDuplicatePurple (array $purple, array &$duplicatePurple) {
+
+    private function searchDuplicatePurple(array $purple, array &$duplicatePurple)
+    {
         $geneId = $purple[0]->relatedRecords['lifespanExperiments'][0]->gene_id;
         $doi = $purple[0]->reference;
         $duplicatePurple[] = $geneId . ' -> ' . $doi;
     }
 
-    private function makeMatchesGreenToPurple(LifespanExperiment $experiment, GeneInterventionToVitalProcess $green, GeneralLifespanExperiment $purple, &$greenToPurple) {
-
+    private function makeMatchesGreenToPurple(
+        LifespanExperiment $experiment,
+        GeneInterventionToVitalProcess $green,
+        GeneralLifespanExperiment $purple,
+        &$greenToPurple
+    ) {
         //если стоит в зеленой "+/-, -/-" или ничего не стоит, то смержить со всеми фиолетовыми, где совпадает все остальное (без генотипа)
         if ($green->genotype != 3 && $green->genotype != null) {
             $purpleHash = $this->getPurpleHash($purple, $experiment);
             $greenHash = $this->getGreenHash($green);
-        }
-        else {
+        } else {
             $purpleHash = $this->getPurpleHash($purple, $experiment, false);
             $greenHash = $this->getGreenHash($green, false);
         }
-        if($purpleHash == $greenHash) {
-            if(!isset($greenToPurple[$green->id])) {
+        if ($purpleHash == $greenHash) {
+            if (!isset($greenToPurple[$green->id])) {
                 $greenToPurple[$green->id] = [];
             }
             $greenToPurple[$green->id][] = $purple;
@@ -604,20 +497,18 @@ class MigrateDataController extends Controller
             ->andWhere(['not', ['lifespan_change_percent_male' => null]])
             ->all();
         $this->splitThreeSex($maleFemaleCommon);
-
     }
 
-    private function fillSexPurple() {
+    private function fillSexPurple()
+    {
         $models = GeneralLifespanExperiment::find()->all();
 
         foreach ($models as $model) {
             if ($model->lifespan_change_percent_male !== null) {
                 $model->organism_sex_id = 1;
-            }
-            elseif ($model->lifespan_change_percent_female !== null) {
+            } elseif ($model->lifespan_change_percent_female !== null) {
                 $model->organism_sex_id = 0;
-            }
-            elseif ($model->lifespan_change_percent_common !== null) {
+            } elseif ($model->lifespan_change_percent_common !== null) {
                 $model->organism_sex_id = 3;
             }
             if ($model->save()) {
@@ -644,9 +535,9 @@ class MigrateDataController extends Controller
         }
     }
 
-    private function splitThreeSex ($models) {
+    private function splitThreeSex($models)
+    {
         foreach ($models as $model) {
-
             $this->createNewPurpleForm('female', $model);
             $this->createNewPurpleForm('male', $model);
 
@@ -659,11 +550,11 @@ class MigrateDataController extends Controller
         }
     }
 
-    private function createNewPurpleForm ($sex, $parentModel) {
-        if($sex == 'female') {
+    private function createNewPurpleForm($sex, $parentModel)
+    {
+        if ($sex == 'female') {
             $attrToReset = 'lifespan_change_percent_male';
-        }
-        else {
+        } else {
             $attrToReset = 'lifespan_change_percent_female';
         }
         $model = new GeneralLifespanExperiment();
@@ -676,7 +567,8 @@ class MigrateDataController extends Controller
         }
     }
 
-    private function createNewLifespanExperiment($parentModelId, $currentModelId) {
+    private function createNewLifespanExperiment($parentModelId, $currentModelId)
+    {
         $models = LifespanExperiment::find()->where([
             'general_lifespan_experiment_id' => $parentModelId
         ])->all();
@@ -685,8 +577,10 @@ class MigrateDataController extends Controller
             $newModel = new LifespanExperiment();
             $newModel->attributes = $model->attributes;
             $newModel->general_lifespan_experiment_id = $currentModelId;
-            if($newModel->save()) {
-                Console::output('Experiment ' . $newModel->id . ' to form id ' . $newModel->general_lifespan_experiment_id . ' successfully created');
+            if ($newModel->save()) {
+                Console::output(
+                    'Experiment ' . $newModel->id . ' to form id ' . $newModel->general_lifespan_experiment_id . ' successfully created'
+                );
             }
         }
     }
@@ -707,8 +601,11 @@ class MigrateDataController extends Controller
         return md5($prepareString);
     }
 
-    private function getPurpleHash(GeneralLifespanExperiment $general, LifespanExperiment $experiment, $genotype = true): string
-    {
+    private function getPurpleHash(
+        GeneralLifespanExperiment $general,
+        LifespanExperiment $experiment,
+        $genotype = true
+    ): string {
         $prepareString =
             $general->reference .
             $experiment->gene_intervention_method_id .
@@ -723,7 +620,8 @@ class MigrateDataController extends Controller
         return md5($prepareString);
     }
 
-    private function searchTheSameModels ($models): array {
+    private function searchTheSameModels($models): array
+    {
         /* @var $model GeneInterventionToVitalProcess */
         /* @var $searchModel GeneInterventionToVitalProcess */
         $theSameModels = [];
@@ -745,9 +643,11 @@ class MigrateDataController extends Controller
         return $theSameModels;
     }
 
-    private function updateRelationsGreenToProcess (int $modelId, GeneInterventionResultToVitalProcess $relation) {
+    private function updateRelationsGreenToProcess(int $modelId, GeneInterventionResultToVitalProcess $relation)
+    {
         $theSameRelations = GeneInterventionResultToVitalProcess::find()
-            ->where(['gene_intervention_to_vital_process_id' => $modelId,
+            ->where([
+                'gene_intervention_to_vital_process_id' => $modelId,
                 'intervention_result_for_vital_process_id' => $relation->intervention_result_for_vital_process_id,
                 'vital_process_id' => $relation->vital_process_id
             ])->one();
@@ -757,8 +657,12 @@ class MigrateDataController extends Controller
         }
         $relation->gene_intervention_to_vital_process_id = $modelId;
         if ($relation->save()) {
-            Console::output('Relation id ' . $relation->id . ' was updated (table gene_intervention_result_to_vital_process)');
+            Console::output(
+                'Relation id ' . $relation->id . ' was updated (table gene_intervention_result_to_vital_process)'
+            );
         }
     }
+
+
 }
 
