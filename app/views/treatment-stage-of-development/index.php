@@ -26,12 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'name_ru',
             'name_en',
             [
+                'label' => '🔗 genes',
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\TreatmentStageOfDevelopment */
+                    $geneIds = $model->getLinkedGenesIdsStart();
+                    $geneIdsString = implode(',', $geneIds);
+                    $count = count($geneIds);
+                    return $count ? "<a href='/gene?Gene[id]={$geneIdsString}' target='_blank'>{$count} 🔗</a>" : '-';
+                },
+                'headerOptions' => ['style' => 'width:90px'],
+                'format' => 'raw'
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
                 'visibleButtons' => [
                     'update' => \Yii::$app->user->can('contributor'),
                     'delete' => function ($model, $key, $index) {
-                        return (\Yii::$app->user->can('editor') && !count($model->getLinkedGenesIds()))
+                        return (\Yii::$app->user->can('editor') && !count($model->getLinkedGenesIdsStart()))
                         || \Yii::$app->user->can('admin');
                         }
                 ],

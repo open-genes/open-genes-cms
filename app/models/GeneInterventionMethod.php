@@ -55,7 +55,8 @@ class GeneInterventionMethod extends \app\models\common\GeneInterventionMethod
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
 }

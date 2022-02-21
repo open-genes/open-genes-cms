@@ -46,15 +46,25 @@ class StatisticalSignificance extends \app\models\common\StatisticalSignificance
                 ];
     }
 
+    /**
+     * Gets query for [[GeneralLifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\GeneralLifespanExperimentQuery
+     */
+    public function getGeneralLifespanExperiments()
+    {
+        return $this->hasMany(GeneralLifespanExperiment::class, ['lifespan_max_change_stat_sign_id' => 'id']);
+    }
 
     /**
-    * Gets query for [[LifespanExperiments]].
-    *
-    * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
-    */
+     * Gets query for [[LifespanExperiments]].
+     *
+     * @return \yii\db\ActiveQuery|\app\models\common\LifespanExperimentQuery
+     */
     public function getLifespanExperiments()
     {
-    return $this->hasMany(LifespanExperiment::class, ['lifespan_max_change_stat_sign_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id'])
+            ->viaTable('general_lifespan_experiment', ['lifespan_max_change_stat_sign_id' => 'id']);
     }
 
     /**
@@ -64,7 +74,8 @@ class StatisticalSignificance extends \app\models\common\StatisticalSignificance
     */
     public function getLifespanExperiments0()
     {
-    return $this->hasMany(LifespanExperiment::class, ['lifespan_mean_change_stat_sign_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id'])
+            ->viaTable('general_lifespan_experiment', ['lifespan_mean_change_stat_sign_id' => 'id']);
     }
 
     /**
@@ -74,7 +85,8 @@ class StatisticalSignificance extends \app\models\common\StatisticalSignificance
     */
     public function getLifespanExperiments1()
     {
-    return $this->hasMany(LifespanExperiment::class, ['lifespan_median_change_stat_sign_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id'])
+            ->viaTable('general_lifespan_experiment', ['lifespan_median_change_stat_sign_id' => 'id']);
     }
 
     /**
@@ -84,12 +96,14 @@ class StatisticalSignificance extends \app\models\common\StatisticalSignificance
     */
     public function getLifespanExperiments2()
     {
-    return $this->hasMany(LifespanExperiment::class, ['lifespan_min_change_stat_sign_id' => 'id']);
+        return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id'])
+            ->viaTable('general_lifespan_experiment', ['lifespan_min_change_stat_sign_id' => 'id']);
     }
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
 }

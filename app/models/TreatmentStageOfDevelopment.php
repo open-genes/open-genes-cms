@@ -65,9 +65,10 @@ class TreatmentStageOfDevelopment extends \app\models\common\TreatmentStageOfDev
     return $this->hasMany(LifespanExperiment::class, ['treatment_start_stage_of_development_id' => 'id']);
     }
 
-    public function getLinkedGenesIds()
+    public function getLinkedGenesIdsStart()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments0()
+            ->select('gene_id')->distinct()->column();
     }
 
 }

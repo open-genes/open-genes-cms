@@ -67,7 +67,8 @@ class TimeUnit extends \app\models\common\TimeUnit
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments0()
+            ->select('gene_id')->distinct()->column();
     }
 
 }
