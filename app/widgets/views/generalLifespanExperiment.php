@@ -100,7 +100,7 @@
         <div class="row form-row no-margins">
             <div class="form-group">
                 <div class="js-lifespan-experiments-control">
-                    <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control') as $lifespanExperiment): ?>
+                    <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control', $currentGeneId) as $lifespanExperiment): ?>
                         <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
                     <?php endforeach; ?>
                 </div>
