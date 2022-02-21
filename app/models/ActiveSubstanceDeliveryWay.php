@@ -56,7 +56,8 @@ class ActiveSubstanceDeliveryWay extends \app\models\common\ActiveSubstanceDeliv
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
 }

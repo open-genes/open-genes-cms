@@ -26,6 +26,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'name_ru',
             'name_en',
             [
+                'label' => '🔗 genes',
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\Genotype */
+                    $geneIds = $model->getLinkedGenesIds();
+                    $geneIdsString = implode(',', $geneIds);
+                    $count = count($geneIds);
+                    return $count ? "<a href='/gene?Gene[id]={$geneIdsString}' target='_blank'>{$count} 🔗</a>" : '-';
+                },
+                'headerOptions' => ['style' => 'width:90px'],
+                'format' => 'raw'
+            ],
+            [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{update} {delete}',
                 'visibleButtons' => [
