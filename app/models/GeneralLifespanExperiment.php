@@ -66,6 +66,9 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     use RuEnActiveRecordTrait;
     use ExperimentsActiveRecordTrait;
 
+    const TYPE_CONTROL = 'control';
+    const TYPE_EXPERIMENT = 'experiment';
+
     public $name;
     public $delete;
     public $currentGeneId;
@@ -94,6 +97,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
             [['improveVitalProcessIds', 'deteriorVitalProcessIds'], 'safe'],
         ]);
     }
+
     /**
      * {@inheritdoc}
      */
@@ -234,19 +238,24 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     }
 
     /**
-     * @param $type
+     * @param string $type
+     * @param int|null $currentGeneId
      * @return LifespanExperiment[]
      */
-    public function getLifespanExperimentsForForm($type): array
+    public function getLifespanExperimentsForForm(string $type, int $currentGeneId = null): array
     {
-        return LifespanExperiment::find()
+        $query = LifespanExperiment::find()
             ->where([
                 'general_lifespan_experiment_id' => $this->id,
                 'type' => $type
-            ])
-            ->all();
+            ]);
+        if ($type == self::TYPE_CONTROL) {
+            $query->andWhere(['<>', 'gene_id', $currentGeneId]);
+        }
+        return
+            $query->all();
     }
-    
+
 
     /**
      * Gets query for [[LifespanExperiments]].
@@ -299,7 +308,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
                     $arToDelete->delete();
                 }
             }
-            if(!$modelAR->lifespanExperiments) {
+            if (!$modelAR->lifespanExperiments) {
                 $modelAR->delete();
                 return;
             }
@@ -318,13 +327,13 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         VitalProcess::createNewByIds($modelArray['improveVitalProcessIds']);
         VitalProcess::createNewByIds($modelArray['deteriorVitalProcessIds']);
 
-        if(!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
+        if (!empty($modelArray['organism_line_id']) && !is_numeric($modelArray['organism_line_id'])) {
             $arProteinActivity = OrganismLine::createFromNameString($modelArray['organism_line_id'], ['model_organism_id' => $modelAR->model_organism_id]);
             $modelAR->organism_line_id = $arProteinActivity->id;
         } else {
             OrganismLine::fixLine($modelAR, $modelArray);
         }
-        
+
         if (!$modelAR->validate() || !$modelAR->save()) {
             throw new UpdateExperimentsException($id, $modelAR);
         }
@@ -418,9 +427,10 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         }
     }
 
-    private function getVitalProcessIdsByNames(array $arProcess): array {
+    private function getVitalProcessIdsByNames(array $arProcess): array
+    {
         foreach ($arProcess as &$process) {
-            if(is_numeric($process)) {
+            if (is_numeric($process)) {
                 continue;
             }
             $process = (string)VitalProcess::getIdByName($process)->id;
