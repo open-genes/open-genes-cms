@@ -89,6 +89,8 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Единицы измерения времени', 'url' => '/treatment-time-unit', 'visible' => Yii::$app->user->can('editor')],
                     '<li class="divider"></li>',
                     ['label' => 'Генотип', 'url' => '/genotype', 'visible' => Yii::$app->user->can('editor')],
+                    '<li class="divider"></li>',
+                    ['label' => 'Диеты', 'url' => '/diet', 'visible' => Yii::$app->user->can('editor')],
                 ],
             ],
             [

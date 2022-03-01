@@ -60,9 +60,21 @@ class Diet extends \app\models\common\Diet
     return $this->hasMany(GeneralLifespanExperiment::class, ['diet_id' => 'id']);
     }
 
+    /**
+    * Gets query for [[GeneralLifespanExperiments]].
+    *
+    * @return \yii\db\ActiveQuery
+    */
+    public function getLifespanExperiments()
+    {
+    return $this->hasMany(LifespanExperiment::class, ['general_lifespan_experiment_id' => 'id'])
+        ->viaTable('general_lifespan_experiment', ['diet_id' => 'id']);
+    }
+
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getLifespanExperiments()
+            ->select('gene_id')->distinct()->column();
     }
 
 }
