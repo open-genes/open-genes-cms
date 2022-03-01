@@ -99,11 +99,6 @@
 
         <div class="row form-row no-margins">
             <div class="form-group">
-                <div class="js-lifespan-experiments-control">
-                    <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control') as $lifespanExperiment): ?>
-                        <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
-                    <?php endforeach; ?>
-                </div>
                 <?= \yii\helpers\Html::button('+ Воздействие в контроле и эксперименте', [
                     'class' => 'btn btn-add add-protein-activity js-add-lifespan-experiment-control',
                     'currentGeneId' => $currentGeneId,
@@ -118,6 +113,13 @@
         <div class="row form-row">
         </div>
         <div class="row form-row">
+            <div class="js-lifespan-experiments-control">
+                <div class="row form-row">
+                <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control') as $lifespanExperiment): ?>
+                    <?= \app\widgets\LifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'currentGeneId' => $currentGeneId]) ?>
+                <?php endforeach; ?>
+                </div>
+            </div>
             <div class="js-lifespan-experiments-gene">
                 <div class="row form-row">
                     <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('experiment') as $lifespanExperiment): ?>
