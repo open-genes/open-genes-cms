@@ -8,6 +8,7 @@ use app\models\common\LifespanExperimentQuery;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -24,6 +25,8 @@ class LifespanExperiment extends common\LifespanExperiment
     public $delete = false;
     public $tissuesIds;
     private $tissuesIdsArray;
+    private $orthologIds = [];
+    private $modelOrganismId;
 
     public function behaviors()
     {
@@ -58,7 +61,7 @@ class LifespanExperiment extends common\LifespanExperiment
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
-            [['tissuesIds', 'intervention_result_id'], 'safe'],
+            [['tissuesIds', 'intervention_result_id', 'orthologIds'], 'safe'],
             [['age'], 'number', 'min' => 0],
             [['reference'], 'validateDOI']
         ]);
@@ -107,7 +110,15 @@ class LifespanExperiment extends common\LifespanExperiment
 
         return parent::beforeValidate();
     }
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
+            return parent::afterSave($insert, $changedAttributes);
+        }
+        $this->orthologIds = $this->getOrthologsIdsByNames($this->orthologIds);
 
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     /**
      * Gets query for [[GeneralLifespanExperiment]].
@@ -174,6 +185,8 @@ class LifespanExperiment extends common\LifespanExperiment
             self::setAttributeFromNewAR($modelArray, 'treatment_end_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'genotype', 'Genotype', $modelAR);
 
+            Ortholog::createNewByIds($modelArray['orthologIds'], $modelAR->general_lifespan_experiment_id, $modelAR->gene_id);
+
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }
@@ -185,6 +198,62 @@ class LifespanExperiment extends common\LifespanExperiment
             }
             $modelAR->saveTissues($modelArray['tissuesIdsArray']);
         }
+    }
+
+    public function getTissuesIdsArray()
+    {
+        return LifespanExperimentToTissue::find()
+            ->select('tissue_id')
+            ->where(['lifespan_experiment_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
+    public function setTissuesIdsArray(array $ids)
+    {
+        $this->tissuesIdsArray = $ids;
+    }
+    public function setOrthologIds($ids)
+    {
+        if (!$ids) {
+            $ids = [];
+        }
+        $this->orthologIds = $ids;
+    }
+
+    public function getOrthologIds()
+    {
+        $modelOrganismId = $this->getModelOrganismId();
+
+        return Ortholog::find()
+            ->select('ortholog.id')
+            ->innerJoin('gene_to_ortholog', 'ortholog.id=gene_to_ortholog.ortholog_id')
+            ->where(['ortholog.model_organism_id' => $modelOrganismId])
+            ->andWhere(['gene_to_ortholog.gene_id' => $this->gene_id])
+            ->asArray()
+            ->column();
+    }
+
+    public function setModelOrganismId($id)
+    {
+        $this->modelOrganismId = $id;
+    }
+
+    public function getModelOrganismId()
+    {
+        return $this->getGeneralLifespanExperiment()
+            ->select('model_organism_id')->distinct()->one()->model_organism_id;
+    }
+
+    public function getOrthologsIdsByNames($arOrthologs)
+    {
+        foreach ($arOrthologs as &$ortholog) {
+            if(is_numeric($ortholog)) {
+                continue;
+            }
+            $ortholog = (string)Ortholog::getIdByName($ortholog)->id;
+        }
+        return $arOrthologs;
     }
 
     private function saveTissues($tissuesIdsArray)
@@ -219,20 +288,4 @@ class LifespanExperiment extends common\LifespanExperiment
             }
         }
     }
-
-
-    public function getTissuesIdsArray()
-    {
-        return LifespanExperimentToTissue::find()
-            ->select('tissue_id')
-            ->where(['lifespan_experiment_id' => $this->id])
-            ->asArray()
-            ->column();
-    }
-
-    public function setTissuesIdsArray(array $ids)
-    {
-        $this->tissuesIdsArray = $ids;
-    }
-
 }

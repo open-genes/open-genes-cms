@@ -177,12 +177,76 @@ $(document).on('click', '#experiments-form .js-experiment-short', function() {
 
 $(document).on('click', '#experiments-form .js-lifespan-experiment-short', function() {
     let modelId = $(this).attr('model-id')
-    let container =  $(this).closest('.js-short-form-container')
+    let container = $(this).closest('.js-short-form-container')
     $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=GeneralLifespanExperimentWidget&id='
-        +modelId
-        +'&modelParams[gene_id]='+$(this).attr('gene-id')
-        +'&modelParams[type]=experiment'
-        +'&geneId='+$(this).attr('gene-id'), function (data) {
+        + modelId
+        + '&modelParams[gene_id]=' + $(this).attr('gene-id')
+        + '&modelParams[type]=experiment'
+        + '&geneId=' + $(this).attr('gene-id'), function (data) {
         container.html(data);
+    })
+})
+
+$(document).on('change', '#experiments-form .js-lifespan-experiment-block [id$="model_organism_id"]', function() {
+    let t = $(this);
+    let model_organism_id = t.val();
+    let gene_id = $('.js-lifespan-experiment-block [name$="[currentGeneId]"]').val();
+    $.get('/gene/get-orthologs?modelOrganismId='+model_organism_id+'&geneId='+gene_id, function (data) {
+        let orthologs = JSON.parse(data);
+        let select = t.parents('.js-lifespan-experiment').find('.js-lifespan-experiments-gene .orthologs');
+        select.empty();
+        let options = Object.entries(orthologs);
+        for (const [id, symbol] of options) {
+            select.append($('<option>', {
+                value: id,
+                text: symbol
+            }));
+        }
+        if (options.length == 1) {
+            select.val(options[0][0]);
+        }
+        select.change();
+    });
+});
+
+$(document).on('click', '.js-add-lifespan-experiment-control, .js-add-lifespan-experiment-gene', function() {
+    let t = $(this);
+    let general_le_name = t.parents('.js-gene-link-section').find('input[name^="GeneralLifespanExperiment"')[0].name;
+    let matches = general_le_name.match(/GeneralLifespanExperiment\[(\d+)\]\[(\w+)\]/);
+    let general_le_id = matches[1];
+    $('select#generallifespanexperiment-'+general_le_id+'-model_organism_id option').attr('disabled', 'disabled');
+    $('#select2-generallifespanexperiment-'+general_le_id+'-model_organism_id-container').css('cursor', 'not-allowed');
+    $('#select2-generallifespanexperiment-'+general_le_id+'-model_organism_id-container')
+        .parents('[aria-labelledby="select2-generallifespanexperiment-'+general_le_id+'-model_organism_id-container"]')
+        .css('background-color', '#d6d8d9').css('border-color', '#c6c8ca');
+    $('#select2-generallifespanexperiment-'+general_le_id+'-model_organism_id-container .select2-selection__clear').css('display', 'none');
+    let interval;
+    interval = setInterval(function () {
+        if($('[aria-controls="select2-generallifespanexperiment-'+general_le_id+'-model_organism_id-results"]').length) {
+            $('[aria-controls="select2-generallifespanexperiment-'+general_le_id+'-model_organism_id-results"]').hide();
+            clearInterval(interval);
+        }
+    }, 500)
+})
+
+$(document).on('change', '.js-lifespan-experiment [id$="gene_id"]', function() {
+    let t = $(this);
+    let gene_id = t.val();
+    let model_organism_id = t.parents('.js-lifespan-experiment').parents('.js-lifespan-experiment').find('[id$="model_organism_id"]').val();
+    $.get('/gene/get-orthologs?modelOrganismId='+model_organism_id+'&geneId='+gene_id, function (data) {
+        let orthologs = JSON.parse(data);
+        let select = t.parents('.gene-modulation.js-gene-link-section').find('.orthologs');
+        select.empty();
+        let options = Object.entries(orthologs);
+        for (const [id, symbol] of options) {
+            select.append($('<option>', {
+                value: id,
+                text: symbol
+            }));
+        }
+        if (options.length == 1) {
+            select.val(options[0][0]);
+        }
+        select.change();
     });
 });
