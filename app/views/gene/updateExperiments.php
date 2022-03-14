@@ -1,7 +1,6 @@
 <?php
 
-use app\widgets\AgeRelatedChangeWidget;
-use app\widgets\LifespanExperimentWidget;
+use yii\widgets\Pjax;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -34,9 +33,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Влияние модуляции активности гена на продолжительность жизни</h4>
         <div class="js-general-lifespan-experiments">
-            <?php foreach ($model->lifespanExperiments as $lifespanExperiment): ?>
-                <?= \app\widgets\GeneralLifespanExperimentWidget::widget(['model' => $lifespanExperiment]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->lifespanExperiments as $lifespanExperiment) {
+                echo app\widgets\GeneralLifespanExperimentWidget::widget(['model' => $lifespanExperiment]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', [
                 'class' => 'btn btn-add add-protein-activity js-add-general-lifespan-experiment',
@@ -47,9 +50,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Возрастные изменения экспрессии гена или активности белка</h4>
         <div class="js-age-related-changes">
-            <?php foreach ($model->ageRelatedChanges as $ageRelatedChange): ?>
-                <?= AgeRelatedChangeWidget::widget(['model' => $ageRelatedChange]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->ageRelatedChanges as $ageRelatedChange) {
+                echo app\widgets\AgeRelatedChangeWidget::widget(['model' => $ageRelatedChange]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity blue js-add-age-related-change']) ?>
     </div>
@@ -57,9 +64,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Влияние модуляции активности гена на возрастной процесс</h4>
         <div class="js-intervention-to-vital-processes">
-            <?php foreach ($model->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess): ?>
-                <?= \app\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess) {
+                echo \app\widgets\GeneInterventionToVitalProcessWidget::widget(['model' => $geneInterventionToVitalProcess]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity green js-add-intervention-to-vital-process']) ?>
     </div>
@@ -67,9 +78,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Участие продукта гена в регуляции генов, связанных со старением</h4>
         <div class="js-protein-to-genes">
-            <?php foreach ($model->proteinToGenes as $proteinToGene): ?>
-                <?= \app\widgets\ProteinToGeneWidget::widget(['model' => $proteinToGene]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->proteinToGenes as $proteinToGene) {
+                echo \app\widgets\ProteinToGeneWidget::widget(['model' => $proteinToGene]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity yellow js-add-protein-to-gene']) ?>
     </div>
@@ -77,9 +92,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Ассоциация гена с ускоренным старением у человека</h4>
         <div class="js-gene-to-progerias">
-            <?php foreach ($model->geneToProgerias as $geneToProgeria): ?>
-                <?= \app\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->geneToProgerias as $geneToProgeria) {
+                echo \app\widgets\GeneToProgeriaWidget::widget(['model' => $geneToProgeria]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity orange js-add-gene-to-progeria']) ?>
     </div>
@@ -87,9 +106,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Геномные, транскриптомные и протеомные ассоциации с продолжительностью жизни/возрастным фенотипом</h4>
         <div class="js-gene-to-longevity-effects">
-            <?php foreach ($model->geneToLongevityEffects as $geneToLongevityEffect): ?>
-                <?= \app\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->geneToLongevityEffects as $geneToLongevityEffect) {
+                echo \app\widgets\GeneToLongevityEffectWidget::widget(['model' => $geneToLongevityEffect]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-protein-activity red js-add-gene-to-longevity-effect']) ?>
     </div>
@@ -97,9 +120,13 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Другие подтверждения ассоциации гена со старением</h4>
         <div class="js-gene-to-additional-evidence">
-            <?php foreach ($model->geneToAdditionalEvidences as $geneToAdditionalEvidence): ?>
-                <?= \app\widgets\AdditionalEvidencesWidget::widget(['model' => $geneToAdditionalEvidence]) ?>
-            <?php endforeach; ?>
+            <?php
+            Pjax::begin();
+            foreach ($model->geneToAdditionalEvidences as $geneToAdditionalEvidence) {
+                echo \app\widgets\AdditionalEvidencesWidget::widget(['model' => $geneToAdditionalEvidence]);
+            }
+            Pjax::end();
+            ?>
         </div>
         <?= Html::button('Добавить', ['class' => 'btn btn-add add-additional-evidence add-protein-activity gray js-add-additional-evidence']) ?>
     </div>
