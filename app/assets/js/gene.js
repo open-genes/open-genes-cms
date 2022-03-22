@@ -164,3 +164,25 @@ $(document).on('change', '#experiments-form .form-control.form_age', function() 
         $(this).closest('.js-gene-link-block').find('.form_age_unit').closest('.select2-container').next('.help-block').remove()
     }
 });
+
+$(document).on('click', '#experiments-form .js-experiment-short', function() {
+    let modelName = $(this).attr('model-name')
+    let widgetName = $(this).attr('widget-name')
+    let modelId = $(this).attr('model-id')
+    let container =  $(this).closest('.js-short-form-container')
+    $.get('/gene/load-widget-form?modelName='+ modelName +'&widgetName='+ widgetName +'&id='+modelId, function (data) {
+            container.html(data);
+        });
+});
+
+$(document).on('click', '#experiments-form .js-lifespan-experiment-short', function() {
+    let modelId = $(this).attr('model-id')
+    let container =  $(this).closest('.js-short-form-container')
+    $.get('/gene/load-widget-form?modelName=LifespanExperiment&widgetName=GeneralLifespanExperimentWidget&id='
+        +modelId
+        +'&modelParams[gene_id]='+$(this).attr('gene-id')
+        +'&modelParams[type]=experiment'
+        +'&geneId='+$(this).attr('gene-id'), function (data) {
+        container.html(data);
+    });
+});

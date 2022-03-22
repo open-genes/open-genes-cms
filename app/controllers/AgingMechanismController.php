@@ -93,6 +93,8 @@ class AgingMechanismController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         }
+        
+        $model->getGeneOntologyTree();
 
         return $this->render('update', [
             'model' => $model,

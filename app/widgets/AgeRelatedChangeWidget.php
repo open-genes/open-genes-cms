@@ -7,6 +7,9 @@ use yii\base\Widget;
 
 class AgeRelatedChangeWidget extends Widget
 {
+    /** @var $widgetType */
+    public $widgetType = 'full';
+
     /** @var AgeRelatedChange */
     public $model;
 
@@ -17,6 +20,7 @@ class AgeRelatedChangeWidget extends Widget
 
     public function run()
     {
-        return $this->render('ageRelatedChange', ['ageRelatedChange' => $this->model]);
+        $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
+        return $this->render($viewPath . '/ageRelatedChange', ['ageRelatedChange' => $this->model]);
     }
 }

@@ -7,6 +7,9 @@ use yii\base\Widget;
 
 class GeneToLongevityEffectWidget extends Widget
 {
+    /** @var $type */
+    public $widgetType = 'full';
+
     /** @var GeneToLongevityEffect */
     public $model;
 
@@ -17,6 +20,7 @@ class GeneToLongevityEffectWidget extends Widget
 
     public function run()
     {
-        return $this->render('geneToLongevityEffect', ['geneToLongevityEffect' => $this->model]);
+        $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
+        return $this->render($viewPath . '/geneToLongevityEffect', ['geneToLongevityEffect' => $this->model]);
     }
 }

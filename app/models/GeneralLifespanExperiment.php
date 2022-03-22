@@ -177,6 +177,21 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         return $this->hasOne(Sample::class, ['id' => 'changed_expression_tissue_id']);
     }
 
+    public function getModelOrganism()
+    {
+        return $this->hasOne(ModelOrganism::class, ['id' => 'model_organism_id']);
+    }
+
+    /**
+     * Gets query for [[OrganismLine]].
+     *
+     * @return \yii\db\ActiveQuery|OrganismLineQuery
+     */
+    public function getOrganismLine()
+    {
+        return $this->hasOne(OrganismLine::class, ['id' => 'organism_line_id']);
+    }
+
     /**
      * Gets query for [[LifespanChangeTimeUnit]].
      *
