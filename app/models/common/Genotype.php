@@ -8,7 +8,8 @@ use Yii;
  * This is the model class for table "genotype".
  *
  * @property int $id
- * @property string|null $name
+ * @property string|null $name_en
+ * @property string|null $name_ru
  *
  * @property LifespanExperiment[] $lifespanExperiments
  */

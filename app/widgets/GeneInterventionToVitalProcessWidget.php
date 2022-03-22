@@ -7,6 +7,9 @@ use yii\base\Widget;
 
 class GeneInterventionToVitalProcessWidget extends Widget
 {
+    /** @var $widgetType */
+    public $widgetType = 'full';
+
     /** @var GeneInterventionToVitalProcess */
     public $model;
 
@@ -17,6 +20,7 @@ class GeneInterventionToVitalProcessWidget extends Widget
 
     public function run()
     {
-        return $this->render('geneInterventionToVitalProcess', ['geneInterventionToVitalProcess' => $this->model]);
+        $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
+        return $this->render($viewPath . '/geneInterventionToVitalProcess', ['geneInterventionToVitalProcess' => $this->model]);
     }
 }

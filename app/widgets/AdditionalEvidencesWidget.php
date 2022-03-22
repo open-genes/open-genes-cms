@@ -7,6 +7,9 @@ use yii\base\Widget;
 
 class AdditionalEvidencesWidget extends Widget
 {
+    /** @var $widgetType */
+    public $widgetType = 'full';
+    
     /** @var GeneToAdditionalEvidence */
     public $model;
 
@@ -17,6 +20,7 @@ class AdditionalEvidencesWidget extends Widget
 
     public function run()
     {
-        return $this->render('additionalEvidences', ['geneToAdditionalEvidence' => $this->model]);
+        $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
+        return $this->render($viewPath . '/additionalEvidences', ['geneToAdditionalEvidence' => $this->model]);
     }
 }

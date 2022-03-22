@@ -8,16 +8,16 @@
 <?= ($lifespanExperiment->gene_id != $currentGeneId) ? '__padding-0' : '' ?>">
     <div class="js-lifespan-experiment-block js-gene-link-block experiment-block
         <?= ($lifespanExperiment->gene_id != $currentGeneId) ? 'experiment-block--extra-experiment' : '' ?>">
-        <? if ($lifespanExperiment->gene_id != $currentGeneId): ?>
+        <?php if ($lifespanExperiment->gene_id != $currentGeneId): ?>
             <div class="experiment-block__title">Воздействие на другой ген</div>
-        <? endif; ?>
-        <? if ($lifespanExperiment->gene_id != $currentGeneId) { ?>
+        <?php endif; ?>
+        <?php if ($lifespanExperiment->gene_id != $currentGeneId) { ?>
             <div class="hint hint--primary">
                 <?= $lifespanExperiment->type == 'control'
                     ? 'Воздействия на любой ген, кроме аннотируемого, которое есть и в контроле и в эксперименте'
                     : 'Воздействия на любой ген, кроме аннотируемого, которое есть только в эксперименте' ?>
             </div>
-        <? } ?>
+        <?php } ?>
 
 
         <?php //var_dump($lifespanExperiment->gene_id, $currentGeneId); ?>

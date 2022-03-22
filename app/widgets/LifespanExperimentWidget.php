@@ -7,6 +7,9 @@ use yii\base\Widget;
 
 class LifespanExperimentWidget extends Widget
 {
+    /** @var $type */
+    public $widgetType = 'full';
+
     /** @var LifespanExperiment */
     public $model;
     /** @var int */
@@ -23,7 +26,8 @@ class LifespanExperimentWidget extends Widget
 
     public function run()
     {
-        return $this->render('lifespanExperiment', [
+        $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
+        return $this->render($viewPath . '/lifespanExperiment', [
             'lifespanExperiment' => $this->model, 
             'currentGeneId' => $this->currentGeneId,
             'generalLifespanExperimentId' => $this->generalLifespanExperimentId,
