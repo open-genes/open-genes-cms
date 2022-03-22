@@ -7,6 +7,9 @@ use yii\base\Widget;
 
 class GeneToProgeriaWidget extends Widget
 {
+    /** @var $widgetType */
+    public $widgetType = 'full';
+
     /** @var GeneToProgeria */
     public $model;
 
@@ -17,6 +20,7 @@ class GeneToProgeriaWidget extends Widget
 
     public function run()
     {
-        return $this->render('geneToProgeria', ['geneToProgeria' => $this->model]);
+        $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
+        return $this->render($viewPath . '/geneToProgeria', ['geneToProgeria' => $this->model]);
     }
 }

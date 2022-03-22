@@ -311,6 +311,10 @@ a.gene-link {
     background: #fff;
 }
 
+.js-short-form-container {
+    cursor: pointer;
+}
+
 .hint {
     position: relative;
     padding: 15px 10px;

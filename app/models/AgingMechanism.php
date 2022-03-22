@@ -58,5 +58,20 @@ class AgingMechanism extends \app\models\common\AgingMechanism
     {
         return []; // todo implement for column with related genes
     }
+    
+    public function getGeneOntologyVisible()
+    {
+        return GeneOntologyToAgingMechanismVisible::find()
+            ->where(['aging_mechanism_id' => $this->id])
+            ->all();
+    }
+    
+    public function getGeneOntologyTree()
+    {
+        $currentOntology = AgingMechanismToGeneOntology::find()
+            ->where(['aging_mechanism_id' => $this->id])
+            ->all();
+        var_dump($currentOntology);
+    }
 
 }
