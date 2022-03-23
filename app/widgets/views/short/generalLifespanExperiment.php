@@ -11,12 +11,23 @@
     >
         <?= $generalLifespanExperiment->reference ?><br>
         <?= $generalLifespanExperiment->modelOrganism->name_en ?>
-        <?= $generalLifespanExperiment->organismLine->name_en ?><br>
-        <?php
-        foreach ($generalLifespanExperiment->lifespanExperiments as $lifespanExperiment) {
-            echo 'intervention: ' . $lifespanExperiment->geneIntervention->name_en . '<br>';
-            echo 'intervention method: ' . $lifespanExperiment->geneInterventionMethod->name_en . '<br>';
-        }
-        ?>
+        <?= $generalLifespanExperiment->organismLine->name_en ?><br><br>
+        Результат: 
+        <br>
+        <?= $generalLifespanExperiment->interventionResult->name_en ?><br><br>
+        Воздействия в контроле и эксперименте:
+        <br>
+        <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('control', $currentGeneId) as $lifespanExperiment) {
+            echo $lifespanExperiment->geneInterventionMethod->name_en . '<br>';
+        } ?><br>
+        Воздействия в эксперименте:
+        <br>
+        <?php foreach ($generalLifespanExperiment->getLifespanExperimentsForForm('experiment') as $lifespanExperiment) {
+
+            echo $lifespanExperiment->geneInterventionMethod->name_en . '<br>';
+
+        } ?>
+        
     </div>
 </div>
+

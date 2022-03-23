@@ -3,6 +3,7 @@
 namespace app\models;
 
 use app\models\behaviors\ChangelogBehavior;
+use app\models\common\InterventionResultForLongevityQuery;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\RuEnActiveRecordTrait;
@@ -183,6 +184,16 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
     }
 
     /**
+     * Gets query for [[InterventionResult]].
+     *
+     * @return \yii\db\ActiveQuery|InterventionResultForLongevityQuery
+     */
+    public function getInterventionResult()
+    {
+        return $this->hasOne(InterventionResultForLongevity::class, ['id' => 'intervention_result_id']);
+    }
+
+    /**
      * Gets query for [[OrganismLine]].
      *
      * @return \yii\db\ActiveQuery|OrganismLineQuery
@@ -265,7 +276,7 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
                 'type' => $type
             ]);
         if ($type == self::TYPE_CONTROL) {
-            $query->andWhere(['<>', 'gene_id', $currentGeneId]);
+            $query->andWhere(['gene_id' => $currentGeneId]);
         }
         return
             $query->all();
