@@ -268,15 +268,15 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
      * @param int|null $currentGeneId
      * @return LifespanExperiment[]
      */
-    public function getLifespanExperimentsForForm(string $type, int $currentGeneId = null): array
+    public function getLifespanExperimentsForForm(string $type, int $currentGeneId = null, bool $butCurrent = false): array
     {
         $query = LifespanExperiment::find()
             ->where([
                 'general_lifespan_experiment_id' => $this->id,
                 'type' => $type
             ]);
-        if ($type == self::TYPE_CONTROL) {
-            $query->andWhere(['gene_id' => $currentGeneId]);
+        if ($type == self::TYPE_CONTROL || $butCurrent) {
+            $query->andWhere(['<>', 'gene_id', $currentGeneId]);
         }
         return
             $query->all();
