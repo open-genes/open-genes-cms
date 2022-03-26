@@ -287,6 +287,17 @@ class Gene extends common\Gene
         }
         return $counts;
     }
+    
+    /**
+     * @return LifespanExperiment[]
+     */
+    public function getLifespanExperimentsList()
+    {
+        return LifespanExperiment::find()
+            ->where(['gene_id' => $this->id])
+            ->andWhere(['type' => 'experiment'])
+        ->all();
+    }
 
     public function beforeSave($insert): bool
     {

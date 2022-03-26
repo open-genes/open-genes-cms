@@ -25,6 +25,7 @@ class GeneralLifespanExperimentWidget extends Widget
             $viewPath = $this->widgetType == 'short' ? 'short' : 'full';
             return $this->render($viewPath . '/generalLifespanExperiment', [
                 'generalLifespanExperiment' => $this->model->generalLifespanExperiment,
+                'currentLifespanExperiment' => $this->model,
                 'currentGeneId' => $this->model->gene_id
             ]);
         }
