@@ -161,10 +161,6 @@ class GeneralLifespanExperiment extends \app\models\common\GeneralLifespanExperi
         }
         $this->reference = trim($this->reference);
 
-        $ar = array_intersect($this->improveVitalProcessIds, $this->deteriorVitalProcessIds);
-        if ($ar) {
-            $this->addError('improveVitalProcessIds', 'Вмешательство не может улучшать и ухудшать один и тот же процесс. Пожалуйста, исправьте введенные данные');
-        }
         return parent::beforeValidate();
     }
 

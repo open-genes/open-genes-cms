@@ -75,11 +75,6 @@ class GeneInterventionToVitalProcess extends common\GeneInterventionToVitalProce
             $this->addError('improveVitalProcessIds', 'Пожалуйста, укажите процесс');
         }
 
-        $ar = array_intersect($this->improveVitalProcessIds, $this->deteriorVitalProcessIds);
-        if ($ar) {
-            $this->addError('improveVitalProcessIds', 'Вмешательство не может улучшать и ухудшать один и тот же процесс. Пожалуйста, исправьте введенные данные');
-        }
-
         return parent::beforeValidate();
     }
 
