@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <div class="form-group">
         <h4>Влияние модуляции активности гена на продолжительность жизни</h4>
         <div class="js-general-lifespan-experiments">
-            <?php foreach ($model->lifespanExperiments as $lifespanExperiment): ?>
+            <?php foreach ($model->getLifespanExperimentsList() as $lifespanExperiment): ?>
                 <?= \app\widgets\GeneralLifespanExperimentWidget::widget(['model' => $lifespanExperiment, 'widgetType' => 'short']) ?>
             <?php endforeach; ?>
         </div>
