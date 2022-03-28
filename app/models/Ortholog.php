@@ -74,18 +74,29 @@ class Ortholog extends common\Ortholog
         return []; // todo implement for column with related genes
     }
 
-    public static function createNewByIds($ids, $generalLifespanId, $geneId)
+//    public static function createNewByIds($ids, $generalLifespanId, $geneId)
+//    {
+//        $modelOrganismId = self::getCurrentModelOrganismId($generalLifespanId);
+//        if (!empty($ids) && is_array($ids)) {
+//            foreach ($ids as $id) {
+//                if (is_numeric($id)) {
+//                    continue;
+//                }
+//                $newOrtholog = self::createFromNameString($id, $modelOrganismId);
+//                self::createRelationToGene($geneId, $newOrtholog->id);
+//            }
+//        }
+//    }
+
+    public static function createNewByName($name, $generalLifespanId, $geneId)
     {
+        $newOrtholog = [];
         $modelOrganismId = self::getCurrentModelOrganismId($generalLifespanId);
-        if (!empty($ids) && is_array($ids)) {
-            foreach ($ids as $id) {
-                if (is_numeric($id)) {
-                    continue;
-                }
-                $newOrtholog = self::createFromNameString($id, $modelOrganismId);
-                self::createRelationToGene($geneId, $newOrtholog->id);
-            }
+        if (!empty($name)) {
+            $newOrtholog = self::createFromNameString($name, $modelOrganismId);
+            self::createRelationToGene($geneId, $newOrtholog->id);
         }
+        return $newOrtholog;
     }
 
     public static function getIdByName($name) {
