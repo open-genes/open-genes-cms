@@ -21,7 +21,7 @@ use Yii;
  * @property float|null $change_value_male
  * @property float|null $change_value_female
  * @property float|null $change_value_common
- * @property int|null $age_unit
+ * @property int|null $age_unit_id
  * @property int|null $measurement_type
  * @property string|null $pmid
  *
@@ -47,7 +47,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type'], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit_id', 'measurement_type'], 'integer'],
             [['age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
@@ -79,7 +79,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'change_value_male' => 'Change Value Male',
             'change_value_female' => 'Change Value Female',
             'change_value_common' => 'Change Value Common',
-            'age_unit' => 'Age Unit',
+            'age_unit_id' => 'Age Unit',
             'measurement_type' => 'Measurement Type',
             'pmid' => 'Pmid',
         ];

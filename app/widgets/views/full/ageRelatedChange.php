@@ -91,8 +91,8 @@
             <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $ageRelatedChange,
-                    'attribute' => '[' . $ageRelatedChange->id . ']age_unit',
-                    'data' => [1 => 'дней', 4 => 'недель', 2 => 'месяцев', 3 => 'лет'],
+                    'attribute' => '[' . $ageRelatedChange->id . ']age_unit_id',
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед. изм. возраста',
                         'multiple' => false
