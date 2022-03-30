@@ -13,8 +13,8 @@ use Yii;
  * @property int|null $sample_id
  * @property int|null $model_organism_id
  * @property int|null $organism_line_id
- * @property float|null $age_from
- * @property float|null $age_to
+ * @property float|null $mean_age_of_controls
+ * @property float|null $mean_age_of_experiment
  * @property string|null $reference
  * @property string|null $comment_en
  * @property string|null $comment_ru
@@ -48,7 +48,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type'], 'integer'],
-            [['age_from', 'age_to', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
+            [['mean_age_of_controls', 'mean_age_of_experiment', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -71,8 +71,8 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'sample_id' => 'Sample ID',
             'model_organism_id' => 'Model Organism ID',
             'organism_line_id' => 'Organism Line ID',
-            'age_from' => 'Age From',
-            'age_to' => 'Age To',
+            'mean_age_of_controls' => 'Mean Age Of Controls',
+            'mean_age_of_experiment' => 'Mean Age Of Experiment',
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',

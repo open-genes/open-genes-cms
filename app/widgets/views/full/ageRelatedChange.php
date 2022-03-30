@@ -83,10 +83,10 @@
         </div>
         <div class="row form-row">
             <div class="col-xs-6 col-sm-4">
-                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_from', ['class' => 'form-control form_age', 'placeholder' => 'Возраст - от']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']mean_age_of_controls', ['class' => 'form-control form_age', 'placeholder' => 'Средний возраст контроля']) ?>
             </div>
             <div class="col-xs-6 col-sm-4">
-                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']age_to', ['class' => 'form-control form_age', 'placeholder' => 'Возраст - до']) ?>
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']mean_age_of_experiment', ['class' => 'form-control form_age', 'placeholder' => 'Средний возраст эксперимента']) ?>
             </div>
             <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
