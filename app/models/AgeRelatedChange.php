@@ -38,7 +38,7 @@ class AgeRelatedChange extends common\AgeRelatedChange
             [['age_unit'], 'required', 'when' => function($model) {
                 return !empty($model->mean_age_of_controls) || !empty($model->mean_age_of_experiment);
             }],
-            [['mean_age_of_controls', 'mean_age_of_experiment'], 'number', 'min'=>0],
+            [['mean_age_of_controls', 'mean_age_of_experiment', 'min_age_of_controls', 'max_age_of_controls', 'min_age_of_experiment', 'max_age_of_experiment'], 'number', 'min'=>0],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -55,6 +55,10 @@ class AgeRelatedChange extends common\AgeRelatedChange
             'organism_line_id' => 'Линия',
             'mean_age_of_controls' => 'Средний возраст контроля',
             'mean_age_of_experiment' => 'Средний возраст эксперимента',
+            'min_age_of_controls' => 'мин. возраст контроля',
+            'max_age_of_controls' => 'макс. возраст контроля',
+            'min_age_of_experiment' => 'мин. возраст эксперимента',
+            'max_age_of_experiment' => 'макс. возраст эксперимента',
             'change_value_male' => 'Изменение муж.',
             'change_value_female' => 'Изменение жен.',
             'change_value_common' => 'Изменение общее',
@@ -69,6 +73,10 @@ class AgeRelatedChange extends common\AgeRelatedChange
         $this->change_value_common = str_replace(',', '.', $this->change_value_common);
         $this->mean_age_of_controls = str_replace(',', '.', $this->mean_age_of_controls);
         $this->mean_age_of_experiment = str_replace(',', '.', $this->mean_age_of_experiment);
+        $this->min_age_of_controls = str_replace(',', '.', $this->min_age_of_controls);
+        $this->max_age_of_controls = str_replace(',', '.', $this->max_age_of_controls);
+        $this->min_age_of_experiment = str_replace(',', '.', $this->min_age_of_experiment);
+        $this->max_age_of_experiment = str_replace(',', '.', $this->max_age_of_experiment);
 
         return parent::beforeValidate();
     }

@@ -82,17 +82,39 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-4">
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']n_of_controls', ['class' => 'form-control form_age', 'placeholder' => 'N контроля']) ?>
+            </div>
+            <div class="col-xs-3 col-sm-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']mean_age_of_controls', ['class' => 'form-control form_age', 'placeholder' => 'Средний возраст контроля']) ?>
             </div>
-            <div class="col-xs-6 col-sm-4">
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']min_age_of_controls', ['class' => 'form-control form_age', 'placeholder' => 'мин. возраст контроля']) ?>
+            </div>
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']max_age_of_controls', ['class' => 'form-control form_age', 'placeholder' => 'мин. возраст контроля']) ?>
+            </div>
+        </div>
+        <div class="row form-row">
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']n_of_experiment', ['class' => 'form-control form_age', 'placeholder' => 'N эксперимента']) ?>
+            </div>
+            <div class="col-xs-3 col-sm-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']mean_age_of_experiment', ['class' => 'form-control form_age', 'placeholder' => 'Средний возраст эксперимента']) ?>
             </div>
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']min_age_of_experiment', ['class' => 'form-control form_age', 'placeholder' => 'мин. возраст эксперимента']) ?>
+            </div>
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']max_age_of_experiment', ['class' => 'form-control form_age', 'placeholder' => 'мин. возраст эксперимента']) ?>
+            </div>
+        </div>
+        <div class="row form-row">
             <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $ageRelatedChange,
                     'attribute' => '[' . $ageRelatedChange->id . ']age_unit',
-                    'data' => [1 => 'дней', 4 => 'недель', 2 => 'месяцев', 3 => 'лет'],
+                    'data' => \app\models\TimeUnit::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Ед. изм. возраста',
                         'multiple' => false

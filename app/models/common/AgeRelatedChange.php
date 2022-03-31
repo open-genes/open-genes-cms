@@ -15,6 +15,12 @@ use Yii;
  * @property int|null $organism_line_id
  * @property float|null $mean_age_of_controls
  * @property float|null $mean_age_of_experiment
+ * @property float|null $min_age_of_controls
+ * @property float|null $max_age_of_controls
+ * @property float|null $min_age_of_experiment
+ * @property float|null $max_age_of_experiment
+ * @property float|null $n_of_controls
+ * @property float|null $n_of_experiment
  * @property string|null $reference
  * @property string|null $comment_en
  * @property string|null $comment_ru
@@ -48,7 +54,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     {
         return [
             [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type'], 'integer'],
-            [['mean_age_of_controls', 'mean_age_of_experiment', 'change_value_male', 'change_value_female', 'change_value_common'], 'number'],
+            [['mean_age_of_controls', 'mean_age_of_experiment', 'min_age_of_controls', 'max_age_of_controls', 'min_age_of_experiment', 'max_age_of_experiment', 'change_value_male', 'change_value_female', 'change_value_common', 'n_of_controls', 'n_of_experiment'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
@@ -73,6 +79,10 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'organism_line_id' => 'Organism Line ID',
             'mean_age_of_controls' => 'Mean Age Of Controls',
             'mean_age_of_experiment' => 'Mean Age Of Experiment',
+            'min_age_of_controls' => 'Min Age Of Controls',
+            'max_age_of_controls' => 'Max Age Of Controls',
+            'min_age_of_experiment' => 'Min Age Of Experiment',
+            'max_age_of_experiment' => 'Max Age Of Experiment',
             'reference' => 'Reference',
             'comment_en' => 'Comment En',
             'comment_ru' => 'Comment Ru',
