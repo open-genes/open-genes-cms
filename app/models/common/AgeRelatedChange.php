@@ -28,7 +28,8 @@ use Yii;
  * @property float|null $change_value_female
  * @property float|null $change_value_common
  * @property int|null $age_unit
- * @property int|null $measurement_type
+ * @property int|null $measurement_type_id
+ * @property int|null $expression_evaluation_by_id
  * @property string|null $pmid
  *
  * @property Gene $gene
@@ -53,7 +54,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type'], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type_id', 'expression_evaluation_by_id'], 'integer'],
             [['mean_age_of_controls', 'mean_age_of_experiment', 'min_age_of_controls', 'max_age_of_controls', 'min_age_of_experiment', 'max_age_of_experiment', 'change_value_male', 'change_value_female', 'change_value_common', 'n_of_controls', 'n_of_experiment'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
@@ -90,7 +91,8 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'change_value_female' => 'Change Value Female',
             'change_value_common' => 'Change Value Common',
             'age_unit' => 'Age Unit',
-            'measurement_type' => 'Measurement Type',
+            'measurement_type_id' => 'Measurement Type',
+            'expression_evaluation_by_id' => 'Expression Evaluation by',
             'pmid' => 'Pmid',
         ];
     }

@@ -142,10 +142,27 @@
             <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $ageRelatedChange,
-                    'attribute' => '[' . $ageRelatedChange->id . ']measurement_type',
-                    'data' => [1 => 'мРНК', 2 => 'белок', 3 => 'Количество клеток, экспрессирующих ген'],
+                    'attribute' => '[' . $ageRelatedChange->id . ']expression_evaluation_by_id',
+                    'data' => \app\models\ExpressionEvaluation::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Метод измерения',
+                        'placeholder' => 'Оценка экспрессии по',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => false,
+                        'containerCssClass' => 'blue',
+                        'dropdownCssClass' => 'blue',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $ageRelatedChange,
+                    'attribute' => '[' . $ageRelatedChange->id . ']measurement_type_id',
+                    'data' => \app\models\MeasurementType::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Mетод измерения',
                         'multiple' => false
                     ],
                     'pluginOptions' => [

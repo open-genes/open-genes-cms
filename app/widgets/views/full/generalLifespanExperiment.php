@@ -148,8 +148,8 @@
             <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $generalLifespanExperiment,
-                    'attribute' => '[' . $generalLifespanExperiment->id . ']measurement_type',
-                    'data' => [1 => 'уровень мРНК', 2 => 'уровень белка', 3 => 'количество клеток, экспрессирующих ген', 4 => 'активность белка'],
+                    'attribute' => '[' . $generalLifespanExperiment->id . ']expression_evaluation_by_id',
+                    'data' => \app\models\ExpressionEvaluation::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Вид изменения',
                         'multiple' => false
