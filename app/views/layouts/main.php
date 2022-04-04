@@ -126,6 +126,7 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Оценка экспрессии по', 'url' => '/expression-evaluation'],
                     '<li class="divider"></li>',
+                    ['label' => 'Статистический анализ', 'url' => '/statistical-method'],
 
                 ],
             ],

@@ -110,7 +110,7 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-4">
+            <div class="col-xs-3 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $ageRelatedChange,
                     'attribute' => '[' . $ageRelatedChange->id . ']age_unit',
@@ -127,15 +127,32 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-4">
+            <div class="col-xs-3 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $ageRelatedChange,
+                    'attribute' => '[' . $ageRelatedChange->id . ']statistical_method_id',
+                    'data' => \app\models\StatisticalMethod::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Статистический анализ',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'containerCssClass' => 'blue form_age_unit',
+                        'dropdownCssClass' => 'blue',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-3 col-sm-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_male', ['class' => 'form-control', 'placeholder' => 'Изменение (%) муж']) ?>
             </div>
-            <div class="col-xs-6 col-sm-4">
+            <div class="col-xs-3 col-sm-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
             </div>
-            <div class="col-xs-6 col-sm-4">
-                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
-            </div>
+<!--            <div class="col-xs-3 col-sm-3">-->
+<!--                --><?//= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
+<!--            </div>-->
         </div>
 
         <div class="row form-row">
