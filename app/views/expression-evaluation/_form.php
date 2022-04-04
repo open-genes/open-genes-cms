@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\MeasurementType */
+/* @var $model app\models\ExpressionEvaluation */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="measurement-type-form">
+<div class="expression-evaluation-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
