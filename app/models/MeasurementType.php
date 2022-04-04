@@ -56,7 +56,8 @@ class MeasurementType extends common\MeasurementType
 
     public function getLinkedGenesIds()
     {
-        return []; // todo implement for column with related genes
+        return $this->getAgeRelatedChanges()
+            ->select('gene_id')->distinct()->column();
     }
 
 }

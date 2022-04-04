@@ -122,6 +122,8 @@ $this->registerCssFile('/assets/css/main.css');
                     '<li class="divider"></li>',
                     ['label' => 'Эффекты в долголетии', 'url' => '/longevity-effect'],
                     '<li class="divider"></li>',
+                    ['label' => 'Метод измерения', 'url' => '/measurement-type'],
+                    '<li class="divider"></li>',
 
                 ],
             ],
