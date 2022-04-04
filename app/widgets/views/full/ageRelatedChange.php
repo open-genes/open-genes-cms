@@ -150,9 +150,12 @@
             <div class="col-xs-3 col-sm-3">
                 <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_female', ['class' => 'form-control', 'placeholder' => 'Изменение (%) жен']) ?>
             </div>
-<!--            <div class="col-xs-3 col-sm-3">-->
-<!--                --><?//= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
-<!--            </div>-->
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']change_value_common', ['class' => 'form-control', 'placeholder' => 'Изменение (%) общее']) ?>
+            </div>
+            <div class="col-xs-3 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $ageRelatedChange, '[' . $ageRelatedChange->id . ']p_value', ['class' => 'form-control', 'placeholder' => 'p-value']) ?>
+            </div>
         </div>
 
         <div class="row form-row">

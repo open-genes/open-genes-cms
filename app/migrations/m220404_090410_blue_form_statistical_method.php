@@ -27,6 +27,7 @@ class m220404_090410_blue_form_statistical_method extends Migration
         );
 
         $this->addForeignKey('age_related_change_statistical_method', 'age_related_change', 'statistical_method_id', 'statistical_method', 'id', 'CASCADE');
+        $this->addColumn('age_related_change', 'p_value', $this->integer());
     }
 
     /**
@@ -34,6 +35,8 @@ class m220404_090410_blue_form_statistical_method extends Migration
      */
     public function safeDown()
     {
+        $this->dropColumn('age_related_change', 'p_value', $this->integer());
+
         $this->dropForeignKey('age_related_change_statistical_method', 'age_related_change');
         $this->dropTable('statistical_method');
         $this->dropColumn('age_related_change', 'statistical_method_id');
