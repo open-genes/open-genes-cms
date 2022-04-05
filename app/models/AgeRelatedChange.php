@@ -59,18 +59,14 @@ class AgeRelatedChange extends common\AgeRelatedChange
             'max_age_of_controls' => 'макс. возраст контроля',
             'min_age_of_experiment' => 'мин. возраст эксперимента',
             'max_age_of_experiment' => 'макс. возраст эксперимента',
-            'change_value_male' => 'Изменение муж.',
-            'change_value_female' => 'Изменение жен.',
-            'change_value_common' => 'Изменение общее',
             'age_unit' => 'Ед. измерения возраста',
+            'change_value' => 'Изменение',
         ]);
     }
 
     public function beforeValidate()
     {
-        $this->change_value_male = str_replace(',', '.', $this->change_value_male);
-        $this->change_value_female = str_replace(',', '.', $this->change_value_female);
-        $this->change_value_common = str_replace(',', '.', $this->change_value_common);
+        $this->change_value = str_replace(',', '.', $this->change_value);
         $this->mean_age_of_controls = str_replace(',', '.', $this->mean_age_of_controls);
         $this->mean_age_of_experiment = str_replace(',', '.', $this->mean_age_of_experiment);
         $this->min_age_of_controls = str_replace(',', '.', $this->min_age_of_controls);
