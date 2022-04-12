@@ -9,6 +9,7 @@ use app\models\GeneralLifespanExperiment;
 use app\models\GeneToAdditionalEvidence;
 use app\models\GeneToLongevityEffect;
 use app\models\GeneToProgeria;
+use app\models\Ortholog;
 use app\models\Phylum;
 use app\models\CommentCause;
 use app\models\Gene;
@@ -47,7 +48,7 @@ class GeneController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'update', 'update-experiments', 'update-functions', 'update-age-related-changes', 'load-widget-form'],
+                        'actions' => ['index', 'update', 'update-experiments', 'update-functions', 'update-age-related-changes', 'load-widget-form', 'get-orthologs'],
                         'roles' => ['admin', 'editor', 'contributor'],
                     ],
                     [
@@ -231,6 +232,10 @@ class GeneController extends Controller
         
 //        var_dump($model);
         return $this->renderAjax('_geneLinkWidgetForm', ['model' => $model, 'widgetName' => $widgetName, 'params' => $params]);
+    }
+
+    public function actionGetOrthologs(int $modelOrganismId, int $geneId) {
+        return json_encode(Ortholog::getByOrganismAndGene($modelOrganismId, $geneId));
     }
 
     /**

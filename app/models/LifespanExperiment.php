@@ -5,9 +5,11 @@ namespace app\models;
 use app\models\behaviors\ChangelogBehavior;
 use app\models\common\GeneralLifespanExperimentQuery;
 use app\models\common\LifespanExperimentQuery;
+use app\models\common\LifespanExperimentToOrtholog;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\traits\ExperimentsActiveRecordTrait;
 use app\models\traits\ValidatorsTrait;
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -21,9 +23,13 @@ class LifespanExperiment extends common\LifespanExperiment
     use ValidatorsTrait;
     use ExperimentsActiveRecordTrait;
 
+    public const TYPE_ORTHOLOG = 1;
+    public const TYPE_TISSUE = 2;
     public $delete = false;
     public $tissuesIds;
     private $tissuesIdsArray;
+    private $orthologIds = [];
+    private $modelOrganismId;
 
     public function behaviors()
     {
@@ -58,7 +64,7 @@ class LifespanExperiment extends common\LifespanExperiment
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
-            [['tissuesIds', 'intervention_result_id'], 'safe'],
+            [['tissuesIds', 'intervention_result_id', 'orthologIds'], 'safe'],
             [['age'], 'number', 'min' => 0],
             [['reference'], 'validateDOI']
         ]);
@@ -107,7 +113,14 @@ class LifespanExperiment extends common\LifespanExperiment
 
         return parent::beforeValidate();
     }
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (Yii::$app instanceof \yii\console\Application) { // todo продумать нормальный фикс
+            return parent::afterSave($insert, $changedAttributes);
+        }
 
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     /**
      * Gets query for [[GeneralLifespanExperiment]].
@@ -174,6 +187,8 @@ class LifespanExperiment extends common\LifespanExperiment
             self::setAttributeFromNewAR($modelArray, 'treatment_end_stage_of_development_id', 'TreatmentStageOfDevelopment', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'genotype', 'Genotype', $modelAR);
 
+//            Ortholog::createNewByIds($modelArray['orthologIds'], $modelAR->general_lifespan_experiment_id, $modelAR->gene_id);
+
             if ($modelAR->organism_line_id === '') {
                 $modelAR->organism_line_id = null;
             }
@@ -183,8 +198,56 @@ class LifespanExperiment extends common\LifespanExperiment
             if (!$modelAR->validate() || !$modelAR->save()) {
                 throw new UpdateExperimentsException($id, $modelAR);
             }
-            $modelAR->saveTissues($modelArray['tissuesIdsArray']);
+            $modelAR->saveForeignEntity(self::TYPE_TISSUE, $modelArray['tissuesIdsArray']);
+//            $modelAR->saveTissues($modelArray['tissuesIdsArray']);
+//            $modelAR->saveOrthologs($modelArray['orthologIds']);
+            $modelAR->saveForeignEntity(self::TYPE_ORTHOLOG,
+                                                    $modelArray['orthologIds'],
+                                                    $modelAR->general_lifespan_experiment_id,
+                                                    $modelAR->gene_id
+            );
         }
+    }
+
+    public function getTissuesIdsArray()
+    {
+        return LifespanExperimentToTissue::find()
+            ->select('tissue_id')
+            ->where(['lifespan_experiment_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
+    public function setTissuesIdsArray(array $ids)
+    {
+        $this->tissuesIdsArray = $ids;
+    }
+    public function setOrthologIds($ids)
+    {
+        if (!$ids) {
+            $ids = [];
+        }
+        $this->orthologIds = $ids;
+    }
+
+    public function getOrthologIds()
+    {
+        return LifespanExperimentToOrtholog::find()
+            ->select('ortholog_id')
+            ->where(['lifespan_experiment_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
+    public function setModelOrganismId($id)
+    {
+        $this->modelOrganismId = $id;
+    }
+
+    public function getModelOrganismId()
+    {
+        return $this->getGeneralLifespanExperiment()
+            ->select('model_organism_id')->distinct()->one()->model_organism_id;
     }
 
     private function saveTissues($tissuesIdsArray)
@@ -220,19 +283,83 @@ class LifespanExperiment extends common\LifespanExperiment
         }
     }
 
-
-    public function getTissuesIdsArray()
+    private function saveOrthologs($orthologIds, $typeRelations, $generalLe = false, $geneId = false)
     {
-        return LifespanExperimentToTissue::find()
-            ->select('tissue_id')
-            ->where(['lifespan_experiment_id' => $this->id])
-            ->asArray()
-            ->column();
+        $currentOrthologIds = $this->getOrthologIds();
+
+        if ($currentOrthologIds !== $orthologIds) {
+            if ($orthologIds) {
+                $orthologIdsToDelete = array_diff($currentOrthologIds, $orthologIds);
+                $orthologIdsToAdd = array_diff($orthologIds, $currentOrthologIds);
+
+                foreach ($orthologIdsToAdd as $orthologIdToAdd) {
+                    if (!is_numeric($orthologIdToAdd)) {
+                        $orthologToAdd = Ortholog::createNewByName($orthologIdToAdd, $generalLe, $geneId);
+                        $orthologIdToAdd = $orthologToAdd->id;
+                    }
+                    $lifespanExperimentToTissue = new LifespanExperimentToOrtholog();
+                    $lifespanExperimentToTissue->lifespan_experiment_id = $this->id;
+                    $lifespanExperimentToTissue->tissue_id = $orthologIdToAdd;
+                    $lifespanExperimentToTissue->save();
+                }
+            } else {
+                $orthologIdsToDelete = $currentOrthologIds;
+            }
+
+            $arsToDelete = LifespanExperimentToOrtholog::find()->where(
+                ['and', ['lifespan_experiment_id' => $this->id],
+                    ['in', 'ortholog_id', $orthologIdsToDelete]]
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
+        }
     }
 
-    public function setTissuesIdsArray(array $ids)
+    private function saveForeignEntity($typeRelations, $newIds, $generalLe = false, $geneId = false)
     {
-        $this->tissuesIdsArray = $ids;
-    }
+        if($typeRelations == 1) {
+            $relationKey = 'ortholog_id';
+            $relationClass = LifespanExperimentToOrtholog::class;
+            $currentIds = $this->getOrthologIds();
+        }
+        elseif($typeRelations == 2){
+            $relationKey = 'tissue_id';
+            $relationClass = LifespanExperimentToTissue::class;
+            $currentIds = $this->getTissuesIdsArray();
+        }
 
+        if ($currentIds !== $newIds) {
+            if ($newIds) {
+                $IdsToDelete = array_diff($currentIds, $newIds);
+                $idsToAdd = array_diff($newIds, $currentIds);
+
+                foreach ($idsToAdd as $idToAdd) {
+                    if (!is_numeric($idToAdd)) {
+                        if ($typeRelations == 1) {
+                            $entityToAdd = Ortholog::createNewByName($idToAdd, $generalLe, $geneId);
+                        }
+                        elseif($typeRelations == 2) {
+                            $entityToAdd = Sample::createFromNameString($idToAdd);
+                        }
+                        $idToAdd = $entityToAdd->id;
+                    }
+                    $lifespanExperimentToEntity = new $relationClass;
+                    $lifespanExperimentToEntity->lifespan_experiment_id = $this->id;
+                    $lifespanExperimentToEntity->$relationKey = $idToAdd;
+                    $lifespanExperimentToEntity->save();
+                }
+            } else {
+                $IdsToDelete = $currentIds;
+            }
+
+            $arsToDelete = $relationClass::find()->where(
+                ['and', ['lifespan_experiment_id' => $this->id],
+                    ['in', $relationKey, $IdsToDelete]]
+            )->all();
+            foreach ($arsToDelete as $arToDelete) { // one by one for properly triggering "afterDelete" event
+                $arToDelete->delete();
+            }
+        }
+    }
 }
