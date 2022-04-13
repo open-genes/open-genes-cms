@@ -36,9 +36,9 @@ class AgeRelatedChange extends common\AgeRelatedChange
             parent::rules(), [
             [['gene_id', 'age_related_change_type_id', 'model_organism_id'], 'required'],
             [['age_unit_id'], 'required', 'when' => function($model) {
-                return !empty($model->age_from) || !empty($model->age_to);
+                return !empty($model->mean_age_of_controls) || !empty($model->mean_age_of_experiment);
             }],
-            [['age_from', 'age_to'], 'number', 'min'=>0],
+            [['mean_age_of_controls', 'mean_age_of_experiment', 'min_age_of_controls', 'max_age_of_controls', 'min_age_of_experiment', 'max_age_of_experiment'], 'number', 'min'=>0],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -53,22 +53,26 @@ class AgeRelatedChange extends common\AgeRelatedChange
             'reference' => 'Ссылка',
             'model_organism_id' => 'Объект',
             'organism_line_id' => 'Линия',
-            'age_from' => 'Возраст - от',
-            'age_to' => 'Возраст - до',
-            'change_value_male' => 'Изменение муж.',
-            'change_value_female' => 'Изменение жен.',
-            'change_value_common' => 'Изменение общее',
+            'mean_age_of_controls' => 'Средний возраст контроля',
+            'mean_age_of_experiment' => 'Средний возраст эксперимента',
+            'min_age_of_controls' => 'мин. возраст контроля',
+            'max_age_of_controls' => 'макс. возраст контроля',
+            'min_age_of_experiment' => 'мин. возраст эксперимента',
+            'max_age_of_experiment' => 'макс. возраст эксперимента',
             'age_unit_id' => 'Ед. измерения возраста',
+            'change_value' => 'Изменение',
         ]);
     }
 
     public function beforeValidate()
     {
-        $this->change_value_male = str_replace(',', '.', $this->change_value_male);
-        $this->change_value_female = str_replace(',', '.', $this->change_value_female);
-        $this->change_value_common = str_replace(',', '.', $this->change_value_common);
-        $this->age_from = str_replace(',', '.', $this->age_from);
-        $this->age_to = str_replace(',', '.', $this->age_to);
+        $this->change_value = str_replace(',', '.', $this->change_value);
+        $this->mean_age_of_controls = str_replace(',', '.', $this->mean_age_of_controls);
+        $this->mean_age_of_experiment = str_replace(',', '.', $this->mean_age_of_experiment);
+        $this->min_age_of_controls = str_replace(',', '.', $this->min_age_of_controls);
+        $this->max_age_of_controls = str_replace(',', '.', $this->max_age_of_controls);
+        $this->min_age_of_experiment = str_replace(',', '.', $this->min_age_of_experiment);
+        $this->max_age_of_experiment = str_replace(',', '.', $this->max_age_of_experiment);
 
         return parent::beforeValidate();
     }
