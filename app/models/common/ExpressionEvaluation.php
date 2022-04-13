@@ -64,7 +64,7 @@ class ExpressionEvaluation extends \yii\db\ActiveRecord
      */
     public function getCalorieRestrictionExperiments()
     {
-        return $this->hasMany(CalorieRestrictionExperiment::class, ['measurement_type_id' => 'id']);
+        return $this->hasMany(CalorieRestrictionExperiment::class, ['measurement_method_id' => 'id']);
     }
 
     /**

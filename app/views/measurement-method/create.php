@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\MeasurementType */
+/* @var $model app\models\MeasurementMethod */
 
 $this->title = 'Метод измерения ' . ' - ' . Yii::t('app', 'create new');
 $this->params['breadcrumbs'][] = ['label' => 'Measurement Types', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="measurement-type-create">
+<div class="measurement-method-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

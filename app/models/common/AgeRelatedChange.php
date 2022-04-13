@@ -26,7 +26,7 @@ use Yii;
  * @property string|null $comment_ru
  * @property float|null $change_value
  * @property int|null $age_unit
- * @property int|null $measurement_type_id
+ * @property int|null $measurement_method_id
  * @property int|null $expression_evaluation_by_id
  * @property int|null $statistical_method_id
  * @property int|null $p_value
@@ -54,7 +54,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_type_id', 'expression_evaluation_by_id', 'statistical_method_id', 'p_value' ], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'measurement_method_id', 'expression_evaluation_by_id', 'statistical_method_id', 'p_value' ], 'integer'],
             [['mean_age_of_controls', 'mean_age_of_experiment', 'min_age_of_controls', 'max_age_of_controls', 'min_age_of_experiment', 'max_age_of_experiment', 'change_value', 'n_of_controls', 'n_of_experiment'], 'number'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
@@ -89,7 +89,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'comment_ru' => 'Comment Ru',
             'change_value' => 'Change Value',
             'age_unit' => 'Age Unit',
-            'measurement_type_id' => 'Measurement Type',
+            'measurement_method_id' => 'Measurement Method',
             'expression_evaluation_by_id' => 'Expression Evaluation by',
             'statistical_method_id' => 'Statistical Method',
             'p_value' => 'P - value',

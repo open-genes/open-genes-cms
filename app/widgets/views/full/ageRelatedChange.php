@@ -194,8 +194,8 @@
             <div class="col-xs-3 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $ageRelatedChange,
-                    'attribute' => '[' . $ageRelatedChange->id . ']measurement_type_id',
-                    'data' => \app\models\MeasurementType::getAllNamesAsArray(),
+                    'attribute' => '[' . $ageRelatedChange->id . ']measurement_method_id',
+                    'data' => \app\models\MeasurementMethod::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Mетод измерения',
                         'multiple' => false

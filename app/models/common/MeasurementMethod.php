@@ -13,14 +13,14 @@ use Yii;
  *
  * @property AgeRelatedChange[] $ageRelatedChanges
  */
-class MeasurementType extends \yii\db\ActiveRecord
+class MeasurementMethod extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'measurement_type';
+        return 'measurement_method';
     }
 
     /**
@@ -52,15 +52,15 @@ class MeasurementType extends \yii\db\ActiveRecord
      */
     public function getAgeRelatedChanges()
     {
-        return $this->hasMany(AgeRelatedChange::class, ['measurement_type_id' => 'id']);
+        return $this->hasMany(AgeRelatedChange::class, ['measurement_method_id' => 'id']);
     }
 
     /**
      * {@inheritdoc}
-     * @return MeasurementTypeQuery the active query used by this AR class.
+     * @return MeasurementMethodQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new MeasurementTypeQuery(get_called_class());
+        return new MeasurementMethodQuery(get_called_class());
     }
 }

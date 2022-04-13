@@ -3,7 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\MeasurementType;
+use app\models\MeasurementMethod;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -11,9 +11,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * MeasurementTypeController implements the CRUD actions for MeasurementType model.
+ * MeasurementMethodController implements the CRUD actions for MeasurementMethod model.
  */
-class MeasurementTypeController extends Controller
+class MeasurementMethodController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -46,14 +46,14 @@ class MeasurementTypeController extends Controller
     }
 
     /**
-     * Lists all MeasurementType models.
-     * Available at /measurement-type 
+     * Lists all MeasurementMethod models.
+     * Available at /measurement-method
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => MeasurementType::find(),
+            'query' => MeasurementMethod::find(),
         ]);
 
         return $this->render('index', [
@@ -62,13 +62,13 @@ class MeasurementTypeController extends Controller
     }
 
     /**
-     * Creates a new MeasurementType model.
+     * Creates a new MeasurementMethod model.
      * If creation is successful, the browser will be redirected to the 'index' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new MeasurementType();
+        $model = new MeasurementMethod();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
@@ -80,7 +80,7 @@ class MeasurementTypeController extends Controller
     }
 
     /**
-     * Updates an existing MeasurementType model.
+     * Updates an existing MeasurementMethod model.
      * If update is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -100,7 +100,7 @@ class MeasurementTypeController extends Controller
     }
 
     /**
-     * Deletes an existing MeasurementType model.
+     * Deletes an existing MeasurementMethod model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -114,15 +114,15 @@ class MeasurementTypeController extends Controller
     }
 
     /**
-     * Finds the MeasurementType model based on its primary key value.
+     * Finds the MeasurementMethod model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return MeasurementType the loaded model
+     * @return MeasurementMethod the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MeasurementType::findOne($id)) !== null) {
+        if (($model = MeasurementMethod::findOne($id)) !== null) {
             return $model;
         }
 

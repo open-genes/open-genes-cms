@@ -15,7 +15,7 @@ use Yii;
  *
  * @property AgeRelatedChange[] $ageRelatedChanges
  */
-class MeasurementType extends common\MeasurementType
+class MeasurementMethod extends common\MeasurementMethod
 {
     use RuEnActiveRecordTrait;
 
@@ -51,7 +51,7 @@ class MeasurementType extends common\MeasurementType
     */
     public function getAgeRelatedChanges()
     {
-    return $this->hasMany(AgeRelatedChange::class, ['measurement_type_id' => 'id']);
+    return $this->hasMany(AgeRelatedChange::class, ['measurement_method_id' => 'id']);
     }
 
     public function getLinkedGenesIds()

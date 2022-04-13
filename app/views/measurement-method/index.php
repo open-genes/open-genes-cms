@@ -9,7 +9,7 @@ use yii\grid\GridView;
 $this->title = 'Метод измерения';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="measurement-type-index">
+<div class="measurement-method-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'name_en',
             [
                 'label' => '🔗 genes',
-                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\MeasurementType */
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\MeasurementMethod */
                     $geneIds = $model->getLinkedGenesIds();
                     $geneIdsString = implode(',', $geneIds);
                     $count = count($geneIds);
