@@ -10,7 +10,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
- * This is the model class for table "age".
+ * This is the model class for table "age_related_change".
  *
  */
 class AgeRelatedChange extends common\AgeRelatedChange

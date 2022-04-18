@@ -27,7 +27,7 @@ use Yii;
  * @property int|null $changed_expression_tissue_id Ткань/клетки
  * @property int|null $lifespan_change_time_unit_id
  * @property int|null $age
- * @property int|null $age_unit
+ * @property int|null $age_unit_id
  * @property int|null $intervention_result_id
  * @property int|null $lifespan_change_percent_male
  * @property int|null $lifespan_change_percent_female
