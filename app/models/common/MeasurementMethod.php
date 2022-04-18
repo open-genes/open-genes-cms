@@ -5,7 +5,7 @@ namespace app\models\common;
 use Yii;
 
 /**
- * This is the model class for table "measurement_type".
+ * This is the model class for table "measurement_method".
  *
  * @property int $id
  * @property string|null $name_ru
