@@ -58,7 +58,7 @@ class LifespanExperiment extends common\LifespanExperiment
         return ArrayHelper::merge(
             parent::rules(), [
             [['gene_id', 'gene_intervention_method_id'], 'safe'], // todo OG-410
-            [['tissuesIds', 'intervention_result_id'], 'safe'],
+            [['tissuesIds'], 'safe'],
             [['age'], 'number', 'min' => 0],
             [['reference'], 'validateDOI']
         ]);
@@ -70,8 +70,6 @@ class LifespanExperiment extends common\LifespanExperiment
             parent::attributeLabels(), [
             'delete' => 'Удалить',
             'gene_intervention_id' => 'Вмешательство',
-            'intervention_result_id' => 'Результат вмешательства',
-            'model_organism_id' => 'Объект',
             'tissue_specificity' => 'Тканеспецифичность',
             'mutation_induction' => 'Индукция мутации отменой препарата',
             'tissue_specific_promoter' => 'Тканеспецифичный промотер',
