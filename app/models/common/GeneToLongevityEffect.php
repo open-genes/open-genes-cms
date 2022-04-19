@@ -18,6 +18,7 @@ use Yii;
  * @property string|null $allele_variant
  * @property int|null $data_type
  * @property int|null $age_related_change_type_id
+ * @property int|null $position_id
  * @property string|null $pmid
  *
  * @property AgeRelatedChangeType $ageRelatedChangeType
@@ -41,7 +42,7 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'longevity_effect_id', 'polymorphism_id', 'sex_of_organism', 'data_type', 'age_related_change_type_id'], 'integer'],
+            [['gene_id', 'longevity_effect_id', 'polymorphism_id', 'sex_of_organism', 'data_type', 'age_related_change_type_id', 'position_id'], 'integer'],
             [['comment_en', 'comment_ru'], 'string'],
             [['reference', 'allele_variant', 'pmid'], 'string', 'max' => 255],
             [['age_related_change_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AgeRelatedChangeType::className(), 'targetAttribute' => ['age_related_change_type_id' => 'id']],
@@ -68,6 +69,7 @@ class GeneToLongevityEffect extends \yii\db\ActiveRecord
             'allele_variant' => 'Allele Variant',
             'data_type' => 'Data Type',
             'age_related_change_type_id' => 'Age Related Change Type ID',
+            'position_id' => 'Position id',
             'pmid' => 'Pmid',
         ];
     }
