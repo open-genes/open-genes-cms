@@ -27,14 +27,6 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
         ];
     }
 
-    public function init() {
-        parent::init();
-        if ($this->isNewRecord) {
-            $modelOrganismHumanId = ModelOrganism::find()->select('id')->where(['name_en' => 'human'])->scalar();
-            $this->model_organism_id = $modelOrganismHumanId;
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -42,7 +34,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['gene_id', 'longevity_effect_id', 'data_type', 'model_organism_id'], 'required'],
+            [['gene_id', 'longevity_effect_id', 'data_type'], 'required'],
             [['reference'], 'validateDOI']
         ]);
     }
@@ -58,7 +50,6 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             'allele_variant' => 'Аллельный вариант',
             'reference' => 'Ссылка',
             'data_type' => 'Тип изменений',
-            'model_organism_id' => 'Объект',
             'age_related_change_type_id' => 'Вид изменений',
         ]);
     }
@@ -84,7 +75,6 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             $modelAR->setAttributes($modelArray);
             self::setAttributeFromNewAR($modelArray, 'longevity_effect_id', 'LongevityEffect', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'polymorphism_id', 'Genotype', $modelAR);
-            self::setAttributeFromNewAR($modelArray, 'model_organism_id', 'ModelOrganism', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'age_related_change_type_id', 'AgeRelatedChangeType', $modelAR);
 
             $modelAR->gene_id = $geneId;

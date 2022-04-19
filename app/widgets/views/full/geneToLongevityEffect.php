@@ -67,9 +67,8 @@
                 ?>
             </div>
         </div>
-
         <div class="row form-row">
-            <div class="col-xs-4">
+            <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']age_related_change_type_id',
@@ -88,11 +87,11 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-6 col-sm-3">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
-                    'data' => ['' => '', 0 => 'женский', 1 => 'мужской', 2 => 'оба пола'],
+                    'data' => \app\models\OrganismSex::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Пол',
                         'multiple' => false
@@ -105,7 +104,34 @@
                 ]);
                 ?>
             </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']nucleotide_change', ['class' => 'form-control', 'placeholder' => 'Нуклеотидная замена']) ?>
+            </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']amino_acid_change', ['class' => 'form-control', 'placeholder' => 'Аминокислотная замена']) ?>
+            </div>
         </div>
+        <!--test -->
+        <div class="row form-row">
+            <div class="col-xs-6 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']position_id',
+                    'data' => \app\models\Position::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Позиция',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
+        </div>
+
         <div class="row form-row">
             <div class="col-xs-12 col-sm-6">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']reference', ['class' => 'form-control', 'placeholder' => 'DOI (пример: 10.1111/acel.12216)']) ?>
