@@ -10,8 +10,6 @@ use Yii;
  * @property int $id
  * @property int|null $gene_id
  * @property int|null $gene_intervention_id
- * @property int|null $intervention_result_id
- * @property int|null $model_organism_id
  * @property float|null $age
  * @property string|null $reference
  * @property string|null $comment_en
@@ -73,7 +71,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'gene_intervention_id', 'intervention_result_id', 'model_organism_id', 'organism_line_id', 'age_unit', 'genotype', 'tissue_specificity', 'mutation_induction', 'active_substance_id', 'active_substance_delivery_way_id', 'treatment_period_id', 'gene_intervention_method_id', 'experiment_main_effect_id', 'treatment_start_stage_of_development_id', 'treatment_end_stage_of_development_id', 'treatment_start_time_unit_id', 'treatment_end_time_unit_id', 'general_lifespan_experiment_id', 'gene_intervention_way_id'], 'integer'],
+            [['gene_id', 'gene_intervention_id', 'organism_line_id', 'age_unit', 'genotype', 'tissue_specificity', 'mutation_induction', 'active_substance_id', 'active_substance_delivery_way_id', 'treatment_period_id', 'gene_intervention_method_id', 'experiment_main_effect_id', 'treatment_start_stage_of_development_id', 'treatment_end_stage_of_development_id', 'treatment_start_time_unit_id', 'treatment_end_time_unit_id', 'general_lifespan_experiment_id', 'gene_intervention_way_id'], 'integer'],
             [['age', 'treatment_start', 'treatment_end'], 'number'],
             [['comment_en', 'comment_ru', 'type', 'tissue_specific_promoter', 'description_of_therapy_ru', 'description_of_therapy_en'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
@@ -86,8 +84,6 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
             [['gene_intervention_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneIntervention::class, 'targetAttribute' => ['gene_intervention_id' => 'id']],
             [['gene_intervention_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneInterventionMethod::class, 'targetAttribute' => ['gene_intervention_method_id' => 'id']],
-            [['intervention_result_id'], 'exist', 'skipOnError' => true, 'targetClass' => InterventionResultForLongevity::class, 'targetAttribute' => ['intervention_result_id' => 'id']],
-            [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::class, 'targetAttribute' => ['model_organism_id' => 'id']],
             [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::class, 'targetAttribute' => ['organism_line_id' => 'id']],
             [['treatment_start_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TimeUnit::class, 'targetAttribute' => ['treatment_start_time_unit_id' => 'id']],
             [['treatment_end_stage_of_development_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentStageOfDevelopment::class, 'targetAttribute' => ['treatment_end_stage_of_development_id' => 'id']],
@@ -104,8 +100,6 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'gene_id' => Yii::t('app', 'Gene ID'),
             'gene_intervention_id' => Yii::t('app', 'Gene Intervention ID'),
-            'intervention_result_id' => Yii::t('app', 'Intervention Result ID'),
-            'model_organism_id' => Yii::t('app', 'Model Organism ID'),
             'age' => Yii::t('app', 'Age'),
             'reference' => Yii::t('app', 'Reference'),
             'comment_en' => Yii::t('app', 'Comment En'),
@@ -228,25 +222,6 @@ class LifespanExperiment extends \yii\db\ActiveRecord
         return $this->hasOne(GeneInterventionMethod::class, ['id' => 'gene_intervention_method_id']);
     }
 
-    /**
-     * Gets query for [[InterventionResult]].
-     *
-     * @return \yii\db\ActiveQuery|InterventionResultForLongevityQuery
-     */
-    public function getInterventionResult()
-    {
-        return $this->hasOne(InterventionResultForLongevity::class, ['id' => 'intervention_result_id']);
-    }
-
-    /**
-     * Gets query for [[ModelOrganism]].
-     *
-     * @return \yii\db\ActiveQuery|ModelOrganismQuery
-     */
-    public function getModelOrganism()
-    {
-        return $this->hasOne(ModelOrganism::class, ['id' => 'model_organism_id']);
-    }
 
     /**
      * Gets query for [[OrganismLine]].
