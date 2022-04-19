@@ -26,7 +26,7 @@ use Yii;
  * @property string|null $comment_ru
  * @property float|null $change_value
  * @property int|null $age_unit_id
- * @property int|null $measurement_type_id
+ * @property int|null $measurement_method_id
  * @property int|null $expression_evaluation_by_id
  * @property int|null $statistical_method_id
  * @property int|null $p_value
@@ -89,7 +89,7 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
             'comment_ru' => 'Comment Ru',
             'change_value' => 'Change Value',
             'age_unit_id' => 'Age Unit',
-            'measurement_type_id' => 'Measurement Type',
+            'measurement_method_id' => 'Measurement Method',
             'expression_evaluation_by_id' => 'Expression Evaluation by',
             'statistical_method_id' => 'Statistical Method',
             'p_value' => 'P - value',

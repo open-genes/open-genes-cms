@@ -3,11 +3,11 @@
 namespace app\models\common;
 
 /**
- * This is the ActiveQuery class for [[\app\models\MeasurementType]].
+ * This is the ActiveQuery class for [[\app\models\MeasurementMethod]].
  *
- * @see \app\models\MeasurementType
+ * @see \app\models\MeasurementMethod
  */
-class MeasurementTypeQuery extends \yii\db\ActiveQuery
+class MeasurementMethodQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class MeasurementTypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\MeasurementType[]|array
+     * @return \app\models\MeasurementMethod[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class MeasurementTypeQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \app\models\MeasurementType|array|null
+     * @return \app\models\MeasurementMethod|array|null
      */
     public function one($db = null)
     {
