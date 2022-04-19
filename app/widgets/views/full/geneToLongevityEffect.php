@@ -46,7 +46,7 @@
                     'attribute' => '[' . $geneToLongevityEffect->id . ']polymorphism_id',
                     'data' => \app\models\Polymorphism::getAllNamesAsArray(),
                     'options' => [
-                        'placeholder' => 'Аллельный полиморфизм',
+                        'placeholder' => 'Полиморфизм ID',
                         'multiple' => false,
                     ],
                     'pluginOptions' => [
@@ -63,7 +63,7 @@
                 <?= \yii\bootstrap\Html::activeInput(
                         'text', $geneToLongevityEffect,
                         '[' . $geneToLongevityEffect->id . ']allele_variant',
-                        ['class' => 'form-control', 'placeholder' => 'Аллельный вариант'])
+                        ['class' => 'form-control', 'placeholder' => 'Ассоциированный аллель/генотип'])
                 ?>
             </div>
         </div>
@@ -81,25 +81,6 @@
                     'pluginOptions' => [
                         'allowClear' => false,
                         'tags' => Yii::$app->user->can('admin'),
-                        'tokenSeparators' => ['##'],
-                        'containerCssClass' => 'red',
-                        'dropdownCssClass' => 'red',
-                    ],
-                ]);
-                ?>
-            </div>
-            <div class="col-xs-4">
-                <?= \kartik\select2\Select2::widget([
-                    'model' => $geneToLongevityEffect,
-                    'attribute' => '[' . $geneToLongevityEffect->id . ']model_organism_id',
-                    'data' => \app\models\ModelOrganism::getAllNamesAsArray(),
-                    'options' => [
-                        'placeholder' => 'Объект',
-                        'multiple' => false,
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => false,
-                        'tags' => true,
                         'tokenSeparators' => ['##'],
                         'containerCssClass' => 'red',
                         'dropdownCssClass' => 'red',
