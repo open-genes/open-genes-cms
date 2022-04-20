@@ -6,15 +6,15 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Позиция';
+$this->title = 'Вид полиморфизма';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="position-index">
+<div class="polymorphism-type-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Добавить позицию', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Добавить вид полиморфизма', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -24,10 +24,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name_en',
-            'name_ru',
             [
                 'label' => '🔗 genes',
-                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\Position */
+                'value' => function($model, $index, $dataColumn) { /** @var $model \app\models\PolymorphismType */
                     $geneIds = $model->getLinkedGenesIds();
                     $geneIdsString = implode(',', $geneIds);
                     $count = count($geneIds);
