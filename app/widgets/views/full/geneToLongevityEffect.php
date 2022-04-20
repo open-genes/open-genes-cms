@@ -130,6 +130,23 @@
                 ]);
                 ?>
             </div>
+            <div class="col-xs-6 col-sm-3">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']polymorphism_type_id',
+                    'data' => \app\models\PolymorphismType::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Вид полиморфизма',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
         </div>
 
         <div class="row form-row">

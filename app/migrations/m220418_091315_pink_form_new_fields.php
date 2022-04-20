@@ -49,6 +49,7 @@ class m220418_091315_pink_form_new_fields extends Migration
 //                [1, 'SNP'],
 //                [2, 'VNTR'],
 //                [3, 'In/Del'],
+//                [4, 'haplotype'],
 //            ]
 //        );
 //        $this->addForeignKey('gene_to_longevity_effect_to_polymorphism_type', 'gene_to_longevity_effect', 'polymorphism_type_id', 'polymorphism_type', 'id', 'CASCADE');

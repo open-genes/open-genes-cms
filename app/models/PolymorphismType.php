@@ -7,15 +7,14 @@ use app\models\traits\RuEnActiveRecordTrait;
 use Yii;
 
 /**
- * This is the model class for table "position".
+ * This is the model class for table "polymorphism_type".
  *
  * @property int $id
  * @property string|null $name_en
- * @property string|null $name_ru
  *
  * @property GeneToLongevityEffect[] $geneToLongevityEffects
  */
-class Position extends \app\models\common\Position
+class PolymorphismType extends \app\models\common\PolymorphismType
 {
     use RuEnActiveRecordTrait;
 
@@ -39,7 +38,6 @@ class Position extends \app\models\common\Position
         return [
                     'id' => 'ID',
                     'name_en' => 'Name En',
-                    'name_ru' => 'Name Ru',
                 ];
     }
 
@@ -51,7 +49,7 @@ class Position extends \app\models\common\Position
     */
     public function getGeneToLongevityEffects()
     {
-    return $this->hasMany(GeneToLongevityEffect::class, ['position_id' => 'id']);
+    return $this->hasMany(GeneToLongevityEffect::class, ['polymorphism_type_id' => 'id']);
     }
 
     public function getLinkedGenesIds()
@@ -60,4 +58,16 @@ class Position extends \app\models\common\Position
             ->select('gene_id')->distinct()->column();
     }
 
+    public static function getAllNamesAsArray()
+    {
+        $names = self::find()
+            ->select(['id', 'name_en'])
+            ->asArray()
+            ->all();
+        $result = [];
+        foreach ($names as $name) {
+            $result[$name['id']] = "{$name['name_en']}";
+        }
+        return $result;
+    }
 }
