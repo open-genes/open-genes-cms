@@ -129,6 +129,8 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Статистический анализ', 'url' => '/statistical-method'],
                     '<li class="divider"></li>',
                     ['label' => 'Позиция', 'url' => '/position'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Вид полиморфизма', 'url' => '/polymorphism-type'],
 
                 ],
             ],
