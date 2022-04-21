@@ -133,6 +133,8 @@ $this->registerCssFile('/assets/css/main.css');
                     ['label' => 'Вид полиморфизма', 'url' => '/polymorphism-type'],
                     '<li class="divider"></li>',
                     ['label' => 'Этническая принадлежность', 'url' => '/ethnicity'],
+                    '<li class="divider"></li>',
+                    ['label' => 'Тип исследования', 'url' => '/study-type'],
 
                 ],
             ],
