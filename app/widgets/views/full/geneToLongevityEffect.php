@@ -156,20 +156,20 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']frequency_controls', ['class' => 'form-control', 'placeholder' => 'Частота ассоциированного аллеля/генотипа в контроле']) ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']frequency_experiment', ['class' => 'form-control', 'placeholder' => 'Частота ассоциированного аллеля/генотипа в эксперименте']) ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']n_of_controls', ['class' => 'form-control', 'placeholder' => 'N контроя']) ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-2">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']n_of_experiment', ['class' => 'form-control', 'placeholder' => 'N эксперимента/всей группы исследования']) ?>
             </div>
-            <div class="col-xs-6 col-md-4 checkbox-wrapper">
-                <?= \yii\bootstrap\Html::activeCheckbox($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']significance', ['class' => 'form-control', 'placeholder' => 'Значимость']) ?>
+            <div class="col-xs-6 col-md-2 checkbox-wrapper">
+                <?= \yii\bootstrap\Html::activeCheckbox($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']significance') ?>
             </div>
         </div>
         <div class="row form-row">
@@ -202,6 +202,23 @@
                     'data' => \app\models\Ethnicity::getAllNamesAsArray(),
                     'options' => [
                         'placeholder' => 'Этническая принадлежность',
+                        'multiple' => false
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'containerCssClass' => 'red',
+                        'dropdownCssClass' => 'red',
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-xs-6 col-sm-6">
+                <?= \kartik\select2\Select2::widget([
+                    'model' => $geneToLongevityEffect,
+                    'attribute' => '[' . $geneToLongevityEffect->id . ']study_type_id',
+                    'data' => \app\models\StudyType::getAllNamesAsArray(),
+                    'options' => [
+                        'placeholder' => 'Тип исследования',
                         'multiple' => false
                     ],
                     'pluginOptions' => [
