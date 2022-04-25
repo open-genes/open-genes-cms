@@ -74,7 +74,7 @@ class GeneToLongevityEffect extends common\GeneToLongevityEffect
             }
             $modelAR->setAttributes($modelArray);
             self::setAttributeFromNewAR($modelArray, 'longevity_effect_id', 'LongevityEffect', $modelAR);
-            self::setAttributeFromNewAR($modelArray, 'polymorphism_id', 'Genotype', $modelAR);
+            self::setAttributeFromNewAR($modelArray, 'polymorphism_id', 'Polymorphism', $modelAR);
             self::setAttributeFromNewAR($modelArray, 'age_related_change_type_id', 'AgeRelatedChangeType', $modelAR);
 
             $modelAR->gene_id = $geneId;
