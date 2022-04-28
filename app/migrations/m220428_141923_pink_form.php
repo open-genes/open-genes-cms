@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m220418_091315_pink_form_new_fields
+ * Class m220428_141923_pink_form
  */
-class m220418_091315_pink_form_new_fields extends Migration
+class m220428_141923_pink_form extends Migration
 {
     /**
      * {@inheritdoc}
@@ -23,7 +23,7 @@ class m220418_091315_pink_form_new_fields extends Migration
             'id' => $this->primaryKey(),
             'name_en' => $this->string(),
             'name_ru' => $this->string(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->batchInsert(
             'position',
             ['id', 'name_ru', 'name_en'],
@@ -31,8 +31,8 @@ class m220418_091315_pink_form_new_fields extends Migration
                 [1, 'итрон', 'intron'],
                 [2, 'экзон', 'exon'],
                 [3, 'промотер', 'promoter'],
-                [4, '3’UTR', '3’UTR'],
-                [5, '5’', '5’'],
+                [4, "3'UTR", "3'UTR"],
+                [5, "5'", "5'"],
             ]
         );
         $this->addForeignKey('gene_to_longevity_effect_to_position', 'gene_to_longevity_effect', 'position_id', 'position', 'id', 'CASCADE');
@@ -41,7 +41,7 @@ class m220418_091315_pink_form_new_fields extends Migration
         $this->createTable('polymorphism_type', [
             'id' => $this->primaryKey(),
             'name_en' => $this->string(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->batchInsert(
             'polymorphism_type',
             ['id', 'name_en'],
@@ -72,7 +72,7 @@ class m220418_091315_pink_form_new_fields extends Migration
             'id' => $this->primaryKey(),
             'name_ru' => $this->string(),
             'name_en' => $this->string(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->batchInsert(
             'ethnicity',
             ['id', 'name_ru', 'name_en'],
@@ -90,7 +90,7 @@ class m220418_091315_pink_form_new_fields extends Migration
             'id' => $this->primaryKey(),
             'name_ru' => $this->string(),
             'name_en' => $this->string(),
-        ]);
+        ], 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB');
         $this->batchInsert(
             'study_type',
             ['id', 'name_ru', 'name_en'],
