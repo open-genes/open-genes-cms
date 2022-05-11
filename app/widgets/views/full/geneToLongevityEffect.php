@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']age_related_change_type_id',
@@ -80,7 +80,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']sex_of_organism',
@@ -97,16 +97,16 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']nucleotide_change', ['class' => 'form-control', 'placeholder' => 'Нуклеотидная замена']) ?>
-            </div>
-            <div class="col-xs-6 col-sm-3">
-                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']amino_acid_change', ['class' => 'form-control', 'placeholder' => 'Аминокислотная замена']) ?>
             </div>
         </div>
         <!--test -->
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-4">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']amino_acid_change', ['class' => 'form-control', 'placeholder' => 'Аминокислотная замена']) ?>
+            </div>
+            <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']position_id',
@@ -123,7 +123,7 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-4">
                 <?= \kartik\select2\Select2::widget([
                     'model' => $geneToLongevityEffect,
                     'attribute' => '[' . $geneToLongevityEffect->id . ']polymorphism_type_id',
@@ -140,34 +140,38 @@
                 ]);
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+        </div>
+        <div class="row form-row">
+            <div class="col-xs-6 col-sm-4">
                 <?= \yii\bootstrap\Html::activeInput(
                     'text', $geneToLongevityEffect,
                     '[' . $geneToLongevityEffect->id . ']allele_variant',
                     ['class' => 'form-control', 'placeholder' => 'Ассоциированный аллель/генотип'])
                 ?>
             </div>
-            <div class="col-xs-6 col-sm-3">
+            <div class="col-xs-6 col-sm-4">
                 <?= \yii\bootstrap\Html::activeInput(
                     'text', $geneToLongevityEffect,
                     '[' . $geneToLongevityEffect->id . ']non_associated_allele',
                     ['class' => 'form-control', 'placeholder' => 'Не ассоциированный аллель/генотип'])
                 ?>
             </div>
+            <div class="col-xs-6 col-sm-4">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']frequency_controls', ['class' => 'form-control', 'placeholder' => '% ассоц-го аллеля в контроле']) ?>
+            </div>
         </div>
         <div class="row form-row">
-            <div class="col-xs-6 col-sm-2">
-                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']frequency_controls', ['class' => 'form-control', 'placeholder' => 'Частота ассоциированного аллеля/генотипа в контроле']) ?>
+        <div class="col-xs-6 col-sm-4">
+                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']frequency_experiment', ['class' => 'form-control', 'placeholder' => '% ассоц-го аллеля в эксперименте']) ?>
             </div>
-            <div class="col-xs-6 col-sm-2">
-                <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']frequency_experiment', ['class' => 'form-control', 'placeholder' => 'Частота ассоциированного аллеля/генотипа в эксперименте']) ?>
-            </div>
-            <div class="col-xs-6 col-sm-2">
+            <div class="col-xs-6 col-sm-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']n_of_controls', ['class' => 'form-control', 'placeholder' => 'N контроя']) ?>
             </div>
-            <div class="col-xs-6 col-sm-2">
+            <div class="col-xs-6 col-sm-4">
                 <?= \yii\bootstrap\Html::activeInput('text', $geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']n_of_experiment', ['class' => 'form-control', 'placeholder' => 'N эксперимента/всей группы исследования']) ?>
             </div>
+        </div>
+        <div class="row form-row">
             <div class="col-xs-6 col-md-2 checkbox-wrapper">
                 <?= \yii\bootstrap\Html::activeCheckbox($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']significance') ?>
             </div>
