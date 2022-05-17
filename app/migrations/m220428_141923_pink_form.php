@@ -103,10 +103,6 @@ class m220428_141923_pink_form extends Migration
         );
         $this->addForeignKey('gene_to_longevity_effect_to_study_type', 'gene_to_longevity_effect', 'study_type_id', 'study_type', 'id', 'CASCADE');
 
-        $this->execute('update gene_to_longevity_effect
-                                set sex_of_organism = 3
-                                where sex_of_organism = 2');
-
     }
 
     /**
