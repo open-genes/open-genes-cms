@@ -81,41 +81,43 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
 
     /**
      * @param string $symbol
-     * @return string
+     * @return string|Gene
      */
-    public function parseBySymbol(string $symbol): Gene
+    public function parseBySymbol(string $symbol)
     {
         echo "get {$symbol} from myGene: ";
         $url = $this->apiUrl . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
         $response = $this->httpClient->createRequest()
             ->setUrl($url)
             ->send();
-        if (!$response->isOk) {
-            throw new \Exception($response->getStatusCode());
-        }
-        $parsedResponse = json_decode($response->content, true);
-        foreach ($parsedResponse['hits'] as $gene) {
-            $aliases = $this->getAliases($gene);
-            if (in_array(strtoupper($symbol), $aliases)) {
-                $arGene = new Gene();
-                $arGene->symbol = $gene['symbol'];
-                $arGene->ncbi_id = $gene['entrezgene'];
-                $arGene->name = $gene['name'];
-                $arGene->ncbi_summary_en = $gene['summary'] ?? null;
-                if (isset($gene['alias'])) {
-                    $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
-                    array_walk($aliases, function (&$value, &$key) {
-                        $value = str_replace(' ', '+', $value);
-                    });
-                    $arGene->aliases = implode(' ', $aliases);
+        try {
+            $parsedResponse = json_decode($response->content, true);
+            if (!empty($parsedResponse['hits'])) {
+                foreach ($parsedResponse['hits'] as $gene) {
+                    $aliases = $this->getAliases($gene);
+                    if (in_array(strtoupper($symbol), $aliases)) {
+                        $arGene = new Gene();
+                        $arGene->symbol = $gene['symbol'];
+                        $arGene->ncbi_id = $gene['entrezgene'];
+                        $arGene->name = $gene['name'];
+                        $arGene->ncbi_summary_en = $gene['summary'] ?? null;
+                        if (isset($gene['alias'])) {
+                            $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
+                            array_walk($aliases, function (&$value, &$key) {
+                                $value = str_replace(' ', '+', $value);
+                            });
+                            $arGene->aliases = implode(' ', $aliases);
+                        }
+                        if (!isset($gene['summary'])) {
+                            echo ' no summary! ';
+                        }
+                        return $arGene;
+                    }
                 }
-                if (!isset($gene['summary'])) {
-                    echo ' no summary! ';
-                }
-                return $arGene;
             }
+        } catch (\Exception $e) {
+            echo $e . ' not found ' . $url . ' ' . $response->getStatusCode();
         }
-        throw new \Exception(' not found ' . $url);
     }
 
     private function getAliases(array $geneData): array
