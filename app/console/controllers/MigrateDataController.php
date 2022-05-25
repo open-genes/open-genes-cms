@@ -235,6 +235,30 @@ class MigrateDataController extends Controller
         }
     }
 
+    public function actionNewGenesDatasets($pathToFile, $source)
+    {
+        $pathToFile = \Yii::getAlias('@app/') . $pathToFile;
+        if (!file_exists($pathToFile)) {
+            return 'Cannot find data file';
+        }
+        $f = fopen($pathToFile, 'r');
+        $geneDataset = [];
+        while (($data = fgetcsv($f, 0, ',')) !== false) {
+            $geneDataset[] = $data[0];
+        }
+        if (empty($geneDataset)) {
+            return 'Data file is empty';
+        }
+        $geneDataset = array_unique($geneDataset);
+        $sourceId = Source::find()->select('id') -> where(['name' => $source])->one()->id;
+
+        foreach ($geneDataset as $symbol) {
+            GeneHelper::saveGeneBySymbol($symbol, $source);
+            $t = 1;
+        }
+
+    }
+
     public function actionFillSourceAbdb($absolutePathToFile)
     {
         if (!file_exists($absolutePathToFile)) {
