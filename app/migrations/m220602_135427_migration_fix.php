@@ -12,9 +12,10 @@ class m220524_104757_add_new_sources extends Migration
      */
     public function safeUp()
     {
-        $this->insert('source', ['name' => 'human-change-expression']);
-        $this->insert('source', ['name' => 'human-change-serum']);
-        $this->insert('source', ['name' => 'longevity-association']);
+        $this->dropForeignKey('le_to_ortholog_to_le', 'lifespan_experiment_to_ortholog');
+        $this->dropForeignKey('le_to_ortholog_to_ortholog', 'lifespan_experiment_to_ortholog');
+        $this->dropTable('lifespan_experiment_to_ortholog');
+        die;
 
     }
 
@@ -23,9 +24,7 @@ class m220524_104757_add_new_sources extends Migration
      */
     public function safeDown()
     {
-        $this->delete('source', ['name' => 'human-change-expression']);
-        $this->delete('source', ['name' => 'human-change-serum']);
-        $this->delete('source', ['name' => 'longevity-association']);
+
     }
 
     /*
