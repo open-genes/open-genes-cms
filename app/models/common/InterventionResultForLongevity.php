@@ -55,7 +55,9 @@ class InterventionResultForLongevity extends \yii\db\ActiveRecord
      */
     public function getGeneralLifespanExperiments()
     {
-        return $this->hasMany(GeneralLifespanExperiment::class, ['intervention_result_id' => 'id']);
+        return $this->hasMany(GeneralLifespanExperiment::class, ['intervention_result_id' => 'id'])
+            ->innerJoin('lifespan_experiment',
+                'general_lifespan_experiment.id = lifespan_experiment.general_lifespan_experiment_id');
     }
 
     /**
