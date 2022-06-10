@@ -80,7 +80,7 @@
 .open-genes-navbar.navbar-inverse .dropdown-menu {
     position: fixed;
     max-height: calc(100vh - 80px);
-    height: 100%;
+    height: auto;
     top: 50px;
     left: auto;
     overflow: auto;
