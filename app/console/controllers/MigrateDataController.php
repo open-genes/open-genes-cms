@@ -242,9 +242,11 @@ class MigrateDataController extends Controller
             return 'Cannot find data file';
         }
         $f = fopen($pathToFile, 'r');
+        $dataId = $source == 'longevity-association' || $source == 'human-change-expression'
+            ? 1 : 0;
         $geneDataset = [];
         while (($data = fgetcsv($f, 0, ',')) !== false) {
-            $geneDataset[] = $data[0];
+            $geneDataset[] = $data[$dataId];
         }
         if (empty($geneDataset)) {
             return 'Data file is empty';
@@ -253,8 +255,7 @@ class MigrateDataController extends Controller
         $sourceId = Source::find()->select('id') -> where(['name' => $source])->one()->id;
 
         foreach ($geneDataset as $symbol) {
-            GeneHelper::saveGeneBySymbol($symbol, $source);
-            $t = 1;
+            GeneHelper::saveGeneBySymbol($symbol, $sourceId);
         }
 
     }
