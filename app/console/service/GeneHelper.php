@@ -8,7 +8,7 @@ use app\models\Source;
 
 class GeneHelper
 {
-    public static function saveGeneBySymbol($symbol, $source) {
+    public static function saveGeneBySymbol($symbol, $sourceId) {
         $symbol = strtoupper(trim($symbol));
         $arGene = Gene::find()->where(['symbol' => $symbol])->one();
         if ($arGene) {
@@ -27,11 +27,10 @@ class GeneHelper
             }
             $arGene->isHidden = 1;
             $arGene->save();
-            $newGeneId = Gene::findOne(['symbol' => $arGene->symbol])->id;
 
             $geneToSource = new GeneToSource();
-            $geneToSource->gene_id = $newGeneId;
-            $geneToSource->source_id = $source;
+            $geneToSource->gene_id = $arGene->id;
+            $geneToSource->source_id = $sourceId;
             $geneToSource->save();
 
             echo 'OK ' . $symbol . ' ' . $arGene->ncbi_id . PHP_EOL;

@@ -85,7 +85,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
      */
     public function parseBySymbol(string $symbol)
     {
-        echo "get {$symbol} from myGene: ";
+        echo "get {$symbol} from myGene: " . PHP_EOL;
         $url = $this->apiUrl . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
         $response = $this->httpClient->createRequest()
             ->setUrl($url)
