@@ -235,7 +235,7 @@ class MigrateDataController extends Controller
         }
     }
 
-    public function actionNewGenesDatasets($pathToFile, $source)
+    public function actionNewGenesDatasets($pathToFile, $source, $type = null)
     {
         $pathToFile = \Yii::getAlias('@app/') . $pathToFile;
         if (!file_exists($pathToFile)) {
@@ -254,8 +254,25 @@ class MigrateDataController extends Controller
         $geneDataset = array_unique($geneDataset);
         $sourceId = Source::find()->select('id') -> where(['name' => $source])->one()->id;
 
+        if ($type == 'write-unadded-genes-to-file') {
+            $genes = [];
+            foreach ($geneDataset as $symbol) {
+                $genes[] = GeneHelper::getUnaddedGeneToFileBySymbol($symbol, $sourceId);
+            }
+            $genes = array_filter($genes);
+            if (!empty($genes)) {
+                $file = fopen(\Yii::getAlias('@app/') . 'unadded-genes.csv', 'a');
+
+                foreach ($genes as $gene) {
+                    fwrite($file, $gene.PHP_EOL);
+                }
+
+                fclose($file);
+            }
+        } else {
         foreach ($geneDataset as $symbol) {
             GeneHelper::saveGeneBySymbol($symbol, $sourceId);
+        }
         }
 
     }

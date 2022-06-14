@@ -135,4 +135,43 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
         }
         return $result;
     }
+
+    public function parseBySymbolAndAddToFile(string $symbol)
+    {
+        echo "get {$symbol} from myGene: " . PHP_EOL;
+        $url = $this->apiUrl . 'query?q=' . $symbol . '&fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary&species=human';
+        $response = $this->httpClient->createRequest()
+            ->setUrl($url)
+            ->send();
+        try {
+            $parsedResponse = json_decode($response->content, true);
+            if (!empty($parsedResponse['hits'])) {
+                foreach ($parsedResponse['hits'] as $gene) {
+                    $aliases = $this->getAliases($gene);
+                    if (in_array(strtoupper($symbol), $aliases)) {
+                        $arGene = new Gene();
+                        $arGene->symbol = $gene['symbol'];
+                        $arGene->ncbi_id = $gene['entrezgene'];
+                        $arGene->name = $gene['name'];
+                        $arGene->ncbi_summary_en = $gene['summary'] ?? null;
+                        if (isset($gene['alias'])) {
+                            $aliases = is_array($gene['alias']) ? $gene['alias'] : [$gene['alias']];
+                            array_walk($aliases, function (&$value, &$key) {
+                                $value = str_replace(' ', '+', $value);
+                            });
+                            $arGene->aliases = implode(' ', $aliases);
+                        }
+                        if (!isset($gene['summary'])) {
+                            echo ' no summary! ';
+                        }
+                        return $arGene;
+                    } else {
+                        return $gene['symbol'];
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            echo $e . ' not found ' . $url . ' ' . $response->getStatusCode();
+        }
+    }
 }
