@@ -43,4 +43,3 @@ phpunit.phar
 /backend/web/robots.txt
 .env
 /runtime
-/storage/datasets/*

@@ -480,6 +480,8 @@ class MigrateDataController extends Controller
             return 'Data file is empty';
         }
 
+        $class = 'app\\service\\dataset\\' . $class;
+
         echo 'Start time: '. date('Y-m-d H:i:s') . PHP_EOL;
 
         if (class_exists($class)) {
