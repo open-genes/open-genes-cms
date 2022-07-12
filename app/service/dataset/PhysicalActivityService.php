@@ -78,6 +78,7 @@ class PhysicalActivityService
                         $physicalActivity->measurement_method_id = $measurementMethod->id;
                         try {
                             $physicalActivity->save();
+                            echo 'SUCCESS: ' . $gene->symbol . PHP_EOL;
                         } catch (\Exception $exception) {
                             var_dump($exception->getMessage());
                             continue;
