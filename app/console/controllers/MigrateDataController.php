@@ -464,6 +464,37 @@ class MigrateDataController extends Controller
         VarDumper::dump($unmergedDoi);
     }
 
+    public function actionDatasetToDb($pathToFile, $class, $method) {
+        $pathToFile = \Yii::getAlias('@app/') . 'storage/datasets/' . $pathToFile;
+        if (!file_exists($pathToFile)) {
+            return 'Cannot find data file';
+        }
+        $f = fopen($pathToFile, 'r');
+
+        $dataset = [];
+        while (($data = fgetcsv($f, 0, ',')) !== false) {
+            $dataset[] = $data;
+        }
+
+        if (empty($dataset)) {
+            return 'Data file is empty';
+        }
+
+        $class = 'app\\service\\dataset\\' . $class;
+
+        echo 'Start time: '. date('Y-m-d H:i:s') . PHP_EOL;
+
+        if (class_exists($class)) {
+            $object = new $class();
+            if (method_exists($object, $method)) {
+                call_user_func_array([$object, $method], [$dataset]);
+            }
+        }
+
+        echo 'End time: '. date('Y-m-d H:i:s') . PHP_EOL;
+
+    }
+
     private function createRelationsPurpleToProcess($purple, $greenId)
     {
         $greenToProcess = GeneInterventionResultToVitalProcess::find()->where(
