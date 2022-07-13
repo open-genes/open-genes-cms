@@ -2,8 +2,25 @@
 
 namespace app\models\common;
 
+use yii\behaviors\TimestampBehavior;
+
 class PhysicalActivity extends \yii\db\ActiveRecord
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at'
+            ]
+        ];
+    }
+
     public static function tableName()
     {
         return 'physical_activity';

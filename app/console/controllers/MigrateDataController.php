@@ -485,7 +485,7 @@ class MigrateDataController extends Controller
         echo 'Start time: '. date('Y-m-d H:i:s') . PHP_EOL;
 
         if (class_exists($class)) {
-            $object = new $class();
+            $object = Yii::$container->get($class);
             if (method_exists($object, $method)) {
                 call_user_func_array([$object, $method], [$dataset]);
             }
