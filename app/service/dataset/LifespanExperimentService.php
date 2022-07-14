@@ -2,6 +2,7 @@
 
 namespace app\service\dataset;
 
+use app\models\LifespanExperiment as LifespanExperimentModel;
 use app\models\common\LifespanExperiment;
 use app\models\Gene;
 
@@ -15,7 +16,7 @@ class LifespanExperimentService
         $this->generalLifespanExperimentService = $generalLifespanExperimentService;
     }
 
-    public function checkDuplicateAndSave($geneSymbols, LifespanExperiment $lifespanExperiment) {
+    public function checkDuplicateAndSave($geneSymbols, LifespanExperimentModel $lifespanExperiment) {
         $generalLifespanExperiment = $lifespanExperiment->generalLifespanExperiment;
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
@@ -43,7 +44,7 @@ class LifespanExperimentService
         }
     }
 
-    public function saveByGene(int $gene_id, LifespanExperiment $lifespanExperiment) {
+    public function saveByGene(int $gene_id, LifespanExperimentModel $lifespanExperiment) {
         $leData = new LifespanExperiment();
         $leData->gene_id = $gene_id;
         $leData->ortholog_id = $lifespanExperiment->ortholog_id;

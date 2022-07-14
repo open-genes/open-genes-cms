@@ -4,6 +4,7 @@ namespace app\service\dataset;
 
 
 use app\models\common\AgeRelatedChange;
+use app\models\AgeRelatedChange as AgeRelatedChangeModel;
 use app\models\AgeRelatedChangeType;
 use app\models\ExpressionEvaluation;
 use app\models\Gene;
@@ -80,7 +81,7 @@ class AgeRelatedChangeService
         echo 'success END import' . PHP_EOL;
     }
 
-    public function checkDuplicateAndSave($geneSymbols, AgeRelatedChange $ageRelatedChange) {
+    public function checkDuplicateAndSave($geneSymbols, AgeRelatedChangeModel $ageRelatedChange) {
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
             if (!empty($geneSymbol->ageRelatedChanges)) {
@@ -101,7 +102,7 @@ class AgeRelatedChangeService
         }
     }
 
-    private function saveByGene(int $geneId, AgeRelatedChange $ageRelatedChange) {
+    private function saveByGene(int $geneId, AgeRelatedChangeModel $ageRelatedChange) {
         $item = new AgeRelatedChange();
         $item->gene_id = $geneId;
         $item->age_related_change_type_id = $ageRelatedChange->age_related_change_type_id;
