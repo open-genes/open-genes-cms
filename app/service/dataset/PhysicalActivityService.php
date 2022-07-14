@@ -8,7 +8,7 @@ use app\models\MeasurementMethod;
 use app\models\ModelOrganism;
 use app\models\OrganismLine;
 use app\models\OrganismSex;
-use app\models\PhysicalActivity;
+use app\models\common\PhysicalActivity;
 use app\models\Sample;
 
 class PhysicalActivityService
@@ -78,7 +78,7 @@ class PhysicalActivityService
                         $physicalActivity->measurement_method_id = $measurementMethod->id;
                         try {
                             $physicalActivity->save();
-                            echo 'SUCCESS: ' . $gene->symbol . PHP_EOL;
+                            echo 'SUCCESS: ' . $geneSymbol . PHP_EOL;
                         } catch (\Exception $exception) {
                             var_dump($exception->getMessage());
                             continue;

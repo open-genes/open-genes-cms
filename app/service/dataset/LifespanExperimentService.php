@@ -11,8 +11,8 @@ class LifespanExperimentService
     /** @var GeneralLifespanExperimentService */
     private $generalLifespanExperimentService;
 
-    public function __construct() {
-        $this->generalLifespanExperimentService = new GeneralLifespanExperimentService();
+    public function __construct(GeneralLifespanExperimentService $generalLifespanExperimentService) {
+        $this->generalLifespanExperimentService = $generalLifespanExperimentService;
     }
 
     public function checkDuplicateAndSave($geneSymbols, LifespanExperiment $lifespanExperiment) {

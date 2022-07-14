@@ -15,10 +15,14 @@ class GeneService
     /** @var AgeRelatedChangeService */
     private $ageRelatedChangeService;
 
-    public function __construct() {
-        $this->lifespanExperimentService = new LifespanExperimentService();
-        $this->ageRelatedChangeService = new GeneInterventionToVitalProcessService();
-        $this->geneInterventionToVitalProcessService = new AgeRelatedChangeService();
+    public function __construct(
+        LifespanExperimentService $lifespanExperimentService,
+        GeneInterventionToVitalProcessService $geneInterventionToVitalProcessService,
+        AgeRelatedChangeService $ageRelatedChangeService
+    ) {
+        $this->lifespanExperimentService = $lifespanExperimentService;
+        $this->ageRelatedChangeService = $geneInterventionToVitalProcessService;
+        $this->geneInterventionToVitalProcessService = $ageRelatedChangeService;
     }
 
 

@@ -3,7 +3,7 @@
 namespace app\service\dataset;
 
 use app\models\Gene;
-use app\models\GeneInterventionToVitalProcess;
+use app\models\common\GeneInterventionToVitalProcess;
 
 class GeneInterventionToVitalProcessService
 {
