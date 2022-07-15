@@ -21,8 +21,8 @@ class GeneService
         AgeRelatedChangeService $ageRelatedChangeService
     ) {
         $this->lifespanExperimentService = $lifespanExperimentService;
-        $this->ageRelatedChangeService = $geneInterventionToVitalProcessService;
-        $this->geneInterventionToVitalProcessService = $ageRelatedChangeService;
+        $this->ageRelatedChangeService = $ageRelatedChangeService;
+        $this->geneInterventionToVitalProcessService = $geneInterventionToVitalProcessService;
     }
 
 
