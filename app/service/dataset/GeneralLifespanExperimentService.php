@@ -49,5 +49,7 @@ class GeneralLifespanExperimentService
         $gleData->temperature_to = $generalLifespanExperiment->temperature_to;
         $gleData->diet_id = $generalLifespanExperiment->diet_id;
         $gleData->save();
+
+        return $gleData;
     }
 }
