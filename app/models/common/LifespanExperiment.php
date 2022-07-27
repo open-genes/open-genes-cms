@@ -84,7 +84,7 @@ class LifespanExperiment extends \yii\db\ActiveRecord
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::class, 'targetAttribute' => ['gene_id' => 'id']],
             [['gene_intervention_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneIntervention::class, 'targetAttribute' => ['gene_intervention_id' => 'id']],
             [['gene_intervention_method_id'], 'exist', 'skipOnError' => true, 'targetClass' => GeneInterventionMethod::class, 'targetAttribute' => ['gene_intervention_method_id' => 'id']],
-            [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::class, 'targetAttribute' => ['organism_line_id' => 'id']],
+//            [['organism_line_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrganismLine::class, 'targetAttribute' => ['organism_line_id' => 'id']],
             [['treatment_start_time_unit_id'], 'exist', 'skipOnError' => true, 'targetClass' => TimeUnit::class, 'targetAttribute' => ['treatment_start_time_unit_id' => 'id']],
             [['treatment_end_stage_of_development_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentStageOfDevelopment::class, 'targetAttribute' => ['treatment_end_stage_of_development_id' => 'id']],
             [['treatment_start_stage_of_development_id'], 'exist', 'skipOnError' => true, 'targetClass' => TreatmentStageOfDevelopment::class, 'targetAttribute' => ['treatment_start_stage_of_development_id' => 'id']],

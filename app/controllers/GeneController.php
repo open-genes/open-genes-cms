@@ -149,7 +149,7 @@ class GeneController extends Controller
                     }
                 }
                 if (is_array(Yii::$app->request->post('LifespanExperiment'))) {
-                    LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'), $id);
+                    LifespanExperiment::saveMultipleForGene(Yii::$app->request->post('LifespanExperiment'));
                 }
                 if (is_array(Yii::$app->request->post('AgeRelatedChange'))) {
                     AgeRelatedChange::saveMultipleForGene(Yii::$app->request->post('AgeRelatedChange'), $id);
