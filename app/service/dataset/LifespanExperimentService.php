@@ -2,6 +2,8 @@
 
 namespace app\service\dataset;
 
+use app\models\common\GeneralLifespanExperiment;
+use app\models\LifespanExperiment as LifespanExperimentModel;
 use app\models\common\LifespanExperiment;
 use app\models\Gene;
 
@@ -11,11 +13,11 @@ class LifespanExperimentService
     /** @var GeneralLifespanExperimentService */
     private $generalLifespanExperimentService;
 
-    public function __construct() {
-        $this->generalLifespanExperimentService = new GeneralLifespanExperimentService();
+    public function __construct(GeneralLifespanExperimentService $generalLifespanExperimentService) {
+        $this->generalLifespanExperimentService = $generalLifespanExperimentService;
     }
 
-    public function checkDuplicateAndSave($geneSymbols, LifespanExperiment $lifespanExperiment) {
+    public function checkDuplicateAndSave($geneSymbols, LifespanExperimentModel $lifespanExperiment) {
         $generalLifespanExperiment = $lifespanExperiment->generalLifespanExperiment;
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
@@ -29,21 +31,21 @@ class LifespanExperimentService
                     }
                 }
                 if (!in_array($generalLifespanExperiment->model_organism_id, $modelOrganismIds)) {
-                    $this->saveByGene($geneSymbol->id, $lifespanExperiment);
+                    $gle = $this->generalLifespanExperimentService->saveByGene($generalLifespanExperiment);
 
-                    $this->generalLifespanExperimentService->saveByGene($generalLifespanExperiment);
+                    $this->saveByGene($geneSymbol->id, $lifespanExperiment, $gle);
                     echo 'savePurple :' . $geneSymbol->symbol . PHP_EOL;
                 }
             } else {
-                $this->saveByGene($geneSymbol->id, $lifespanExperiment);
+                $gle = $this->generalLifespanExperimentService->saveByGene($generalLifespanExperiment);
 
-                $this->generalLifespanExperimentService->saveByGene($generalLifespanExperiment);
+                $this->saveByGene($geneSymbol->id, $lifespanExperiment, $gle);
                 echo 'savePurple :' . $geneSymbol->symbol . PHP_EOL;
             }
         }
     }
 
-    public function saveByGene(int $gene_id, LifespanExperiment $lifespanExperiment) {
+    public function saveByGene(int $gene_id, LifespanExperimentModel $lifespanExperiment, GeneralLifespanExperiment $gle) {
         $leData = new LifespanExperiment();
         $leData->gene_id = $gene_id;
         $leData->ortholog_id = $lifespanExperiment->ortholog_id;
@@ -70,7 +72,7 @@ class LifespanExperimentService
         $leData->treatment_end_stage_of_development_id = $lifespanExperiment->treatment_end_stage_of_development_id;
         $leData->treatment_start_time_unit_id = $lifespanExperiment->treatment_start_time_unit_id;
         $leData->treatment_end_time_unit_id = $lifespanExperiment->treatment_end_time_unit_id;
-        $leData->general_lifespan_experiment_id = $lifespanExperiment->general_lifespan_experiment_id;
+        $leData->general_lifespan_experiment_id = $gle->id;
         $leData->type = $lifespanExperiment->type;
         $leData->description_of_therapy_ru = $lifespanExperiment->description_of_therapy_ru;
         $leData->description_of_therapy_en = $lifespanExperiment->description_of_therapy_en;

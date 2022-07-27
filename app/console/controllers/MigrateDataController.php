@@ -480,10 +480,12 @@ class MigrateDataController extends Controller
             return 'Data file is empty';
         }
 
+        $class = 'app\\service\\dataset\\' . $class;
+
         echo 'Start time: '. date('Y-m-d H:i:s') . PHP_EOL;
 
         if (class_exists($class)) {
-            $object = new $class();
+            $object = Yii::$container->get($class);
             if (method_exists($object, $method)) {
                 call_user_func_array([$object, $method], [$dataset]);
             }

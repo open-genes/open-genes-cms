@@ -3,7 +3,8 @@
 namespace app\service\dataset;
 
 
-use app\models\AgeRelatedChange;
+use app\models\common\AgeRelatedChange;
+use app\models\AgeRelatedChange as AgeRelatedChangeModel;
 use app\models\AgeRelatedChangeType;
 use app\models\ExpressionEvaluation;
 use app\models\Gene;
@@ -15,69 +16,72 @@ use app\models\StatisticalMethod;
 class AgeRelatedChangeService
 {
 
-    public function humanChangeSerumExperiments(array $dataset) {
+    public function expressionChangeHumanMrna(array $dataset) {
         $organismSexes = OrganismSex::find()->all();
 
         foreach ($dataset as $data) {
-            $gene = Gene::find()->where(['symbol' => $data[0]])->one();
-            if (empty($gene)) {
-                continue;
-            }
+            if ($geneSymbol = $data[1]) {
+                $gene = Gene::find()->where(['symbol' => $geneSymbol])->one();
+                if (empty($gene)) {
+                    continue;
+                }
 
-            $modelOrganism = ModelOrganism::find()->where(['name_en' => $data[1]])->one();
-            if (empty($modelOrganism)) {
-                continue;
-            }
+                $modelOrganism = ModelOrganism::find()->where(['name_en' => $data[3]])->one();
+                if (empty($modelOrganism)) {
+                    continue;
+                }
 
-            $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[7]])->one();
-            if (empty($ageRelatedChangeType)) {
-                continue;
-            }
+                $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[6]])->one();
+                if (empty($ageRelatedChangeType)) {
+                    continue;
+                }
 
-            $expressionEvaluation = ExpressionEvaluation::find()->where(['name_en' => $data[8]])->one();
-            if (empty($expressionEvaluation)) {
-                continue;
-            }
+                $expressionEvaluation = ExpressionEvaluation::find()->where(['name_en' => $data[7]])->one();
+                if (empty($expressionEvaluation)) {
+                    continue;
+                }
 
-            $organismSexId = 0;
-            if (!empty($organismSexes)) {
-                foreach ($organismSexes as $organismSex) {
-                    if ($organismSex->name_en === $data[9]) {
-                        $organismSexId = $organismSex->id;
+                $organismSexId = 0;
+                if (!empty($organismSexes)) {
+                    foreach ($organismSexes as $organismSex) {
+                        if ($organismSex->name_en === $data[8]) {
+                            $organismSexId = $organismSex->id;
+                        }
                     }
                 }
-            }
 
-            $measurementMethod = MeasurementMethod::find()->where(['name_en' => $data[10]])->one();
-            if (empty($measurementMethod)) {
-                continue;
-            }
+                $measurementMethod = MeasurementMethod::find()->where(['name_en' => $data[9]])->one();
+                if (empty($measurementMethod)) {
+                    continue;
+                }
 
-            $statisticalMethod = StatisticalMethod::find()->where(['name_en' => $data[11]])->one();
-            if (empty($statisticalMethod)) {
-                continue;
-            }
+                $statisticalMethod = StatisticalMethod::find()->where(['name_en' => $data[10]])->one();
+                if (empty($statisticalMethod)) {
+                    continue;
+                }
 
-            $ageRelatedChange = new AgeRelatedChange();
-            $ageRelatedChange->gene_id = $gene->id;
-            $ageRelatedChange->model_organism_id = $modelOrganism->id;
-            $ageRelatedChange->age_related_change_type_id = $ageRelatedChangeType->id;
-            $ageRelatedChange->expression_evaluation_by_id = $expressionEvaluation->id;
-            $ageRelatedChange->sex = $organismSexId;
-            $ageRelatedChange->measurement_method_id = $measurementMethod->id;
-            $ageRelatedChange->statistical_method_id = $statisticalMethod->id;
-            try {
-                $ageRelatedChange->save();
-            } catch (\Exception $exception) {
-                var_dump($exception->getMessage());
-                continue;
+                $ageRelatedChange = new AgeRelatedChange();
+                $ageRelatedChange->gene_id = $gene->id;
+                $ageRelatedChange->model_organism_id = $modelOrganism->id;
+                $ageRelatedChange->age_related_change_type_id = $ageRelatedChangeType->id;
+                $ageRelatedChange->expression_evaluation_by_id = $expressionEvaluation->id;
+                $ageRelatedChange->sex = $organismSexId;
+                $ageRelatedChange->measurement_method_id = $measurementMethod->id;
+                $ageRelatedChange->statistical_method_id = $statisticalMethod->id;
+                try {
+                    $ageRelatedChange->save();
+                    echo 'success gene: ' . $geneSymbol . PHP_EOL;
+                } catch (\Exception $exception) {
+                    var_dump($exception->getMessage());
+                    continue;
+                }
             }
         }
 
         echo 'success END import' . PHP_EOL;
     }
 
-    public function checkDuplicateAndSave($geneSymbols, AgeRelatedChange $ageRelatedChange) {
+    public function checkDuplicateAndSave($geneSymbols, AgeRelatedChangeModel $ageRelatedChange) {
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
             if (!empty($geneSymbol->ageRelatedChanges)) {
@@ -98,7 +102,7 @@ class AgeRelatedChangeService
         }
     }
 
-    private function saveByGene(int $geneId, AgeRelatedChange $ageRelatedChange) {
+    private function saveByGene(int $geneId, AgeRelatedChangeModel $ageRelatedChange) {
         $item = new AgeRelatedChange();
         $item->gene_id = $geneId;
         $item->age_related_change_type_id = $ageRelatedChange->age_related_change_type_id;

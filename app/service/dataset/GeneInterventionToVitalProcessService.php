@@ -3,11 +3,12 @@
 namespace app\service\dataset;
 
 use app\models\Gene;
-use app\models\GeneInterventionToVitalProcess;
+use app\models\GeneInterventionToVitalProcess as GeneInterventionToVitalProcessModel;
+use app\models\common\GeneInterventionToVitalProcess;
 
 class GeneInterventionToVitalProcessService
 {
-    public function checkDuplicateAndSave($geneSymbols, GeneInterventionToVitalProcess $geneInterventionToVitalProcess) {
+    public function checkDuplicateAndSave($geneSymbols, GeneInterventionToVitalProcessModel $geneInterventionToVitalProcess) {
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
             if (!empty($geneSymbol->geneInterventionToVitalProcesses)) {
@@ -28,7 +29,7 @@ class GeneInterventionToVitalProcessService
         }
     }
 
-    private function saveByGene(int $geneId, GeneInterventionToVitalProcess $geneInterventionToVitalProcess) {
+    private function saveByGene(int $geneId, GeneInterventionToVitalProcessModel $geneInterventionToVitalProcess) {
         $item = new GeneInterventionToVitalProcess();
         $item->gene_id = $geneId;
         $item->gene_intervention_id = $geneInterventionToVitalProcess->gene_intervention_id;
