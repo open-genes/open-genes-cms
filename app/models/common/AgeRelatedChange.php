@@ -29,7 +29,7 @@ use Yii;
  * @property int|null $measurement_method_id
  * @property int|null $expression_evaluation_by_id
  * @property int|null $statistical_method_id
- * @property int|null $p_value
+ * @property string|null $p_value
  * @property string|null $pmid
  *
  * @property Gene $gene
@@ -54,9 +54,9 @@ class AgeRelatedChange extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit_id', 'measurement_method_id', 'expression_evaluation_by_id', 'statistical_method_id', 'p_value' ], 'integer'],
+            [['gene_id', 'age_related_change_type_id', 'sample_id', 'model_organism_id', 'organism_line_id', 'age_unit_id', 'measurement_method_id', 'expression_evaluation_by_id', 'statistical_method_id'], 'integer'],
             [['mean_age_of_controls', 'mean_age_of_experiment', 'min_age_of_controls', 'max_age_of_controls', 'min_age_of_experiment', 'max_age_of_experiment', 'change_value', 'n_of_controls', 'n_of_experiment'], 'number'],
-            [['comment_en', 'comment_ru'], 'string'],
+            [['comment_en', 'comment_ru', 'p_value'], 'string'],
             [['reference', 'pmid'], 'string', 'max' => 255],
             [['gene_id'], 'exist', 'skipOnError' => true, 'targetClass' => Gene::className(), 'targetAttribute' => ['gene_id' => 'id']],
             [['model_organism_id'], 'exist', 'skipOnError' => true, 'targetClass' => ModelOrganism::className(), 'targetAttribute' => ['model_organism_id' => 'id']],
