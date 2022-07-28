@@ -84,18 +84,11 @@ class AgeRelatedChangeService
     public function checkDuplicateAndSave($geneSymbols, AgeRelatedChangeModel $ageRelatedChange) {
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
-            if (!empty($geneSymbol->ageRelatedChanges)) {
-                $modelOrganismIds = [];
-                foreach ($geneSymbol->ageRelatedChanges as $item) {
-                    if (!empty($item->model_organism_id)) {
-                        $modelOrganismIds[] = $item->model_organism_id;
-                    }
-                }
-                if (!in_array($ageRelatedChange->model_organism_id, $modelOrganismIds)) {
-                    $this->saveByGene($geneSymbol->id, $ageRelatedChange);
-                    echo 'saveBlue :' . $geneSymbol->symbol . PHP_EOL;
-                }
-            } else {
+            $ccAgeRelatedChange = AgeRelatedChangeModel::find()
+                ->where(['gene_id' => $geneSymbol->id])
+                ->one();
+
+            if (empty($ccAgeRelatedChange)) {
                 $this->saveByGene($geneSymbol->id, $ageRelatedChange);
                 echo 'saveBlue :' . $geneSymbol->symbol . PHP_EOL;
             }
