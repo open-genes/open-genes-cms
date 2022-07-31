@@ -11,18 +11,11 @@ class GeneInterventionToVitalProcessService
     public function checkDuplicateAndSave($geneSymbols, GeneInterventionToVitalProcessModel $geneInterventionToVitalProcess) {
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
-            if (!empty($geneSymbol->geneInterventionToVitalProcesses)) {
-                $modelOrganismIds = [];
-                foreach ($geneSymbol->geneInterventionToVitalProcesses as $item) {
-                    if (!empty($item->model_organism_id)) {
-                        $modelOrganismIds[] = $item->model_organism_id;
-                    }
-                }
-                if (!in_array($geneInterventionToVitalProcess->model_organism_id, $modelOrganismIds)) {
-                    $this->saveByGene($geneSymbol->id, $geneInterventionToVitalProcess);
-                    echo 'saveGreen :' . $geneSymbol->symbol . PHP_EOL;
-                }
-            } else {
+            $ccGeneInterventionToVitalProcess = GeneInterventionToVitalProcessModel::find()
+                ->where(['gene_id' => $geneSymbol->id])
+                ->one();
+
+            if (empty($ccGeneInterventionToVitalProcess)) {
                 $this->saveByGene($geneSymbol->id, $geneInterventionToVitalProcess);
                 echo 'saveGreen :' . $geneSymbol->symbol . PHP_EOL;
             }

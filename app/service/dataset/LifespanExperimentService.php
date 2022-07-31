@@ -3,7 +3,7 @@
 namespace app\service\dataset;
 
 use app\models\common\GeneralLifespanExperiment;
-use app\models\LifespanExperiment as LifespanExperimentModel;
+//use app\models\LifespanExperiment as LifespanExperimentModel;
 use app\models\common\LifespanExperiment;
 use app\models\Gene;
 
@@ -17,35 +17,28 @@ class LifespanExperimentService
         $this->generalLifespanExperimentService = $generalLifespanExperimentService;
     }
 
-    public function checkDuplicateAndSave($geneSymbols, LifespanExperimentModel $lifespanExperiment) {
+    public function checkDuplicateAndSave($geneSymbols, LifespanExperiment $lifespanExperiment) {
         $generalLifespanExperiment = $lifespanExperiment->generalLifespanExperiment;
         /** @var Gene $geneSymbol */
+        echo 'checkDuplicateAndSave' . PHP_EOL;
         foreach ($geneSymbols as $geneSymbol) {
-            if (!empty($geneSymbol->lifespanExperiments)) {
-                $modelOrganismIds = [];
-                foreach ($geneSymbol->lifespanExperiments as $item) {
-                    if ($geneSymbolGeneralLifespanExperiment = $item->generalLifespanExperiment) {
-                        if (!empty($geneSymbolGeneralLifespanExperiment->model_organism_id)) {
-                            $modelOrganismIds[] = $geneSymbolGeneralLifespanExperiment->model_organism_id;
-                        }
-                    }
-                }
-                if (!in_array($generalLifespanExperiment->model_organism_id, $modelOrganismIds)) {
-                    $gle = $this->generalLifespanExperimentService->saveByGene($generalLifespanExperiment);
-
-                    $this->saveByGene($geneSymbol->id, $lifespanExperiment, $gle);
-                    echo 'savePurple :' . $geneSymbol->symbol . PHP_EOL;
-                }
-            } else {
+            $geneSymbolGeneralLifespanExperiment = GeneralLifespanExperiment::find()
+                ->innerJoin('lifespan_experiment as le', 'general_lifespan_experiment.id=le.general_lifespan_experiment_id')
+                ->where(['le.gene_id' => $geneSymbol->id])
+                ->andWhere(['general_lifespan_experiment.id' => $generalLifespanExperiment->id])
+                ->one();
+            if (empty($geneSymbolGeneralLifespanExperiment)) {
                 $gle = $this->generalLifespanExperimentService->saveByGene($generalLifespanExperiment);
 
                 $this->saveByGene($geneSymbol->id, $lifespanExperiment, $gle);
                 echo 'savePurple :' . $geneSymbol->symbol . PHP_EOL;
+            } else {
+                echo 'has' . PHP_EOL;
             }
         }
     }
 
-    public function saveByGene(int $gene_id, LifespanExperimentModel $lifespanExperiment, GeneralLifespanExperiment $gle) {
+    public function saveByGene(int $gene_id, LifespanExperiment $lifespanExperiment, GeneralLifespanExperiment $gle) {
         $leData = new LifespanExperiment();
         $leData->gene_id = $gene_id;
         $leData->ortholog_id = $lifespanExperiment->ortholog_id;

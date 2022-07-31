@@ -2,7 +2,11 @@
 
 namespace app\service\dataset;
 
+use app\models\AgeRelatedChange;
+use app\models\common\GeneralLifespanExperiment;
+use app\models\common\LifespanExperiment;
 use app\models\Gene;
+use app\models\GeneInterventionToVitalProcess;
 
 class GeneService
 {
@@ -37,47 +41,58 @@ class GeneService
             if (!empty($gene) && !empty($conditions) && !empty($symbols)) {
                 $geneSymbols = Gene::find()->where(['in', 'symbol', $symbols])->all();
 
-                // TODO: феолетовый
-                if (!empty($gene->lifespanExperiments)) {
-                    foreach ($gene->lifespanExperiments as $lifespanExperiment) {
-                        if ($generalLifespanExperiment = $lifespanExperiment->generalLifespanExperiment) {
-                            if (!empty($generalLifespanExperiment->model_organism_id)) {
-                                if (in_array($generalLifespanExperiment->modelOrganism->name_ru, $conditions)) {
-                                    $this
-                                        ->lifespanExperimentService
-                                        ->checkDuplicateAndSave($geneSymbols, $lifespanExperiment);
-                                }
-                            }
-                        }
-                    }
-                }
+                foreach ($conditions as $condition) {
 
-                // TODO: зеленный
-                if (!empty($gene->geneInterventionToVitalProcesses)) {
-                    foreach ($gene->geneInterventionToVitalProcesses as $geneInterventionToVitalProcess) {
-                        if (!empty($geneInterventionToVitalProcess->model_organism_id)) {
-                            if (in_array($geneInterventionToVitalProcess->modelOrganism->name_ru, $conditions)) {
+                    // TODO: феолетовый
+                    if ($generalLifespanExperiments = GeneralLifespanExperiment::find()
+                        ->innerJoin('lifespan_experiment as le', 'general_lifespan_experiment.id=le.general_lifespan_experiment_id')
+                        ->innerJoin('model_organism as mo', 'general_lifespan_experiment.model_organism_id=mo.id')
+                        ->where([
+                            'mo.name_ru' => $condition,
+                            'le.gene_id' => $gene->id
+                        ])
+                        ->all()) {
+
+                        foreach ($generalLifespanExperiments as $generalLifespanExperiment) {
+                            /** @var $generalLifespanExperiment GeneralLifespanExperiment */
+                            foreach ($generalLifespanExperiment->lifespanExperiments as $lifespanExperiment) {
                                 $this
-                                    ->geneInterventionToVitalProcessService
-                                    ->checkDuplicateAndSave($geneSymbols, $geneInterventionToVitalProcess);
+                                    ->lifespanExperimentService
+                                    ->checkDuplicateAndSave($geneSymbols, $lifespanExperiment);
                             }
                         }
                     }
-                }
 
-                // TODO: голубой
-                if (!empty($gene->ageRelatedChanges)) {
-                    foreach ($gene->ageRelatedChanges as $ageRelatedChange) {
-                        if (!empty($ageRelatedChange->model_organism_id)) {
-                            if (in_array($ageRelatedChange->modelOrganism->name_ru, $conditions)) {
-                                $this
-                                    ->ageRelatedChangeService
-                                    ->checkDuplicateAndSave($geneSymbols, $ageRelatedChange);
-                            }
+                    // TODO: зеленный
+                    if ($geneInterventionToVitalProcesses = GeneInterventionToVitalProcess::find()
+                        ->innerJoin('model_organism as mo', 'mo.id=gene_intervention_to_vital_process.model_organism_id')
+                        ->where([
+                            'mo.name_ru' => $condition,
+                            'gene_intervention_to_vital_process.gene_id' => $gene->id
+                        ])
+                        ->all()) {
+                        foreach ($geneInterventionToVitalProcesses as $geneInterventionToVitalProcess) {
+                            $this
+                                ->geneInterventionToVitalProcessService
+                                ->checkDuplicateAndSave($geneSymbols, $geneInterventionToVitalProcess);
+                        }
+                    }
+
+                    // TODO: голубой
+                    if ($ageRelatedChanges = AgeRelatedChange::find()
+                        ->innerJoin('model_organism as mo', 'mo.id=age_related_change.model_organism_id')
+                        ->where([
+                            'mo.name_ru' => $condition,
+                            'age_related_change.gene_id' => $gene->id
+                        ])
+                        ->all()) {
+                        foreach ($ageRelatedChanges as $ageRelatedChange) {
+                            $this
+                                ->ageRelatedChangeService
+                                ->checkDuplicateAndSave($geneSymbols, $ageRelatedChange);
                         }
                     }
                 }
-
             }
         }
 

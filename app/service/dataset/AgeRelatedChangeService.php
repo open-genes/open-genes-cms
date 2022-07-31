@@ -12,6 +12,7 @@ use app\models\MeasurementMethod;
 use app\models\ModelOrganism;
 use app\models\OrganismSex;
 use app\models\StatisticalMethod;
+use app\models\TimeUnit;
 
 class AgeRelatedChangeService
 {
@@ -20,7 +21,7 @@ class AgeRelatedChangeService
         $organismSexes = OrganismSex::find()->all();
 
         foreach ($dataset as $data) {
-            if ($geneSymbol = $data[1]) {
+            if ($geneSymbol = trim($data[1])) {
                 $gene = Gene::find()->where(['symbol' => $geneSymbol])->one();
                 if (empty($gene)) {
                     continue;
@@ -60,6 +61,8 @@ class AgeRelatedChangeService
                     continue;
                 }
 
+                $ageUnit = TimeUnit::find()->where(['name_en' => trim(strtolower($data[11]))])->one();
+
                 $ageRelatedChange = new AgeRelatedChange();
                 $ageRelatedChange->gene_id = $gene->id;
                 $ageRelatedChange->model_organism_id = $modelOrganism->id;
@@ -68,6 +71,17 @@ class AgeRelatedChangeService
                 $ageRelatedChange->sex = $organismSexId;
                 $ageRelatedChange->measurement_method_id = $measurementMethod->id;
                 $ageRelatedChange->statistical_method_id = $statisticalMethod->id;
+                $ageRelatedChange->age_unit_id = !empty($ageUnit) ? $ageUnit->id : null;
+
+                $ageRelatedChange->p_value = $data[4];
+                $ageRelatedChange->min_age_of_controls = $data[12];
+                $ageRelatedChange->max_age_of_controls = $data[13];
+                $ageRelatedChange->min_age_of_experiment = $data[14];
+                $ageRelatedChange->max_age_of_experiment = $data[15];
+                $ageRelatedChange->n_of_controls = $data[16];
+                $ageRelatedChange->n_of_experiment = $data[17];
+                $ageRelatedChange->reference = $data[18];
+                $ageRelatedChange->change_value = $data[21];
                 try {
                     $ageRelatedChange->save();
                     echo 'success gene: ' . $geneSymbol . PHP_EOL;
@@ -84,18 +98,11 @@ class AgeRelatedChangeService
     public function checkDuplicateAndSave($geneSymbols, AgeRelatedChangeModel $ageRelatedChange) {
         /** @var Gene $geneSymbol */
         foreach ($geneSymbols as $geneSymbol) {
-            if (!empty($geneSymbol->ageRelatedChanges)) {
-                $modelOrganismIds = [];
-                foreach ($geneSymbol->ageRelatedChanges as $item) {
-                    if (!empty($item->model_organism_id)) {
-                        $modelOrganismIds[] = $item->model_organism_id;
-                    }
-                }
-                if (!in_array($ageRelatedChange->model_organism_id, $modelOrganismIds)) {
-                    $this->saveByGene($geneSymbol->id, $ageRelatedChange);
-                    echo 'saveBlue :' . $geneSymbol->symbol . PHP_EOL;
-                }
-            } else {
+            $ccAgeRelatedChange = AgeRelatedChangeModel::find()
+                ->where(['gene_id' => $geneSymbol->id])
+                ->one();
+
+            if (empty($ccAgeRelatedChange)) {
                 $this->saveByGene($geneSymbol->id, $ageRelatedChange);
                 echo 'saveBlue :' . $geneSymbol->symbol . PHP_EOL;
             }
