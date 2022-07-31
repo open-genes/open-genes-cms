@@ -4,9 +4,12 @@ namespace app\service\dataset;
 
 use app\models\AgeRelatedChange;
 use app\models\common\GeneralLifespanExperiment;
+use app\models\common\GeneToSource;
 use app\models\common\LifespanExperiment;
 use app\models\Gene;
 use app\models\GeneInterventionToVitalProcess;
+use app\models\Source;
+use phpDocumentor\Reflection\Types\Null_;
 
 class GeneService
 {
@@ -96,5 +99,36 @@ class GeneService
             }
         }
 
+    }
+
+    public function addSourceToGene(array $data) {
+        if ($source = Source::find()->where('GeneAge')->one()) {
+            foreach ($data as $item) {
+                $symbol = trim($item[0]);
+                if ($gene = Gene::find()->where(['symbol' => $symbol])->one()) {
+                    if (GeneToSource::find()->where([
+                        'gene_id' => $gene->id,
+                        'source_id' => $source->id
+                    ])->one()) {
+                        $geneToSource = new GeneToSource();
+                        $geneToSource->gene_id = $gene->id;
+                        $geneToSource->source_id = $source->id;
+                        try {
+                            $geneToSource->save();
+                            echo 'success: ' . $symbol . PHP_EOL;
+                        } catch (\Exception $exception) {
+                            var_dump($exception->getMessage());
+                            continue;
+                        }
+                    } else {
+                        echo 'has: ' . $symbol . PHP_EOL;
+                    }
+                } else {
+                    echo 'такого гена нет: ' . $symbol . PHP_EOL;
+                }
+            }
+        } else {
+            echo 'Источника GeneAge несуществует' . PHP_EOL;
+        }
     }
 }
