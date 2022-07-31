@@ -5,11 +5,9 @@ namespace app\service\dataset;
 use app\models\AgeRelatedChange;
 use app\models\common\GeneralLifespanExperiment;
 use app\models\common\GeneToSource;
-use app\models\common\LifespanExperiment;
 use app\models\Gene;
 use app\models\GeneInterventionToVitalProcess;
 use app\models\Source;
-use phpDocumentor\Reflection\Types\Null_;
 
 class GeneService
 {
@@ -110,6 +108,8 @@ class GeneService
                         'gene_id' => $gene->id,
                         'source_id' => $source->id
                     ])->one()) {
+                        echo 'has: ' . $symbol . PHP_EOL;
+                    } else {
                         $geneToSource = new GeneToSource();
                         $geneToSource->gene_id = $gene->id;
                         $geneToSource->source_id = $source->id;
@@ -120,8 +120,6 @@ class GeneService
                             var_dump($exception->getMessage());
                             continue;
                         }
-                    } else {
-                        echo 'has: ' . $symbol . PHP_EOL;
                     }
                 } else {
                     echo 'такого гена нет: ' . $symbol . PHP_EOL;
