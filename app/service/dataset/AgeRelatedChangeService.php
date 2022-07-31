@@ -81,6 +81,7 @@ class AgeRelatedChangeService
                 $ageRelatedChange->n_of_controls = $data[16];
                 $ageRelatedChange->n_of_experiment = $data[17];
                 $ageRelatedChange->reference = $data[18];
+                $ageRelatedChange->change_value = $data[21];
                 try {
                     $ageRelatedChange->save();
                     echo 'success gene: ' . $geneSymbol . PHP_EOL;
