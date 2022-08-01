@@ -11,6 +11,7 @@ use app\models\Gene;
 use app\models\MeasurementMethod;
 use app\models\ModelOrganism;
 use app\models\OrganismSex;
+use app\models\Sample;
 use app\models\StatisticalMethod;
 use app\models\TimeUnit;
 
@@ -62,6 +63,7 @@ class AgeRelatedChangeService
                 }
 
                 $ageUnit = TimeUnit::find()->where(['name_en' => trim(strtolower($data[11]))])->one();
+                $sample = Sample::find()->where(['name_en' => $data[5]])->one();
 
                 $ageRelatedChange = new AgeRelatedChange();
                 $ageRelatedChange->gene_id = $gene->id;
@@ -72,6 +74,7 @@ class AgeRelatedChangeService
                 $ageRelatedChange->measurement_method_id = $measurementMethod->id;
                 $ageRelatedChange->statistical_method_id = $statisticalMethod->id;
                 $ageRelatedChange->age_unit_id = !empty($ageUnit) ? $ageUnit->id : null;
+                $ageRelatedChange->sample_id = !empty($sample) ? $sample->id : null;
 
                 $ageRelatedChange->p_value = $data[4];
                 $ageRelatedChange->min_age_of_controls = $data[12];
