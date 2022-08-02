@@ -12,21 +12,21 @@ class m220802_115759_create_table_gene_kind_type extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%gene_kind_type}}', [
+        $this->createTable('{{%data_types}}', [
             'id' => $this->primaryKey(),
             'name_en' => $this->string()->null(),
             'name_ru' => $this->string()->null()
         ]);
 
-        $this->insert('gene_kind_type', [
+        $this->insert('data_types', [
             'name_en' => 'genomic',
             'name_ru' => 'геномные',
         ]);
-        $this->insert('gene_kind_type', [
+        $this->insert('data_types', [
             'name_en' => 'transcriptomic',
             'name_ru' => 'транскриптомные',
         ]);
-        $this->insert('gene_kind_type', [
+        $this->insert('data_types', [
             'name_en' => 'proteomic',
             'name_ru' => 'протеомные',
         ]);
@@ -46,7 +46,7 @@ class m220802_115759_create_table_gene_kind_type extends Migration
     {
         $this->dropIndex('gene_to_longevity_effect_gene_id_idx', 'gene_to_longevity_effect');
         $this->dropForeignKey('fk_gtle_gene_id', 'gene_to_longevity_effect');
-        $this->dropTable('{{%gene_kind_type}}');
+        $this->dropTable('{{%data_types}}');
     }
 
     /*
