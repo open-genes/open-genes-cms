@@ -3,6 +3,7 @@
 namespace app\models\common;
 
 use Yii;
+use app\models\GeneralLifespanExperiment;
 
 /**
  * This is the model class for table "model_organism".
@@ -14,6 +15,7 @@ use Yii;
  * @property int|null $created_at
  * @property int|null $updated_at
  *
+ * @property GeneralLifespanExperiment[] $generalLifespanExperiment
  * @property AgeRelatedChange[] $ageRelatedChanges
  * @property GeneInterventionToVitalProcess[] $geneInterventionToVitalProcesses
  * @property LifespanExperiment[] $lifespanExperiments
@@ -82,6 +84,12 @@ class ModelOrganism extends \yii\db\ActiveRecord
     public function getLifespanExperiments()
     {
         return $this->hasMany(LifespanExperiment::class, ['model_organism_id' => 'id']);
+    }
+
+
+    public function getGeneralLifespanExperiment()
+    {
+        return $this->hasMany(GeneralLifespanExperiment::class, ['model_organism_id' => 'id']);
     }
 
     /**
