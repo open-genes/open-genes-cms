@@ -28,6 +28,7 @@ use Yii;
  * @property int|null $age_unit_id
  * @property int|null $measurement_method_id
  * @property int|null $expression_evaluation_by_id
+ * @property int|null $sex
  * @property int|null $statistical_method_id
  * @property string|null $p_value
  * @property string|null $pmid

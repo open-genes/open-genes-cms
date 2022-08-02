@@ -56,6 +56,7 @@ use Yii;
  * @property OrganismSex $organismSex
  * @property GeneralLifespanExperimentToStrain[] $generalLifespanExperimentToStrains
  * @property LifespanExperiment[] $lifespanExperiments
+ * @property ModelOrganism $modelOrganism
  */
 class GeneralLifespanExperiment extends \yii\db\ActiveRecord
 {
@@ -206,6 +207,11 @@ class GeneralLifespanExperiment extends \yii\db\ActiveRecord
     public function getOrganismSex()
     {
         return $this->hasOne(OrganismSex::class, ['id' => 'organism_sex_id']);
+    }
+
+    public function getModelOrganism()
+    {
+        return $this->hasOne(ModelOrganism::class, ['id' => 'model_organism_id']);
     }
 
     /**
