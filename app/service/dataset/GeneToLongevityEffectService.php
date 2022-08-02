@@ -23,7 +23,7 @@ class GeneToLongevityEffectService
             }
 
             GeneToLongevityEffect::deleteAll(
-                "gene_id = {$gene->id} AND data_type = 'genomic' AND ( longevity_effect_id = 8 OR longevity_effect_id = 1 )"
+                "gene_id = {$gene->id} AND data_type = 1 AND ( longevity_effect_id = 8 OR longevity_effect_id = 1 )"
             );
 
             $longevity = LongevityEffect::find()->where(['name_en' => $data[7]])->one();
@@ -99,6 +99,7 @@ class GeneToLongevityEffectService
             $geneToLongevityEffect->comment_en = $data[30];
             try {
                 $geneToLongevityEffect->save();
+                echo 'success: ' . $data[0] . PHP_EOL;
             } catch (\Exception $exception) {
                 var_dump($exception->getMessage());
                 continue;
