@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m220802_115759_create_table_gene_kind_type
+ * Class m220802_115759_create_table_data_types
  */
-class m220802_115759_create_table_gene_kind_type extends Migration
+class m220802_115759_create_table_data_types extends Migration
 {
     /**
      * {@inheritdoc}
@@ -13,7 +13,7 @@ class m220802_115759_create_table_gene_kind_type extends Migration
     public function safeUp()
     {
         $this->createTable('{{%data_types}}', [
-            'id' => $this->primaryKey(),
+            'id' => 'TINYINT NOT NULL AUTO_INCREMENT PRIMARY KEY',
             'name_en' => $this->string()->null(),
             'name_ru' => $this->string()->null()
         ]);
@@ -32,11 +32,11 @@ class m220802_115759_create_table_gene_kind_type extends Migration
         ]);
 
         // foreign keys
-        $this->addForeignKey('fk_gtle_gene_id', 'gene_to_longevity_effect', 'gene_id',
-            'gene', 'id', 'RESTRICT');
+        $this->addForeignKey('gene_to_longevity_effect_data_type', 'gene_to_longevity_effect', 'data_type',
+            'data_types', 'id', 'RESTRICT');
 
         //indexes
-        $this->createIndex('gene_to_longevity_effect_gene_id_idx', 'gene_to_longevity_effect', 'gene_id');
+        $this->createIndex('gene_to_longevity_effect_data_type_idx', 'gene_to_longevity_effect', 'data_type');
     }
 
     /**
@@ -44,8 +44,8 @@ class m220802_115759_create_table_gene_kind_type extends Migration
      */
     public function safeDown()
     {
-        $this->dropIndex('gene_to_longevity_effect_gene_id_idx', 'gene_to_longevity_effect');
-        $this->dropForeignKey('fk_gtle_gene_id', 'gene_to_longevity_effect');
+        $this->dropForeignKey('gene_to_longevity_effect_data_type', 'gene_to_longevity_effect');
+        $this->dropIndex('gene_to_longevity_effect_data_type_idx', 'gene_to_longevity_effect');
         $this->dropTable('{{%data_types}}');
     }
 
@@ -58,7 +58,7 @@ class m220802_115759_create_table_gene_kind_type extends Migration
 
     public function down()
     {
-        echo "m220802_115759_create_table_gene_kind_type cannot be reverted.\n";
+        echo "m220802_115759_create_table_data_types cannot be reverted.\n";
 
         return false;
     }
