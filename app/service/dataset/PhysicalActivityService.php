@@ -61,14 +61,15 @@ class PhysicalActivityService
                 $physicalActivity->organism_line_id = !empty($organismLineName) && $organismLine ? $organismLine->id : null;
                 $physicalActivity->organism_sex_id = $organismSex->id;
                 $physicalActivity->p_value = $data[4];
-                $physicalActivity->after_sport_result = $data[1];
-                $physicalActivity->time_point = $data[13];
+                $physicalActivity->result = $data[1];
+                $physicalActivity->measurement_taken = $data[13];
                 $physicalActivity->training_regimen = $data[15];
-                $physicalActivity->sportsman = $data[16];
+                $physicalActivity->participants = $data[16];
+                $physicalActivity->duration = $data[14];
                 $physicalActivity->age = $data[9];
                 $physicalActivity->age_units = $data[10];
                 $physicalActivity->experiment_groups_quantity = $data[17];
-                $physicalActivity->link = $data[18];
+                $physicalActivity->reference = $data[18];
                 $physicalActivity->expression_change_log = $data[3];
 
                 $measurementMethodNames = explode(',', trim($data[11]));
