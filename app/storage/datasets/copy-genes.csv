@@ -1,19 +1,19 @@
 gene_symbol,symbols,conditions
-IGF1R,INSR,"червь Caenorhabditis elegans,муха Drosophila melanogaster"
+IGF1R,INSR,"круглый червь Caenorhabditis elegans,муха Drosophila melanogaster"
 FOXO4,"FOXO1,FOXO3",муха Drosophila melanogaster
-FOXO3,"FOXO1,FOXO4",червь Caenorhabditis elegans
-PIK3CA,"PIK3CB,PIK3CD","червь Caenorhabditis elegans,муха Drosophila melanogaster"
+FOXO3,"FOXO1,FOXO4",круглый червь Caenorhabditis elegans
+PIK3CA,"PIK3CB,PIK3CD","круглый червь Caenorhabditis elegans,муха Drosophila melanogaster"
 HDAC1,HDAC2,муха Drosophila melanogaster
 GSK3A,GSK3B,муха Drosophila melanogaster
 LMNB1,LMNA,муха Drosophila melanogaster
-LMNA,LMNB1,червь Caenorhabditis elegans
+LMNA,LMNB1,круглый червь Caenorhabditis elegans
 SNAI2,SNAI1,муха Drosophila melanogaster
 SMOC2 ,SMOC1,муха Drosophila melanogaster
-GDF11,"MSTN,TGFB1",червь Caenorhabditis elegans
+GDF11,"MSTN,TGFB1",круглый червь Caenorhabditis elegans
 GDF11,MSTN,муха Drosophila melanogaster
-AKT1,"AKT2,AKT3","червь Caenorhabditis elegans,муха Drosophila melanogaster"
-MAPK8,"MAPK9,MAPK10","червь Caenorhabditis elegans,муха Drosophila melanogaster"
-NOTCH3,"NOTCH1,NOTCH2",червь Caenorhabditis elegans
+AKT1,"AKT2,AKT3","круглый червь Caenorhabditis elegans,муха Drosophila melanogaster"
+MAPK8,"MAPK9,MAPK10","круглый червь Caenorhabditis elegans,муха Drosophila melanogaster"
+NOTCH3,"NOTCH1,NOTCH2",круглый червь Caenorhabditis elegans
 JAK2,JAK1,муха Drosophila melanogaster
 IRS1,IRS2,муха Drosophila melanogaster
 INS,"IGF1,IGF2",муха Drosophila melanogaster
