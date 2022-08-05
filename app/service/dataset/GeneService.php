@@ -3,10 +3,13 @@
 namespace app\service\dataset;
 
 use app\models\AgeRelatedChange;
+use app\models\CommentCause;
 use app\models\common\GeneralLifespanExperiment;
 use app\models\common\GeneToSource;
 use app\models\Gene;
 use app\models\GeneInterventionToVitalProcess;
+use app\models\GeneToCommentCause;
+use app\models\GeneToLongevityEffect;
 use app\models\Source;
 
 class GeneService
@@ -129,4 +132,60 @@ class GeneService
             echo 'Источника GeneAge несуществует' . PHP_EOL;
         }
     }
+
+    public function addCriteriaToGene(array $data) {
+        $geneSymbols = [];
+        foreach ($data as $item) {
+            $symbol = trim($item[0]);
+            if ($gene = Gene::find()->where(['symbol' => $symbol])->one()) {
+                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
+                    if (!AgeRelatedChange::find()->where([
+                        'gene_id' => $gene->id
+                    ])->one()) {
+                        echo $item[0] . ' hasn`t Age-Related-Changes experiment'. PHP_EOL;
+                    }
+                }
+
+                if ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
+                    if (!GeneToLongevityEffect::find()->where([
+                        'gene_id' => $gene->id
+                    ])->one()) {
+                        echo $item[0] . ' hasn`t Gene-To-Longevity-Effect experiment'. PHP_EOL;
+                    }
+                }
+
+                if ($commentCause = CommentCause::find()->where(['name_en' => $item[1]])->one()) {
+                    if (GeneToCommentCause::find()
+                        ->where([
+                            'gene_id' => $gene->id,
+                            'comment_cause_id' => $commentCause->id
+                        ])
+                        ->one()) {
+                        $gene->isHidden = 0;
+                        $gene->save();
+                    } else {
+                        $geneToCommentCause = new GeneToCommentCause();
+                        $geneToCommentCause->gene_id = $gene->id;
+                        $geneToCommentCause->comment_cause_id = $commentCause->id;
+                        $geneToCommentCause->save();
+                    }
+                }
+            } else {
+                echo 'Gene is not exist: ' . $symbol . PHP_EOL;
+                $geneSymbols[] = $symbol;
+            }
+        }
+
+        if (!empty($geneSymbols)) {
+            $geneSymbols = array_unique($geneSymbols);
+            $titleFile = date('Ymd__His') . 'c.csv';
+            $file = fopen(\Yii::getAlias('@app/') . 'storage/datalogs/' . $titleFile, 'a');
+            foreach ($geneSymbols as $symbol) {
+                fwrite($file, $symbol . PHP_EOL);
+            }
+            fclose($file);
+            echo 'Log file is ready' . PHP_EOL;
+        }
+    }
+
 }
