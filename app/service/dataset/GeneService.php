@@ -3,12 +3,11 @@
 namespace app\service\dataset;
 
 use app\models\AgeRelatedChange;
-use app\models\CommentCause;
 use app\models\common\GeneralLifespanExperiment;
 use app\models\common\GeneToSource;
+use app\models\repositories\GeneToCommentCauseRepository;
 use app\models\Gene;
 use app\models\GeneInterventionToVitalProcess;
-use app\models\GeneToCommentCause;
 use app\models\GeneToLongevityEffect;
 use app\models\Source;
 
@@ -23,14 +22,19 @@ class GeneService
     /** @var AgeRelatedChangeService */
     private $ageRelatedChangeService;
 
+    /** @var GeneToCommentCauseRepository */
+    private $geneToCommentCauseRepository;
+
     public function __construct(
         LifespanExperimentService $lifespanExperimentService,
         GeneInterventionToVitalProcessService $geneInterventionToVitalProcessService,
-        AgeRelatedChangeService $ageRelatedChangeService
+        AgeRelatedChangeService $ageRelatedChangeService,
+        GeneToCommentCauseRepository $geneToCommentCauseRepository
     ) {
         $this->lifespanExperimentService = $lifespanExperimentService;
         $this->ageRelatedChangeService = $ageRelatedChangeService;
         $this->geneInterventionToVitalProcessService = $geneInterventionToVitalProcessService;
+        $this->geneToCommentCauseRepository = $geneToCommentCauseRepository;
     }
 
 
@@ -137,37 +141,28 @@ class GeneService
         $geneSymbols = [];
         foreach ($data as $item) {
             $symbol = trim($item[0]);
-            if ($gene = Gene::find()->where(['symbol' => $symbol])->one()) {
+            if ($gene = Gene::find()
+                ->where(['symbol' => $symbol])
+                ->one()) {
                 if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
-                    if (!AgeRelatedChange::find()->where([
+                    if (AgeRelatedChange::find()->where([
                         'gene_id' => $gene->id
                     ])->one()) {
-                        echo $item[0] . ' hasn`t Age-Related-Changes experiment'. PHP_EOL;
-                    }
-                }
-
-                if ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
-                    if (!GeneToLongevityEffect::find()->where([
-                        'gene_id' => $gene->id
-                    ])->one()) {
-                        echo $item[0] . ' hasn`t Gene-To-Longevity-Effect experiment'. PHP_EOL;
-                    }
-                }
-
-                if ($commentCause = CommentCause::find()->where(['name_en' => $item[1]])->one()) {
-                    if (GeneToCommentCause::find()
-                        ->where([
-                            'gene_id' => $gene->id,
-                            'comment_cause_id' => $commentCause->id
-                        ])
-                        ->one()) {
-                        $gene->isHidden = 0;
-                        $gene->save();
+                        $this
+                            ->geneToCommentCauseRepository
+                            ->saveFromCriteria($gene, $item[1]);
                     } else {
-                        $geneToCommentCause = new GeneToCommentCause();
-                        $geneToCommentCause->gene_id = $gene->id;
-                        $geneToCommentCause->comment_cause_id = $commentCause->id;
-                        $geneToCommentCause->save();
+                        echo $item[0] . " hasn't Age-Related-Changes experiment". PHP_EOL;
+                    }
+                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
+                    if (GeneToLongevityEffect::find()->where([
+                        'gene_id' => $gene->id
+                    ])->one()) {
+                        $this
+                            ->geneToCommentCauseRepository
+                            ->saveFromCriteria($gene, $item[1]);
+                    } else {
+                        echo $item[0] . " hasn't Gene-To-Longevity-Effect experiment". PHP_EOL;
                     }
                 }
             } else {
@@ -178,7 +173,7 @@ class GeneService
 
         if (!empty($geneSymbols)) {
             $geneSymbols = array_unique($geneSymbols);
-            $titleFile = date('Ymd__His') . 'c.csv';
+            $titleFile = date('Ymd__His') . '_genesNotExist.csv';
             $file = fopen(\Yii::getAlias('@app/') . 'storage/datalogs/' . $titleFile, 'a');
             foreach ($geneSymbols as $symbol) {
                 fwrite($file, $symbol . PHP_EOL);
