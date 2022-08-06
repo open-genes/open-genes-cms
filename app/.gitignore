@@ -43,3 +43,6 @@ phpunit.phar
 /backend/web/robots.txt
 .env
 /runtime
+
+# logs
+/storage/datalogs/*
