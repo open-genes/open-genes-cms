@@ -10,7 +10,7 @@ $params = array_merge(
 
 $config = [
     'id' => 'genes-console',
-    'name' => 'Open Longevity Genes',
+    'name' => 'Open Genes CMS',
     'language' => 'ru-RU',
     'sourceLanguage' => 'en-GB', // todo костыль на то, что у нас переводы не в yii-формате ['english phrase' => 'русская фраза'], переделаем?
     'basePath' => dirname(__DIR__),
