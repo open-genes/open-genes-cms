@@ -125,9 +125,6 @@ $this->registerCssFile('/assets/css/gene.css');
             <?= $form->field($model, 'band')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-xs-6 col-sm-3">
-            <?= $form->field($model, 'why')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-xs-6 col-sm-3">
             <?= $form->field($model, 'accOrf')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-xs-6 col-sm-3">
@@ -185,12 +182,6 @@ $this->registerCssFile('/assets/css/gene.css');
             </div>
         </div>
     <?php endif; ?>
-
-    <div class="row form-row">
-        <div class="col-xs-12">
-            <?= $form->field($model, 'commentsReferenceLinks')->textarea(['rows' => 4]) ?>
-        </div>
-    </div>
 
     <div class="submit-panel">
         <div class="container">
