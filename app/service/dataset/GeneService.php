@@ -4,9 +4,10 @@ namespace app\service\dataset;
 
 use app\models\AgeRelatedChange;
 use app\models\common\GeneralLifespanExperiment;
-use app\models\common\LifespanExperiment;
 use app\models\Gene;
 use app\models\GeneInterventionToVitalProcess;
+use app\models\GeneToLongevityEffect;
+use app\models\repositories\GeneToCommentCauseRepository;
 
 class GeneService
 {
@@ -19,14 +20,19 @@ class GeneService
     /** @var AgeRelatedChangeService */
     private $ageRelatedChangeService;
 
+    /** @var GeneToCommentCauseRepository */
+    private $geneToCommentCauseRepository;
+
     public function __construct(
         LifespanExperimentService $lifespanExperimentService,
         GeneInterventionToVitalProcessService $geneInterventionToVitalProcessService,
-        AgeRelatedChangeService $ageRelatedChangeService
+        AgeRelatedChangeService $ageRelatedChangeService,
+        GeneToCommentCauseRepository $geneToCommentCauseRepository
     ) {
         $this->lifespanExperimentService = $lifespanExperimentService;
         $this->ageRelatedChangeService = $ageRelatedChangeService;
         $this->geneInterventionToVitalProcessService = $geneInterventionToVitalProcessService;
+        $this->geneToCommentCauseRepository = $geneToCommentCauseRepository;
     }
 
 
@@ -97,4 +103,51 @@ class GeneService
         }
 
     }
+
+    public function addCriteriaToGene(array $data) {
+        $geneSymbols = [];
+        foreach ($data as $item) {
+            $symbol = trim($item[0]);
+            if ($gene = Gene::find()
+                ->where(['symbol' => $symbol])
+                ->one()) {
+                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
+                    if (AgeRelatedChange::find()->where([
+                        'gene_id' => $gene->id
+                    ])->one()) {
+                        $this
+                            ->geneToCommentCauseRepository
+                            ->saveFromCriteria($gene, $item[1]);
+                    } else {
+                        echo $item[0] . " hasn't Age-Related-Changes experiment". PHP_EOL;
+                    }
+                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
+                    if (GeneToLongevityEffect::find()->where([
+                        'gene_id' => $gene->id
+                    ])->one()) {
+                        $this
+                            ->geneToCommentCauseRepository
+                            ->saveFromCriteria($gene, $item[1]);
+                    } else {
+                        echo $item[0] . " hasn't Gene-To-Longevity-Effect experiment". PHP_EOL;
+                    }
+                }
+            } else {
+                echo 'Gene is not exist: ' . $symbol . PHP_EOL;
+                $geneSymbols[] = $symbol;
+            }
+        }
+
+        if (!empty($geneSymbols)) {
+            $geneSymbols = array_unique($geneSymbols);
+            $titleFile = date('Ymd__His') . '_genesNotExist.csv';
+            $file = fopen(\Yii::getAlias('@app/') . 'storage/datalogs/' . $titleFile, 'a');
+            foreach ($geneSymbols as $symbol) {
+                fwrite($file, $symbol . PHP_EOL);
+            }
+            fclose($file);
+            echo 'Log file is ready' . PHP_EOL;
+        }
+    }
+
 }
