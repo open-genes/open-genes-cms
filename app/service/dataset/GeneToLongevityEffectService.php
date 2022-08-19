@@ -28,7 +28,7 @@ class GeneToLongevityEffectService
 
             $longevity = LongevityEffect::find()->where(['name_en' => $data[7]])->one();
             if (empty($longevity)) {
-                echo PHP_EOL . "------ Not found {$data[7]} for {$data[0]}, StudyType" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[7]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
@@ -43,37 +43,37 @@ class GeneToLongevityEffectService
 
             $polymorphismType = PolymorphismType::find()->where(['name_en' => $data[11]])->one();
             if (empty($polymorphismType)) {
-                echo PHP_EOL . "------ Not found {$data[11]} for {$data[0]}, PolymorphismType" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[11]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
             $organismSex = OrganismSex::find()->where(['name_en' => $data[6]])->one();
             if (empty($organismSex)) {
-                echo PHP_EOL . "------ Not found {$data[6]} for {$data[0]}, OrganismSex" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[6]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
             $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[10]])->one();
             if (empty($ageRelatedChangeType)) {
-                echo PHP_EOL . "------ Not found {$data[10]} for {$data[0]}, AgeRelatedChangeType" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[10]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
             $position = Position::find()->where(['name_en' => $data[2]])->one();
             if (empty($position)) {
-                echo PHP_EOL . "------ Not found {$data[2]} for {$data[0]}, Position" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[2]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
             $ethnicity = Ethnicity::find()->where(['name_en' => $data[8]])->one();
             if (empty($ethnicity)) {
-                echo PHP_EOL . "------ Not found {$data[8]} for {$data[0]}, Ethnicity" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[8]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
             $studyType = StudyType::find()->where(['name_en' => $data[27]])->one();
             if (empty($studyType)) {
-                echo PHP_EOL . "------ Not found {$data[27]} for {$data[0]}, StudyType" . PHP_EOL;
+                echo PHP_EOL . "------ Not found {$data[27]} for {$data[0]}, {$data[5]}" . PHP_EOL;
                 continue;
             }
 
