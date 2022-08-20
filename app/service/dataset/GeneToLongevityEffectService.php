@@ -27,67 +27,76 @@ class GeneToLongevityEffectService
                 "gene_id = {$gene->id} AND data_type = 1 AND ( longevity_effect_id = 8 OR longevity_effect_id = 1 )"
             );
 
-            $longevity = LongevityEffect::find()->where(['name_en' => $data[7]])->one();
-            if (empty($longevity)) {
-                $noSave[] = "------ Not found longevity_effect for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[7])) {
+                $longevity = LongevityEffect::find()->where(['name_en' => $data[7]])->one();
+                if (empty($longevity)) {
+                    $noSave[] = "------ Not found longevity_effect for {$data[0]}, {$data[5]}";
+                }
             }
 
-            $polymorphism = Polymorphism::find()->where(['name_en' => $data[1]])->one();
-            if (empty($polymorphism)) {
-                $polymorphism = new Polymorphism();
-                $polymorphism->name_ru = $data[1];
-                $polymorphism->name_en = $data[1];
-                $polymorphism->save();
-                echo PHP_EOL . "++++++ SAVE {$data[1]} - Polymorphism" . PHP_EOL;
+            if (trim($data[1])) {
+                $polymorphism = Polymorphism::find()->where(['name_en' => $data[1]])->one();
+                if (empty($polymorphism)) {
+                    $polymorphism = new Polymorphism();
+                    $polymorphism->name_ru = $data[1];
+                    $polymorphism->name_en = $data[1];
+                    $polymorphism->save();
+                    echo PHP_EOL . "++++++ SAVE {$data[1]} - Polymorphism" . PHP_EOL;
+                }
             }
 
-            $polymorphismType = PolymorphismType::find()->where(['name_en' => $data[11]])->one();
-            if (empty($polymorphismType)) {
-                $noSave[] = "------ Not found polymorphism_type for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[11])) {
+                $polymorphismType = PolymorphismType::find()->where(['name_en' => $data[11]])->one();
+                if (empty($polymorphismType)) {
+                    $noSave[] = "------ Not found polymorphism_type for {$data[0]}, {$data[5]}";
+                }
             }
 
-            $organismSex = OrganismSex::find()->where(['name_en' => $data[6]])->one();
-            if (empty($organismSex)) {
-                $noSave[] = "------ Not found sex_of_organism for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[6])) {
+                $organismSex = OrganismSex::find()->where(['name_en' => $data[6]])->one();
+                if (empty($organismSex)) {
+                    $noSave[] = "------ Not found sex_of_organism for {$data[0]}, {$data[5]}";
+                }
             }
 
-            $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[10]])->one();
-            if (empty($ageRelatedChangeType)) {
-                $noSave[] = "------ Not found age_related_change_type for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[10])) {
+                $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[10]])->one();
+                if (empty($ageRelatedChangeType)) {
+                    $noSave[] = "------ Not found age_related_change_type for {$data[0]}, {$data[5]}";
+                }
             }
 
-            $position = Position::find()->where(['name_en' => $data[2]])->one();
-            if (empty($position)) {
-                $noSave[] = "------ Not found position for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[2])) {
+                $position = Position::find()->where(['name_en' => $data[2]])->one();
+                if (empty($position)) {
+                    $noSave[] = "------ Not found position for {$data[0]}, {$data[5]}";
+                }
             }
 
-            $ethnicity = Ethnicity::find()->where(['name_en' => $data[8]])->one();
-            if (empty($ethnicity)) {
-                $noSave[] = "------ Not found ethnicity for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[8])) {
+                $ethnicity = Ethnicity::find()->where(['name_en' => $data[8]])->one();
+                if (empty($ethnicity)) {
+                    $noSave[] = "------ Not found ethnicity for {$data[0]}, {$data[5]}";
+                }
             }
 
-            $studyType = StudyType::find()->where(['name_en' => $data[27]])->one();
-            if (empty($studyType)) {
-                $noSave[] = "------ Not found study_type for {$data[0]}, {$data[5]}";
-                continue;
+            if (trim($data[27])) {
+                $studyType = StudyType::find()->where(['name_en' => $data[27]])->one();
+                if (empty($studyType)) {
+                    $noSave[] = "------ Not found study_type for {$data[0]}, {$data[5]}";
+                }
             }
 
             $params = [
                 'gene_id' => $gene->id,
-                'position_id' => $position->id,
-                'ethnicity_id' => $ethnicity->id,
-                'study_type_id' => $studyType->id,
-                'polymorphism_id' => $polymorphism->id,
-                'sex_of_organism' => $organismSex->id,
-                'longevity_effect_id' => $longevity->id,
-                'polymorphism_type_id' => $polymorphismType->id,
-                'age_related_change_type_id' => $ageRelatedChangeType->id,
+                'position_id' => $position->id ?? null,
+                'ethnicity_id' => $ethnicity->id ?? null,
+                'study_type_id' => $studyType->id ?? null,
+                'polymorphism_id' => $polymorphism->id ?? null,
+                'sex_of_organism' => $organismSex->id ?? null,
+                'longevity_effect_id' => $longevity->id ?? null,
+                'polymorphism_type_id' => $polymorphismType->id ?? null,
+                'age_related_change_type_id' => $ageRelatedChangeType->id ?? null,
                 'data_type' => 1,
                 'significance' => $data[3],
                 'p_value' => $data[4],
