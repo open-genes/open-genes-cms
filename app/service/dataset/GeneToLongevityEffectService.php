@@ -16,6 +16,7 @@ use app\models\StudyType;
 class GeneToLongevityEffectService
 {
     public function addPinkExperiment(array $dataset) {
+        $noSave = $saves = [];
         foreach ($dataset as $data) {
             $gene = Gene::find()->where(['symbol' => trim($data[0])])->one();
             if (empty($gene)) {
@@ -28,7 +29,7 @@ class GeneToLongevityEffectService
 
             $longevity = LongevityEffect::find()->where(['name_en' => $data[7]])->one();
             if (empty($longevity)) {
-                echo PHP_EOL . "------ Not found longevity_effect for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found longevity_effect for {$data[0]}, {$data[5]}";
                 continue;
             }
 
@@ -43,37 +44,37 @@ class GeneToLongevityEffectService
 
             $polymorphismType = PolymorphismType::find()->where(['name_en' => $data[11]])->one();
             if (empty($polymorphismType)) {
-                echo PHP_EOL . "------ Not found polymorphism_type for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found polymorphism_type for {$data[0]}, {$data[5]}";
                 continue;
             }
 
             $organismSex = OrganismSex::find()->where(['name_en' => $data[6]])->one();
             if (empty($organismSex)) {
-                echo PHP_EOL . "------ Not found sex_of_organism for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found sex_of_organism for {$data[0]}, {$data[5]}";
                 continue;
             }
 
             $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[10]])->one();
             if (empty($ageRelatedChangeType)) {
-                echo PHP_EOL . "------ Not found age_related_change_type for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found age_related_change_type for {$data[0]}, {$data[5]}";
                 continue;
             }
 
             $position = Position::find()->where(['name_en' => $data[2]])->one();
             if (empty($position)) {
-                echo PHP_EOL . "------ Not found position for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found position for {$data[0]}, {$data[5]}";
                 continue;
             }
 
             $ethnicity = Ethnicity::find()->where(['name_en' => $data[8]])->one();
             if (empty($ethnicity)) {
-                echo PHP_EOL . "------ Not found ethnicity for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found ethnicity for {$data[0]}, {$data[5]}";
                 continue;
             }
 
             $studyType = StudyType::find()->where(['name_en' => $data[27]])->one();
             if (empty($studyType)) {
-                echo PHP_EOL . "------ Not found study_type for {$data[0]}, {$data[5]}" . PHP_EOL;
+                $noSave[] = "------ Not found study_type for {$data[0]}, {$data[5]}";
                 continue;
             }
 
@@ -116,14 +117,19 @@ class GeneToLongevityEffectService
                     ->createCommand()
                     ->insert('gene_to_longevity_effect', $params)
                     ->execute();
-                echo '+- success: ' . $data[0] . PHP_EOL;
-                if ($data[0] == 'APOC3') {
-                    exit;
-                }
+                $saves[] = '+- success: ' . $data[0];
             } catch (\Exception $exception) {
                 var_dump($exception->getMessage());
                 continue;
             }
+        }
+        echo PHP_EOL . '+--------------ERROR--------------+' . PHP_EOL;
+        foreach ($noSave as $item) {
+            echo $item . PHP_EOL;
+        }
+        echo PHP_EOL . '+---------------SAVE--------------+' . PHP_EOL;
+        foreach ($saves as $item) {
+            echo $item . PHP_EOL;
         }
     }
 }
