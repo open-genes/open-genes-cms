@@ -28,19 +28,16 @@ class AgeRelatedChangeService
                     continue;
                 }
 
-                $modelOrganism = ModelOrganism::find()->where(['name_en' => $data[3]])->one();
-                if (empty($modelOrganism)) {
-                    continue;
+                if (trim($data[3])) {
+                    $modelOrganism = ModelOrganism::find()->where(['name_en' => $data[3]])->one();
                 }
 
-                $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[6]])->one();
-                if (empty($ageRelatedChangeType)) {
-                    continue;
+                if (trim($data[6])) {
+                    $ageRelatedChangeType = AgeRelatedChangeType::find()->where(['name_en' => $data[6]])->one();
                 }
 
-                $expressionEvaluation = ExpressionEvaluation::find()->where(['name_en' => $data[7]])->one();
-                if (empty($expressionEvaluation)) {
-                    continue;
+                if (trim($data[7])) {
+                    $expressionEvaluation = ExpressionEvaluation::find()->where(['name_en' => $data[7]])->one();
                 }
 
                 $organismSexId = 0;
@@ -52,14 +49,12 @@ class AgeRelatedChangeService
                     }
                 }
 
-                $measurementMethod = MeasurementMethod::find()->where(['name_en' => $data[9]])->one();
-                if (empty($measurementMethod)) {
-                    continue;
+                if (trim($data[9])) {
+                    $measurementMethod = MeasurementMethod::find()->where(['name_en' => $data[9]])->one();
                 }
 
-                $statisticalMethod = StatisticalMethod::find()->where(['name_en' => $data[10]])->one();
-                if (empty($statisticalMethod)) {
-                    continue;
+                if (trim($data[10])) {
+                    $statisticalMethod = StatisticalMethod::find()->where(['name_en' => $data[10]])->one();
                 }
 
                 $ageUnit = TimeUnit::find()->where(['name_en' => trim(strtolower($data[11]))])->one();
@@ -67,12 +62,12 @@ class AgeRelatedChangeService
 
                 $ageRelatedChange = new AgeRelatedChange();
                 $ageRelatedChange->gene_id = $gene->id;
-                $ageRelatedChange->model_organism_id = $modelOrganism->id;
-                $ageRelatedChange->age_related_change_type_id = $ageRelatedChangeType->id;
-                $ageRelatedChange->expression_evaluation_by_id = $expressionEvaluation->id;
+                $ageRelatedChange->model_organism_id = $modelOrganism->id ?? null;
+                $ageRelatedChange->age_related_change_type_id = $ageRelatedChangeType->id ?? null;
+                $ageRelatedChange->expression_evaluation_by_id = $expressionEvaluation->id ?? null;
                 $ageRelatedChange->sex = $organismSexId;
-                $ageRelatedChange->measurement_method_id = $measurementMethod->id;
-                $ageRelatedChange->statistical_method_id = $statisticalMethod->id;
+                $ageRelatedChange->measurement_method_id = $measurementMethod->id ?? null;
+                $ageRelatedChange->statistical_method_id = $statisticalMethod->id ?? null;
                 $ageRelatedChange->age_unit_id = !empty($ageUnit) ? $ageUnit->id : null;
                 $ageRelatedChange->sample_id = !empty($sample) ? $sample->id : null;
 
