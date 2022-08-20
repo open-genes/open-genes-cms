@@ -77,42 +77,46 @@ class GeneToLongevityEffectService
                 continue;
             }
 
-            $geneToLongevityEffect = new GeneToLongevityEffect();
-            $geneToLongevityEffect->gene_id = $gene->id;
-            $geneToLongevityEffect->position_id = $position->id;
-            $geneToLongevityEffect->ethnicity_id = $ethnicity->id;
-            $geneToLongevityEffect->study_type_id = $studyType->id;
-            $geneToLongevityEffect->polymorphism_id = $polymorphism->id;
-            $geneToLongevityEffect->sex_of_organism = $organismSex->id;
-            $geneToLongevityEffect->longevity_effect_id = $longevity->id;
-            $geneToLongevityEffect->polymorphism_type_id = $polymorphismType->id;
-            $geneToLongevityEffect->age_related_change_type_id = $ageRelatedChangeType->id;
-            $geneToLongevityEffect->data_type = 1;
-            $geneToLongevityEffect->significance = $data[3];
-            $geneToLongevityEffect->p_value = $data[4];
-            $geneToLongevityEffect->reference = $data[5];
-            $geneToLongevityEffect->nucleotide_change = $data[12];
-            $geneToLongevityEffect->amino_acid_change = $data[13];
-            $geneToLongevityEffect->polymorphism_other = $data[14];
-            $geneToLongevityEffect->allele_variant = $data[15];
-            $geneToLongevityEffect->non_associated_allele = $data[16];
-            $geneToLongevityEffect->frequency_controls = $data[17];
-            $geneToLongevityEffect->frequency_experiment = $data[18];
-            $geneToLongevityEffect->n_of_controls = $data[19];
-            $geneToLongevityEffect->n_of_experiment = $data[20];
-            $geneToLongevityEffect->mean_age_of_controls = $data[21];
-            $geneToLongevityEffect->min_age_of_controls = $data[22];
-            $geneToLongevityEffect->max_age_of_controls = $data[23];
-            $geneToLongevityEffect->mean_age_of_experiment = $data[24];
-            $geneToLongevityEffect->min_age_of_experiment = $data[25];
-            $geneToLongevityEffect->max_age_of_experiment = $data[26];
-            $geneToLongevityEffect->pmid = $data[28];
-            $geneToLongevityEffect->comment_ru = $data[29];
-            $geneToLongevityEffect->comment_en = $data[30];
+            $params = [
+                'gene_id' => $gene->id,
+                'position_id' => $position->id,
+                'ethnicity_id' => $ethnicity->id,
+                'study_type_id' => $studyType->id,
+                'polymorphism_id' => $polymorphism->id,
+                'sex_of_organism' => $organismSex->id,
+                'longevity_effect_id' => $longevity->id,
+                'polymorphism_type_id' => $polymorphismType->id,
+                'age_related_change_type_id' => $ageRelatedChangeType->id,
+                'data_type' => 1,
+                'significance' => $data[3],
+                'p_value' => $data[4],
+                'reference' => $data[5],
+                'nucleotide_change' => $data[12],
+                'amino_acid_change' => $data[13],
+                'polymorphism_other' => $data[14],
+                'allele_variant' => $data[15],
+                'non_associated_allele' => $data[16],
+                'frequency_controls' => $data[17],
+                'frequency_experiment' => $data[18],
+                'n_of_controls' => $data[19],
+                'n_of_experiment' => $data[20],
+                'mean_age_of_controls' => $data[21],
+                'min_age_of_controls' => $data[22],
+                'max_age_of_controls' => $data[23],
+                'mean_age_of_experiment' => $data[24],
+                'min_age_of_experiment' => $data[25],
+                'max_age_of_experiment' => $data[26],
+                'pmid' => $data[28],
+                'comment_ru' => $data[29],
+                'comment_en' => $data[30]
+            ];
             try {
-                $geneToLongevityEffect->save();
+                \Yii::$app
+                    ->db
+                    ->createCommand()
+                    ->insert('gene_to_longevity_effect', $params)
+                    ->execute();
                 echo '+- success: ' . $data[0] . PHP_EOL;
-                echo "gene_longevity_effect= {$geneToLongevityEffect->id}" . PHP_EOL;
                 if ($data[0] == 'APOC3') {
                     exit;
                 }
