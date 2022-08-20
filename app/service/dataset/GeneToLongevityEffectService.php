@@ -110,9 +110,10 @@ class GeneToLongevityEffectService
             $geneToLongevityEffect->comment_en = $data[30];
             try {
                 $geneToLongevityEffect->save();
-                $titleFile = date('Ymd__His') . $geneToLongevityEffect->id . '_geneToLongevityEffect.csv';
+                $titleFile = date('Ymd__His') . '_geneToLongevityEffect.csv';
                 $file = fopen(\Yii::getAlias('@app/') . 'storage/datalogs/' . $titleFile, 'a');
                 fwrite($file, PHP_EOL . "
+                gene_longevity_effect= {$geneToLongevityEffect->id},
                 gene_id= {$geneToLongevityEffect->gene_id} ? {$gene->id} , position_id= {$geneToLongevityEffect->position_id} ? {$position->id} , ethnicity_id= {$geneToLongevityEffect->ethnicity_id} ? {$ethnicity->id} , study_type_id= {$geneToLongevityEffect->study_type_id} ? {$studyType->id} , polymorphism_id= {$geneToLongevityEffect->polymorphism_id} ? {$polymorphism->id} , sex_of_organism= {$geneToLongevityEffect->sex_of_organism} ? {$organismSex->id} ,longevity_effect_id= {$geneToLongevityEffect->longevity_effect_id} ? {$longevity->id} ,polymorphism_type_id= {$geneToLongevityEffect->polymorphism_type_id} ? {$polymorphismType->id} ,age_related_change_type_id= {$geneToLongevityEffect->age_related_change_type_id} ? {$ageRelatedChangeType->id} ,
                 significance= {$data[3]} ,p_value= {$data[4]} ,reference= {$data[5]} ,nucleotide_change= {$data[12]} ,amino_acid_change= {$data[13]} ,polymorphism_other= {$data[14]} ,allele_variant= {$data[15]} ,non_associated_allele= {$data[16]} ,frequency_controls= {$data[17]} ,frequency_experiment= {$data[18]} ,n_of_controls= {$data[19]} ,n_of_experiment= {$data[20]} ,mean_age_of_controls= {$data[21]} ,min_age_of_controls= {$data[22]} ,max_age_of_controls= {$data[23]} ,mean_age_of_experiment= {$data[24]} ,min_age_of_experiment= {$data[25]} ,max_age_of_experiment= {$data[26]} ,pmid= {$data[28]} ,comment_ru= {$data[29]} ,comment_en= {$data[30]} ----------;
                 " . PHP_EOL);
