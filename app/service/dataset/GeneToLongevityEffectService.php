@@ -87,6 +87,7 @@ class GeneToLongevityEffectService
             $geneToLongevityEffect->longevity_effect_id = $longevity->id;
             $geneToLongevityEffect->polymorphism_type_id = $polymorphismType->id;
             $geneToLongevityEffect->age_related_change_type_id = $ageRelatedChangeType->id;
+            $geneToLongevityEffect->data_type = 1;
             $geneToLongevityEffect->significance = $data[3];
             $geneToLongevityEffect->p_value = $data[4];
             $geneToLongevityEffect->reference = $data[5];
