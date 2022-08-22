@@ -17,15 +17,14 @@ class GeneToLongevityEffectService
 {
     public function addPinkExperiment(array $dataset) {
         $noSave = $saves = [];
+        GeneToLongevityEffect::deleteAll(
+            "data_type = 1 AND ( longevity_effect_id = 8 OR longevity_effect_id = 1 )"
+        );
         foreach ($dataset as $data) {
             $gene = Gene::find()->where(['symbol' => trim($data[0])])->one();
             if (empty($gene)) {
                 continue;
             }
-
-            GeneToLongevityEffect::deleteAll(
-                "gene_id = {$gene->id} AND data_type = 1 AND ( longevity_effect_id = 8 OR longevity_effect_id = 1 )"
-            );
 
             if (trim($data[7])) {
                 $longevity = LongevityEffect::find()->where(['name_en' => $data[7]])->one();
