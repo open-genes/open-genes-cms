@@ -116,7 +116,8 @@ class GeneToLongevityEffectService
             if (trim($data[8])) {
                 $ethnicities = explode(',', $data[8]);
                 foreach ($ethnicities as $item) {
-                    $ethnicity = Ethnicity::find()->where(['name_en' => $item])->one();
+                    $eth = ltrim($item);
+                    $ethnicity = Ethnicity::find()->where(['name_en' => $eth])->one();
                     if (empty($ethnicity)) {
                         $noSave[] = "------ Not found ethnicity for {$data[0]}, {$data[5]}";
                         continue;
