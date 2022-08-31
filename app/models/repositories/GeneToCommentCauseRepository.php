@@ -18,6 +18,7 @@ class GeneToCommentCauseRepository
                     'comment_cause_id' => $commentCause->id
                 ])
                 ->one()) {
+                echo "-- {$gene->symbol} isHidden = 0 " . PHP_EOL;
                 $gene->isHidden = 0;
                 $gene->save();
             } else {
