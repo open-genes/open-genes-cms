@@ -12,20 +12,17 @@ class GeneToCommentCauseRepository
         if ($commentCause = CommentCause::find()
             ->where(['name_en' => $ccName])
             ->one()) {
-            if (GeneToCommentCause::find()
+            if (!(GeneToCommentCause::find()
                 ->where([
                     'gene_id' => $gene->id,
                     'comment_cause_id' => $commentCause->id
                 ])
-                ->one()) {
-                echo "-- {$gene->symbol} isHidden = 0 " . PHP_EOL;
-                $gene->isHidden = 0;
-                $gene->save();
-            } else {
+                ->one())) {
                 $geneToCommentCause = new GeneToCommentCause();
                 $geneToCommentCause->gene_id = $gene->id;
                 $geneToCommentCause->comment_cause_id = $commentCause->id;
                 $geneToCommentCause->save();
+                echo "-- success {$gene->symbol} save to gene_to_comment_cause" . PHP_EOL;
             }
         }
     }

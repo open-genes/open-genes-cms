@@ -144,6 +144,8 @@ class GeneService
             if ($gene = Gene::find()
                 ->where(['symbol' => $symbol])
                 ->one()) {
+                $gene->isHidden = 0;
+                $gene->save();
                 if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
                     if (AgeRelatedChange::find()->where([
                         'gene_id' => $gene->id
