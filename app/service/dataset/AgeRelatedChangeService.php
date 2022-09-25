@@ -25,7 +25,7 @@ class AgeRelatedChangeService
             if ($geneSymbol = trim($data[1])) {
                 $gene = Gene::find()->where(['symbol' => $geneSymbol])->one();
                 if (empty($gene)) {
-                    echo 'Warning: Failed to add a study for gene ' . $geneSymbol . ', id ' . $gene . ' No such gene.';
+                    echo 'Warning: Failed to add a study for gene ' . $geneSymbol . ' No such gene.' . PHP_EOL;
                     continue;
                 }
 
@@ -83,16 +83,16 @@ class AgeRelatedChangeService
                 $ageRelatedChange->change_value = $data[21];
                 try {
                     $ageRelatedChange->save();
-                    echo 'success, gene: ' . $geneSymbol . PHP_EOL;
+                    echo 'Success, gene: ' . $geneSymbol . PHP_EOL;
                 } catch (\Exception $exception) {
-                    echo 'Error: ' . $exception;
+                    echo 'Error: ' . $exception . PHP_EOL;
                     var_dump($exception->getMessage());
                     continue;
                 }
             }
         }
 
-        echo 'success, END import' . PHP_EOL;
+        echo 'Success, END import' . PHP_EOL;
     }
 
     public function checkDuplicateAndSave($geneSymbols, AgeRelatedChangeModel $ageRelatedChange) {
@@ -104,7 +104,7 @@ class AgeRelatedChangeService
 
             if (empty($ccAgeRelatedChange)) {
                 $this->saveByGene($geneSymbol->id, $ageRelatedChange);
-                echo 'saved:' . $geneSymbol->symbol . PHP_EOL;
+                echo 'Successfully saved a study for gene ' . $geneSymbol->symbol . ' id ' . $geneSymbol->id . PHP_EOL;
             }
         }
     }
