@@ -129,11 +129,11 @@ class GeneService
                         }
                     }
                 } else {
-                    echo 'Gene is not exist: ' . $symbol . PHP_EOL;
+                    echo "Gene doesn't exist: " . $symbol . PHP_EOL;
                 }
             }
         } else {
-            echo 'Source gene is not exist' . PHP_EOL;
+            echo "Source doesn't exist: " . PHP_EOL;
         }
     }
 
@@ -146,7 +146,7 @@ class GeneService
                 ->one()) {
                 $gene->isHidden = 0;
                 $gene->save();
-                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
+                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans (blue)') {
                     if (AgeRelatedChange::find()->where([
                         'gene_id' => $gene->id
                     ])->one()) {
@@ -154,9 +154,9 @@ class GeneService
                             ->geneToCommentCauseRepository
                             ->saveFromCriteria($gene, $item[1]);
                     } else {
-                        echo $item[0] . " hasn't Age-Related-Changes experiment". PHP_EOL;
+                        echo "Gene " . $item[0] . " doesn't have this type of study: blue". PHP_EOL;
                     }
-                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
+                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity (pink)') {
                     if (GeneToLongevityEffect::find()->where([
                         'gene_id' => $gene->id
                     ])->one()) {
@@ -164,11 +164,11 @@ class GeneService
                             ->geneToCommentCauseRepository
                             ->saveFromCriteria($gene, $item[1]);
                     } else {
-                        echo $item[0] . " hasn't Gene-To-Longevity-Effect experiment". PHP_EOL;
+                        echo "Gene " . $item[0] . " doesn't have this type of study: pink". PHP_EOL;
                     }
                 }
             } else {
-                echo 'Gene is not exist: ' . $symbol . PHP_EOL;
+                echo "Gene doesn't exist: " . $symbol . PHP_EOL;
                 $geneSymbols[] = $symbol;
             }
         }
