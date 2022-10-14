@@ -51,7 +51,7 @@ class GeneService
 
                 foreach ($conditions as $condition) {
 
-                    // TODO: феолетовый
+                    // Purple
                     if ($generalLifespanExperiments = GeneralLifespanExperiment::find()
                         ->innerJoin('lifespan_experiment as le', 'general_lifespan_experiment.id=le.general_lifespan_experiment_id')
                         ->innerJoin('model_organism as mo', 'general_lifespan_experiment.model_organism_id=mo.id')
@@ -71,7 +71,7 @@ class GeneService
                         }
                     }
 
-                    // TODO: зеленный
+                    // Green
                     if ($geneInterventionToVitalProcesses = GeneInterventionToVitalProcess::find()
                         ->innerJoin('model_organism as mo', 'mo.id=gene_intervention_to_vital_process.model_organism_id')
                         ->where([
@@ -86,7 +86,7 @@ class GeneService
                         }
                     }
 
-                    // TODO: голубой
+                    // Blue
                     if ($ageRelatedChanges = AgeRelatedChange::find()
                         ->innerJoin('model_organism as mo', 'mo.id=age_related_change.model_organism_id')
                         ->where([
@@ -115,14 +115,14 @@ class GeneService
                         'gene_id' => $gene->id,
                         'source_id' => $source->id
                     ])->one()) {
-                        echo 'has: ' . $symbol . PHP_EOL;
+                        echo 'Source with id ' . $source->id  . ' is already set for gene ' . $symbol . PHP_EOL;
                     } else {
                         $geneToSource = new GeneToSource();
                         $geneToSource->gene_id = $gene->id;
                         $geneToSource->source_id = $source->id;
                         try {
                             $geneToSource->save();
-                            echo 'success: ' . $symbol . PHP_EOL;
+                            echo 'Success! Source with id ' . $source->id  . ' is already set for gene ' . $symbol . PHP_EOL;
                         } catch (\Exception $exception) {
                             var_dump($exception->getMessage());
                             continue;
