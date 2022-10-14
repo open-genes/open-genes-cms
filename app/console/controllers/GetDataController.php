@@ -9,7 +9,6 @@ use app\console\service\ParseICDServiceInterface;
 use app\console\service\ParseMyGeneServiceInterface;
 use app\console\service\ParseNCBIServiceInterface;
 use app\console\service\ParseProteinAtlasServiceInterface;
-use app\models\AgingMechanism;
 use app\models\AgingMechanismToGeneOntology;
 use app\models\common\GeneOntology;
 use app\models\common\GeneToOntology;
@@ -17,13 +16,9 @@ use app\models\Disease;
 use app\models\Gene;
 use app\models\GeneOntologyRelation;
 use app\models\GeneOntologyToAgingMechanismVisible;
-use app\models\GeneToOrtholog;
-use app\models\ModelOrganism;
-use app\models\Ortholog;
 use app\service\GeneOntologyServiceInterface;
 use yii\console\Controller;
 use yii\helpers\Console;
-use yii\helpers\Html;
 use yii\httpclient\Client;
 
 class GetDataController extends Controller
