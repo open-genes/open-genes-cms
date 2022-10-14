@@ -17,6 +17,8 @@ use Yii;
  * @property int|null $significance
  * @property float|null $frequency_controls
  * @property float|null $frequency_experiment
+ * @property string|null $p_value
+ * @property string|null $polymorphism_other
  * @property string|null $reference
  * @property string|null $comment_en
  * @property string|null $comment_ru
