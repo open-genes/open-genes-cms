@@ -21,7 +21,6 @@ use Yii;
  * @property string|null $name
  * @property int|null $ncbi_id
  * @property string|null $uniprot
- * @property string|null $why
  * @property string|null $band
  * @property int|null $locationStart
  * @property int|null $locationEnd
@@ -33,13 +32,10 @@ use Yii;
  * @property string|null $orthologs
  * @property string|null $commentEvolution
  * @property string|null $uniprot_summary_ru
- * @property string|null $commentCause
  * @property string|null $commentAging
  * @property string|null $commentEvolutionEN
  * @property string|null $uniprot_summary_en
  * @property string|null $commentAgingEN
- * @property string|null $commentsReferenceLinks
- * @property int|null $rating
  * @property int $isHidden
  * @property int|null $expressionChange
  * @property int|null $created_at
@@ -89,10 +85,10 @@ class Gene extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'rating', 'isHidden', 'expressionChange', 'created_at', 'updated_at', 'family_phylum_id', 'phylum_id', 'taxon_id'], 'integer'],
-            [['commentEvolution', 'uniprot_summary_ru', 'commentCause', 'commentAging', 'commentEvolutionEN', 'uniprot_summary_en', 'commentAgingEN', 'commentsReferenceLinks', 'protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
+            [['ncbi_id', 'locationStart', 'locationEnd', 'orientation', 'isHidden', 'expressionChange', 'created_at', 'updated_at', 'family_phylum_id', 'phylum_id', 'taxon_id'], 'integer'],
+            [['commentEvolution', 'uniprot_summary_ru', 'commentAging', 'commentEvolutionEN', 'uniprot_summary_en', 'commentAgingEN', 'protein_complex_ru', 'protein_complex_en', 'human_protein_atlas', 'ncbi_summary_ru', 'ncbi_summary_en', 'og_summary_en', 'og_summary_ru'], 'string'],
             [['symbol', 'aliases', 'name', 'uniprot', 'band', 'accPromoter', 'accOrf', 'accCds'], 'string', 'max' => 120],
-            [['why', 'references', 'orthologs'], 'string', 'max' => 1000],
+            [['references', 'orthologs'], 'string', 'max' => 1000],
             [['ensembl'], 'string', 'max' => 255],
             [['phylum_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['phylum_id' => 'id']],
             [['family_phylum_id'], 'exist', 'skipOnError' => true, 'targetClass' => Phylum::className(), 'targetAttribute' => ['family_phylum_id' => 'id']],
@@ -111,7 +107,6 @@ class Gene extends \yii\db\ActiveRecord
             'name' => 'Name',
             'ncbi_id' => 'Ncbi ID',
             'uniprot' => 'Uniprot',
-            'why' => 'Why',
             'band' => 'Band',
             'locationStart' => 'Location Start',
             'locationEnd' => 'Location End',
@@ -123,13 +118,10 @@ class Gene extends \yii\db\ActiveRecord
             'orthologs' => 'Orthologs',
             'commentEvolution' => 'Comment Evolution',
             'uniprot_summary_ru' => 'Comment Function',
-            'commentCause' => 'Comment Cause',
             'commentAging' => 'Comment Aging',
             'commentEvolutionEN' => 'Comment Evolution En',
             'uniprot_summary_en' => 'Comment Function En',
             'commentAgingEN' => 'Comment Aging En',
-            'commentsReferenceLinks' => 'Comments Reference Links',
-            'rating' => 'Rating',
             'isHidden' => 'Is Hidden',
             'expressionChange' => 'Expression Change',
             'created_at' => 'Created At',
