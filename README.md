@@ -107,10 +107,10 @@ open-genes-cms.sh detects xdebug ip address as follows:
 Port 9003 is default one for xdebug v3 and it cannot be changed
 
 ## Run data parsers:
-On droplet (test/demo/prod) or into the docker container (dev):
+On a droplet (test/demo/prod) or inside the docker container (dev):
 ```bash
 cd console
-# parse diseaases from http://edgar.biocomp.unibo.it/gene_disease_db/csv_files/
+# parse diseases from http://edgar.biocomp.unibo.it/gene_disease_db/csv_files/
 php yii.php  get-data/get-diseases-from-biocomp       [onlyNew default=true] true [geneNcbiIds default null] 1,2,3
 
 # parse gene expression from ncbi
