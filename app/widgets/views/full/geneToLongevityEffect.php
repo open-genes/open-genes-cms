@@ -173,7 +173,8 @@
         </div>
         <div class="row form-row">
             <div class="col-xs-6 col-md-2 checkbox-wrapper">
-                <?= \yii\bootstrap\Html::activeCheckbox($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']significance') ?>
+                <?php $geneToLongevityEffect->significance = ($geneToLongevityEffect->significance == 'Significant');
+                echo \yii\bootstrap\Html::activeCheckbox($geneToLongevityEffect, '[' . $geneToLongevityEffect->id . ']significance') ?>
             </div>
         </div>
         <div class="row form-row">
