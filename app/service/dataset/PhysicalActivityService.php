@@ -25,50 +25,47 @@ class PhysicalActivityService
                 }
 
                 $sample = strtolower($data[5]);
-                $tissue = Sample::find()->where(['name_en' => $sample])->one();
-                if (empty($tissue)) {
-                    continue;
+                if (trim($sample)) {
+                    $tissue = Sample::find()->where(['name_en' => $sample])->one();
                 }
 
                 $expressionEvaluationBy = $data[12];
-                $expressionEvaluation = ExpressionEvaluation::find()->where(['name_en' => $expressionEvaluationBy])->one();
-                if (empty($expressionEvaluation)) {
-                    continue;
+                if (trim($expressionEvaluationBy)) {
+                    $expressionEvaluation = ExpressionEvaluation::find()->where(['name_en' => $expressionEvaluationBy])->one();
                 }
 
                 $modelOrganismName = $data[6];
-                $modelOrganism = ModelOrganism::find()->where(['name_en' => $modelOrganismName])->one();
-                if (empty($modelOrganism)) {
-                    continue;
+                if (trim($modelOrganismName)) {
+                    $modelOrganism = ModelOrganism::find()->where(['name_en' => $modelOrganismName])->one();
                 }
 
                 $organismLineName = !empty($data[8]) ? $data[8] == 'n/a' ? null : $data[8] : null;
-                if ($organismLineName) {
+                if (trim($organismLineName)) {
                     $organismLine = OrganismLine::find()->where(['name_en' => $organismLineName])->one();
                 }
 
                 $organismSexName = $data[7];
-                $organismSex = OrganismSex::find()->where(['name_en' => $organismSexName])->one();
-                if (empty($organismSex)) {
-                    continue;
+                if (trim($organismSexName)) {
+                    $organismSex = OrganismSex::find()->where(['name_en' => $organismSexName])->one();
                 }
 
                 $physicalActivity = new PhysicalActivity();
                 $physicalActivity->gene_id = $gene->id;
-                $physicalActivity->tissue_id = $tissue->id;
-                $physicalActivity->expression_evaluation_id = $expressionEvaluation->id;
-                $physicalActivity->model_organism_id = $modelOrganism->id;
+                $physicalActivity->tissue_id = $tissue->id ?? null;
+                $physicalActivity->expression_evaluation_id = $expressionEvaluation->id ?? null;
+                $physicalActivity->model_organism_id = $modelOrganism->id ?? null;
                 $physicalActivity->organism_line_id = !empty($organismLineName) && $organismLine ? $organismLine->id : null;
-                $physicalActivity->organism_sex_id = $organismSex->id;
+                $physicalActivity->organism_sex_id = $organismSex->id ?? null;
                 $physicalActivity->p_value = $data[4];
-                $physicalActivity->after_sport_result = $data[1];
-                $physicalActivity->time_point = $data[13];
+                $physicalActivity->result = $data[1];
+                $physicalActivity->measurement_taken = $data[13];
                 $physicalActivity->training_regimen = $data[15];
-                $physicalActivity->sportsman = $data[16];
+                $physicalActivity->participants = $data[16];
+                $physicalActivity->duration = $data[14];
                 $physicalActivity->age = $data[9];
                 $physicalActivity->age_units = $data[10];
                 $physicalActivity->experiment_groups_quantity = $data[17];
-                $physicalActivity->link = $data[18];
+                $physicalActivity->reference = $data[18];
                 $physicalActivity->expression_change_log = $data[3];
 
                 $measurementMethodNames = explode(',', trim($data[11]));
