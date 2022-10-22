@@ -43,7 +43,7 @@ class ParseMyGeneService implements ParseMyGeneServiceInterface
                     continue;
                 }
                 echo "{$arGene->id} {$arGene->ncbi_id} {$arGene->symbol} ({$counter} from {$count}): ";
-                $url = $this->apiUrl . 'query?q=' . 'retired:' . $arGene->ncbi_id . '&fields=symbol,name,entrezgene,alias,summary&species=human';
+                $url = $this->apiUrl . 'gene/' . $arGene->ncbi_id . '?fields=symbol%2Cname%2Centrezgene%2Calias%2Csummary';
                 $response = $this->httpClient->createRequest()
                     ->setUrl($url)
                     ->send();
