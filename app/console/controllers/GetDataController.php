@@ -190,7 +190,7 @@ class GetDataController extends Controller
             try {
                 $result = $geneOntologyService->mineFromGatewayForGene($arGene->ncbi_id, $countRows);
                 if (isset($result['link_errors'])) {
-                    echo ' ERROR ' . $result['link_errors'];
+                    echo ' ERROR ' . $result['link_errors'] . PHP_EOL;
                     continue;
                 }
                 echo ' ok' . PHP_EOL;
@@ -282,7 +282,7 @@ class GetDataController extends Controller
                     $goTermChild = GeneOntology::find()
                         ->where(['ontology_identifier' => $goChild['id']])
                         ->one();
-                    if (!$goTermChild) {
+                    if (empty($goTermChild)) {
                         $goTermChild = new GeneOntology();
                         $goTermChild->ontology_identifier = $goChild['id'];
                         $goTermChild->name_en = $goChild['name'];
@@ -300,7 +300,7 @@ class GetDataController extends Controller
                     if($termsRelation && $onlyNew) {
                         continue;
                     }
-                    if (!$termsRelation) {
+                    if (empty($termsRelation)) {
                         $termsRelation = new GeneOntologyRelation();
                         $termsRelation->gene_ontology_id = $goTermChild->id;
                         $termsRelation->gene_ontology_parent_id = $goTerm['id'];
