@@ -17,6 +17,7 @@ use yii\helpers\ArrayHelper;
  * @property int[] $functionalClustersIdsArray
  * @property int[] $diseasesIdsArray
  * @property int[] $commentCauseIdsArray
+ * @property int[] $agingMechanismIdsArray
  * @property int[] $proteinClassesIdsArray
  * @property array $functionalClustersArray
  */
@@ -28,6 +29,7 @@ class Gene extends common\Gene
     public $filledExperiments;
 
     protected $functionalClustersIdsArray;
+    protected $agingMechanismIdsArray;
     protected $diseasesIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
@@ -48,7 +50,7 @@ class Gene extends common\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray',
+            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray', 'agingMechanismIdsArray',
                 'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments', 'sourcesIdsArray'], 'safe'],
             ['ncbi_id', 'unique'],
         ]);
@@ -85,6 +87,7 @@ class Gene extends common\Gene
             'commentAgingEN' => 'Связь со старением/долголетием En',
             'functionalClusters' => 'Возрастозависимые процессы',
             'functionalClustersIdsArray' => 'Возрастозависимые процессы',
+            'agingMechanismIdsArray' => 'Механизмы',
             'diseasesIdsArray' => 'Заболевания',
             'commentCauseIdsArray' => 'Причины отбора',
             'userEdited' => 'User Edited',
@@ -172,6 +175,16 @@ class Gene extends common\Gene
             ->column();
     }
 
+    public function getAgingMechanismIdsArray()
+    {
+        return AgingMechanism::find()
+            ->select('aging_mechanism.id')
+            ->join('INNER JOIN', 'aging_mechanism_to_gene', 'aging_mechanism_to_gene.aging_mechanism_id = aging_mechanism.id')
+            ->where(['aging_mechanism_to_gene.gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
     public function getCommentCauseIdsArray()
     {
         return CommentCause::find()
@@ -206,6 +219,11 @@ class Gene extends common\Gene
         $this->functionalClustersIdsArray = $ids;
     }
 
+    public function setAgingMechanismIdsArray(array $ids)
+    {
+        $this->agingMechanismIdsArray = $ids;
+    }
+
     public function setDiseasesIdsArray(array $ids)
     {
         $this->diseasesIdsArray = $ids;
@@ -232,6 +250,7 @@ class Gene extends common\Gene
             return parent::afterSave($insert, $changedAttributes);
         }
         $this->updateRelations($this->getFunctionalClustersIdsArray(),'functionalClustersIdsArray', GeneToFunctionalCluster::class, 'functional_cluster_id');
+        $this->updateRelations($this->getAgingMechanismIdsArray(),'agingMechanismIdsArray', AgingMechanismToGene::class, 'aging_mechanism_id');
         $this->updateRelations($this->getCommentCauseIdsArray(),'commentCauseIdsArray', GeneToCommentCause::class, 'comment_cause_id');
         $this->updateRelations($this->getProteinClassesIdsArray(),'proteinClassesIdsArray', GeneToProteinClass::class, 'protein_class_id');
         $this->updateRelations($this->getDiseasesIdsArray(),'diseasesIdsArray', GeneToDisease::class, 'disease_id');
