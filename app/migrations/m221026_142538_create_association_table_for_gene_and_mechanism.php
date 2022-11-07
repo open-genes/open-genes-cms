@@ -28,8 +28,6 @@ class m221026_142538_create_association_table_for_gene_and_mechanism extends Mig
 
         $this->execute('ALTER TABLE aging_mechanism_to_gene ADD CONSTRAINT uniq_aging_mechanism_id_and_gene_id UNIQUE (gene_id, aging_mechanism_id);');
 
-        $this->setGeneToAgingMechanism();
-
     }
 
     /**
@@ -38,32 +36,6 @@ class m221026_142538_create_association_table_for_gene_and_mechanism extends Mig
     public function safeDown()
     {
         $this->dropTable('{{%aging_mechanism_to_gene}}');
-    }
-
-    private function setGeneToAgingMechanism() {
-        $genes = Gene::find()
-            ->where(['like', 'symbol', '%SIRT%', false])->all();
-        $aging_mechanism = Yii::$app->db->createCommand(
-            "SELECT * FROM `aging_mechanism` WHERE name_en = 'SIRT pathway dysregulation'"
-        )->queryOne();
-        print_r($aging_mechanism);
-        if ($aging_mechanism) {
-            foreach ($genes as $gene) {
-                $this->execute(
-                    "INSERT INTO aging_mechanism_to_gene (aging_mechanism_id, gene_id) 
-                        VALUES ({$aging_mechanism['id']}, {$gene->id});");
-            }
-        } else {
-            $am = AgingMechanism::find()
-                ->where('name_en', 'SIRT pathway dysregulation')->one();
-            if ($am) {
-                foreach ($genes as $gene) {
-                    $this->execute(
-                        "INSERT INTO aging_mechanism_to_gene (aging_mechanism_id, gene_id) 
-                        VALUES ({$am->id}, {$gene->id});");
-                }
-            }
-        }
     }
 
     /*
