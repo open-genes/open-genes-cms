@@ -46,10 +46,23 @@ class m221026_142538_create_association_table_for_gene_and_mechanism extends Mig
         $aging_mechanism = Yii::$app->db->createCommand(
             "SELECT * FROM `aging_mechanism` WHERE name_en = 'SIRT pathway dysregulation'"
         )->queryOne();
-        foreach ($genes as $gene) {
-            $this->execute(
-                "INSERT INTO aging_mechanism_to_gene (aging_mechanism_id, gene_id) 
+        print_r($aging_mechanism);
+        if ($aging_mechanism) {
+            foreach ($genes as $gene) {
+                $this->execute(
+                    "INSERT INTO aging_mechanism_to_gene (aging_mechanism_id, gene_id) 
                         VALUES ({$aging_mechanism['id']}, {$gene->id});");
+            }
+        } else {
+            $am = AgingMechanism::find()
+                ->where('name_en', 'SIRT pathway dysregulation')->one();
+            if ($am) {
+                foreach ($genes as $gene) {
+                    $this->execute(
+                        "INSERT INTO aging_mechanism_to_gene (aging_mechanism_id, gene_id) 
+                        VALUES ({$am->id}, {$gene->id});");
+                }
+            }
         }
     }
 
