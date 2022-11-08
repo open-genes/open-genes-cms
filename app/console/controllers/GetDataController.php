@@ -169,7 +169,7 @@ class GetDataController extends Controller
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    public function actionGetGoTerms(string $onlyNew = 'true', string $geneNcbiIds = null, int $countRows = 1000)
+    public function actionGetGoTerms(int $from = null, string $onlyNew = 'true', string $geneNcbiIds = null, int $countRows = 1000)
     {
         $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         /** @var GeneOntologyServiceInterface $geneOntologyService */
@@ -178,6 +178,9 @@ class GetDataController extends Controller
         if ($onlyNew) {
             $arGenesQuery->leftJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
                 ->andWhere('gene_to_ontology.gene_id is null');
+        }
+        if (!empty($from)) {
+            $arGenesQuery->andWhere("gene.id >= {$from}");
         }
         if ($geneNcbiIds) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
