@@ -141,12 +141,16 @@ class GeneService
         $geneSymbols = [];
         foreach ($data as $item) {
             $symbol = trim($item[0]);
+            $criteria = array(
+                "Age-related changes in gene expression/protein activity in humans" => "blue",
+                "Association of genetic variants and gene expression levels with longevity" => "pink");
+            $haystack = array_keys($criteria);
             if ($gene = Gene::find()
                 ->where(['symbol' => $symbol])
                 ->one()) {
                 $gene->isHidden = 0;
                 $gene->save();
-                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
+                if (in_array($item[1], $haystack)) {
                     if (AgeRelatedChange::find()->where([
                         'gene_id' => $gene->id
                     ])->one()) {
@@ -154,17 +158,7 @@ class GeneService
                             ->geneToCommentCauseRepository
                             ->saveFromCriteria($gene, $item[1]);
                     } else {
-                        echo "Gene " . $item[0] . " doesn't have this type of study: blue". PHP_EOL;
-                    }
-                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
-                    if (GeneToLongevityEffect::find()->where([
-                        'gene_id' => $gene->id
-                    ])->one()) {
-                        $this
-                            ->geneToCommentCauseRepository
-                            ->saveFromCriteria($gene, $item[1]);
-                    } else {
-                        echo "Gene " . $item[0] . " doesn't have this type of study: pink". PHP_EOL;
+                        echo "Gene " . $item[0] . " doesn't have this type of study: " . $criteria[$item[1]] . PHP_EOL;
                     }
                 }
             } else {
