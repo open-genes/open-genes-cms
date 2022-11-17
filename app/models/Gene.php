@@ -179,7 +179,7 @@ class Gene extends common\Gene
     public function getAgingMechanismIdsArray()
     {
         return AgingMechanism::find()
-            ->select('aging_mechanism.uuid')
+            ->select('aging_mechanism.id')
             ->join('INNER JOIN', 'aging_mechanism_to_gene', 'aging_mechanism_to_gene.aging_mechanism_id = aging_mechanism.id')
             ->where(['aging_mechanism_to_gene.gene_id' => $this->id])
             ->asArray()
