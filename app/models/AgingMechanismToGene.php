@@ -21,14 +21,6 @@ class AgingMechanismToGene extends \app\models\common\AgingMechanismToGene
     use RuEnActiveRecordTrait;
 
     /**
-     * @return array
-     */
-    public static function primaryKey()
-    {
-        return ['uuid'];
-    }
-
-    /**
     * {@inheritdoc}
     */
     public function behaviors()

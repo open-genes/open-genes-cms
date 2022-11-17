@@ -32,6 +32,11 @@ class AgingMechanismToGene extends \yii\db\ActiveRecord
         return ['uuid'];
     }
 
+    public static function getId()
+    {
+        return self::primaryKey();
+    }
+
     /**
      * {@inheritdoc}
      */
