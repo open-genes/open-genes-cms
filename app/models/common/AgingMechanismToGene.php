@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "aging_mechanism_to_gene".
  *
- * @property int $id
+ * @property string $uuid [uuid]
  * @property int $gene_id
  * @property int $aging_mechanism_id
  *
@@ -42,7 +42,7 @@ class AgingMechanismToGene extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
+            'uuid' => Yii::t('app', 'UUID'),
             'gene_id' => Yii::t('app', 'Gene ID'),
             'aging_mechanism_id' => Yii::t('app', 'Aging Mechanism ID'),
         ];
