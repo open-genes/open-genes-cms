@@ -14,7 +14,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.2",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
@@ -23,7 +23,8 @@
         "kartik-v/yii2-widget-select2": "^2.1",
         "yiisoft/yii2-httpclient": "^2.0",
         "notamedia/yii2-sentry": "^1.7",
-        "jean85/pretty-package-versions": "^1.5"
+        "jean85/pretty-package-versions": "^1.5",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -39,6 +40,9 @@
         "process-timeout": 1800,
         "fxp-asset": {
             "enabled": false
+        },
+        "allow-plugins": {
+            "yiisoft/yii2-composer": false
         }
     },
     "autoload": {
