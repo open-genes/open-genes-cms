@@ -74,4 +74,15 @@ class AgingMechanism extends \app\models\common\AgingMechanism
         var_dump($currentOntology);
     }
 
+    public static function findAllAsArray()
+    {
+        $result = [];
+        $mechanisms = self::find()->all();
+        foreach ($mechanisms as $mechanism) {
+            $result[$mechanism->id] = $mechanism->name_ru;
+        }
+
+        return $result;
+    }
+
 }

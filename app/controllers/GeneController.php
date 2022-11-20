@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\AgeRelatedChange;
+use app\models\AgingMechanism;
 use app\models\Disease;
 use app\models\exceptions\UpdateExperimentsException;
 use app\models\GeneralLifespanExperiment;
@@ -113,6 +114,7 @@ class GeneController extends Controller
             }
         }
         $allFunctionalClusters = FunctionalCluster::findAllAsArray();
+        $allAgingMechanisms = AgingMechanism::findAllAsArray();
         $allCommentCauses = CommentCause::findAllAsArray();
         $allDiseases = Disease::findAllAsArray();
         $allAges = Phylum::findAllAsArray();
@@ -121,6 +123,7 @@ class GeneController extends Controller
         return $this->render('update', [
             'model' => $model,
             'allFunctionalClusters' => $allFunctionalClusters,
+            'allAgingMechanisms' => $allAgingMechanisms,
             'allDiseases' => $allDiseases,
             'allCommentCauses' => $allCommentCauses,
             'allProteinClasses' => $allProteinClasses,

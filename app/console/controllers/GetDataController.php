@@ -169,7 +169,7 @@ class GetDataController extends Controller
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\di\NotInstantiableException
      */
-    public function actionGetGoTerms(string $onlyNew = 'true', string $geneNcbiIds = null, int $countRows = 1000)
+    public function actionGetGoTerms(int $from = null, string $onlyNew = 'true', string $geneNcbiIds = null, int $countRows = 1000)
     {
         $onlyNew = filter_var($onlyNew, FILTER_VALIDATE_BOOLEAN);
         /** @var GeneOntologyServiceInterface $geneOntologyService */
@@ -178,6 +178,9 @@ class GetDataController extends Controller
         if ($onlyNew) {
             $arGenesQuery->leftJoin('gene_to_ontology', 'gene_to_ontology.gene_id=gene.id')
                 ->andWhere('gene_to_ontology.gene_id is null');
+        }
+        if (!empty($from)) {
+            $arGenesQuery->andWhere("gene.id >= {$from}");
         }
         if ($geneNcbiIds) {
             $arGenesQuery->andWhere(['in', 'gene.ncbi_id', explode(',', $geneNcbiIds)]);
@@ -190,7 +193,7 @@ class GetDataController extends Controller
             try {
                 $result = $geneOntologyService->mineFromGatewayForGene($arGene->ncbi_id, $countRows);
                 if (isset($result['link_errors'])) {
-                    echo ' ERROR ' . $result['link_errors'];
+                    echo ' ERROR ' . $result['link_errors'] . PHP_EOL;
                     continue;
                 }
                 echo ' ok' . PHP_EOL;
@@ -282,7 +285,7 @@ class GetDataController extends Controller
                     $goTermChild = GeneOntology::find()
                         ->where(['ontology_identifier' => $goChild['id']])
                         ->one();
-                    if (!$goTermChild) {
+                    if (empty($goTermChild)) {
                         $goTermChild = new GeneOntology();
                         $goTermChild->ontology_identifier = $goChild['id'];
                         $goTermChild->name_en = $goChild['name'];
@@ -300,7 +303,7 @@ class GetDataController extends Controller
                     if($termsRelation && $onlyNew) {
                         continue;
                     }
-                    if (!$termsRelation) {
+                    if (empty($termsRelation)) {
                         $termsRelation = new GeneOntologyRelation();
                         $termsRelation->gene_ontology_id = $goTermChild->id;
                         $termsRelation->gene_ontology_parent_id = $goTerm['id'];

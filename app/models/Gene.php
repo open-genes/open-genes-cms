@@ -7,6 +7,7 @@ use app\models\common\GeneToDisease;
 use app\models\common\GeneToSource;
 use app\models\traits\ConditionActiveRecordTrait;
 use app\models\common\GeneToProteinClass;
+use Ramsey\Uuid\Uuid;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\data\ActiveDataProvider;
@@ -17,6 +18,7 @@ use yii\helpers\ArrayHelper;
  * @property int[] $functionalClustersIdsArray
  * @property int[] $diseasesIdsArray
  * @property int[] $commentCauseIdsArray
+ * @property int[] $agingMechanismIdsArray
  * @property int[] $proteinClassesIdsArray
  * @property array $functionalClustersArray
  */
@@ -28,6 +30,7 @@ class Gene extends common\Gene
     public $filledExperiments;
 
     protected $functionalClustersIdsArray;
+    protected $agingMechanismIdsArray;
     protected $diseasesIdsArray;
     protected $commentCauseIdsArray;
     protected $proteinClassesIdsArray;
@@ -48,7 +51,7 @@ class Gene extends common\Gene
     {
         return ArrayHelper::merge(
             parent::rules(), [
-            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray',
+            [['functionalClustersIdsArray', 'diseasesIdsArray', 'commentCauseIdsArray', 'agingMechanismIdsArray',
                 'proteinClassesIdsArray', 'newGenesNcbiIds', 'filledExperiments', 'sourcesIdsArray'], 'safe'],
             ['ncbi_id', 'unique'],
         ]);
@@ -68,7 +71,6 @@ class Gene extends common\Gene
             'name' => 'Название',
             'ncbi_id' => 'NCBI id',
             'uniprot' => 'Uniprot',
-            'why' => 'why',
             'band' => 'Band',
             'locationStart' => 'Location Start',
             'locationEnd' => 'Location End',
@@ -81,13 +83,12 @@ class Gene extends common\Gene
             'commentEvolution' => 'Эволюция',
             'uniprot_summary_ru' => 'Описание белка UniProt (Ru)',
             'uniprot_summary_en' => 'Описание белка UniProt (En)',
-            'commentCause' => 'Причины отбора',
             'commentAging' => 'Связь со старением/долголетием',
             'commentEvolutionEN' => 'Эволюция En',
             'commentAgingEN' => 'Связь со старением/долголетием En',
-            'commentsReferenceLinks' => 'Ссылки на источники',
             'functionalClusters' => 'Возрастозависимые процессы',
             'functionalClustersIdsArray' => 'Возрастозависимые процессы',
+            'agingMechanismIdsArray' => 'Механизмы',
             'diseasesIdsArray' => 'Заболевания',
             'commentCauseIdsArray' => 'Причины отбора',
             'userEdited' => 'User Edited',
@@ -175,6 +176,16 @@ class Gene extends common\Gene
             ->column();
     }
 
+    public function getAgingMechanismIdsArray()
+    {
+        return AgingMechanism::find()
+            ->select('aging_mechanism.id')
+            ->join('INNER JOIN', 'aging_mechanism_to_gene', 'aging_mechanism_to_gene.aging_mechanism_id = aging_mechanism.id')
+            ->where(['aging_mechanism_to_gene.gene_id' => $this->id])
+            ->asArray()
+            ->column();
+    }
+
     public function getCommentCauseIdsArray()
     {
         return CommentCause::find()
@@ -209,6 +220,11 @@ class Gene extends common\Gene
         $this->functionalClustersIdsArray = $ids;
     }
 
+    public function setAgingMechanismIdsArray(array $uuids)
+    {
+        $this->agingMechanismIdsArray = $uuids;
+    }
+
     public function setDiseasesIdsArray(array $ids)
     {
         $this->diseasesIdsArray = $ids;
@@ -235,6 +251,7 @@ class Gene extends common\Gene
             return parent::afterSave($insert, $changedAttributes);
         }
         $this->updateRelations($this->getFunctionalClustersIdsArray(),'functionalClustersIdsArray', GeneToFunctionalCluster::class, 'functional_cluster_id');
+        $this->updateRelations($this->getAgingMechanismIdsArray(),'agingMechanismIdsArray', AgingMechanismToGene::class, 'aging_mechanism_id');
         $this->updateRelations($this->getCommentCauseIdsArray(),'commentCauseIdsArray', GeneToCommentCause::class, 'comment_cause_id');
         $this->updateRelations($this->getProteinClassesIdsArray(),'proteinClassesIdsArray', GeneToProteinClass::class, 'protein_class_id');
         $this->updateRelations($this->getDiseasesIdsArray(),'diseasesIdsArray', GeneToDisease::class, 'disease_id');
@@ -312,6 +329,9 @@ class Gene extends common\Gene
                 $relationIdsArrayToAdd = array_diff($this->$geneProp, $currentIdsArray);
                 foreach ($relationIdsArrayToAdd as $relationIdArrayToAdd) {
                     $geneToRelation = new $relationClassName;
+                    if ($geneProp === 'agingMechanismIdsArray') {
+                        $geneToRelation->uuid = Uuid::uuid4()->toString();
+                    }
                     $geneToRelation->gene_id = $this->id;
                     $geneToRelation->$relationProp = $relationIdArrayToAdd;
                     $geneToRelation->save();

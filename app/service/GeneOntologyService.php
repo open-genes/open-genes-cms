@@ -96,7 +96,7 @@ class GeneOntologyService implements GeneOntologyServiceInterface
             $geneOntology = GeneOntology::find()
                 ->where(['ontology_identifier' => $go])->one();
             
-            if(!$geneOntology) {
+            if(empty($geneOntology)) {
                 $geneOntology = new GeneOntology();
 
                 $geneOntology->ontology_identifier = $go;
@@ -109,8 +109,10 @@ class GeneOntologyService implements GeneOntologyServiceInterface
                     $geneOntology->name_en = $gene['object']['label'];
                 }
 
-                if (!$geneOntology->save()) {
-                    $result['errors'] = $geneOntology->getErrors();
+                try {
+                    $geneOntology->save();
+                } catch (Exception $exception) {
+                    echo '-- ERROR: ' . $go . ' : ' . $exception->getMessage() . PHP_EOL;
                 }
                 $result['gene_ontology'] = $geneOntology->attributes;
             }
@@ -120,7 +122,7 @@ class GeneOntologyService implements GeneOntologyServiceInterface
                 'gene_ontology_id' => $geneOntology->id,
             ])->one();
 
-            if (!$gto) {
+            if (empty($gto)) {
                 $gto = new GeneToOntology();
                 $gto->gene_id = $geneRecord->id;
                 $gto->gene_ontology_id = $geneOntology->id;

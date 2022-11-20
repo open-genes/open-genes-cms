@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model app\models\Gene */
 /* @var $allFunctionalClusters [] */
+/* @var $allAgingMechanisms [] */
 /* @var $allDiseases [] */
 /* @var $allCommentCauses [] */
 /* @var $allProteinClasses [] */
@@ -24,7 +25,7 @@ $this->registerCssFile('/assets/css/gene.css');
     <?php if(Yii::$app->user->can('editor')): ?>
     <?= $form->field($model, 'isHidden')->checkbox() ?>
     <?php endif; ?>
-    Источник: <?=$model->source ?? 'нет' ?>
+    Источник: <?=is_array($model->source) ? $model->source[0]->name ?? 'нет' : $model->source ?? 'нет' ?>
 
     <?php if(Yii::$app->user->can('admin')): // todo add more operations to auth manager ?>
     <div class="row form-row">
@@ -60,6 +61,15 @@ $this->registerCssFile('/assets/css/gene.css');
                 '2' => 'увеличивается',
                 '3' => 'неоднозначно',
             ]) ?>
+        </div>
+        <div class="col-xs-12 col-sm-3">
+            <?= $form->field($model, 'agingMechanismIdsArray')->widget(\kartik\select2\Select2::class, [
+                'data' => $allAgingMechanisms,
+                'options' => ['multiple' => true],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]); ?>
         </div>
         <div class="col-xs-12 col-sm-6">
             <?= $form->field($model, 'functionalClustersIdsArray')->widget(\kartik\select2\Select2::class, [
@@ -125,9 +135,6 @@ $this->registerCssFile('/assets/css/gene.css');
             <?= $form->field($model, 'band')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-xs-6 col-sm-3">
-            <?= $form->field($model, 'why')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-xs-6 col-sm-3">
             <?= $form->field($model, 'accOrf')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-xs-6 col-sm-3">
@@ -185,12 +192,6 @@ $this->registerCssFile('/assets/css/gene.css');
             </div>
         </div>
     <?php endif; ?>
-
-    <div class="row form-row">
-        <div class="col-xs-12">
-            <?= $form->field($model, 'commentsReferenceLinks')->textarea(['rows' => 4]) ?>
-        </div>
-    </div>
 
     <div class="submit-panel">
         <div class="container">

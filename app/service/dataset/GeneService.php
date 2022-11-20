@@ -146,7 +146,7 @@ class GeneService
                 ->one()) {
                 $gene->isHidden = 0;
                 $gene->save();
-                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans (blue)') {
+                if ($item[1] == 'Age-related changes in gene expression/protein activity in humans') {
                     if (AgeRelatedChange::find()->where([
                         'gene_id' => $gene->id
                     ])->one()) {
@@ -156,7 +156,7 @@ class GeneService
                     } else {
                         echo "Gene " . $item[0] . " doesn't have this type of study: blue". PHP_EOL;
                     }
-                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity (pink)') {
+                } elseif ($item[1] == 'Association of genetic variants and gene expression levels with longevity') {
                     if (GeneToLongevityEffect::find()->where([
                         'gene_id' => $gene->id
                     ])->one()) {
