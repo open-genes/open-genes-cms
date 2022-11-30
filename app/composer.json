@@ -24,7 +24,6 @@
         "yiisoft/yii2-httpclient": "^2.0",
         "notamedia/yii2-sentry": "^1.7",
         "jean85/pretty-package-versions": "^1.5",
-        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

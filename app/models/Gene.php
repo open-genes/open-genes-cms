@@ -7,6 +7,7 @@ use app\models\common\GeneToDisease;
 use app\models\common\GeneToSource;
 use app\models\traits\ConditionActiveRecordTrait;
 use app\models\common\GeneToProteinClass;
+use app\service\HelperSpecialService;
 use Ramsey\Uuid\Uuid;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -330,7 +331,7 @@ class Gene extends common\Gene
                 foreach ($relationIdsArrayToAdd as $relationIdArrayToAdd) {
                     $geneToRelation = new $relationClassName;
                     if ($geneProp === 'agingMechanismIdsArray') {
-                        $geneToRelation->uuid = Uuid::uuid4()->toString();
+                        $geneToRelation->uuid = HelperSpecialService::generateUUID();
                     }
                     $geneToRelation->gene_id = $this->id;
                     $geneToRelation->$relationProp = $relationIdArrayToAdd;
