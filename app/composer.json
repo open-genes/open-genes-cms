@@ -23,7 +23,7 @@
         "kartik-v/yii2-widget-select2": "^2.1",
         "yiisoft/yii2-httpclient": "^2.0",
         "notamedia/yii2-sentry": "^1.7",
-        "jean85/pretty-package-versions": "^1.5",
+        "jean85/pretty-package-versions": "^1.5"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

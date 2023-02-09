@@ -37,6 +37,43 @@ $this->registerCssFile('/assets/css/main.css');
             'class' => 'navbar-inverse navbar-fixed-top open-genes-navbar',
         ],
     ]);
+    $menuGeneItems = [
+        ['label' => 'Филумы', 'url' => ['/age']],
+    ];
+    $menuSearchItems = [
+        ['label' => 'Способы воздействия', 'url' => '/gene-intervention-way'],
+        '<li class="divider"></li>',
+        ['label' => 'Методы вмешательства', 'url' => '/gene-intervention-method'],
+        '<li class="divider"></li>',
+        ['label' => 'Результаты вмешательства (для продолжительности жизни)', 'url' => '/intervention-result'],
+    ];
+    if (Yii::$app->user->can('editor')) {
+        $menuGeneItems = array_merge([
+            ['label' => 'Причины отбора', 'url' => ['/comment-cause']],
+            ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster']],
+            ['label' => 'Заболевания', 'url' => ['/disease']],
+        ], $menuGeneItems);
+        $menuSearchItems = array_merge($menuSearchItems, [
+            '<li class="divider"></li>',
+            ['label' => 'Препараты', 'url' => '/active-substance'],
+            '<li class="divider"></li>',
+            ['label' => 'Пол', 'url' => '/organism-sex'],
+            '<li class="divider"></li>',
+            ['label' => 'Способы доставки препарата', 'url' => '/active-substance-delivery-way'],
+            '<li class="divider"></li>',
+            ['label' => 'Основной эффект', 'url' => '/experiment-main-effect'],
+            '<li class="divider"></li>',
+            ['label' => 'Статистическая значимость', 'url' => '/statistical-significance'],
+            '<li class="divider"></li>',
+            ['label' => 'Стадия развития в начале эксперимента', 'url' => '/treatment-stage-of-development'],
+            '<li class="divider"></li>',
+            ['label' => 'Единицы измерения времени', 'url' => '/treatment-time-unit'],
+            '<li class="divider"></li>',
+            ['label' => 'Генотип', 'url' => '/genotype'],
+            '<li class="divider"></li>',
+            ['label' => 'Диеты', 'url' => '/diet', 'visible' => true],
+        ]);
+    }
     $menuItems = [
 
     ];
@@ -57,41 +94,12 @@ $this->registerCssFile('/assets/css/main.css');
         'items' => [
             ['label' => 'Гены', 'url' => ['/gene']],
             ['label' => 'Сущности в генах',
-                'items' => [
-                    ['label' => 'Причины отбора', 'url' => ['/comment-cause'], 'visible' => Yii::$app->user->can('editor')],
-                    ['label' => 'Возрастозависимые процессы', 'url' => ['/functional-cluster'], 'visible' => Yii::$app->user->can('editor')],
-                    ['label' => 'Филумы', 'url' => ['/age']],
-                    ['label' => 'Заболевания', 'url' => '/disease', 'visible' => Yii::$app->user->can('editor')],
-                ],
+                'items' => $menuGeneItems,
             ],
 
             [
                 'label' => 'Исследования - прод.жизни',
-                'items' => [
-                    ['label' => 'Способы воздействия', 'url' => '/gene-intervention-way'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Методы вмешательства', 'url' => '/gene-intervention-method'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Результаты вмешательства (для продолжительности жизни)', 'url' => '/intervention-result'],
-                    '<li class="divider"></li>',
-                    ['label' => 'Препараты', 'url' => '/active-substance', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Пол', 'url' => '/organism-sex', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Способы доставки препарата', 'url' => '/active-substance-delivery-way', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Основной эффект', 'url' => '/experiment-main-effect', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Статистическая значимость', 'url' => '/statistical-significance', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Стадия развития в начале эксперимента', 'url' => '/treatment-stage-of-development', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Единицы измерения времени', 'url' => '/treatment-time-unit', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Генотип', 'url' => '/genotype', 'visible' => Yii::$app->user->can('editor')],
-                    '<li class="divider"></li>',
-                    ['label' => 'Диеты', 'url' => '/diet', 'visible' => Yii::$app->user->can('editor')],
-                ],
+                'items' => $menuSearchItems,
             ],
             [
                 'label' => 'Исследования - другое',
