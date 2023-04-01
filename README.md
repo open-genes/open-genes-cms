@@ -1,4 +1,7 @@
-# Open Genes CMS system for biologists
+# Open Genes CMS for biologists
+This is a headless content management system for managing data in Open Genes database. 
+It's based on Yii 2 framework and also includes DB and migrations.
+
 
 ## Dev environment
 
