@@ -1,0 +1,57 @@
+#Release v1.1.0
+- OG-923: Update CHANGELOG.md
+- OG-923: Add CONTRIBUTING.md
+- OG-923: Add script for changelog generation
+
+#Release v1.0.0
+- 155: Fix. When deleting an organism line, all experiments with this line are deleted
+- 152: Fix genotype deletion bug from CMS
+- 146: Change id to UUID for manually set hallmarks of aging
+- 128: Fix the checkbox in pink forms that incorrectly reflected the value of the "significant" field in the study
+- 142: get-go-terms script rework
+- Add an updated criteria dataset, change keys in the method
+- 134: Add functionality for manually linking hallmarks of aging with genes when there is no proper category in GO
+- Add an updated criteria dataset with missing genes
+- 136: Add foreign keys to a table aging mechanism
+- 107: Delete columns in the 'gene' table
+- OG-924: Change gene symbols from alias to HGNC
+- 130: Fix duplicates in the parsed GO Terms
+- 86: Add values to genes' source column in a database
+- 103: Set a selection criterion for every gene in a database
+- 93: Parse data, compile a dataset, and add data into the database for the studies on age-related changes in gene expression, methylation, or protein activity
+- 82: Set proper names for dataset and database columns
+- Add data on physical activity, copy experiments to orthologs, and add data on age-related changes in expression
+- 76: change type column p_value in age_releated_change table
+- 73 Fix bug in form validation organizm_line_id
+- 69: Add genes that were not included in a database after an attempt to add them from a dataset
+- 63: Fix query that caused an error when navigating to the "/intervention-result" page
+- OG-780: Fix. Polymorphism could not be added to the pink form in the field "allelic polymorphism"
+- OG-803: Parser for batch add genes to a database
+- OG-839: Fix up dropdown menus height and scrolling
+- OG-589: Add new fields to a pink form (studies on the association of gene variants or expression levels with longevity)
+- OG-686: Remove obsolete fields from lifespan_experimment (studies on the effect of gene activity change on a lifespan) in DB
+- OG-376: Add new fields to blue ("Age-related changes in the gene expression or protein activity") form
+- OG-720: Get age units for forms from a database
+- OG-640: Let set "improves" and "deteriorates" for the same process in studies
+- OG-712: Fix purple form (studies on the effect of gene activity change on a lifespan) preview
+- OG-708: Prevent loading all the forms on a gene studies page simultaneously
+- OG-689: Link chromosome data to gene
+- OG-675: Add data on calorie restriction diet and longevity
+- OG-622: Fix layout template for purple form (studies on the effect of gene activity change on a lifespan)
+- OG-621: Purple form (studies on the effect of gene activity change on a lifespan) visibility conditions
+- OG-658: Add indeces to gene table
+- OG-656 Add gene location on chromosome
+- OG-623 Add gene relations to the intervention methods in the experiments on the effect of gene activity change on a lifespan
+- OG-610: Link human genes to orthologs in flies and mice
+- Add a new structure for storing orthologs in the database
+- Add new fields to the study of the effect of gene activity modulation on the aging process
+- Add functionality for editing the existing genotypes
+- Add a text field for the therapy description in studies of the effect of gene activity modulation on life expectancy
+- Parse flybase_id fields from the Flybase database for gene orthologs
+- Link human genes, model animal orthologs, and experiment entities in a database
+- Fixe display of experiment conditions
+- Develop new functionality for editing studies
+- License project under the MPL v. 2.0.
+- OG-539: Implement a new structure for orthologs in a database
+- OG-539: Orthologs parsing
+- OG-539: Add Latin name to model organism
